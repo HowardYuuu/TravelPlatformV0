@@ -1,0 +1,694 @@
+﻿@model prjTravelPlatform_release.Areas.Customer.ViewModel.Hotels.HotelDetailViewModel
+
+@{
+    ViewData["Title"] = @Model.HotelName;
+}
+
+@section Styles {
+    <link href="~/css/frontstage/hotel/hotelmodal.css" rel="stylesheet" />
+    <style>
+        .h-comment > :not(:first-child) {
+            border-top: 1px solid #DDDDDD !important;
+        }
+    </style>
+}
+<!--搜尋框-->
+<section class="pt-40 pb-40 bg-light-2" style="margin-top: 90px">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="mainSearch -col-3-big bg-white px-20 py-20 lg:px-20 lg:pt-5 lg:pb-20 rounded-22 shadow-3">
+                    <div class="button-grid items-center">
+
+                        <!--目的地-->
+                        <div class="searchMenu-loc pl-20 lg:py-20 lg:px-0">
+                            <div>
+                                <h4 class="text-15 fw-500 ls-2 lh-16">目的地或飯店名稱</h4>
+                                <div class="text-18 ls-2 lh-16">
+                                    <input id="Destination" name="Destination" autocomplete="off" type="search" placeholder="地區/飯店名稱" class="fw-700" />
+                                    <input type="hidden" id="Category" name="Category" />
+                                </div>
+                            </div>
+                            <div class="searchMenu-loc__field shadow-1 popup-window rounded-22" style="max-height:450px; overflow: auto">
+                                <div class="bg-white px-30 py-30 sm:px-0 sm:py-15 rounded-22" id="divFilter">
+                                </div>
+                            </div>
+                        </div>
+                        <!--日期-->
+                        <div class="searchMenu-date px-30 lg:py-20 lg:px-0 js-form-dd js-calendar js-calendar-el">
+
+                            <div data-x-dd-click="searchMenu-date">
+                                <h4 class="text-15 fw-500 ls-2 lh-16">入住/退房日期</h4>
+
+                                <div class="capitalize text-18 text-light-1 ls-2 lh-16">
+                                    <span id="dateFilter" class="js-first-date fw-700">請選擇日期</span>
+                                    <span class="js-last-date fw-700"></span>
+                                </div>
+                            </div>
+                            <div class="searchMenu-date__field shadow-1 rounded-22" data-x-dd="searchMenu-date" data-x-dd-toggle="-is-active">
+                                <div class="bg-white px-30 py-30 rounded-22">
+                                    <div class="elCalendar js-calendar-el-calendar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--人數-->
+                        <div class="searchMenu-guests px-30 lg:py-20 lg:px-0 js-form-dd js-form-counters">
+
+                            <div data-x-dd-click="searchMenu-guests">
+                                <h4 class="text-15 fw-500 ls-2 lh-16">人數及客房</h4>
+
+                                <div class="text-18 text-light-1 ls-2 lh-16">
+                                    <span class="js-count-adult fw-700">1</span>
+                                    <span>人</span>
+                                    <span class="js-count-room fw-700">1</span>
+                                    <span>間客房</span>
+                                </div>
+                            </div>
+
+
+                            <div class="searchMenu-guests__field shadow-1 rounded-22" data-x-dd="searchMenu-guests" data-x-dd-toggle="-is-active">
+                                <div class="bg-white px-30 py-30 rounded-22">
+                                    <!--人數-->
+                                    <div class="row y-gap-10 justify-between items-center">
+                                        <div class="col-auto">
+                                            <div class="text-15 fw-500">人數</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="d-flex items-center js-counter" data-value-change=".js-count-adult">
+                                                <button class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-down">
+                                                    <i class="icon-minus text-12"></i>
+                                                </button>
+
+                                                <div class="flex-center size-20 ml-15 mr-15">
+                                                    <div class="text-15 js-count">1</div>
+                                                </div>
+
+                                                <button class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-up">
+                                                    <i class="icon-plus text-12"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="border-top-light mt-24 mb-24"></div>
+                                    <!--房間-->
+                                    <div class="row y-gap-10 justify-between items-center">
+                                        <div class="col-auto">
+                                            <div class="text-15 fw-500">房間</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="d-flex items-center js-counter" data-value-change=".js-count-room">
+                                                <button class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-down">
+                                                    <i class="icon-minus text-12"></i>
+                                                </button>
+
+                                                <div class="flex-center size-20 ml-15 mr-15">
+                                                    <div class="text-15 js-count">1</div>
+                                                </div>
+
+                                                <button class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-up">
+                                                    <i class="icon-plus text-12"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="btnSearch"
+                                class="mainSearch__submit button -dark-1 py-15 px-40 col-12 rounded-22 bg-blue-1 text-white rounded-22"
+                                onclick="sendRequest()">
+                            <i class="icon-search text-20 mr-10"></i>
+                            搜尋
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="pt-40">
+    <div class="container">
+        <!--標題-->
+        <div class="row y-gap-20 justify-between items-end">
+            <div class="col-auto">
+                <div class="row x-gap-20  items-center">
+                    <div class="col-auto">
+                        <h1 class="text-30 sm:text-25 fw-600">@Model.HotelName&nbsp;<span class="fw-700 text-18">@Model.HotelEngName</span></h1>
+                        @for (var i = 0; i < Model.Rank; i++)
+                        {
+                            <i class="icon-star text-10 text-yellow-1"></i>
+                        }
+                    </div>
+                </div>
+                <div class="row x-gap-20 y-gap-20 items-center">
+                    <div class="col-auto">
+                        <div class="d-flex items-center text-15 text-light-1">
+                            <i class="icon-location-2 text-16 mr-5"></i>
+                            @Model.Address
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="row x-gap-15 y-gap-15 items-center">
+                    <div class="col-auto">
+                        <button class="button h-50 px-24 -dark-1 bg-blue-1 text-white" onclick="scrollToElement('rooms')">
+                            選擇房型
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--圖片-->
+        <div class="galleryGrid -type-1 pt-30">
+            <div class="galleryGrid__item relative d-flex">
+                <img src="~/img/Hotel/@Model.HotelsImgs[0]" alt="image" class="rounded-4">
+                <div class="absolute px-20 py-20 col-12 d-flex justify-end">
+                </div>
+            </div>
+            <div class="galleryGrid__item">
+                <img src="~/img/Hotel/@Model.HotelsImgs?[1]" alt="image" class="rounded-4">
+            </div>
+            <div class="galleryGrid__item relative d-flex">
+                <img src="~/img/Hotel/RoomType/@Model.RoomImgs?[0]" alt="image" class="rounded-4">
+            </div>
+            <div class="galleryGrid__item">
+                <img src="~/img/Hotel/RoomType/@Model.RoomImgs?[1]" alt="image" class="rounded-4">
+            </div>
+            <div class="galleryGrid__item relative d-flex">
+                <img src="~/img/Hotel/RoomType/@Model.RoomImgs?[2]" alt="image" class="rounded-4">
+
+                <div class="absolute px-10 py-10 col-12 h-full d-flex justify-end items-end">
+                    <a href="~/img/Hotel/@Model.HotelsImgs?[0]" class="button -blue-1 px-24 py-15 bg-white text-dark-1 js-gallery" data-gallery="gallery2">
+                        查看更多圖片
+                    </a>
+                    @for (var i = 1; i < Model.HotelsImgs?.Count; i++)
+                    {
+                        <a href="~/img/Hotel/@Model.HotelsImgs[i]" class="js-gallery" data-gallery="gallery2"></a>
+                    }
+                    @foreach (var item in Model.RoomImgs)
+                    {
+                        <a href="~/img/Hotel/RoomType/@item" class="js-gallery" data-gallery="gallery2"></a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <hr class="mt-40" style="opacity: 0.09" />
+    </div>
+
+
+</section>
+
+<!--內容-->
+<section>
+    <div class="container">
+        <div class="row y-gap-30">
+            <div class="col-xl-6">
+                <div class="row">
+                    <!--簡介-->
+                    <div id="overview" class="col-12 mt-30">
+                        <h3 class="text-22 fw-100 pl-20" style="border-left: solid 5px red">簡介</h3>
+                        <p class="text-dark-1 text-15 mt-20">
+                            @Model.Intro
+                        </p>
+                    </div>
+                    <!--熱門設施-->
+                    <div class="border-top-light mt-30"></div>
+                    <div class="col-12 mt-30">
+                        <h3 class="text-22 fw-100 pl-20" style="border-left: solid 5px red">熱門設施</h3>
+                        <div class="row y-gap-10 pt-20">
+                            @if (Model.HotelFacilities != null)
+                            {
+                                @foreach (var item in Model.HotelFacilities)
+                                {
+                                    <div class="col-md-5">
+                                        <div class="d-flex x-gap-15 y-gap-15 items-center">
+                                            <img src="/img/Hotel/RoomType/check.png" alt="image"
+                                                 style="width:30px; height:30px">
+                                            <div class="text-15">@item</div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--評論-->
+            <div class="col-xl-6">
+                <div class="">
+                    <div class="mt-30 pl-20">
+                        <h3 class="text-22 fw-100 pl-20" style="border-left: solid 5px red">評論</h3>
+                        <div class="px-20 py-20 border-light rounded-22 mt-20">
+
+                            @if (Model.HotelComments.Count() == 0)
+                            {
+                                <div class="col-auto border-bottom-light">
+                                    <div class="d-flex items-end mb-10">
+                                        <div class="flex-center text-white fw-600 rounded-100 bg-blue-1" style=" width:100px">
+                                            <span class="text-20">5.0 /</span>
+                                            <span class="text-15" style="margin-top:5px">5</span>
+                                        </div>
+                                        <span>2則評論</span>
+                                    </div>
+                                </div>
+
+                                <div class="h-comment">
+                                    <div class="col-lg-12 p-3 comment-border">
+                                        <div class="row x-gap-20 y-gap-20 items-center justify-between">
+                                            <div class="d-flex col-auto items-center">
+
+
+                                                <img src="~/img/avatar.png" style="width:30px; height:30px; border-radius:50%" class="dropdown__button" />
+
+                                                &ensp;<div class="fw-500 lh-15">用戶名稱</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <div class="text-14 text-light-1 lh-15">評論日期: 2024年3月20日</div>
+                                            </div>
+                                        </div>
+                                        <div class="fw-500 text-blue-1 mt-5"><span class="fw-700 text-20">5.0</span>/<span>5</span> 超讚</div>
+                                        <span class="fw-300 text-13">精緻雙床房 · 2位成人 · 1晚</span>
+                                        <p class="text-15 text-dark-1 mt-10">景色迷人，服務親切，感覺賓至如歸。</p>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-auto border-bottom-light">
+                                    <div class="d-flex items-end mb-20">
+                                        <div class="flex-center text-white fw-600 rounded-100 bg-blue-1" style=" width:100px">
+                                            <span class="text-20">@Model.Score /</span>
+                                            <span class="text-15" style="margin-top:5px">5</span>
+                                        </div>
+                                        <span class="ml-10">共 @Model.HotelComments.Count() 則評論</span>
+                                    </div>
+                                </div>
+                                <div class="h-comment">
+                                    <div class="col-lg-12 p-3 comment-border">
+                                        <div class="row x-gap-20 y-gap-20 items-center justify-between">
+                                            <div class="d-flex col-auto items-center">
+                                                @if (Model.HotelComments[0].CustomerImagePath != null)
+                                                {
+                                                    <img src="~/@Model.HotelComments[0].CustomerImagePath" style="width:30px; height:30px; border-radius:50%" class="dropdown__button" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/avatar.png" style="width:30px; height:30px; border-radius:50%" class="dropdown__button" />
+
+                                                }
+                                                &ensp;<div class="fw-500 lh-15">@Model.HotelComments[0].CustomerName</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <div class="text-14 text-light-1 lh-15">評論日期: @Model.HotelComments[0].FCommentTime?.ToString("yyyy年MM月dd日")</div>
+                                            </div>
+                                        </div>
+                                        <div class="fw-500 text-blue-1 mt-5">
+                                            <span class="fw-700 text-20">@Model.HotelComments[0].FCommentScore</span>/<span>5</span>
+                                            @{
+                                                double? score = (double)Model.HotelComments[0].FCommentScore;
+                                                string? scoreStr = "";
+                                                if (score > 4.5)
+                                                {
+                                                    scoreStr = "超讚";
+                                                }
+                                                else if (score > 4 && score <= 4.5)
+                                                {
+                                                    scoreStr = "讚";
+                                                }
+                                                else
+                                                {
+                                                    scoreStr = "普通";
+                                                }
+                                            }
+                                            @scoreStr
+                                        </div>
+                                        <span class="fw-300 text-13">@Model.HotelComments[0].FRoomTypeName · @Model.HotelComments[0].FGuestCount 人 · @Model.HotelComments[0].DayCount 晚</span>
+                                        <p class="text-15 text-dark-1 mt-10">@Model.HotelComments[0].FCommentContent</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 d-flex justify-end Click-here">顯示更多</div>
+                                <div class="custom-model-main">
+                                    <div class="custom-model-inner">
+                                        <div class="close-btn">×</div>
+                                        <div class="custom-model-wrap">
+                                            <div class="pop-up-content-wrap">
+                                                <div class="h-comment">
+                                                    @foreach (var item in Model.HotelComments)
+                                                    {
+
+                                                        <div class="col-lg-12 p-3 comment-border">
+                                                            <div class="row x-gap-20 y-gap-20 items-center justify-between">
+                                                                <div class="d-flex col-auto items-center">
+                                                                    @if (Model.HotelComments[0].CustomerImagePath != null)
+                                                                    {
+                                                                        <img src="~/@item.CustomerImagePath" style="width:30px; height:30px; border-radius:50%" class="dropdown__button" />
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <img src="~/avatar.png" style="width:30px; height:30px; border-radius:50%" class="dropdown__button" />
+
+                                                                    }
+                                                                    &ensp;<div class="fw-500 lh-15">@item.CustomerName</div>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <div class="text-14 text-light-1 lh-15">評論日期: @item.FCommentTime?.ToString("yyyy年MM月dd日")</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="fw-500 text-blue-1 mt-5">
+                                                                <span class="fw-700 text-20">@item.FCommentScore</span>/<span>5</span>
+                                                                @{
+                                                                    double? score2 = (double)@item.FCommentScore;
+                                                                    string? scoreStr2 = "";
+                                                                    if (score2 > 4.5)
+                                                                    {
+                                                                        scoreStr2 = "超讚";
+                                                                    }
+                                                                    else if (score2 > 4 && score2 <= 4.5)
+                                                                    {
+                                                                        scoreStr2 = "讚";
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        scoreStr2 = "普通";
+                                                                    }
+                                                                }
+                                                                @scoreStr2
+                                                            </div>
+                                                            <span class="fw-300 text-13">@item.FRoomTypeName · @item.FGuestCount 人 · @item.DayCount 晚</span>
+                                                            <p class="text-15 text-dark-1 mt-10">@item.FCommentContent</p>
+                                                        </div>
+
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-overlay"></div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="mt-30" style="opacity: 0.09" />
+    </div>
+</section>
+
+<!--房型-->
+<section id="rooms" class="pt-20 pb-20">
+    <div class="container">
+        <div class="row pb-20">
+            <div class="col-xl-12">
+                <h3 class="text-22 fw-100 pl-20" style="border-left: solid 5px red">選擇房型</h3>
+            </div>
+            <div id="" class="pt-20">
+                <div class="flex-center text-white fw-600 rounded-100 bg-blue-1 ml-10 mb-10" style=" width:100px">
+                    <span class="text-20">雙人房</span>             
+                </div>
+                <div id="room2">
+                   
+                </div>
+                <div class="flex-center text-white fw-600 rounded-100 bg-blue-1 ml-10 mb-10" style=" width:100px">
+                    <span class="text-20">四人房</span>
+                </div>
+                <div id="room4">
+                </div>
+
+                <!--房型明細-->
+            </div>
+        </div>
+    </div>
+</section>
+<div data-hotel-id="@Model.HotelId"></div>
+
+
+@section Scripts {
+    <script src="~/js/frontstage/v2/hotel/hotelsearchbar.js"></script>
+    <script src="~/js/frontstage/v2/hotel/popupwindow.js"></script>
+    <script>
+        const room2 = document.getElementById('room2');
+        const room4 = document.getElementById('room4');
+        const sessionStore = JSON.parse(sessionStorage.getItem('filter'));
+        let RoomNum = "";
+        let personNum = "";
+
+
+        if (sessionStore.length != 0) {
+            ipFilter.value = sessionStore.Destination;
+            category.value = sessionStore.Category;
+            startDate.textContent = sessionStore.StartDate + ' ' + '-';
+            endDate.textContent = sessionStore.EndDate;
+            person.textContent = sessionStore.PersonNum;
+            room.textContent = sessionStore.RoomNum;
+            RoomNum = parseInt(sessionStore.RoomNum);
+            personNum = sessionStore.PersonNum;
+        };
+
+        const scrollToElement = (elementId) => {
+            var targetElement = document.getElementById(elementId);
+            if (targetElement) {
+                // 使用 scrollIntoView 方法滚动到指定元素
+                targetElement.scrollIntoView({
+                    behavior: 'smooth' // 使用平滑滚动效果
+                });
+            }
+        }
+
+        const hotelId = document.querySelector('div[data-hotel-id]').getAttribute('data-hotel-id');
+
+        const roomSearchpayload = {
+            HotelId: hotelId,
+            StartDate: sessionStore.StartDate,
+            EndDate: sessionStore.EndDate,
+            PersonNum: sessionStore.PersonNum,
+            RoomNum: sessionStore.RoomNum
+        }
+
+        const divRooms = document.getElementById('divRooms');
+
+        const getRoomType = async () => {
+            try {
+                const res = await fetch("https://localhost:7119/api/HotelApi/Room", {
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    method: "POST",
+                    body: JSON.stringify(roomSearchpayload)
+                });
+                if (!res.ok) {
+                    throw new Error()
+                }
+
+                const resData = await res.json();
+                const room2s = [];
+                const room4s = [];
+
+                for (let i = 0; i < resData.length; i++) {
+                    if (resData[i].maxCapacity === 2) {
+                        room2s.push(resData[i]);
+                    }else{
+                        room4s.push(resData[i]);
+                    }
+                };
+
+                room2.innerHTML = room2s.map(room => `<div class="bg-green-3 rounded-22 px-30 py-30 sm:px-20 sm:py-20 mb-20">
+                                        <div class="">
+                                            <div class="text-18 fw-700 mb-5">${room.roomTypeName} <span class="text-13 fw-400"
+                                                    id="spanMessage">${room.message}</span></div>
+                                        </div>
+                                        <div class="d-flex col-12 align-items-center x-gap-10">
+                                            <div class="col-3">
+                                                <img src="/img/Hotel/RoomType/${room.roomImg}" alt="image" class="rounded-22"
+                                                    style="width:280px; height:200px">
+                                            </div>
+                                            <div class="col-9">
+                                                <div class="bg-white rounded-22 px-30 py-30">
+                                                    <div class="row y-gap-30">
+                                                        <div class="col-lg-3 ">
+                                                            <div class="text-15 fw-700 mb-10">床型及數量</div>
+                                                            <div class="y-gap-5">
+                                                                <div class="d-flex items-center text-green-2">
+                                                                    <div class="text-15">${room.bedNum}張${room.bedType}</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-5 border-left-light">
+                                                            <div class="text-15 fw-700 mb-10">房間設施</div>
+                                                            <div class="row y-gap-10">
+                                                                ${room.rooomFacilities.map(x =>
+                    `<div class="col-md-6">
+                                                                <div class="d-flex x-gap-15 y-gap-15 items-center">
+                                                                    <img src="/img/Hotel/RoomType/check.png" alt="image"
+                                                                        style="width:30px; height:30px">
+                                                                    <div class="text-15">${x}</div>
+                                                                </div>
+                                                            </div>`).join('')}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 border-left-light lg:border-none text-right lg:text-left">
+                                                        <div class="pl-40 lg:pl-0">
+                                                            <div class="text-14 lh-14 text-light-1 mb-5">每晚價格</div>
+                                                            <div class="text-20 lh-14 fw-500">NT$ ${room.roomPrice}</div>
+                                                            <a class="button h-50 px-35 -dark-1 bg-blue-1 text-white mt-10" style="cursor:pointer"
+                                                                id="sendReqLink"
+                                                                        onclick="confirmDialog(${room.roomTypeId}, ${room.roomCount}, ${room.messageValue}, ${room.maxCapacity})">
+                                                                立即預定
+                                                            </a>
+                                                            <span class="text-13 fw-400 text-red-1">${room.roomCountMsg}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`).join('');
+
+
+                room4.innerHTML = room4s.map(room => `<div class="bg-green-3 rounded-22 px-30 py-30 sm:px-20 sm:py-20 mb-20">
+                                                <div class="">
+                                                    <div class="text-18 fw-700 mb-5">${room.roomTypeName} <span class="text-13 fw-400"
+                                                            id="spanMessage">${room.message}</span></div>
+                                                </div>
+                                                <div class="d-flex col-12 align-items-center x-gap-10">
+                                                    <div class="col-3">
+                                                        <img src="/img/Hotel/RoomType/${room.roomImg}" alt="image" class="rounded-22"
+                                                            style="width:280px; height:200px">
+                                                    </div>
+                                                    <div class="col-9">
+                                                        <div class="bg-white rounded-22 px-30 py-30">
+                                                            <div class="row y-gap-30">
+                                                                <div class="col-lg-3 ">
+                                                                    <div class="text-15 fw-700 mb-10">床型及數量</div>
+                                                                    <div class="y-gap-5">
+                                                                        <div class="d-flex items-center text-green-2">
+                                                                            <div class="text-15">${room.bedNum}張${room.bedType}</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-5 border-left-light">
+                                                                    <div class="text-15 fw-700 mb-10">房間設施</div>
+                                                                    <div class="row y-gap-10">
+                                                                        ${room.rooomFacilities.map(x =>
+                    `<div class="col-md-6">
+                                                                        <div class="d-flex x-gap-15 y-gap-15 items-center">
+                                                                            <img src="/img/Hotel/RoomType/check.png" alt="image"
+                                                                                style="width:30px; height:30px">
+                                                                            <div class="text-15">${x}</div>
+                                                                        </div>
+                                                                    </div>`).join('')}
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 border-left-light lg:border-none text-right lg:text-left">
+                                                                <div class="pl-40 lg:pl-0">
+                                                                    <div class="text-14 lh-14 text-light-1 mb-5">每晚價格</div>
+                                                                    <div class="text-20 lh-14 fw-500">NT$ ${room.roomPrice}</div>
+                                                                    <a class="button h-50 px-35 -dark-1 bg-blue-1 text-white mt-10" style="cursor:pointer"
+                                                                        id="sendReqLink"
+                                                                                onclick="confirmDialog(${room.roomTypeId}, ${room.roomCount}, ${room.messageValue}, ${room.maxCapacity})">
+                                                                        立即預定
+                                                                    </a>
+                                                                    <span class="text-13 fw-400 text-red-1">${room.roomCountMsg}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>` ).join('');
+
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+        getRoomType();
+
+
+        const confirmDialog = async (id, roomCount, suggestNum, maxCapacity) => {
+            //如果選擇的房間數量不足，跳出警告
+            if (roomCount < RoomNum) {
+                Swal.fire({
+                    title: "房間數量不足",
+                    text: `目前房型僅存${roomCount}間，與您選擇的數量(${RoomNum}間房)不符，是否要繼續訂購?`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    cancelButtonColor: "#d33",
+                    confirmButtonColor: "#3d737f",
+                    cancelButtonText: "取消",
+                    confirmButtonText: "確定"
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        RoomNum = roomCount;
+                        window.location = `${window.location.origin}/Customer/Hotels/HotelOrder?HotelId=${hotelId}&RoomTypeId=${id}&StartDate=${sessionStore.StartDate}&EndDate=${sessionStore.EndDate}&PersonNum=${sessionStore.PersonNum}&RoomNum=${RoomNum}&roomNumSuggest=${suggestNum}`
+                    }
+                });
+                //如果選擇的房間數量與建議的不相符不足，跳出警告
+            } else if (suggestNum != 0 && RoomNum != suggestNum && roomCount >= suggestNum) {
+                Swal.fire({
+                    title: "人數條件不符",
+                    text: `是否依據建議數量訂購?`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    cancelButtonColor: "#d33",
+                    confirmButtonColor: "#3d737f",
+                    cancelButtonText: "取消",
+                    confirmButtonText: "確定"
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        RoomNum = suggestNum;
+                        window.location = `https://localhost:7119/Customer/Hotels/HotelOrder?HotelId=${hotelId}&RoomTypeId=${id}&StartDate=${sessionStore.StartDate}&EndDate=${sessionStore.EndDate}&PersonNum=${personNum}&RoomNum=${RoomNum}&roomNumSuggest=${suggestNum}`
+                    }
+                });
+            } else if (suggestNum != 0 && RoomNum != suggestNum && roomCount < suggestNum) {
+                Swal.fire({
+                    title: "人數條件不符及房間數量不足",
+                    text: `不符合房型人數限制，但因目前房型數量不足，無法依據建議數量訂購，是否繼續訂購?`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    cancelButtonColor: "#d33",
+                    confirmButtonColor: "#3d737f",
+                    cancelButtonText: "取消",
+                    confirmButtonText: "確定"
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        RoomNum = roomCount;
+                        personNum = maxCapacity;
+                        window.location = `https://localhost:7119/Customer/Hotels/HotelOrder?HotelId=${hotelId}&RoomTypeId=${id}&StartDate=${sessionStore.StartDate}&EndDate=${sessionStore.EndDate}&PersonNum=${personNum}&RoomNum=${RoomNum}&roomNumSuggest=${suggestNum}`
+                    }
+                });
+            } else {
+                window.location = `https://localhost:7119/Customer/Hotels/HotelOrder?HotelId=${hotelId}&RoomTypeId=${id}&StartDate=${sessionStore.StartDate}&EndDate=${sessionStore.EndDate}&PersonNum=${personNum}&RoomNum=${RoomNum}&roomNumSuggest=${suggestNum}`
+            }
+
+
+        }
+        const sendReserveReq = async (id) => {
+            try {
+                payloadForReserve.RoomTypeId = id;
+                const res = await fetch("/api/HotelApi/OrderInit", {
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    method: "POST",
+                    body: JSON.stringify(payloadForReserve)
+                });
+                if (!res.ok) {
+                    throw new Error();
+                }
+                const resData = await res.text();
+                window.location = "http://localhost:7119/Customer/Hotels/HotelOrder"
+            } catch (error) {
+                console.log(error.message)
+            }
+
+        }
+    </script>
+}
+

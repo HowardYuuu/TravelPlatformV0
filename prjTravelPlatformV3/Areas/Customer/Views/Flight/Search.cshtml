@@ -1,0 +1,1512 @@
+﻿
+@section Styles {
+    <style>
+        .transparent-div {
+            opacity: 1; /* 设置透明度为 0.5 */
+        }
+
+        .CurrentWeather{
+            display:flex;
+            flex-direction:row;
+        }
+
+        .Description{
+            color: gray;
+        }
+        .num1, .num2{
+            font-size:40px;
+        }
+
+        .Refresh{
+            display:flex;
+            justify-content:flex-end;
+            font-size:13px;
+            color: gray;
+        }
+
+        .buttonBar{
+            display:flex;
+            flex-direction: row;
+            flex-wrap:wrap;
+        }
+        .Picture{
+            margin-left:10px;
+        }
+
+    </style>
+}
+
+<body>
+
+    <main>
+        <div class="masthead__bg" style="position: relative;">
+            <img src="~/img/airline/airplane.png" style="filter: brightness(55%); width: 100%; height:320px;" />
+            <div class="text-center" style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%);">
+                <h1 class="text-30 fw-600 text-white">尋找機票</h1>
+            </div>
+        </div>
+        <section data-anim-wrap class="pt-20 bg-light-2">
+            <div class="container-1500">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="masthead__content">
+
+
+                            <div class="mainSearch -col-4 -w-1070 bg-white shadow-1 rounded-100 pr-20 py-20 lg:px-20 lg:pt-5 lg:pb-20" style="margin:0 auto">
+                                <div class="row y-gap-20 items-center pt-30 px-40">
+                                    <div class="col-auto">
+
+                                        <div class="dropdown js-dropdown js-return-active">
+                                            <div class="dropdown__button d-flex items-center  text-15" data-el-toggle=".js-return-toggle" data-el-toggle-active=".js-return-active">
+                                                <span id="optTripType" class="js-dropdown-title">來回</span>
+                                                <i class="icon icon-chevron-sm-down text-7 ml-10"></i>
+                                            </div>
+
+                                            <div class="toggle-element -dropdown  js-click-dropdown js-return-toggle">
+                                                <div class="text-14 y-gap-15 js-dropdown-list">
+
+                                                    <div><a href="#" class="d-block js-dropdown-link">來回</a></div>
+
+                                                    <div><a href="#" class="d-block js-dropdown-link">單程</a></div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-auto">
+
+                                        <div class="dropdown js-dropdown js-economy-active">
+                                            <div class="dropdown__button d-flex items-center  text-15" data-el-toggle=".js-economy-toggle" data-el-toggle-active=".js-economy-active">
+                                                <span id="optClass" class="js-dropdown-title">經濟艙</span>
+                                                <i class="icon icon-chevron-sm-down text-7 ml-10"></i>
+                                            </div>
+
+                                            <div class="toggle-element -dropdown  js-click-dropdown js-economy-toggle">
+                                                <div class="text-14 y-gap-15 js-dropdown-list">
+
+                                                    <div><a href="#" class="d-block js-dropdown-link">經濟艙</a></div>
+
+                                                    <div><a href="#" class="d-block js-dropdown-link">豪華經濟艙</a></div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="button-grid items-center m-3">
+
+                                    <div class="searchMenu-loc px-24 lg:py-20 lg:px-0 js-form-dd js-liverSearch">
+
+                                        <div data-x-dd-click="searchMenu-loc">
+                                            <h4 class="text-15 fw-500 ls-2 lh-16">起飛地</h4>
+
+                                            <div class="text-15 text-light-1 ls-2 lh-16">
+                                                <input id="txtDeparture" autocomplete="off" type="search" placeholder="機場" class="js-search js-dd-focus">
+                                                <div id="alertMsgDeparture" class="validation-message" style="color:red"></div>
+                                            </div>
+                                        </div>
+                                        <div class="searchMenu-loc__field shadow-2 js-popup-window" data-x-dd="searchMenu-loc" data-x-dd-toggle="-is-active">
+                                            <div id="optDeparture" class="bg-white px-30 py-30 sm:px-0 sm:py-15 rounded-4">
+                                                <div class="y-gap-5 js-results">
+                                                    @* 起飛地選項 *@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="searchMenu-loc px-24 lg:py-20 lg:px-0 js-form-dd js-liverSearch">
+
+                                        <div data-x-dd-click="searchMenu-loc">
+                                            <h4 class="text-15 fw-500 ls-2 lh-16">降落地</h4>
+
+                                            <div class="text-15 text-light-1 ls-2 lh-16">
+                                                <input id="txtDestination" autocomplete="off" type="search" placeholder="機場" class="js-search js-dd-focus">
+                                                <div id="alertMsgDestination" class="validation-message" style="color:red"></div>
+                                            </div>
+                                        </div>
+                                        <div class="searchMenu-loc__field shadow-2 js-popup-window" data-x-dd="searchMenu-loc" data-x-dd-toggle="-is-active">
+                                            <div class="bg-white px-30 py-30 sm:px-0 sm:py-15 rounded-4">
+                                                <div id="optDestination" class="y-gap-5 js-results">
+                                                    @* 降落地選項 *@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="searchMenu-date px-24 lg:py-20 lg:px-0 js-form-dd js-calendar js-calendar-el">
+
+                                        <div data-x-dd-click="searchMenu-date">
+                                            <h4 class="text-15 fw-500 ls-2 lh-16">日期</h4>
+
+                                            <div class="capitalize text-15 text-light-1 ls-2 lh-16">
+                                                <span class="js-first-date">請選擇日期</span>
+                                                
+                                                <span class="js-last-date"></span>
+                                                <div id="alertMsgDate" class="validation-message" style="color:red"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="searchMenu-date__field shadow-2" data-x-dd="searchMenu-date" data-x-dd-toggle="-is-active">
+                                            <div class="bg-white px-30 py-30 rounded-4">
+                                                <div class="elCalendar js-calendar-el-calendar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="searchMenu-guests px-24 lg:py-20 lg:px-0 js-form-dd js-form-counters m-3">
+
+                                        <div data-x-dd-click="searchMenu-guests">
+                                            <h4 class="text-15 fw-500 ls-2 lh-16">旅客</h4>
+
+                                            <div class="text-15 text-light-1 ls-2 lh-16">
+                                                <span class="js-count-adult">1</span> 成人
+                                                -
+                                                <span class="js-count-child">0</span> 孩童
+                                                -
+                                                <span class="js-count-baby">0</span> 幼兒
+                                                <div id="alertMsgTicketQty" class="validation-message" style="color:red"></div>
+                                            </div>
+                                        </div>
+                                        <div class="searchMenu-guests__field shadow-2" data-x-dd="searchMenu-guests" data-x-dd-toggle="-is-active">
+                                            <div class="bg-white px-30 py-30 rounded-4">
+                                                <div class="row y-gap-10 justify-between items-center">
+                                                    <div class="col-auto">
+                                                        <div class="text-15 fw-500">成人</div>
+                                                    </div>
+
+                                                    <div class="col-auto">
+                                                        <div class="d-flex items-center js-counter" data-value-change=".js-count-adult">
+                                                            <button class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-down">
+                                                                <i class="icon-minus text-12"></i>
+                                                            </button>
+
+                                                            <div class="flex-center size-20 ml-15 mr-15">
+                                                                <div class="text-15 js-count">1</div>
+                                                            </div>
+
+                                                            <button class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-up">
+                                                                <i class="icon-plus text-12"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="border-top-light mt-24 mb-24"></div>
+
+                                                <div class="row y-gap-10 justify-between items-center">
+                                                    <div class="col-auto">
+                                                        <div class="text-15 lh-12 fw-500">孩童</div>
+                                                        <div class="text-13 lh-12 text-light-1 mt-2">Ages 2 - 12</div>
+                                                    </div>
+
+                                                    <div class="col-auto">
+                                                        <div class="d-flex items-center js-counter" data-value-change=".js-count-child">
+                                                            <button class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-down">
+                                                                <i class="icon-minus text-12"></i>
+                                                            </button>
+
+                                                            <div class="flex-center size-20 ml-15 mr-15">
+                                                                <div class="text-15 js-count">0</div>
+                                                            </div>
+
+                                                            <button class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-up">
+                                                                <i class="icon-plus text-12"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="border-top-light mt-24 mb-24"></div>
+
+                                                <div class="row y-gap-10 justify-between items-center">
+                                                    <div class="col-auto">
+                                                        <div class="text-15 lh-12 fw-500">幼兒</div>
+                                                        <div class="text-13 lh-12 text-light-1 mt-2">Ages 0 - 2</div>
+                                                    </div>
+
+                                                    <div class="col-auto">
+                                                        <div class="d-flex items-center js-counter" data-value-change=".js-count-baby">
+                                                            <button class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-down">
+                                                                <i class="icon-minus text-12"></i>
+                                                            </button>
+
+                                                            <div class="flex-center size-20 ml-15 mr-15">
+                                                                <div class="text-15 js-count">0</div>
+                                                            </div>
+
+                                                            <button class="button -outline-blue-1 text-blue-1 size-38 rounded-4 js-up">
+                                                                <i class="icon-plus text-12"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="button-item">
+                                        <button id="btnSearch" class="mainSearch__submit button -dark-1 h-60 px-35 col-12 rounded-100 bg-blue-1 text-white" style="width:150px">
+                                            <i class="icon-search text-20 mr-10"></i>
+                                            搜尋
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <section class="layout-pt-md layout-pb-md bg-light-2">
+            <div class="container">
+                <div class="row y-gap-30">
+                    <div class="col-xl-3 col-lg-4">
+                        <aside class="sidebar py-20 px-20 rounded-4 bg-white">
+                            <div class="row y-gap-40">
+
+                                <div class="sidebar__item">
+                                    <h5 class="text-18 fw-500 mb-10">目的地未來36小時天氣資訊</h5>
+                                        <div class="Container">
+                                            <div class="buttonBar mb-2">
+                                            <button id="today" type="button" class="button -dark-1 px-20 h-30 bg-blue-1 text-white m-1">03/29</button>
+                                            <button id="day1" type="button" class="button -dark-1 px-20 h-30 bg-blue-1 text-white m-1">03/30</button>
+                                            <button id="day2" type="button" class="button -dark-1 px-20 h-30 bg-blue-1 text-white m-1">03/31</button>
+                                            <button id="day3" type="button" class="button -dark-1 px-20 h-30 bg-blue-1 text-white m-1">04/01</button>
+                                            </div>
+
+                                            <div class="WeatherCard" id="WeatherCard">
+                                            <div class="Location" id="Location"><h4>台北市</h4></div>
+                                            <div class="Description" id="Description">多雲時晴</div>
+                                                <div class="CurrentWeather">
+                                                    <div class="Temperature">
+                                                    <span class="num1" id="num1">23</span><span class="Celsius">°C</span>
+                                                        -
+                                                    <span class="num2" id="num2">25</span><span class="Celsius">°C</span>
+                                                    </div>
+                                                     <div class="Picture">
+                                                        <img />
+                                                     </div>
+                                                </div>
+                                            <div class="AirFlow" id="AirFlow"><img src="~/img/airline/wind.png" /> 23 m/h</div>
+                                            <div class="Rain" id="Rain"><img src="~/img/airline/humidity.png" /> 48%</div>
+                                            <div class="Refresh" id="Refresh">最後觀測時間：上午 12:03</div>
+                                            </div>
+                                        </div>
+
+                                </div>
+
+                                <div class="sidebar__item">
+                                    <h5 class="text-18 fw-500 mb-10">艙等</h5>
+                                    <div class="sidebar-checkbox">
+
+                                        <div class="row y-gap-10 items-center justify-between">
+                                            <div class="col-auto">
+
+                                                <div class="d-flex items-center">
+                                                    <div class="form-checkbox ">
+                                                        <input type="checkbox" name="name">
+                                                        <div class="form-checkbox__mark">
+                                                            <div class="form-checkbox__icon icon-check"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-15 ml-10">經濟艙</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row y-gap-10 items-center justify-between">
+                                            <div class="col-auto">
+
+                                                <div class="d-flex items-center">
+                                                    <div class="form-checkbox ">
+                                                        <input type="checkbox" name="name">
+                                                        <div class="form-checkbox__mark">
+                                                            <div class="form-checkbox__icon icon-check"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-15 ml-10">豪華經濟艙</div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="sidebar__item">
+                                    <h5 class="text-18 fw-500 mb-10">航空公司</h5>
+                                    <div class="sidebar-checkbox">
+
+                                        <div class="row y-gap-10 items-center justify-between">
+                                            <div class="col-auto">
+
+                                                <div class="d-flex items-center">
+                                                    <div class="form-checkbox ">
+                                                        <input type="checkbox" name="name">
+                                                        <div class="form-checkbox__mark">
+                                                            <div class="form-checkbox__icon icon-check"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-15 ml-10">立榮航空</div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row y-gap-10 items-center justify-between">
+                                            <div class="col-auto">
+
+                                                <div class="d-flex items-center">
+                                                    <div class="form-checkbox ">
+                                                        <input type="checkbox" name="name">
+                                                        <div class="form-checkbox__mark">
+                                                            <div class="form-checkbox__icon icon-check"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-15 ml-10">華信航空</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </aside>
+                    </div>
+
+                    <div class="col-xl-9 col-lg-8">
+                        <div class="row y-gap-10 justify-between items-center">
+                            <div class="col-auto">
+                                <div class="text-18">總共 <span id="dataQty" class="fw-500">123</span> 筆 搜尋資料</div>
+                            </div>
+
+                            <div class="col-auto">
+                                <button id="btnSort" class="button -blue-1 h-40 px-30 rounded-100 bg-blue-1-05 text-15 text-blue-1">
+                                    <i class="icon-up-down text-14 mr-10"></i>
+                                    價格低至高排序
+                                </button>
+                            </div>
+                        </div>
+
+                        @* 搜尋結果 *@
+                            <div id="SearchResult" data-x="flight-item-1" data-x-toggle="shadow-2">
+                                @* 搜尋結果資料 *@
+
+                                <div class="accordion__content">
+                                    <div class="border-light rounded-4 mt-30">
+                                        <div class="py-20 px-30">
+                                            <div class="row justify-between items-center">
+                                                <div class="col-auto">
+                                                    <div class="fw-500 text-dark-1">Depart • Sat, Mar 26</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="text-14 text-light-1">4h 05m</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="py-30 px-30 border-top-light">
+                                            <div class="row y-gap-10 justify-between">
+                                                <div class="col-auto">
+                                                    <div class="d-flex items-center mb-15">
+                                                        <div class="w-28 d-flex justify-center mr-15">
+                                                            <img src=" " alt="image">
+                                                        </div>
+
+                                                        <div class="text-14 text-light-1">Pegasus Airlines 1169</div>
+                                                    </div>
+
+                                                    <div class="relative z-0">
+                                                        <div class="border-line-2"></div>
+
+                                                        <div class="d-flex items-center">
+                                                            <div class="w-28 d-flex justify-center mr-15">
+                                                                <div class="size-10 border-light rounded-full bg-white"></div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-auto">
+                                                                    <div class="lh-14 fw-500">8:25 am</div>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <div class="lh-14 fw-500">Istanbul Sabiha Gokcen (SAW)</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="d-flex items-center mt-15">
+                                                            <div class="w-28 d-flex justify-center mr-15">
+                                                                <img src="" alt="image">
+                                                            </div>
+
+                                                            <div class="text-14 text-light-1">4h 05m</div>
+                                                        </div>
+
+                                                        <div class="d-flex items-center mt-15">
+                                                            <div class="w-28 d-flex justify-center mr-15">
+                                                                <div class="size-10 border-light rounded-full bg-border"></div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-auto">
+                                                                    <div class="lh-14 fw-500">9:30 am</div>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <div class="lh-14 fw-500">London Stansted (STN)</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-auto text-right md:text-left">
+                                                    <div class="text-14 text-light-1">Economy</div>
+                                                    <div class="text-14 mt-15 md:mt-5">
+                                                        Airbus A320neo (Narrow-body jet)<br>
+                                                        Wi-Fi available<br>
+                                                        USB outlet
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="border-light rounded-4 mt-20">
+                                        <div class="py-20 px-30">
+                                            <div class="row justify-between items-center">
+                                                <div class="col-auto">
+                                                    <div class="fw-500 text-dark-1">Depart • Sat, Mar 26</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="text-14 text-light-1">4h 05m</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="py-30 px-30 border-top-light">
+                                            <div class="row y-gap-10 justify-between">
+                                                <div class="col-auto">
+                                                    <div class="d-flex items-center mb-15">
+                                                        <div class="w-28 d-flex justify-center mr-15">
+                                                            <img src=" " alt="image">
+                                                        </div>
+
+                                                        <div class="text-14 text-light-1">Pegasus Airlines 1169</div>
+                                                    </div>
+
+                                                    <div class="relative z-0">
+                                                        <div class="border-line-2"></div>
+
+                                                        <div class="d-flex items-center">
+                                                            <div class="w-28 d-flex justify-center mr-15">
+                                                                <div class="size-10 border-light rounded-full bg-white"></div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-auto">
+                                                                    <div class="lh-14 fw-500">8:25 am</div>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <div class="lh-14 fw-500">Istanbul Sabiha Gokcen (SAW)</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="d-flex items-center mt-15">
+                                                            <div class="w-28 d-flex justify-center mr-15">
+                                                                <img src="" alt="image">
+                                                            </div>
+
+                                                            <div class="text-14 text-light-1">4h 05m</div>
+                                                        </div>
+
+                                                        <div class="d-flex items-center mt-15">
+                                                            <div class="w-28 d-flex justify-center mr-15">
+                                                                <div class="size-10 border-light rounded-full bg-border"></div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-auto">
+                                                                    <div class="lh-14 fw-500">9:30 am</div>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <div class="lh-14 fw-500">London Stansted (STN)</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-auto text-right md:text-left">
+                                                    <div class="text-14 text-light-1">Economy</div>
+                                                    <div class="text-14 mt-15 md:mt-5">
+                                                        Airbus A320neo (Narrow-body jet)<br>
+                                                        Wi-Fi available<br>
+                                                        USB outlet
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        <div class="border-top-light mt-30 pt-30">
+                            <div class="text-center md:mt-10">
+                                <div class="text-18 text-light-1">已顯示全部查詢結果</div>
+                            </div>
+                        </div>
+                        @* <div class="border-top-light mt-30 pt-30">
+                            <div class="row x-gap-10 y-gap-20 justify-between md:justify-center">
+                                <div class="col-auto md:order-1">
+                                    <button class="button -blue-1 size-40 rounded-full border-light">
+                                        <i class="icon-chevron-left text-12"></i>
+                                    </button>
+                                </div>
+
+                                <div class="col-md-auto md:order-3">
+                                    <div class="row x-gap-20 y-gap-20 items-center md:d-none">
+
+                                        <div class="col-auto">
+
+                                            <div class="size-40 flex-center rounded-full">1</div>
+
+                                        </div>
+
+                                        <div class="col-auto">
+
+                                            <div class="size-40 flex-center rounded-full bg-dark-1 text-white">2</div>
+
+                                        </div>
+
+                                        <div class="col-auto">
+
+                                            <div class="size-40 flex-center rounded-full">3</div>
+
+                                        </div>
+
+                                        <div class="col-auto">
+
+                                            <div class="size-40 flex-center rounded-full bg-light-2">4</div>
+
+                                        </div>
+
+                                        <div class="col-auto">
+
+                                            <div class="size-40 flex-center rounded-full">5</div>
+
+                                        </div>
+
+                                        <div class="col-auto">
+
+                                            <div class="size-40 flex-center rounded-full">...</div>
+
+                                        </div>
+
+                                        <div class="col-auto">
+
+                                            <div class="size-40 flex-center rounded-full">20</div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row x-gap-10 y-gap-20 justify-center items-center d-none md:d-flex">
+
+                                        <div class="col-auto">
+
+                                            <div class="size-40 flex-center rounded-full">1</div>
+
+                                        </div>
+
+                                        <div class="col-auto">
+
+                                            <div class="size-40 flex-center rounded-full bg-dark-1 text-white">2</div>
+
+                                        </div>
+
+                                        <div class="col-auto">
+
+                                            <div class="size-40 flex-center rounded-full">3</div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="text-center mt-30 md:mt-10">
+                                        <div class="text-14 text-light-1">1 – 20 of 300+ properties found</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-auto md:order-2">
+                                    <button class="button -blue-1 size-40 rounded-full border-light">
+                                        <i class="icon-chevron-right text-12"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div> *@
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+
+@section Scripts {
+    <script>
+
+        //讀出storage中的資料
+        //console.log(localStorage.getItem("abc"))
+        // console.log(sessionStorage.getItem("xyz"))
+
+
+        // 解析URL查詢參數
+        var urlParams = new URLSearchParams(window.location.search);
+        var Departure = urlParams.get('Departure');
+        var Destination = urlParams.get('Destination');
+        var DepartureDate = urlParams.get('DepartureDate');
+        var ReturnDate = urlParams.get('ReturnDate');
+        var TicketQty = urlParams.get('TicketQty');
+        var Adult = urlParams.get('Adult');
+        var Children = urlParams.get('Children');
+        var Baby = urlParams.get('Baby');
+
+        //機場對照縣市
+        const AirportsArea = {
+            "台北松山機場": "臺北市",
+            "台南機場": "臺南市",
+            "台東機場": "臺東縣",
+            "桃園國際機場": "桃園縣",
+            "清泉崗機場": "臺中市",
+            "澎湖機場": "澎湖縣",
+            "金門機場": "金門縣",
+            "馬祖南竿機場": "連江縣",
+            "高雄國際機場": "高雄市"
+        };
+        // 创建一个对象，将 locationName 与其相应的索引号关联起来
+        const locationNameToIndex = {
+            '新竹縣': 0,
+            '金門縣': 1,
+            '苗栗縣': 2,
+            '新北市': 3,
+            '宜蘭縣': 4,
+            '雲林縣': 5,
+            '臺南市': 6,
+            '高雄市': 7,
+            '彰化縣': 8,
+            '臺北市': 9,
+            '南投縣': 10,
+            '澎湖縣': 11,
+            '基隆市': 12,
+            '桃園市': 13,
+            '花蓮縣': 14,
+            '連江縣': 15,
+            '臺東縣': 16,
+            '嘉義市': 17,
+            '嘉義縣': 18,
+            '屏東縣': 19,
+            '臺中市': 20,
+            '新竹市': 21
+        };
+
+        //網頁載入時讀取天氣資訊
+        const WeatherCard = document.getElementById('WeatherCard');
+        var WeatherKey = '@ViewBag.WeatherKey';
+        //天氣API
+        var apiUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-091?Authorization=${WeatherKey}`;
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Location: ', data.records.locations[0].location)
+
+                var departureCity = AirportsArea[Destination]; //將機場名稱轉換成對應的縣市名稱
+                var locationName = departureCity ? departureCity : '查無資料';
+
+                var locationCode = locationNameToIndex[locationName];    //將縣市名稱轉成對應的index
+                var Description = data.records.locations[0].location[locationCode].weatherElement[6].time[0].elementValue[0].value;  //天氣現象
+                var MaxT = data.records.locations[0].location[locationCode].weatherElement[12].time[0].elementValue[0].value; //最高溫
+                var MinT = data.records.locations[0].location[locationCode].weatherElement[8].time[0].elementValue[0].value;  //最低溫
+                var WS = data.records.locations[0].location[locationCode].weatherElement[4].time[0].elementValue[0].value;  //最大風速
+                var PoP12h = data.records.locations[0].location[locationCode].weatherElement[0].time[0].elementValue[0].value;  //降雨機率
+
+                var img = '';
+                if (Description.includes('雷雨') || Description.includes('雷陣雨')) {
+                    img = '/img/airline/lightning_rain.png';
+                }else
+                if (Description.includes('雨')) {
+                    img = '/img/airline/cloudyandrain.png';
+                } else {
+                    switch (Description) {
+                        case '晴天':
+                            img = '/img/airline/sunny.png';
+                            break;
+                        case '晴時多雲':
+                        case '多雲時晴':
+                        case '多雲':
+                            img = '/img/airline/sunandcloudy.png';
+                            break;
+                        case '多雲時陰':
+                        case '陰時多雲':
+                        case '陰天':
+                            img = '/img/airline/cloudy.png';
+                            break;
+                        default:
+                            img = '';
+                            break;
+                    }
+                }
+
+
+                var WeatherHTML = '';
+                WeatherHTML += `<div class="Location" id="Location"><h4>${locationName}</h4></div>
+                                                  <div class="Description" id="Description">${Description}</div>
+                                                        <div class="CurrentWeather">
+                                                            <div class="Temperature">
+                                                            <span class="num1" id="num1">${MaxT}</span><span class="Celsius">°C</span>
+                                                                -
+                                                            <span class="num2" id="num2">${MinT}</span><span class="Celsius">°C</span>
+                                                            </div>
+                                                             <div class="Picture">
+                                                                  <img src="${img}"/>
+                                                             </div>
+                                                        </div>
+                                                    <div class="AirFlow" id="AirFlow"><img src="/img/airline/wind.png" /> Max ${WS} m/s</div>
+                                                    <div class="Rain" id="Rain"><img src="/img/airline/humidity.png" /> ${PoP12h}%</div>
+                                                    </div>`;
+                WeatherCard.innerHTML = WeatherHTML;
+
+            })
+            .catch(error => {
+                console.error('Error fetching weather data:', error);
+            });
+
+
+        //根據按鈕切換顯示資料
+        function fetchWeatherData(timeIndex) {
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+
+                    var departureCity = AirportsArea[Destination]; 
+                    var locationName = departureCity ? departureCity : '查無資料';
+
+                    var locationCode = locationNameToIndex[locationName];    //縣市名轉成對應的index
+                    var Description = data.records.locations[0].location[locationCode].weatherElement[6].time[timeIndex].elementValue[0].value;  //天气现象
+                    var MaxT = data.records.locations[0].location[locationCode].weatherElement[12].time[timeIndex].elementValue[0].value; //最高温
+                    var MinT = data.records.locations[0].location[locationCode].weatherElement[8].time[timeIndex].elementValue[0].value;  //最低温
+                    var WS = data.records.locations[0].location[locationCode].weatherElement[4].time[timeIndex].elementValue[0].value;  //最大风速
+                    var PoP12h = data.records.locations[0].location[locationCode].weatherElement[0].time[timeIndex].elementValue[0].value;  //降雨机率
+                    var Refresh = data.records.locations[0].location[locationCode].weatherElement[0].time[timeIndex].endTime;  //最后更新时间
+                    var img = '';
+                    if (Description.includes('雷雨') || Description.includes('雷陣雨')) {
+                        img = '/img/airline/lightning_rain.png';
+                    } else
+                        if (Description.includes('雨')) {
+                            img = '/img/airline/cloudyandrain.png';
+                        } else {
+                            switch (Description) {
+                                case '晴天':
+                                    img = '/img/airline/sunny.png';
+                                    break;
+                                case '晴時多雲':
+                                case '多雲時晴':
+                                case '多雲':
+                                    img = '/img/airline/sunandcloudy.png';
+                                    break;
+                                case '多雲時陰':
+                                case '陰時多雲':
+                                case '陰天':
+                                    img = '/img/airline/cloudy.png';
+                                    break;
+                                default:
+                                    img = '';
+                                    break;
+                            }
+                        }
+
+
+                    var WeatherHTML = '';
+                    WeatherHTML += `<div class="Location" id="Location"><h4>${locationName}</h4></div>
+                                                   <div class="Description" id="Description">${Description}</div>
+                                                         <div class="CurrentWeather">
+                                                             <div class="Temperature">
+                                                             <span class="num1" id="num1">${MaxT}</span><span class="Celsius">°C</span>
+                                                                 -
+                                                             <span class="num2" id="num2">${MinT}</span><span class="Celsius">°C</span>
+                                                             </div>
+                                                              <div class="Picture">
+                                                                         <img src="${img}">
+                                                              </div>
+                                                         </div>
+                                                     <div class="AirFlow" id="AirFlow"><img src="/img/airline/wind.png" /> Max ${WS} m/s</div>
+                                                     <div class="Rain" id="Rain"><img src="/img/airline/humidity.png" /> ${PoP12h}%</div>
+                                                             <div class="Refresh" id="Refresh">最後觀測時間：${Refresh}</div>
+                                                     </div>`;
+                    WeatherCard.innerHTML = WeatherHTML;
+
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
+                });
+        }
+        const today =document.getElementById('today');
+        const day1 = document.getElementById('day1');
+        const day2 = document.getElementById('day2');
+        const day3 = document.getElementById('day3');
+        // 取得今天的日期顯示在按鈕上
+        var todayDate = new Date();
+        var todayFormatted = (todayDate.getMonth() + 1).toString().padStart(2, '0') + '/' + todayDate.getDate().toString().padStart(2, '0');
+        today.innerText = todayFormatted;
+        // 計算明天的日期
+        var tomorrow = new Date(todayDate);
+        tomorrow.setDate(todayDate.getDate() + 1);
+        var tomorrowFormatted = (tomorrow.getMonth() + 1).toString().padStart(2, '0') + '/' + tomorrow.getDate().toString().padStart(2, '0');
+        day1.innerText = tomorrowFormatted;
+        // 計算後天的日期
+        var dayAfterTomorrow = new Date(todayDate);
+        dayAfterTomorrow.setDate(todayDate.getDate() + 2);
+        var dayAfterTomorrowFormatted = (dayAfterTomorrow.getMonth() + 1).toString().padStart(2, '0') + '/' + dayAfterTomorrow.getDate().toString().padStart(2, '0');
+        day2.innerText = dayAfterTomorrowFormatted;
+        // 計算大後天的日期
+        var day2AfterTomorrow = new Date(todayDate);
+        day2AfterTomorrow.setDate(todayDate.getDate() + 3);
+        var day2AfterTomorrowFormatted = (day2AfterTomorrow.getMonth() + 1).toString().padStart(2, '0') + '/' + day2AfterTomorrow.getDate().toString().padStart(2, '0');
+        day3.innerText = day2AfterTomorrowFormatted;
+
+        today.addEventListener('click', function () {
+            fetchWeatherData(0);
+        });
+        day1.addEventListener('click', function () {
+            fetchWeatherData(2);
+        });
+
+        day2.addEventListener('click', function () {
+            fetchWeatherData(4);
+        });
+
+        day3.addEventListener('click', function () {
+            fetchWeatherData(6);
+        });
+
+        // Function: 將分鐘轉為小時+分鐘
+        function formatDuration(duration) {
+            const hours = Math.floor(duration / 60);
+            const minutes = duration % 60;
+            let formattedDuration = ''; // 初始化時間顯示字串
+
+            // 判斷小時和分鐘
+            if (hours > 0) {
+                formattedDuration = `${hours} 小時`; // 顯示小時部分
+                if (minutes > 0) {
+                    formattedDuration += ` ${minutes} 分鐘`; // 若分鐘大於0，則添加分鐘部分
+                }
+            } else {
+                formattedDuration = `${minutes} 分鐘`; // 未滿1小時時只顯示分鐘部分
+            }
+            return formattedDuration.trim();
+        }
+
+        // Function: 根據 AirlineId 設置不同圖片路徑
+        function SetImage(airlineId) {
+            let imagePath = '';
+            if (airlineId === 12) {
+                imagePath = `@Url.Content("~/img/airline/eva.jpg")`;
+            } else if (airlineId === 13) {
+                imagePath = `@Url.Content("~/img/airline/china.jpg")`;
+            } else {
+                // 預設圖片
+                imagePath = `@Url.Content("~/img/airline/noimg.png")`;
+            }
+            return imagePath;
+        }
+
+        
+
+        // 排序按鈕
+        document.getElementById('btnSort').addEventListener('click', async function () {
+            console.log('sort');
+            const url = `/api/flightapi/FlightsSearch?Departure=${Departure}&Destination=${Destination}&DepartureDate=${DepartureDate}&ReturnDate=${ReturnDate}&Adult=${Adult}&Children=${Children}&Baby=${Baby}`
+            const response = await fetch(url);
+            const datas = await response.json();
+            console.log(datas.outgoingFlights);
+            console.log(datas.returnFlights);
+            // 檢查是否成功取得資料
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            // 處理回傳的資料
+            handleFlightDataBySort(datas);
+        });
+
+        //按照總價格排序
+        function handleFlightDataBySort(data) {
+            try {
+                const outgoingFlights = data.outgoingFlights;
+                const returnFlights = data.returnFlights;
+                let loopCount = 0; // 初始化迴圈計數器
+
+                let flightGroups = []; // 存储航班组的数组
+
+                // 對 outgoingFlights 進行迴圈
+                for (const outgoingFlight of outgoingFlights) {
+                    const OutgoingDurationDisplay = formatDuration(outgoingFlight.duration);
+                    const OutgoingAirlineImage = SetImage(outgoingFlight.fAirlineId);
+
+                    // 對 returnFlights 進行迴圈
+                    for (const returnFlight of returnFlights) {
+                        const ReturnDurationDisplay = formatDuration(returnFlight.duration);
+                        const ReturnAirlineImage = SetImage(returnFlight.fAirlineId);
+
+                        const outgoingPrice = parseInt(outgoingFlight.fTicketPrice).toLocaleString();
+                        const returnPrice = parseInt(returnFlight.fTicketPrice).toLocaleString();
+
+                        // 计算每一组航班的总价格
+                        const totalOutgoingPrice = parseInt(outgoingFlight.fTicketPrice);
+                        const totalReturnPrice = parseInt(returnFlight.fTicketPrice);
+                        const totalPrice = totalOutgoingPrice + totalReturnPrice;
+                        const totalPriceFormatted = totalPrice.toLocaleString();
+
+                        // 生成航班信息的 HTML 代码
+                        var flightHTML = `
+                                                <div class="js-accordion">
+                                                     <div class="accordion__item py-30 px-30 bg-white rounded-4 base-tr mt-30" data-x="flight-item-2" data-x-toggle="shadow-2">
+                                                        <div class="row y-gap-30 justify-between">
+                                                                                    <div class="col">
+                                                                                        <div class="row y-gap-10 items-center">
+                                                                                            <div class="col-sm-auto">
+                                                                                                <img class="size-40" src="${OutgoingAirlineImage}" alt="image">
+                                                                                            </div>
+
+                                                                                            <div class="col-7">
+                                                                                                <div class="row x-gap-20 items-end">
+                                                                                                    <div class="col-auto">
+                                                                                                            <div class="lh-15 fw-500">${outgoingFlight.departureTime}</div>
+                                                                                                            <div class="text-15 lh-15 text-light-1">${outgoingFlight.departureAirport}</div>
+                                                                                                    </div>
+
+                                                                                                    <div class="col text-center">
+                                                                                                        <div class="flightLine">
+                                                                                                            <div></div>
+                                                                                                            <div></div>
+                                                                                                        </div>
+                                                                                                        <div class="text-15 lh-15 text-light-1 mt-10">直達</div>
+                                                                                                    </div>
+
+                                                                                                    <div class="col-auto">
+                                                                                                                <div class="lh-15 fw-500">${outgoingFlight.arrivalTime}</div>
+                                                                                                                <div class="text-15 lh-15 text-light-1">${outgoingFlight.destinationAirport}</div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="col-md-auto">
+                                                                                                <div class="text-15 text-light-1 px-20 md:px-0">${OutgoingDurationDisplay}</div>
+                                                                                                <div class="text-15 text-light-1 px-20 md:px-0 fw-500" style="color:black" >NTD$ ${outgoingPrice} </div>
+                                                                                     ${outgoingFlight.fQty < 7 ? `<div class="text-15 text-light-1 px-20 md:px-0" style="color:red">剩餘 ${outgoingFlight.fQty} 位</div>` : ''}
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="row y-gap-10 items-center pt-30">
+                                                                                            <div class="col-sm-auto">
+                                                                                                        <img class="size-40" src="${ReturnAirlineImage}" alt="image">
+                                                                                            </div>
+
+                                                                                            <div class="col-7">
+                                                                                                <div class="row x-gap-20 items-end">
+                                                                                                    <div class="col-auto">
+                                                                                                                <div class="lh-15 fw-500">${returnFlight.departureTime}</div>
+                                                                                                                <div class="text-15 lh-15 text-light-1">${returnFlight.departureAirport}</div>
+                                                                                                    </div>
+
+                                                                                                    <div class="col text-center">
+                                                                                                        <div class="flightLine">
+                                                                                                            <div></div>
+                                                                                                            <div></div>
+                                                                                                        </div>
+                                                                                                        <div class="text-15 lh-15 text-light-1 mt-10">直達</div>
+                                                                                                    </div>
+
+                                                                                                    <div class="col-auto">
+                                                                                                                <div class="lh-15 fw-500">${returnFlight.arrivalTime}</div>
+                                                                                                                <div class="text-15 lh-15 text-light-1">${returnFlight.destinationAirport}</div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="col-md-auto">
+                                                                                                 <div class="text-15 text-light-1 px-20 md:px-0">${ReturnDurationDisplay}</div>
+                                                                                                 <div class="text-15 text-light-1 px-20 md:px-0 fw-500"  style="color:black">NTD$ ${returnPrice}</div>
+                                                                                ${returnFlight.fQty < 7 ? `<div class="text-15 text-light-1 px-20 md:px-0" style="color:red">剩餘 ${returnFlight.fQty} 位</div>` : ''}
+                                                                                                    </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="col-md-auto">
+                                                                                        <div class="d-flex items-center h-full">
+                                                                                            <div class="pl-30 border-left-light h-full md:d-none"></div>
+
+                                                                                            <div>
+                                                                                                <div class="text-right md:text-left mb-10">
+                                                                                                      <div class="text-18 lh-16 fw-500">NTD$ ${totalPriceFormatted}</div>
+                                                                                                </div>
+
+                                                                                                <div class="accordion__button">
+                                                                                                            <button class="btnBook button -dark-1 px-30 h-50 bg-blue-1 text-white"
+                                                                                                                               data-outgoing-schedule-id="${outgoingFlight.fScheduleId}"
+                                                                                                                               data-return-schedule-id="${returnFlight.fScheduleId}"">
+                                                                                                        前往訂購 <div class="icon-arrow-top-right ml-15"></div>
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                              </div>
+                                                                          </div>`;
+
+                        // 将航班信息和总价格存储到航班组数组中
+                        flightGroups.push({
+                            totalPrice,
+                            flightHTML
+                        });
+
+                        loopCount++;
+                    }
+                }
+
+                // 按照每一组航班的总价格进行排序
+                    flightGroups.sort((a, b) => a.totalPrice - b.totalPrice);
+
+                    console.log('flightGroupsBysort:', flightGroups);
+
+                    // 重新生成航班信息的 HTML
+                    let searchResultHTML = '';
+                    flightGroups.forEach(group => {
+                        searchResultHTML += group.flightHTML;
+                    });
+
+                    // 將航班資訊 HTML 追加到 SearchResult.innerHTML 中
+                    const SearchResult = document.getElementById('SearchResult');
+                    SearchResult.innerHTML = searchResultHTML;
+
+                    // 更新迴圈計數器到 HTML 元素中
+                    const dataQtyElement = document.getElementById('dataQty');
+                    dataQtyElement.textContent = loopCount;
+
+                    // 如果找不到資料，顯示 SweetAlert2 提示框
+                    if (loopCount === 0) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: '查無資料',
+                            text: '沒有找到符合條件的航班資料。請嘗試其他條件。',
+                        });
+                    }
+
+            } catch (error) {
+                console.error("處理航班資料時發生錯誤:", error);
+            }
+        }
+
+        // 處理從後端獲取的航班資料，將其變成{去程,回程}一組的陣列
+        function handleFlightData(data) {
+            try {
+                const outgoingFlights = data.outgoingFlights;
+                const returnFlights = data.returnFlights;
+                let loopCount = 0; // 初始化迴圈計數器
+
+                let searchResultHTML = "";
+
+                // 對 outgoingFlights 進行迴圈
+                for (const outgoingFlight of outgoingFlights) {
+
+                    const OutgoingDurationDisplay = formatDuration(outgoingFlight.duration);
+                    const OutgoingAirlineImage = SetImage(outgoingFlight.fAirlineId);
+
+                    // 對 returnFlights 進行迴圈
+                    for (const returnFlight of returnFlights) {
+
+                        const ReturnDurationDisplay = formatDuration(returnFlight.duration);
+                        const ReturnAirlineImage = SetImage(returnFlight.fAirlineId);
+
+                        const outgoingPrice = parseInt(outgoingFlight.fTicketPrice).toLocaleString();
+                        const returnPrice = parseInt(returnFlight.fTicketPrice).toLocaleString();
+                        const totalPrice = (parseInt(outgoingFlight.fTicketPrice) + parseInt(returnFlight.fTicketPrice)).toLocaleString();
+
+                        searchResultHTML += ` 
+                        <div class="js-accordion">
+                             <div class="accordion__item py-30 px-30 bg-white rounded-4 base-tr mt-30" data-x="flight-item-2" data-x-toggle="shadow-2">
+                                <div class="row y-gap-30 justify-between">
+                                                            <div class="col">
+                                                                <div class="row y-gap-10 items-center">
+                                                                    <div class="col-sm-auto">
+                                                                        <img class="size-40" src="${OutgoingAirlineImage}" alt="image">
+                                                                    </div>
+
+                                                                    <div class="col-7">
+                                                                        <div class="row x-gap-20 items-end">
+                                                                            <div class="col-auto">
+                                                                                    <div class="lh-15 fw-500">${outgoingFlight.departureTime}</div>
+                                                                                    <div class="text-15 lh-15 text-light-1">${outgoingFlight.departureAirport}</div>
+                                                                            </div>
+
+                                                                            <div class="col text-center">
+                                                                                <div class="flightLine">
+                                                                                    <div></div>
+                                                                                    <div></div>
+                                                                                </div>
+                                                                                <div class="text-15 lh-15 text-light-1 mt-10">直達</div>
+                                                                            </div>
+
+                                                                            <div class="col-auto">
+                                                                                        <div class="lh-15 fw-500">${outgoingFlight.arrivalTime}</div>
+                                                                                        <div class="text-15 lh-15 text-light-1">${outgoingFlight.destinationAirport}</div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-auto">
+                                                                        <div class="text-15 text-light-1 px-20 md:px-0">${OutgoingDurationDisplay}</div>
+                                                                        <div class="text-15 text-light-1 px-20 md:px-0 fw-500" style="color:black" >NTD$ ${outgoingPrice} </div>
+                                                             ${outgoingFlight.fQty < 7 ? `<div class="text-15 text-light-1 px-20 md:px-0" style="color:red">剩餘 ${outgoingFlight.fQty} 位</div>` : ''}
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row y-gap-10 items-center pt-30">
+                                                                    <div class="col-sm-auto">
+                                                                                <img class="size-40" src="${ReturnAirlineImage}" alt="image">
+                                                                    </div>
+
+                                                                    <div class="col-7">
+                                                                        <div class="row x-gap-20 items-end">
+                                                                            <div class="col-auto">
+                                                                                        <div class="lh-15 fw-500">${returnFlight.departureTime}</div>
+                                                                                        <div class="text-15 lh-15 text-light-1">${returnFlight.departureAirport}</div>
+                                                                            </div>
+
+                                                                            <div class="col text-center">
+                                                                                <div class="flightLine">
+                                                                                    <div></div>
+                                                                                    <div></div>
+                                                                                </div>
+                                                                                <div class="text-15 lh-15 text-light-1 mt-10">直達</div>
+                                                                            </div>
+
+                                                                            <div class="col-auto">
+                                                                                        <div class="lh-15 fw-500">${returnFlight.arrivalTime}</div>
+                                                                                        <div class="text-15 lh-15 text-light-1">${returnFlight.destinationAirport}</div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-auto">
+                                                                         <div class="text-15 text-light-1 px-20 md:px-0">${ReturnDurationDisplay}</div>
+                                                                         <div class="text-15 text-light-1 px-20 md:px-0 fw-500"  style="color:black">NTD$ ${returnPrice}</div>
+                                                        ${returnFlight.fQty < 7 ? `<div class="text-15 text-light-1 px-20 md:px-0" style="color:red">剩餘 ${returnFlight.fQty} 位</div>` : ''}
+                                                                            </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-auto">
+                                                                <div class="d-flex items-center h-full">
+                                                                    <div class="pl-30 border-left-light h-full md:d-none"></div>
+
+                                                                    <div>
+                                                                        <div class="text-right md:text-left mb-10">
+                                                                                    <div class="text-18 lh-16 fw-500">NTD$ ${totalPrice}</div>
+                                                                        </div>
+
+                                                                        <div class="accordion__button">
+                                                                                    <button class="btnBook button -dark-1 px-30 h-50 bg-blue-1 text-white"
+                                                                                                       data-outgoing-schedule-id="${outgoingFlight.fScheduleId}"
+                                                                                                       data-return-schedule-id="${returnFlight.fScheduleId}"">
+                                                                                前往訂購 <div class="icon-arrow-top-right ml-15"></div>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                      </div>
+                                                  </div>`;
+                        loopCount++;
+
+                       // 前往訂購按鈕點擊事件處理函數
+                        document.addEventListener('click', function (event) {
+                            if (event.target.classList.contains('btnBook')) {
+                                const outgoingScheduleId = event.target.dataset.outgoingScheduleId;
+                                const returnScheduleId = event.target.dataset.returnScheduleId;
+
+                                // 構建下一個頁面的 URL
+                                var nextUrl = `@Url.Action("Booking", "Flight", new { area = "Customer" })`
+                                nextUrl += `?Departure=${Departure}&Destination=${Destination}&DepartureDate=${DepartureDate}&ReturnDate=${ReturnDate}&Adult=${Adult}&Children=${Children}&Baby=${Baby}`;
+                                nextUrl += `&outgoingScheduleId=${outgoingScheduleId}&returnScheduleId=${returnScheduleId}`;
+
+                                // 將瀏覽器重定向到下一個頁面
+                                window.location.href = nextUrl;
+                            }
+                        });
+                    }
+
+                }
+
+                // 將航班資訊 HTML 追加到 SearchResult.innerHTML 中
+                const SearchResult = document.getElementById('SearchResult');
+                SearchResult.innerHTML += searchResultHTML;
+
+                // 更新迴圈計數器到 HTML 元素中
+                const dataQtyElement = document.getElementById('dataQty');
+                dataQtyElement.textContent = loopCount;
+
+                // 如果找不到資料，顯示 SweetAlert2 提示框
+                if (loopCount === 0) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: '查無資料',
+                        text: '沒有找到符合條件的航班資料。請嘗試其他條件。',
+                    });
+                }
+
+            } catch (error) {
+                console.error("處理航班資料時發生錯誤:", error);
+            }
+        }
+
+        // Function: 將日期格式轉換為後端DateTime格式
+        function normalizeDate(dateString) {
+            const parts = dateString.split(/\D+/);
+            const year = parts[0];
+            const month = parts[1].padStart(2, '0');
+            const day = parts[2].padStart(2, '0');
+            return `${year}-${month}-${day}T00:00:00`;
+        }
+
+        //查詢資料
+        document.addEventListener("DOMContentLoaded", function () {
+
+            //按下搜尋按鈕，將參數用URL傳到下一頁
+            const btnSearch = document.getElementById('btnSearch');
+            btnSearch.addEventListener('click', function () {
+
+                const txtDeparture = document.getElementById('txtDeparture').value;
+                const txtDestination = document.getElementById('txtDestination').value;
+                const Adult = parseInt(document.querySelector('.js-count-adult').innerText);
+                const Children = parseInt(document.querySelector('.js-count-child').innerText);
+                const Baby = parseInt(document.querySelector('.js-count-baby').innerText);
+                const DepartureDate = document.querySelector('.js-first-date').innerText;
+                const ReturnDate = document.querySelector('.js-last-date').innerText;
+                const TicketQty = Adult + Children + Baby;
+
+                let alertMsg = ''; // 初始化警示訊息字串
+
+                //還原警示狀態
+                var valiEle = document.getElementsByClassName('validation-message');
+                Array.from(valiEle).forEach(ele => { ele.style.display = 'none'; })
+
+                // 檢查任何值是否為 0 或 null，並根據情況更新警示訊息
+                if (txtDeparture === '' || txtDeparture === null) {
+                    alertMsg += '請選擇出發機場\n';
+                    document.getElementById('alertMsgDeparture').innerText = alertMsg;
+                    document.getElementById('alertMsgDeparture').style.display = 'block';
+                    return
+                } else {
+                    document.getElementById('alertMsgDeparture').style.display = 'none'; // 隱藏警示訊息
+                }
+
+                if (txtDestination === '' || txtDestination === null) {
+                    alertMsg += '請選擇目的地機場\n';
+                    document.getElementById('alertMsgDestination').innerText = alertMsg;
+                    document.getElementById('alertMsgDestination').style.display = 'block';
+                    return
+                } else {
+                    document.getElementById('alertMsgDestination').style.display = 'none'; // 隱藏警示訊息
+                }
+
+                if (DepartureDate === '請選擇日期' || ReturnDate === '請選擇日期') {
+                    alertMsg += '請選擇有效的日期';
+                    document.getElementById('alertMsgDate').innerText = alertMsg;
+                    document.getElementById('alertMsgDate').style.display = 'block';
+                    return
+                } else {
+                    document.getElementById('alertMsgDate').style.display = 'none'; // 隱藏警示訊息
+                }
+
+                if (TicketQty === 0 || Adult === 0) {
+                    alertMsg += '請選擇有效的人數(成人至少1名)';
+                    document.getElementById('alertMsgTicketQty').innerText = alertMsg;
+                    document.getElementById('alertMsgTicketQty').style.display = 'block';
+                    return
+                } else {
+                    document.getElementById('alertMsgTicketQty').style.display = 'none'; // 隱藏警示訊息
+                }
+
+                const FormattedDepartureDate = normalizeDate(document.querySelector('.js-first-date').innerText);
+                const FormattedReturnDate = normalizeDate(document.querySelector('.js-last-date').innerText);
+                // 转换日期格式以便比较
+                const today = new Date();
+                const formattedToday = today.toISOString(); // 获取今天的日期并格式化为 'YYYY-MM-DD'
+                // 检查选择的日期是否早于今天的日期
+                if (FormattedDepartureDate < formattedToday || FormattedReturnDate < formattedToday) {
+                    alertMsg += '出發日期或返回日期不能早於今天\n';
+                    document.getElementById('alertMsgDate').innerText = alertMsg;
+                    document.getElementById('alertMsgDate').style.display = 'block';
+                    return;
+                } else {
+                    document.getElementById('alertMsgDate').style.display = 'none'; // 隱藏警示訊息
+                }
+
+                var searchPageUrl = `@Url.Action("Search", "Flight", new { area = "Customer" })`
+                searchPageUrl += '?Departure=' + txtDeparture + '&Destination=' + txtDestination;
+                searchPageUrl += '&DepartureDate=' + FormattedDepartureDate + '&ReturnDate=' + FormattedReturnDate;
+                searchPageUrl += '&Adult=' + Adult + '&Children=' + Children + '&Baby=' + Baby;
+                //console.log(departureDate);
+                //console.log(returnDate);
+                console.log(searchPageUrl);
+                window.location.href = searchPageUrl;
+
+            });
+        })
+
+
+        //轉換為前端顯示時間
+        function formatTime(time) {
+            const year = time.getFullYear();
+            const month = String(time.getMonth() + 1).padStart(2, '0');
+            const day = String(time.getDate()).padStart(2, '0');
+            const hour = String(time.getHours()).padStart(2, '0');
+            const minute = String(time.getMinutes()).padStart(2, '0');
+            const meridiem = hour < 12 ? '上午' : '下午';
+            const formattedHour = hour % 12 || 12; // 將小時轉換為12小時制
+
+            return `${year}/${month}/${day} ${meridiem} ${formattedHour}:${minute}`;
+        }
+
+        //載入時列出查詢結果
+        (async function () {
+            try {
+                const url = `/api/flightapi/FlightsSearch?Departure=${Departure}&Destination=${Destination}&DepartureDate=${DepartureDate}&ReturnDate=${ReturnDate}&Adult=${Adult}&Children=${Children}&Baby=${Baby}`
+                const response = await fetch(url);
+                const datas = await response.json();
+                console.log(datas.outgoingFlights);
+                console.log(datas.returnFlights);
+               // 檢查是否成功取得資料
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // 處理回傳的資料
+                handleFlightData(datas);
+
+                // 填寫搜尋欄的值
+                const txtDeparture = document.getElementById('txtDeparture');
+                txtDeparture.value = Departure;
+
+                const txtDestination = document.getElementById('txtDestination');
+                txtDestination.value = Destination;
+
+                // 格式化出發日期和返回日期
+                const departureDateObj = new Date(DepartureDate);
+                const returnDateObj = new Date(ReturnDate);
+                const formattedDepartureDate = `${departureDateObj.getFullYear()}/${(departureDateObj.getMonth() + 1).toString().padStart(2, '0')}/${departureDateObj.getDate().toString().padStart(2, '0')}`;
+                const formattedReturnDate = `${returnDateObj.getFullYear()}/${(returnDateObj.getMonth() + 1).toString().padStart(2, '0')}/${returnDateObj.getDate().toString().padStart(2, '0')}`;
+
+                // 更新日期的 HTML 元素
+                const txtDepartureDate = document.querySelector('.js-first-date');
+                const txtReturnDate = document.querySelector('.js-last-date');
+                txtDepartureDate.innerText = formattedDepartureDate;
+                txtReturnDate.innerText = formattedReturnDate;
+
+                // 旅客數量顯示
+                const optAdult = document.querySelector('.js-count-adult');
+                optAdult.innerText = Adult;
+                const optChildren = document.querySelector('.js-count-child');
+                optChildren.innerText = Children;
+                const optBaby = document.querySelector('.js-count-baby');
+                optBaby.innerText = Baby;
+
+            } catch (error) {
+                console.error("發生錯誤:", error);
+            }
+        })();
+
+        //填充搜尋欄選項
+        //機場
+        const loadDeparture = async () => {
+            const optDeparture = document.getElementById('optDeparture');
+
+            const url = `@Url.Content("~/api/flightapi/airports")`;
+            const response = await fetch(url);
+            const datas = await response.json();
+            //console.log(datas);
+            let departHTLM = datas.map((opt) => {
+                return `<div>
+                                                        <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option departure">
+                                                        <div class="d-flex">
+                                                        <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                        <div class="m-2">
+                                                        <div class="text-15 lh-12 fw-500 js-search-option-target">${opt}</div>
+                                                        </div>
+                                                        </div>
+                                                        </button>
+                                                        </div>`
+            });
+            optDeparture.innerHTML += departHTLM.join('');
+        }
+
+        const loadDestination = async () => {
+            const optDestination = document.getElementById('optDestination');
+            const url = '@Url.Content("~/api/flightapi/airports")';
+            const response = await fetch(url);
+            const datas = await response.json();
+            //console.log(datas);
+            let destnationHTLM = datas.map((opt) => {
+                return `<div>
+                                                     <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option destination">
+                                                     <div class="d-flex">
+                                                     <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                     <div class="m-2">
+                                                     <div class="text-15 lh-12 fw-500 js-search-option-target">${opt}</div>
+                                                     </div>
+                                                     </div>
+                                                     </button>
+                                                     </div>`
+            });
+            optDestination.innerHTML += destnationHTLM.join('');
+        }
+
+        // Function: 處理起飛地選擇事件
+        function handleDepartureSelection() {
+            var airportName = $(this).find('.js-search-option-target').text();
+            //console.log("選擇的起飛地：" + airportName);
+            $('#txtDeparture').val(airportName);
+        }
+
+        // Function: 處理降落地選擇事件
+        function handleDestinationSelection() {
+            var airportName = $(this).find('.js-search-option-target').text();
+            //console.log("選擇的降落地：" + airportName);
+            $('#txtDestination').val(airportName);
+        }
+
+        // 使用事件委託綁定點擊事件到靜態的父元素上
+        $(document).on('click', '.js-search-option.departure', handleDepartureSelection);
+        $(document).on('click', '.js-search-option.destination', handleDestinationSelection);
+
+        (async () => {
+            await loadDeparture();
+            await loadDestination();
+        })()
+    </script>
+    
+}

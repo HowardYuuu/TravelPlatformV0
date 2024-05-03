@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewData["Title"] = "RequestUrl";
+}
+
+<h1>AddressReceived</h1>
+<!--測試有沒有收到資料-->
+<p>@Model.storeid</p>
+<p>@Model.storename</p>
+<p>@Model.storeaddress</p>
+@section Scripts {
+    <script>
+        //將資料回傳給開啟視窗(父視窗)，map_return是父視窗中的一個方法
+        // window.opener.map_return('@Model.storeid', '@Model.storeaddress');
+        window.opener.map_return('@Model.storename', '@Model.storeaddress');
+        //關掉此開啟視窗
+        window.close();
+    </script>
+}

@@ -1,0 +1,86 @@
+﻿@model prjTravelPlatformV3.Models.TCustomer
+
+@{
+    ViewData["Title"] = "ResetPwd";
+}
+
+@section Styles {
+    <style>
+        .my-loading {
+            z-index: 7700;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        .emp-container {
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+            position: relative;
+            overflow: hidden;
+            width: 500px;
+            max-width: 100%;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+    </style>
+}
+
+
+<div class="emp-container" id="container">
+    <form id="forgetPwdForm">
+        <img src="~/img/logof.png" style="width: 300px; height:50px" class="mb-3" />
+        <h3 class="mb-3">重設密碼</h3>
+        <!--登入-->
+        <input name="email" id="email" placeholder="請輸入密碼" />
+        <span class="ps-2 w-100 text-start text-danger"></span>
+
+        <button class="mt-3" id="btnLogin" type="button" onclick="btnResetPwdClick()">重設密碼並登入</button>
+
+    </form>
+    <div>
+
+        @section Scripts {
+            <script>
+               
+                const btnResetPwdClick = async () => {
+
+                    const formData = new FormData(forgetPwdForm);
+
+                    try {
+                        const res = await fetch("/api/ApiLogin/ForgetPwd", {
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: formDataToJson(formData),
+                            method: 'POST'
+                        });
+                        if (!res.ok) {
+                            throw new Error();
+                        };
+                        const resData = await res.json();
+                    } catch (error) {
+                        console.log(error);
+                    }
+                };
+
+                const formDataToJson = (formData) => {
+                    let obj = {};
+                    for (var [key, value] of formData.entries()) {
+                        obj[key] = value;
+                    }
+                    console.log(JSON.stringify(obj));
+                    return JSON.stringify(obj);
+                }
+            </script>
+        }
+

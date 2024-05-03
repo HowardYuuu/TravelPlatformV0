@@ -1,0 +1,152 @@
+﻿@model prjTravelPlatformV3.Models.TCcompanyInfo
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">@ViewBag.title</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div id="divModalContent" class="modal-body">
+    <form id="@ViewBag.formId" class="overflow-auto">
+        <dl class="row">
+            <dt class="col-sm-3">
+                服務類型
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FType)
+            </dd>
+            <dt class="col-sm-3">
+                公司名稱
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FCompanyName)
+            </dd>
+            <dt class="col-sm-3">
+                服務語言
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FLanguage)
+            </dd>
+            <dt class="col-sm-3">
+                國家
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FCountry)
+            </dd>
+            <dt class="col-sm-3">
+                城市
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FCity)
+            </dd>
+            <dt class="col-sm-3">
+                郵遞區號
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FPostalCode)
+            </dd>
+            <dt class="col-sm-3">
+                地址
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FAddress)
+            </dd>
+            <dt class="col-sm-3">
+                公司電話國碼
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FPhoneCountryCode)
+            </dd>
+            <dt class="col-sm-3">
+                公司電話
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FPhone)
+            </dd>
+            <dt class="col-sm-3">
+                公司網址
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FUrl)
+            </dd>
+            <dt class="col-sm-3">
+                負責人姓名
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FNameOfPersonInCharge)
+            </dd>
+            <dt class="col-sm-3">
+                營業登記證
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FCertificatePath)
+            </dd>
+            <dt class="col-sm-3">
+                聯絡人姓名
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FContactName)
+            </dd>
+            <dt class="col-sm-3">
+                聯絡人職位
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FContactPosition)
+            </dd>
+            <dt class="col-sm-3">
+                聯絡人信箱
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FContactEmail)
+            </dd>
+            <dt class="col-sm-3">
+                密碼
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FPassword)
+            </dd>
+            <dt class="col-sm-3">
+                聯絡人電話國碼
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FContactPhoneCountryCode)
+            </dd>
+            <dt class="col-sm-3">
+                聯絡人電話
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FContactPhone)
+            </dd>
+            <dt class="col-sm-3">
+                連絡人時區
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FContactTimeZone)
+            </dd>
+            <dt class="col-sm-3">
+                廠商審核狀態
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FIsChecked)
+            </dd>
+            <dt class="col-sm-3">
+                審核日期
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FCheckDate)
+            </dd>
+            <dt class="col-sm-3">
+                廠商合作狀態
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FIsInCooperation)
+            </dd>
+            <dt class="col-sm-3">
+                廠商logo
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FLogo)
+            </dd>
+        </dl>
+    </form>
+</div>

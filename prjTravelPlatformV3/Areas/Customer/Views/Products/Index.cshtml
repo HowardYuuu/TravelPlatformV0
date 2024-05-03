@@ -1,0 +1,720 @@
+﻿
+@{
+    ViewData["Title"] = "Trav Vita - 伴手禮";
+}
+@section Styles{
+    <meta charset="utf-8">
+    <title>Fruitables - Vegetable Website Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/css/Itembootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="~/css/Itemstyle.css" rel="stylesheet">
+    <style>
+        input:not([type="range"]) {
+            background-color: initial;
+            cursor: default;
+            appearance: auto;
+            box-sizing: border-box;
+            margin: 3px 3px 0px 5px;
+            padding: initial;
+            border: initial;
+        }
+
+        .custom-search-input {
+            height: 50px;
+            border: 2px solid #95c4a8;
+        }
+
+
+/*         a {
+            color: #205448;
+            text-decoration: none;
+        }
+            a:hover {
+                color: #679d06
+            } */
+    </style>
+}
+<!-- Single Page Header start -->
+<div class="masthead__bg" style="position: relative">
+    <img src="~/img/Item/pbanner.jpg" style="filter: brightness(55%); width: 100%; height:300px; object-fit: cover;" />
+    <div class="text-center" style="position: absolute; top:60%; left:50%; transform:translate(-50%, -50%);">
+        <h1 class="text-30 fw-600 text-white">尋找伴手禮</h1>
+    </div>
+</div>
+<!-- Single Page Header End -->
+<!-- Fruits Shop Start-->
+<div class="container-fluid fruite py-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg-12">
+                <div class="row g-4">
+                    <div class="col-xl-3">
+                        <div class="input-group w-100 mx-auto d-flex">
+                            <input type="search" class="form-control p-3" placeholder="請輸入商品名稱、店家" aria-describedby="search-icon-1" style="height: 50px; border: 0.5px solid #95c4a8;">
+                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-6"></div>
+                    <div class="col-xl-3">
+                        <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
+                            <label for="proArrangement">排序:</label>
+                            <select id="proArrangement" name="productlist" class="border-0 form-select-sm bg-light me-3" onchange="handleSortChange()">
+                                <option value="0" selected>預設</option>
+                                <option value="1">銷售量</option>
+                                <option value="2">評價</option>
+                                <option value="3">價格</option>
+                                <option value="4">最新上架</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-lg-3">
+                        <div class="row g-4">
+                            <div class="col-lg-12">
+                                <div class="mb-3">
+                                    <h4>所有商品類別</h4>
+                                    <ul class="list-unstyled fruite-categorie">
+                                        <li>
+                                            <div class="d-flex fruite-name">
+                                                @* <input id="beautyItem" class="form-check-input" type="checkbox" value="" style="margin-right: 10px;"> *@
+                                                <a href="#"><i class="fa-solid fa-bag-shopping me-2"></i> 美容與個人護理</a>
+                                                <span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex fruite-name">
+                                                @* <input id="foodItem" class="form-check-input" type="checkbox" value="" style="margin-right: 10px;"> *@
+                                                <a href="#"><i class="fa-solid fa-cheese me-2"></i>  食品與飲料</a>
+                                                <span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex fruite-name">
+                                                @* <input id="clothItem" class="form-check-input" type="checkbox" value="" style="margin-right: 10px;"> *@
+                                                <a href="#"><i class="fa-solid fa-shirt me-2"></i>  衣物與時尚</a>
+                                                <span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex fruite-name">
+                                                @* <input id="homeItem" class="form-check-input" type="checkbox" value="" style="margin-right: 10px;"> *@
+                                                <a href="#"><i class="fa-solid fa-couch me-2"></i>  家居用品</a>
+                                                <span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex fruite-name">
+                                                @* <input id="travItem" class="form-check-input" type="checkbox" value="" style="margin-right: 10px;"> *@
+                                                <a href="#"><i class="fa-solid fa-mountain-sun me-2"></i>  旅遊用品</a>
+                                                <span></span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="mb-3">
+                                    <h4>商品類型</h4>
+                                    <div class="mb-2">
+                                        <input id="checkGift" class="form-check-input" type="checkbox" value="1">
+                                        <label for="Categories-1"> 伴手禮</label>
+                                    </div>
+                                    <div class="mb-2">
+                                        <input id="checkGoods" class="form-check-input" type="checkbox" value="0">
+                                        <label for="Categories-3"> 平台周邊</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="mb-3">
+                                    <h4>地區商品</h4>
+                                    <ul class="list-unstyled fruite-categorie">
+                                        <li>
+                                            <div class="d-flex fruite-name">
+                                                <input id="" class="form-check-input" type="checkbox" value="" style="margin-right: 10px;">
+                                                <a href="#">北部</a>
+                                                <span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex fruite-name">
+                                                <input id="" class="form-check-input" type="checkbox" value="" style="margin-right: 10px;">
+                                                <a href="#">中部</a>
+                                                <span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex fruite-name">
+                                                <input id="" class="form-check-input" type="checkbox" value="" style="margin-right: 10px;">
+                                                <a href="#">南部</a>
+                                                <span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex fruite-name">
+                                                <input id="" class="form-check-input" type="checkbox" value="" style="margin-right: 10px;">
+                                                <a href="#">東部</a>
+                                                <span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex fruite-name">
+                                                <input id="" class="form-check-input" type="checkbox" value="" style="margin-right: 10px;">
+                                                <a href="#">離島</a>
+                                                <span></span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="mb-3">
+                                    <h4 class="mb-2">價錢 (TWD)</h4>
+                                    <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput" min="0" max="5000" value="0" oninput="amount.value=rangeInput.value">
+                                    <output id="amount" name="amount" min-velue="0" max-value="5000" for="rangeInput">0</output>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <h4 class="mb-3">精選商品</h4>
+                                <div class="d-flex align-items-center justify-content-start">
+                                    <div class="rounded me-4" style="width: 100px; height: 100px;">
+                                        <img src="~/img/Item/fangxifuP1.jpg" class="img-itemsml rounded" alt="">
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-2">招牌小羅宋組合</h6>
+                                        <div class="d-flex mb-2">
+                                            <i class="fa fa-star text-secondary"></i>
+                                            <i class="fa fa-star text-secondary"></i>
+                                            <i class="fa fa-star text-secondary"></i>
+                                            <i class="fa fa-star text-secondary"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <div class="d-flex mb-2">
+                                            <h5 class="fw-bold me-2">NT. 168 </h5>
+                                            <h5 class="text-danger text-decoration-line-through">NT. 198</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="my-2"></div>
+                                <div class="d-flex align-items-center justify-content-start">
+                                    <div class="rounded me-4" style="width: 100px; height: 100px;">
+                                        <img src="~/img/Item/yadianP1.jpg" class="img-itemsml rounded" alt="">
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-2">超人氣五入年輪禮盒</h6>
+                                        <div class="d-flex mb-2">
+                                            <i class="fa fa-star text-secondary"></i>
+                                            <i class="fa fa-star text-secondary"></i>
+                                            <i class="fa fa-star text-secondary"></i>
+                                            <i class="fa fa-star text-secondary"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <div class="d-flex mb-2">
+                                            <h5 class="fw-bold me-2">NT. 950</h5>
+                                            <h5 class="text-danger text-decoration-line-through">NT. 1020</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="my-2"></div>
+                                <div class="d-flex align-items-center justify-content-start">
+                                    <div class="rounded me-4" style="width: 100px; height: 100px;">
+                                        <img src="~/img/Item/xiangyuP1.png" class="img-itemsml rounded" alt="">
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-2">厚切香芋片</h6>
+                                        <div class="d-flex mb-2">
+                                            <i class="fa fa-star text-secondary"></i>
+                                            <i class="fa fa-star text-secondary"></i>
+                                            <i class="fa fa-star text-secondary"></i>
+                                            <i class="fa fa-star text-secondary"></i>
+                                            <i class="fa fa-star text-secondary"></i>
+                                        </div>
+                                        <div class="d-flex mb-2">
+                                            <h5 class="fw-bold me-2">NT. 120</h5>
+                                            <h5 class="text-danger text-decoration-line-through">NT. 150</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center my-4">
+                                    <a href="#" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">顯示更多</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="position-relative">
+                                    <img src="~/img/Item/brownieAD.jpg" class="w-100 rounded" alt="">
+                                    <div class="position-absolute" style="top: 25%; right: 15px; transform: translateY(-50%);">
+                                        <h3 class="text-secondary fw-bold">SALES<br>輸入折扣碼<br>GIFT50</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @* 商品列 *@
+                    <div class="col-lg-9">
+                        <div id="productContainer" class="row g-4 justify-content-center">
+                        </div>
+                        <div id="pgBtnContainer" class="col-12">
+                            <div class="pagination d-flex justify-content-center mt-5">
+@*                                 <a href="#" class="rounded">&laquo;</a>@* 最前頁
+                                <a href="#" class="active rounded">1</a>@* 當前頁面
+                                <a href="#" class="rounded">2</a>
+                                <a href="#" class="rounded">3</a>
+                                <a href="#" class="rounded">&raquo;</a>@* 最末頁*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fruits Shop End-->
+<!-- Footer Start 先刪 -->
+<!-- Footer End -->
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
+
+@section Scripts{
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/easing/easing.min.js"></script>
+    <script src="~/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="~/js/Itemmain.js"></script>
+    <script>
+        // 常數
+        const itemsPerPage = 9;
+
+        // 商品資料
+        var productData;
+
+        // 當前頁面和總頁數
+        var currentPage = 1;
+        var totalPages;
+        // 初始化頁面
+        $(document).ready(function () {
+            // 獲取商品列表，預設使用預設排序的 API
+            fetchProductList();
+
+            // 監聽排序下拉式選單的改變事件
+            $('#proArrangement').change(handleSortChange);
+
+            // 監聽平台周邊的 checkbox 更改事件
+            $('#checkGoods').change(handleFilterChange);
+        });
+
+        // 獲取商品列表
+        function fetchProductList() {
+            var sortType = $('#proArrangement').val();
+            var includePlatformPeripheral = $('#checkGoods').is(':checked');
+            var apiUrl;
+
+            // 根據選擇的排序類型選擇對應的API
+            switch (sortType) {
+                case '1':
+                    apiUrl = '/api/ProductApi/ShowItemBySalesQty';
+                    break;
+                default:
+                    apiUrl = '/api/ProductApi/ItemListShow';
+                    break;
+            }
+
+            // 如果勾選了平台周邊，則調用特定篩選資料的 API
+            if (includePlatformPeripheral) {
+                apiUrl = '/api/ProductApi/ShowItemByProSource?includePlatformPeripheral=true';
+            }
+
+            $.ajax({
+                url: apiUrl,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // 計算總頁數
+                    totalPages = Math.ceil(data.length / itemsPerPage);
+
+                    // 初始化第一頁的產品列表和分頁按鈕
+                    updateProductListAndPagination(currentPage);
+                    // 將返回的商品列表資料填入對應的 HTML 元素中
+                    productData = data;
+                    // updateProductList(currentPage);
+                },
+                error: function (error) {
+                    console.error('取得商品列表資料時發生錯誤：', error);
+                }
+            });
+        }
+
+        // 根據篩選條件和排序類型更新商品列表和分頁按鈕
+        function filterAndSortProducts() {
+            // 獲取平台周邊 checkbox 的狀態（勾選或取消勾選）
+            var includePlatformPeripheral = $('#checkGoods').is(':checked');
+
+            // 篩選商品資料（如果有勾選平台周邊）
+            var filteredProducts = productData;
+            if (includePlatformPeripheral) {
+                filteredProducts = filteredProducts.filter(function (product) {
+                    return product.FCompanyName === "平台";
+                });
+            }
+
+            // 根據排序類型進行排序（目前僅支援按銷售量排序）
+            var sortType = $('#proArrangement').val();
+            switch (sortType) {
+                case '1':
+                    filteredProducts.sort(function (a, b) {
+                        return b.TotalQty - a.TotalQty;
+                    });
+                    break;
+                default:
+                    // 預設排序方式不需要額外處理
+                    break;
+            }
+
+            // 更新商品列表和分頁按鈕
+            updateProductListAndPagination(filteredProducts);
+        }
+        // 透過下拉式選單改變排序方式
+        function handleSortChange() {
+            // 獲取排序類型
+            var sortType = $(this).val();
+            // 重新獲取商品列表，並根據新的排序類型更新
+            fetchProductList(sortType);
+        }
+
+        // 監聽平台周邊的 checkbox 更改事件
+        function handleFilterChange() {
+            // 當 checkbox 更改時，重新獲取商品列表
+            fetchProductList();
+        }
+        // // 初始化頁面
+        // $(document).ready(function () {
+        //     // 獲取商品列表，預設使用預設排序的 API
+        //     fetchProductList();
+        // });
+
+        // // 根據排序類型獲取商品列表
+        // function fetchProductList(sortType) {
+        //     var apiUrl;
+        //     // 根據選擇的排序類型選擇對應的API
+        //     switch (sortType) {
+        //         case '1':
+        //             apiUrl = '/api/ProductApi/ShowItemBySalesQty';
+        //             break;
+        //         default:
+        //             apiUrl = '/api/ProductApi/ItemListShow';
+        //             break;
+        //     }
+
+        //     $.ajax({
+        //         url: apiUrl,
+        //         type: 'GET',
+        //         dataType: 'json',
+        //         success: function (data) {
+        //             // 計算總頁數
+        //             totalPages = Math.ceil(data.length / itemsPerPage);
+
+        //             // 初始化第一頁的產品列表和分頁按鈕
+        //             updateProductListAndPagination(currentPage);
+
+        //             // 將商品資料保存到全局變數
+        //             productData = data;
+        //             console.log('productData', productData);
+        //             // 呼叫 API 獲取商品評分及評價數量資料
+        //             // getReviewData();
+        //         },
+        //         error: function (error) {
+        //             console.error('取得商品列表資料時發生錯誤：', error);
+        //         }
+        //     });
+        // }
+
+        // // 透過下拉式選單改變排序方式
+        // function handleSortChange() {
+        //     var sortType = $('#proArrangement').val();
+        //     // 根據選擇的排序類型獲取商品列表
+        //     fetchProductList(sortType);
+        // }
+       
+        // 篩選樣式並截取HTML
+        function filterAndTruncateHtml(html, maxLength) {
+            // 检查html是否为空或未定义
+            if (!html) {
+                return '';
+            }
+            // 移除HTML標籤和樣式
+            var plainText = html.replace(/<[^>]+>/g, '');
+            // 截取文本的前maxLength个字符
+            var truncatedText = plainText.length <= maxLength ? plainText : plainText.substring(0, maxLength) + '...';
+            return truncatedText;
+        }
+        // 更新特定頁面的產品列表和分頁按鈕
+        function updateProductListAndPagination(page) {
+            // 更新產品列表
+            updateProductList(page);
+
+            // 更新分頁按鈕
+            updatePaginationButtons();
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
+        }
+
+        // 更新產品列表
+        function updateProductList(page) {
+            // 清除現有的產品容器
+            $('#productContainer').empty();
+
+            // 設置當前頁面
+            currentPage = page;
+
+            // 使用回呼函式處理售出數量資料
+            getData(function (salesCountDict, reviewScoreDict, reviewCountDict, error) {
+                if (error) {
+                    // 處理錯誤情況
+                    console.error(error);
+                    return;
+                }
+                console.log('salesData', salesCountDict);
+                console.log('reviewData', reviewCountDict);
+                console.log('reviewScoreDict', reviewScoreDict);
+                // 將返回的商品列表資料填入對應的 HTML 元素中
+                var productContainer = $('#productContainer');
+                var row = $('<div class="row g-4 justify-content-center"></div>');  // 新增一個 .row
+
+                // 計算分頁的起始索引和結束索引
+                var startIndex = (currentPage - 1) * itemsPerPage;
+                var endIndex = startIndex + itemsPerPage;
+
+                productData.slice(startIndex, endIndex).forEach(function (Item, index) {
+                    // 建立商品元素
+                    var productElement = createProductElement(Item, salesCountDict, reviewScoreDict, reviewCountDict);
+
+                    // 將商品元素添加到 #productContainer 中的 .row
+                    row.append(productElement);
+
+                    // 每三個商品元素插入一次 .row 並重設
+                    if ((index + 1) % 3 === 0) {
+                        productContainer.append(row);
+                        row = $('<div class="row g-4 justify-content-center"></div>');
+                    }
+                });
+
+                // 檢查是否有未插滿三個的 .row，如果有，再次插入
+                if (row.children().length > 0) {
+                    productContainer.append(row);
+                }
+            });
+        }
+        // 計算星星數量
+        function calculateStarRating(score) {
+            // 假設5顆星是滿分
+            var maxRating = 5;
+            // 計算實際星星數量，四捨五入取整
+            var rating = Math.round(score);
+            // 確保星星數量在0到最大星星數量之間
+            return Math.min(rating, maxRating);
+        }
+
+        // 創建商品元素
+        function createProductElement(Item, salesCountDict, reviewScoreDict, reviewCountDict) {
+            // 處理商品描述樣式和截取
+            var truncatedDescription = filterAndTruncateHtml(Item.fDescription, 20);
+            // 計算星星 HTML
+            var starHtml = getStarRatingHtml(reviewScoreDict[Item.fProductName] || 0);
+
+            // 建立商品元素
+            return $('<div class="col-md-4 mb-4">' +
+                '<a href="#" class="product-link text-decoration-none" data-productid="' + Item.fProductId + '">' +
+                '<div class="rounded position-relative fruite-item">' +
+                '<div class="fruite-img">' +
+                '<img src="/img/Item/' + (Item.fImagePath || '') + '" class="img-fluid w-100 rounded-top" alt="">' +
+                '</div>' +
+                '<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">' + (Item.fCompanyName || '') + '</div>' +
+                '<div class="p-4 border border-secondary border-top-0 rounded-bottom" style="height: 215px;">' +
+                '<h4>' + (Item.fProductName || '') + '</h4>' +
+                '<p>' + (truncatedDescription) + '</p>' +
+                '<div class="d-flex justify-content-between align-items-center flex-lg-wrap">' +
+                '<p class="text-dark fs-5 fw-bold mb-0">NT. ' + (Item.fPrice || '') + '</p>' +
+                '</div>' +
+                // 加入星星和評價數的 div
+                '<div class="d-flex align-items-center">' +
+                '<div class="star-rating">' + // 加入星星的 div
+                starHtml +
+                '</div>' +
+                '<span class="review-count" style="margin-left: 5px"> (' + (reviewCountDict[Item.fProductName] || 0) + ')</span>' + // 加入評價數的 span
+                // 已售出
+                '<span style="margin-left: 40px">已售出:' + (salesCountDict[Item.fProductName] || 0) + '</span>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</a>' +
+                '</div>');
+        }
+        // 輔助函數，根據評分數量生成星星的 HTML
+        function getStarRatingHtml(score) {
+            var starsHtml = '';
+            for (var i = 0; i < 5; i++) {
+                starsHtml += `<i class="fa fa-star${i < score ? ' text-secondary' : ''}"></i>`;
+            }
+            return starsHtml;
+        }
+
+        // 更新分頁按鈕
+        function updatePaginationButtons() {
+            // 清除現有的分頁按鈕
+            $('#pgBtnContainer .pagination').empty();
+
+            // 動態生成分頁按鈕
+            var paginationContainer = $('#pgBtnContainer .pagination');
+            paginationContainer.append('<a href="#" class="rounded">&laquo;</a>'); // 最前頁
+
+            for (var i = 1; i <= totalPages; i++) {
+                var buttonClass = (i === currentPage) ? 'active rounded' : 'rounded';
+                paginationContainer.append('<a href="#" class="' + buttonClass + '">' + i + '</a>');
+            }
+
+            paginationContainer.append('<a href="#" class="rounded">&raquo;</a>'); // 最末頁
+        }
+
+        // 為分頁控制添加事件監聽器
+        $(document).on('click', '#pgBtnContainer a', function (e) {
+            e.preventDefault();
+
+            var clickedText = $(this).text();
+
+            if (clickedText === '«' && currentPage > 1) {
+                updateProductListAndPagination(1);
+            } else if (clickedText === '»' && currentPage < totalPages) {
+                updateProductListAndPagination(totalPages);
+            } else {
+                var page = parseInt(clickedText);
+
+                if (!isNaN(page) && page !== currentPage) {
+                    updateProductListAndPagination(page);
+                }
+            }
+        });
+        function getData(callback) {
+            // 發送售出數量請求
+            var salesRequest = $.ajax({
+                type: 'GET',
+                url: '/api/ProductApi/ItemSaleCount',
+                dataType: 'json'
+            });
+
+            // 發送評論數請求
+            var reviewRequest = $.ajax({
+                type: 'GET',
+                url: '/api/ProductApi/ItemReviewCount',
+                dataType: 'json'
+            });
+
+            // 等待兩個請求都完成後調用回呼函式
+            $.when(salesRequest, reviewRequest).done(function (salesData, reviewData) {
+                // 檢查是否有任何請求失敗
+                if (salesData[1] !== "success" || reviewData[1] !== "success") {
+                    console.error('Failed to get data');
+                    callback(null, null, 'Failed to get data');
+                    return;
+                }
+
+                // 處理售出數量資料
+                var salesCountDict = {};
+                salesData[0].forEach(function (item) {
+                    salesCountDict[item.fProductName] = item.fSaleCount;
+                });
+
+                // 處理評論數據
+                var reviewCountDict = {};
+                reviewData[0].forEach(function (item) {
+                    reviewCountDict[item.fProductName] = item.totalReviews;
+                });
+                // 處理評論分數
+                var reviewScoreDict = {};
+                reviewData[0].forEach(function (item) {
+                    reviewScoreDict[item.fProductName] = item.averageScore;
+                });
+
+                // 呼叫回呼函式，將轉換後的資料傳遞給它
+                callback(salesCountDict, reviewScoreDict, reviewCountDict, null);
+            }).fail(function (error) {
+                console.error('Failed to get data:', error);
+                // 呼叫回呼函式，將錯誤資訊傳遞給它
+                callback(null, null, 'Failed to get data');
+            });
+        };
+
+
+
+        // // 定義獲取售出數量的函式
+        // function getSalesData(callback) {
+        //     $.ajax({
+        //         type: 'GET',
+        //         url: '/api/ProductApi/ItemSaleCount',
+        //         success: function (salesData) {
+        //             console.log('salesData', salesData);
+
+        //             // 將售出數量資料轉換成字典，以便更容易查找
+        //             var salesCountDict = {};
+        //             salesData.forEach(function (item) {
+        //                 salesCountDict[item.fProductName] = item.fSaleCount;
+        //             });
+
+        //             // 呼叫回呼函式，將轉換後的資料傳遞給它
+        //             callback(salesCountDict);
+        //         },
+        //         error: function () {
+        //             console.error('Failed to get sales count info');
+        //             // 呼叫回呼函式，將錯誤資訊傳遞給它
+        //             callback(null, 'Failed to get sales count info');
+        //         }
+        //     });
+        // };
+        // 監聽商品連結的點擊事件
+        $(document).on('click', '.product-link', function (e) {
+            e.preventDefault(); // 阻止默認的連結行為
+
+            // 獲取商品ID
+            var productId = $(this).data('productid');
+
+            // 使用 jQuery 的 Ajax 方法向後端發送請求
+            $.ajax({
+                url: '/api/ProductApi/GetItemDetail?productId=' + productId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (itemDetail) {
+                    // 成功取得商品詳細資訊後，你可以在這裡處理資料
+                    console.log(itemDetail);
+                    // 獲取商品ID
+                    var productId = itemDetail[0].fProductId;
+
+                    // 使用 Razor 語法獲取商品詳細頁面的 URL
+                    var url = '@Url.Action("ItemDetail", "Products", new { area = "Customer" })' + '?productId=' + productId;
+
+                    // 將用戶導向到商品詳細頁面
+                    window.location.href = url;
+                },
+                error: function (error) {
+                    console.error('取得商品詳細資訊時發生錯誤：', error);
+                }
+            });
+        });
+    </script>
+}

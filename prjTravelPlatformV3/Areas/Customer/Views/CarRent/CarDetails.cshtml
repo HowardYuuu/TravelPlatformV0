@@ -1,0 +1,639 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-x="html" data-x-toggle="html-overflow-hidden">
+<head>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=65f90771301e18001359b91a&product=inline-share-buttons&source=platform" async="async"></script>
+</head>
+<body>
+    <main>
+        <section class="pt-40" style="margin-top:100px">
+            <div class="container">
+                <div class="row y-gap-30">
+                    <div class="col-lg-8">
+                        <div class="row y-gap-20 justify-between items-end">
+                            <div class="col-auto">
+                                <h1 class="text-30 sm:text-24 fw-600" id="selectedCarModel">
+                                    <!--選取車款-->
+                                </h1>
+
+                                <div class="row x-gap-10 items-center pt-10">
+                                    <div class="col-auto">
+                                        <div class="d-flex x-gap-5 items-center">
+                                            <i class="icon-location text-16 text-light-1"></i>
+                                            <div class="text-15 text-light-1" id="servicePoint"><!--車所在據點--></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-auto">
+                                <div class="col-auto">
+                                    <div class="sharethis-inline-sticky-buttons">
+                                        <button id="shareButton" class="button px-15 py-10 -blue-1 bg-light-2">
+                                        <i class="icon-share mr-10"></i>
+                                        分享
+                                    </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 車輛圖片 -->
+                        <div class="col-auto">
+                            <div class="row x-gap-10 y-gap-50" id="carImage" >
+                                <img style="margin-top:20px"/>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:50px">
+
+                            <!--車型資訊-->
+                            <div class="row y-gap-30 justify-between pt-20">
+
+                                <div class="col-md-auto col-6">
+                                    <div class="d-flex">
+                                        <i class="icon-user-2 text-22 text-dark-1 mr-10"></i>
+                                        <div class="text-15 lh-15" id="NumOfPsgr">
+                                            <!--乘客數-->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-auto col-6">
+                                    <div class="d-flex">
+                                        <i class="icon-luggage text-22 text-dark-1 mr-10"></i>
+                                        <div class="text-15 lh-15" id="NumOfLuggage">
+                                            <!--行李數-->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-auto col-6">
+                                    <div class="d-flex">
+                                        <i class="icon-transmission text-22 text-dark-1 mr-10"></i>
+                                        <div class="text-15 lh-15" id="carDescription2">
+                                            <!--燃料動力-->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-auto col-6">
+                                    <div class="d-flex">
+                                        <i class="icon-speedometer text-22 text-dark-1 mr-10"></i>
+                                        <div class="text-15 lh-15">
+                                            里程限制<br> 無限里程
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="border-top-light mt-40 mb-40"></div>
+                            <!--車輛詳細資訊-->
+                            <div>
+                                <h3 class="text-22 fw-500">詳細資料</h3>
+                                <div class="col-xl-9">
+                                    <div class="row y-gap-30 pt-15">
+
+                                        <div class="col-sm-4" id="manufacturerName">
+                                            <div class="fw-500">車廠</div>
+                                            <div class="text-15">LUXEGEN</div>
+                                        </div>
+
+                                        <div class="col-sm-4" id="carModel">
+                                            <div class="fw-500">車款</div>
+                                            <div class="text-15"><!--車款名稱--></div>
+                                        </div>
+
+                                        <div class="col-sm-4" id="carDescription">
+                                            <div class="fw-500">車種</div>
+                                            <div class="text-15"><!--車種--></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-top-light mt-40 mb-40"></div>
+                            <!--車輛設備-->
+                            <div>
+                                <h3 class="text-22 fw-500">設備</h3>
+                                <div class="row y-gap-10 pt-15">
+
+                                    <div class="col-sm-5">
+                                        <div class="d-flex items-center">
+                                            <i class="icon-check text-10 mr-15"></i>
+                                            <div class="text-15">安全氣囊</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5">
+                                        <div class="d-flex items-center">
+                                            <i class="icon-check text-10 mr-15"></i>
+                                            <div class="text-15">車載收音機</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5">
+                                        <div class="d-flex items-center">
+                                            <i class="icon-check text-10 mr-15"></i>
+                                            <div class="text-15">電動車窗</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5">
+                                        <div class="d-flex items-center">
+                                            <i class="icon-check text-10 mr-15"></i>
+                                            <div class="text-15">空調</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-top-light mt-40 mb-40"></div>
+                            <!--車輛位置-->
+                            <div>
+                                <h3 class="text-22 fw-500 mb-20">車輛位置</h3>
+
+                                <div class="map rounded-4 map-500 js-map-single"></div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="d-flex justify-end">
+                            <div class="px-30 py-30 rounded-4 border-light shadow-4 bg-white w-360 lg:w-full" style="border-radius:15px;">
+                                <div class="row y-gap-15 items-center justify-between">
+                                    <div class="col-auto">
+                                        <div class="text-14 text-light-1">
+                                            <span class="text-20 fw-500 text-dark-1 ml-5" id="rentalFee"><!--租賃費用--></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row y-gap-20 pt-20">
+                                    <div class="col-12">
+
+                                        <div class="searchMenu-loc px-20 py-10 border-light rounded-4 js-form-dd" >
+
+                                            <div data-x-dd-click="searchMenu-loc">
+                                                <h4 class="text-15 fw-500 ls-2 lh-16">取車地點</h4>
+
+                                                <div class="text-15 text-light-1 ls-2 lh-16">
+                                                    <input autocomplete="off" type="search" placeholder="城市 或 據點" class="js-pickup-search js-dd-focus" disabled />
+                                                </div>
+                                            </div>
+
+
+                                            <div class="searchMenu-loc__field shadow-2 js-popup-window" data-x-dd="searchMenu-loc" >
+                                                <div class="bg-white px-30 py-30 sm:px-0 sm:py-15 rounded-4">
+                                                    <div class="y-gap-5 js-pickup-results" >
+                                                        <!-- 取車地點搜尋結果 -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-12">
+
+                                        <div class="searchMenu-loc px-20 py-10 border-light rounded-4 js-form-dd">
+
+                                            <div data-x-dd-click="searchMenu-loc">
+                                                <h4 class="text-15 fw-500 ls-2 lh-16">還車地點*</h4>
+
+                                                <div class="text-15 text-light-1 ls-2 lh-16">
+                                                    <input autocomplete="off" type="search" placeholder="服務據點" class="js-dropoff-search js-dd-focus"/>
+                                                    <div class="warning-message" style="display: none; color:red;">* 請輸入還車地點</div>
+                                                    <div class="warning-message 2" style="display: none; color:red;">* 還車地點不存在</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="searchMenu-loc__field shadow-2 js-popup-window" data-x-dd="searchMenu-loc" data-x-dd-toggle="-is-active" style="width:100%">
+                                                <div class="bg-white px-30 py-30 sm:px-0 sm:py-15 rounded-4">
+                                                    <div class="y-gap-5 js-dropoff-results">
+                                                        <!-- 還車地點搜尋結果 -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="searchMenu-date px-20 py-10 border-light rounded-4 -right"> 
+                                            <div>
+                                                <h4 class="text-15 fw-500 ls-2 lh-16">取車日期</h4>
+                                            </div>
+                                            <div class="input-group date" id="datepicker">
+                                                <input type="date" id="pickupDate" name="appointment" min="2024-01-01" max="2024-12-31" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="searchMenu-date px-20 py-10 border-light rounded-4 -right">
+
+                                            <div data-x-dd-click="searchMenu-pickupTime">
+                                                <h4 class="text-15 fw-500 ls-2 lh-16" >取車時間</h4>
+                                            </div>
+                                            <div class="input-group time capitalize text-15 text-light-1 ls-2 lh-16 " id="timepicker">
+                                                <input type="time" id="pickupTime" name="pickup_time" min="9:00" max="18:00" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+
+                                        <div class="searchMenu-date px-20 py-10 border-light rounded-4 -right">
+
+                                            <div>
+                                                <h4 class="text-15 fw-500 ls-2 lh-16">還車日期</h4>
+                                            </div>
+                                            <div class="input-group date" id="datepicker">
+                                                <input type="date" id="dropoffDate" name="appointment" min="2024-01-01" max="2024-12-31" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <div class="searchMenu-pickupTime px-20 py-10 border-light rounded-4 -right">
+
+                                            <div data-x-dd-click="searchMenu-pickupTime">
+                                                <h4 class="text-15 fw-500 ls-2 lh-16">還車時間</h4>
+                                            </div>
+                                            <div class="input-group time capitalize text-15 text-light-1 ls-2 lh-16 " id="timepicker">
+                                                <input type="time" id="dropoffTime" name="pickup_time" min="9:00" max="18:00" disabled>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button id="bookingCar" class="button -dark-1 py-15 px-35 h-60 col-12 rounded-4 bg-yellow-1 text-dark-1">
+                                            下一步
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="mt-40"></div>
+        <div class="container mt-40 mb-40">
+            <div class="border-top-light"></div>
+        </div>
+        <section>
+            <div class="container">
+                <div class="row y-gap-20">
+                    <div class="col-lg-4">
+                        <h2 class="text-22 fw-500">常見問題</h2>
+                    </div>
+
+                    <div class="col-lg-8">
+                        <div class="accordion -simple row y-gap-20 js-accordion">
+
+                            <div class="col-12">
+                                <div class="accordion__item px-20 py-20 border-light rounded-4">
+                                    <div class="accordion__button d-flex items-center">
+                                        <div class="accordion__icon size-40 flex-center bg-light-2 rounded-full mr-20">
+                                            <i class="icon-plus"></i>
+                                            <i class="icon-minus"></i>
+                                        </div>
+
+                                        <div class="button text-dark-1">租車時我需要什麼證件？</div>
+                                    </div>
+
+                                    <div class="accordion__content">
+                                        <div class="pt-20 pl-60">
+                                            <p class="text-15">取車時須出示中華民國身分證及個人有效駕照取車。承租人須備以下證明文件，始得承租車輛。</p>
+                                            <ul class="text-15">
+                                                <li>本國國民：身分證、駕照。</li>
+                                                <li>
+                                                    非本國國民：
+                                                    <ul>
+                                                        <li>於入境 30 天內還車者：護照、互惠國有效之國際駕照、原國駕照、信用卡（有效期限六個月以上）。</li>
+                                                        <li>無法於入境 30 天之內還車者：護照、國際駕照簽證或台灣本國駕照、信用卡（有效期限六個月以上）。</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="accordion__item px-20 py-20 border-light rounded-4">
+                                    <div class="accordion__button d-flex items-center">
+                                        <div class="accordion__icon size-40 flex-center bg-light-2 rounded-full mr-20">
+                                            <i class="icon-plus"></i>
+                                            <i class="icon-minus"></i>
+                                        </div>
+
+                                        <div class="button text-dark-1">我需年滿幾歲才可以承租車輛？</div>
+                                    </div>
+
+                                    <div class="accordion__content">
+                                        <div class="pt-20 pl-60">
+                                            <p class="text-15">承租人須年滿18歲，並於取車時出示中華民國身分證及個人有效駕照始得承租車輛。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="accordion__item px-20 py-20 border-light rounded-4">
+                                    <div class="accordion__button d-flex items-center">
+                                        <div class="accordion__icon size-40 flex-center bg-light-2 rounded-full mr-20">
+                                            <i class="icon-plus"></i>
+                                            <i class="icon-minus"></i>
+                                        </div>
+
+                                        <div class="button text-dark-1">我可以幫他人承租車輛嗎？</div>
+                                    </div>
+
+                                    <div class="accordion__content">
+                                        <div class="pt-20 pl-60">
+                                            <p class="text-15">可以幫他人承租車輛，但除了須提供承租人資料及證件外，也須提供駕駛的資料及相關證件。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="accordion__item px-20 py-20 border-light rounded-4">
+                                    <div class="accordion__button d-flex items-center">
+                                        <div class="accordion__icon size-40 flex-center bg-light-2 rounded-full mr-20">
+                                            <i class="icon-plus"></i>
+                                            <i class="icon-minus"></i>
+                                        </div>
+
+                                        <div class="button text-dark-1">承租人應負責任及義務</div>
+                                    </div>
+
+                                    <div class="accordion__content">
+                                        <div class="pt-20 pl-60">
+                                            <ul class="text-15">
+                                                <li>承租期間衍生之停車費、交通罰鍰及交通違規導致之費用或損失皆由承租人負擔。</li>
+                                                <li>承租人應盡善良管理人之義務使用及維護本車輛。</li>
+                                                <li>車輛若有瑕疵或操作不良時，請立即告知，行駛超過40KM或1小時後，將仍須負擔日租金。</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="accordion__item px-20 py-20 border-light rounded-4">
+                                    <div class="accordion__button d-flex items-center">
+                                        <div class="accordion__icon size-40 flex-center bg-light-2 rounded-full mr-20">
+                                            <i class="icon-plus"></i>
+                                            <i class="icon-minus"></i>
+                                        </div>
+
+                                        <div class="button text-dark-1">緊急事件處理</div>
+                                    </div>
+
+                                    <div class="accordion__content">
+                                        <div class="pt-20 pl-60">
+                                            <p class="text-15">為保護您的權益，承租車輛發生事故、失竊或肇事事件等，請保持現場，立即通知警察單位處理，並撥打客服專線作後續處理，切勿與對方私下和解，並請即刻和本公司聯絡。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="layout-pt-lg"></div>
+
+        
+
+    </main>
+
+</body>
+
+</html>
+
+@section Scripts
+{
+    <script>
+        // 解析 URL 查詢參數，獲取車輛ID
+        var urlParams = new URLSearchParams(window.location.search);
+        var carId = urlParams.get('carId');
+        var pickupLocation = urlParams.get('pickup');
+        var dropoffLocation = urlParams.get('dropoff');
+        var pickupDate = urlParams.get('pickupDate');
+        var dropoffDate = urlParams.get('dropoffDate');
+        var pickupTime = urlParams.get('pickupTime');
+        var dropoffTime = urlParams.get('dropoffTime');
+
+        var pickupLocationShort = "";
+
+        window.addEventListener("load", function () {
+            //傳遞車所在地並標記在地圖中
+            $.ajax({
+                url: '/api/RApi/getPointAddress',
+                type: 'GET',
+                data: { pickupLocation: pickupLocation }, // 傳遞取車地點
+                dataType: 'text',
+                contentType: 'application/json',
+                success: function (response) {
+                    console.log(response);
+
+                    // 使用 Google 地圖 API 將地址轉換為地理坐標
+                    var geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({ 'address': response }, function (results, status) {
+                        if (status === 'OK') {
+                            $('.js-map-single').empty();
+                            // 初始化地圖
+                            var map = new google.maps.Map(document.querySelector('.js-map-single'), {
+                                zoom: 18,
+                                center: results[0].geometry.location
+                            });
+
+                            // 在地圖上添加標記
+                            var marker = new google.maps.Marker({
+                                map: map,
+                                position: results[0].geometry.location,
+                                title: response
+                            });
+
+                            // 創建信息視窗
+                            var infoWindow = new google.maps.InfoWindow({
+                                content:
+                                    '<div style="font-size:16px;"><strong>' + pickupLocation + '</strong></div>' +
+                                    '<div style="font-size:14px;"><strong>地址:</strong> ' + response + '</div>' +
+                                    '<div style="font-size:14px; color:blue;"><a href="https://www.google.com/maps/search/?api=1&query='
+                                    + pickupLocation + '" target="_blank">顯示詳細地圖</a></div>'
+                                //encodeURIComponent(response)
+                            });
+
+                            // 點擊標記時顯示信息視窗
+                            marker.addListener('click', function () {
+                                infoWindow.open(map, marker);
+                            });
+                        } else {
+                            console.error('地址轉換失敗:', status);
+                        }
+                    });
+
+                },
+                error: function (error) {
+                    console.error('獲取據點地址時發生錯誤:', error);
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            
+
+            if (pickupLocation) {
+                $('.js-pickup-search').val(pickupLocation);
+                pickupLocationShort = pickupLocation.substring(0, 2);
+            }
+            console.log("截取的前兩個字元：" + pickupLocationShort);
+
+            if (dropoffLocation) {
+                $('.js-dropoff-search').val(dropoffLocation);
+            }
+            if (pickupDate) { document.getElementById('pickupDate').value = pickupDate; }
+            if (pickupTime) { document.getElementById('pickupTime').value = pickupTime; }
+            if (dropoffDate) { document.getElementById('dropoffDate').value = dropoffDate; }
+            if (dropoffTime) { document.getElementById('dropoffTime').value = dropoffTime; }
+
+            $('.js-dropoff-search').on('input', function () {
+                $('.warning-message').hide();
+            });
+
+            // 當輸入框中的內容發生變化時，觸發搜尋
+            $('.js-pickup-search').on('input', function () {
+                // $(this) 表示觸發事件的輸入框
+                var keyword = $(this).val();
+                // 只有在輸入超過1個字符時才發送請求
+                if (keyword.length >= 1) {
+                    // 發送 GET 請求到你的 API 端點，並帶上關鍵字參數
+                    $.get('/api/RApi/GetServicePoints', { keyword: keyword }, function (data) {
+                        // 清空原有的搜尋結果
+                        $('.js-pickup-results').empty();
+                        // 將返回的資料填充到下拉選單中
+                        $.each(data.slice(0, 5), function (index, item) { // 只取前五筆結果
+                            var option = $('<button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option"></button>');
+                            option.append('<div class="d-flex"><div class="icon-location-2 text-light-1 text-20 pt-4"></div><div class="ml-10"><div class="text-15 lh-12 fw-500 js-search-option-target">' + item.location + '</div></div></div>');
+                            option.on('click', function () {
+                                // 點擊選項後將選項的值填入輸入框中
+                                $('.js-pickup-search').val(item.location);
+                            });
+                            $('.js-pickup-results').append(option);
+                        });
+                    });
+                    
+                }
+            });
+            $('.js-dropoff-search').on('input', function () {
+                var keyword = pickupLocationShort ;
+                if (keyword.length >= 1) {
+                    $.get('/api/RApi/GetServicePoints', { keyword: keyword }, function (data) {
+                        // 清空原有的搜尋結果
+                        $('.js-dropoff-results').empty();
+                        // 將返回的資料填充到下拉選單中
+                        $.each(data.slice(0, data.length), function (index, item) {
+                            var option = $('<button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option"></button>');
+                            option.append('<div class="d-flex"><div class="icon-location-2 text-light-1 text-20 pt-4"></div><div class="ml-10"><div class="text-15 lh-12 fw-500 js-search-option-target">' + item.location + '</div></div></div>');
+                            option.on('click', function () {
+                                // 點擊選項後將選項的值填入輸入框中
+                                $('.js-dropoff-search').val(item.location);
+                            });
+                            $('.js-dropoff-results').append(option);
+                        });
+                    });
+                }
+            });
+
+            // 使用車輛ID發送 AJAX 請求到服務器端獲取車輛資訊
+            $.ajax({
+                url: '/api/RApi/GetCarDetails', // 修改成後端 API 的路徑
+                type: 'GET',
+                data: { carId: carId }, // 傳遞選擇的車輛ID
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    // 將返回的車輛資訊填充到 HTML 中
+                    $('#selectedCarModel').html(response.fModelName);
+                    $('#NumOfPsgr').html(`座位數<br>${response.fNumOfPsgr}`); // 填充座位數
+                    $('#NumOfLuggage').html(`行李數<br>${response.fNumOfLuggage}`); // 填充行李數
+                    $('#carDescription2').html(`燃料動力<br>${response.fDescription2}`); // 填充燃料動力描述
+                    $('#carImage img').attr('src', '/img/carRent/' + response.fImagePath); // 填充圖片
+                    $('#carModel .text-15').html(response.fModelName); // 填充車款
+                    $('#carDescription .text-15').html(response.fDescription); // 填充車種
+                    $('#rentalFee').html(`NT$${response.fRentalFee}/天`);
+                    $('#servicePoint').html(`${response.fServicePoint},台灣`);
+
+                    // 提取車廠名稱
+                    var manufacturer = response.fModelName.split('-')[0];
+                    $('#manufacturerName').html(`車廠<br>${manufacturer}`); // 填充車廠名稱
+                },
+                error: function (error) {
+                    console.error('獲取車輛詳細資訊時發生錯誤:', error);
+                }
+            });
+
+            document.getElementById('shareButton').addEventListener('click', function () {
+                if (navigator.share) {
+                    navigator.share({
+                        title: document.title,
+                        url: window.location.href
+                    }).then(() => {
+                        console.log('分享成功！');
+                    }).catch((error) => {
+                        console.error('分享失敗:', error);
+                    });
+                } else {
+                    console.log('瀏覽器不支援分享功能。');
+                }
+            });
+
+            $('#bookingCar').on('click', function () {
+                var dropoffLocation = $('.js-dropoff-search').val();
+
+                if (dropoffLocation.trim() === '') {
+                    $('.js-dropoff-search').next('.warning-message').show();
+                    return false; 
+                }
+
+                // 執行 AJAX 請求並檢查 dropoffLocation 是否存在於資料庫中
+                $.ajax({
+                    url: '/api/RApi/getAllCarLocation', 
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        var found = false;
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i].fServicePoint === dropoffLocation) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            $('.warning-message.2').show(); 
+                            return false; 
+                        } else {
+                            // 重新導向到相應頁面
+                            window.location.href = '@Url.Action("CarBooking", "CarRent", new { area = "Customer" })'
+                                + '?carId=' + carId + '&pickup=' + pickupLocation + '&pickupDate=' + pickupDate + '&pickupTime=' + pickupTime
+                                + '&dropoff=' + dropoffLocation + '&dropoffDate=' + dropoffDate + '&dropoffTime=' + dropoffTime;
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+        });
+    </script>
+}

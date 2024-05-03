@@ -1,0 +1,206 @@
+﻿@using System.Security.Claims
+@inject IHttpContextAccessor _httpContextAccessor
+
+@model IEnumerable<prjTravelPlatformV3.Models.TCustomer>
+
+@{
+    ViewData["Title"] = "客服介面";
+}
+
+@section Styles {
+
+    @*  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous"> *@
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+    @* <link href="~/lib/datatables/css/jquery.datatables.css" rel="stylesheet" />
+    <link href="/static/css/demo.css" rel="stylesheet" media="all"> *@
+    
+    <link href="~/css/discount/ad.css" rel="stylesheet" />
+    <head>
+
+    </head>
+    <style>
+
+    </style>
+}
+
+
+
+
+
+
+<div class="masthead__bg" style="position: relative">
+    <img src="~/img/frontstage/shutterstock_1877056579.jpg" style="filter: brightness(55%); width: 100%; height:320px;" />
+    <div class="text-center" style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%);">
+        <h1 class="text-30 fw-600 text-white">會員優惠卷</h1>
+        <a style="color:white" asp-area="Customer" asp-controller="Discounts" asp-action="Index">會員優惠卷</a>
+        <a style="color:white" asp-area="Customer" asp-controller="Discounts" asp-action="GetCoupon">領取優惠卷</a>
+        @* <a style="color:white" asp-area="Customer" asp-controller="Discounts" asp-action="ChatUI">ChatUI</a> *@
+    </div>
+</div>
+<section class="pt-40 pb-40 bg-light-2">
+    @* <div class="container">
+    <div class="row">
+    <div class="col-12"> *@
+
+
+    @* <h1>即時聊天範例</h1>
+
+    <div class="row">
+        <div class="col-8">
+            <h4>個人 ID: <span id="SelfID"></span></h4>
+            <div class="mb-3">
+                <label for="message" class="form-label">發送訊息</label>
+                <input type="text" class="form-control" id="message">
+            </div>
+            <div class="mb-3">
+                <label for="sendToID" class="form-label">指定 ID</label>
+                <input type="text" class="form-control" id="sendToID">
+            </div>
+            <button type="button" class="btn btn-primary" id="sendButton">傳送訊息</button>
+        </div>
+        <div class="col-4">
+            <h4>連線 ID 列表</h4>
+            <ul class="list-group" id="IDList">
+            </ul>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <h3>聊天內容</h3>
+            <ul class="list-group" id="Content">
+            </ul>
+        </div>
+    </div> *@
+
+
+
+    @* <h1>Popup/Modal Windows without JavaScript</h1> *@
+    <div id="wrapper" style="display:none">
+        <p><a class="button02" href="#popup1">Click Me</a></p>
+        <p><a class="button01" href="#popup2" id="button01">Click Me Too</a></p>
+    </div>
+
+    @* <div id="popup1" class="overlay">
+        <div class="popup">
+            <h2>Info box</h2>
+            <a class="close" href="#">&times;</a>
+            <div class="content">
+                <p>This is done totally without JavaScript. Just HTML and CSS.</p>
+            </div>
+        </div>
+    </div> *@
+
+    <div id="popup2" class="overlay light">
+        <a class="cancel" href="#"></a>
+        <div class="popup" >
+            @* <h2>優惠廣告</h2> *@
+            <div class="" style="margin:0px;padding:0px">
+                <a href="@Url.Action("Index", "Hotels", new { area = "Customer" })">
+                <img src="~/img/discount/ad/hoteldiscount.png" class="adImg" style="border-radius:30px" />
+                </a>
+                <button class="center-button">逛逛看▶</button>
+            </div>
+        </div>
+    </div>
+
+
+    @*       </div>
+
+    </div>
+    </div> *@
+</section>
+@section scripts {
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    @* <script src="~/js/discount/ad.js"></script> *@
+    <script>
+
+        // // 定義圖片數組
+        // var images = [
+        //     "~/img/discount/ad/HotelDiscount.png",
+        //     "~/img/discount/ad/CarRent.png",
+            
+        // ];
+
+        // // 隨機選擇一張圖片索引
+        // var randomIndex = Math.floor(Math.random() * images.length);
+
+        // // 隨機選擇的圖片路徑
+        // var randomImagePath = images[randomIndex];
+
+        // // 設置圖片 src
+        // document.getElementById('rotatingImage').src = randomImagePath;
+
+        // // 透過 query string 傳遞選擇的圖片索引以防止重複
+        // var imageLink = document.getElementById('imageLink');
+        // imageLink.href += "?imageIndex=" + randomIndex;
+    
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // 當文檔載入完成後，自動觸發該連結的點擊事件
+            var link = document.querySelector('.button01');
+            if (link) {
+                link.click();
+            }
+        });
+
+
+        //SignalR的程式碼部分
+        var connection = new signalR.HubConnectionBuilder().withUrl("/adHub").build();
+
+        connection.start().then(function () {
+            console.log("SignalR Connected!");
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        connection.on("buttonClick", function () {
+            console.log("服務器發送了按鈕點擊事件！");
+            // 在這裡觸發button01按鈕的事件
+            document.getElementById("button01").click();
+        });
+
+        // //與Server建立連線
+        // connection.start().then(function () {
+        //     console.log("Hub 連線完成");
+        // }).catch(function (err) {
+        //     alert('連線錯誤: ' + err.toString());
+        // });
+
+        // // 更新連線 ID 列表事件
+        // connection.on("UpdList", function (jsonList) {
+        //     var list = JSON.parse(jsonList);
+        //     $("#IDList li").remove();
+        //     for (i = 0; i < list.length; i++) {
+        //         $("#IDList").append($("<li></li>").attr("class", "list-group-item").text(list[i]));
+        //     }
+        // });
+
+        // // 更新用戶個人連線 ID 事件
+        // connection.on("UpdSelfID", function (id) {
+        //     $('#SelfID').html(id);
+        // });
+
+        // // 更新聊天內容事件
+        // connection.on("UpdContent", function (msg) {
+        //     $("#Content").append($("<li></li>").attr("class", "list-group-item").text(msg));
+        // });
+
+        //傳送訊息
+        $('#sendButton').on('click', function () {
+            let selfID = $('#SelfID').html();
+            let message = $('#message').val();
+            let sendToID = $('#sendToID').val();
+            connection.invoke("SendMessage", selfID, message, sendToID).catch(function (err) {
+                alert('傳送錯誤: ' + err.toString());
+            });
+        });
+
+     
+
+   
+
+    </script>
+
+}
+

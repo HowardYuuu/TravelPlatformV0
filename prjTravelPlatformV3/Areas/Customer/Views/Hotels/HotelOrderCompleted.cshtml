@@ -1,0 +1,111 @@
+﻿@model prjTravelPlatform_release.Areas.Customer.ViewModel.Hotels.HotelConfirmViewModel
+@{
+    ViewData["Title"] = "付款完成";
+}
+
+<div class="container px-120" style="height:100vh">
+    <!--進度條-->
+    <section style="margin-top:90px">
+        <div class="container pt-40 px-90">
+            <div class="row x-gap-40 y-gap-30 items-center">
+                <div class="col-auto">
+                    <div class="d-flex items-center">
+                        <div class="size-40 rounded-full flex-center bg-blue-1-05 text-blue-1 fw-500">1</div>
+                        <div class="text-18 fw-500 ml-10">填寫資訊</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="w-full h-1 bg-border"></div>
+                </div>
+
+                <div class="col-auto">
+                    <div class="d-flex items-center">
+                        <div class="d-flex items-center">
+                            <div class="size-40 rounded-full flex-center bg-blue-1-05 text-blue-1 fw-500">2</div>
+                            <div class="text-18 fw-500 ml-10">確認付款</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="w-full h-1 bg-border"></div>
+                </div>
+                <div class="col-auto">
+                    <div class="d-flex items-center">
+                        <div class="size-40 rounded-full flex-center bg-blue-1">
+                            <i class="icon-check text-16 text-white"></i>
+                        </div>
+                        <div class="text-18 fw-500 ml-10">付款完成</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--訂單細節-->
+    <section>
+        <div class="d-flex flex-column items-center mt-60 lg:md-40 sm:mt-24">
+            <div class="size-80 flex-center rounded-full bg-dark-3">
+                <i class="icon-check text-30 text-white"></i>
+            </div>
+
+            <div class="text-30 lh-1 fw-600 mt-20">付款成功，感謝您的購買</div>
+            <div class="text-15 text-light-1 mt-10">訂單明細已寄送至您的信箱 : @Model.Email</div>
+        </div>
+        <div class="accordion -simple row y-gap-20 pt-30 js-accordion justify-center">
+            <div class="col-10">
+                <div class="border-type-1 accordion__item px-40 py-30  rounded-22">
+                    <div class="accordion__button d-flex items-center">
+                        <div class="row col-12">
+                            <div class="col-3">
+                                <div class="text-15 lh-12">訂單編號</div>
+                                <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">@Model.HotelOrderId</div>
+                            </div>
+                            <div class="col-3">
+                                <div class="text-15 lh-12">訂單日期</div>
+                                <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">@Model.OrderDate</div>
+                            </div>
+                            <div class="col-3">
+                                <div class="text-15 lh-12">總金額</div>
+                                <div class="text-15 lh-12 fw-500 text-blue-1 mt-10" id="totalPrice">@Model.TotalPrice</div>
+                            </div>
+                            <div class="col-3">
+                                <div class="text-15 lh-12">付款方式</div>
+                                <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">LINE PAY</div>
+                            </div>
+                        </div>
+                        <div class="accordion__icon size-40 flex-center bg-light-2 rounded-full mr-20">
+                            <i class="icon-plus"></i>
+                            <i class="icon-minus"></i>
+                        </div>
+                    </div>
+                    <div class="accordion__content ">
+                        <div class="pt-20  border-top-light mt-20">
+                            <table class="table-4 w-1/1 mt-20">
+                                <thead class="bg-light-2">
+                                    <tr>
+                                        <th>商品名稱</th>
+                                        <th>房間號碼</th>
+                                        <th>入住時間</th>
+                                        <th>退房時間</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.RoomsNumbers)
+                                    {
+                                        <tr>
+                                            <td>@Model.HotelName - @Model.RoomTypeName</td>
+                                            <td>@item</td>
+                                            <td>@Model.StartDate</td>
+                                            <td>@Model.EndDate</td>
+                                        </tr>
+                                    }                       
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

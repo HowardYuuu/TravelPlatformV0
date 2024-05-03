@@ -1,0 +1,63 @@
+﻿@model prjTravelPlatformV3.Models.TRcarModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>確定是否刪除這筆資料?</h3>
+
+<h4>TRcarModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="FModelId" />
+            <div class="form-group">
+                <label asp-for="FModelName" class="control-label"></label>
+                <input asp-for="FModelName" class="form-control" />
+                <span asp-validation-for="FModelName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FNumOfLuggage" class="control-label"></label>
+                <input asp-for="FNumOfLuggage" class="form-control" />
+                <span asp-validation-for="FNumOfLuggage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FNumOfPsgr" class="control-label"></label>
+                <input asp-for="FNumOfPsgr" class="form-control" />
+                <span asp-validation-for="FNumOfPsgr" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FRentalFee" class="control-label"></label>
+                <input asp-for="FRentalFee" class="form-control" />
+                <span asp-validation-for="FRentalFee" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FImagePath" class="control-label"></label>
+                <input asp-for="FImagePath" class="form-control" />
+                <span asp-validation-for="FImagePath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FModelInUse" class="control-label"></label>
+                <input asp-for="FModelInUse" class="form-control" />
+                <span asp-validation-for="FModelInUse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Delete" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

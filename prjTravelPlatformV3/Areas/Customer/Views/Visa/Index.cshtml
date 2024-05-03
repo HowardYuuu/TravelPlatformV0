@@ -1,0 +1,496 @@
+﻿@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "旅遊代辦";
+}
+@section Styles {
+
+}
+
+<div class="masthead__bg" style="position: relative">
+    <img src="~/img/frontstage/shutterstock_1877056579.jpg" style="filter: brightness(55%); width: 100%; height:320px;" />
+    <div class="text-center" style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%);">
+        <h1 class="text-30 fw-600 text-white">尋找簽證、各式證件</h1>
+    </div>
+    <div style="position: absolute; top:70%; left:75%;">
+        <a class="button px-24 fw-400 text-20 border-white -outline-white h-40 text-white ml-20 mr-20 rounded-100" asp-area="Customer" asp-controller="Visa" asp-action="Map">
+            前往簽證地圖<div class="icon-arrow-top-right ml-15"></div>
+        </a>
+    </div>
+
+
+    @* <div class="dropdown__button sm:w-full" data-el-toggle=".login" data-el-toggle-active=".login-active">
+        <a class="button px-24 fw-400 text-14 border-white -outline-white h-40 text-white ml-20 mr-20 rounded-100 dropdown__button">登入</a>
+    </div> *@
+</div>
+
+
+@* searchbar *@
+<section class="pt-40 pb-40 bg-light-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+
+
+                <div class="mainSearch -col-3-big bg-white px-10 py-10 lg:px-20 lg:pt-5 lg:pb-20 rounded-100">
+                    <div class="button-grid items-center" style="grid-template-columns: 1fr 1fr 1.2fr auto;">
+
+
+
+                        <div class="searchMenu-loc px-30 lg:py-20 lg:px-0 js-form-dd js-liverSearch">
+                            <div data-x-dd-click="searchMenu-loc">
+                                <h4 class="text-15 fw-500 ls-2 lh-16" style="font-weight: bold;">洲別</h4>
+                                <div class="text-15 text-light-1 ls-2 lh-16">
+                                    <input autocomplete="off" type="text" placeholder="請選擇" class="js-search js-dd-focus" readonly/>
+                                </div>
+                            </div>
+                            <div class="searchMenu-loc__field shadow-2 js-popup-window" data-x-dd="searchMenu-loc" data-x-dd-toggle="-is-active">
+
+                                @* dropdownlist *@
+                                <div class="bg-white px-0 py-0 sm:px-0 sm:py-15 rounded-4">
+                                    <div class="y-gap-5 js-results">
+
+
+                                        <div>
+                                            <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option" onclick="regionChange(this);">
+                                                <div class="d-flex">
+                                                    <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                    <div class="ml-10">
+                                                        <div class="text-15 lh-12 fw-500 js-search-option-target" style="font-weight: bold;">亞洲</div>
+                                                        <div class="text-14 lh-12 text-light-1 mt-5">台灣、日本、中國..</div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        <div>
+                                            <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option" onclick="regionChange(this);">
+                                                <div class="d-flex">
+                                                    <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                    <div class="ml-10">
+                                                        <div class="text-15 lh-12 fw-500 js-search-option-target" style="font-weight: bold;">北美洲</div>
+                                                        <div class="text-14 lh-12 text-light-1 mt-5">美國、加拿大..</div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        <div>
+                                            <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option" onclick="regionChange(this);">
+                                                <div class="d-flex">
+                                                    <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                    <div class="ml-10">
+                                                        <div class="text-15 lh-12 fw-500 js-search-option-target" style="font-weight: bold;">中南美洲</div>
+                                                        <div class="text-14 lh-12 text-light-1 mt-5">巴西、阿根廷、智利..</div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        <div>
+                                            <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option" onclick="regionChange(this);">
+                                                <div class="d-flex">
+                                                    <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                    <div class="ml-10">
+                                                        <div class="text-15 lh-12 fw-500 js-search-option-target" style="font-weight: bold;">歐洲</div>
+                                                        <div class="text-14 lh-12 text-light-1 mt-5">荷蘭、奧地利..</div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        <div>
+                                            <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option" onclick="regionChange(this);">
+                                                <div class="d-flex">
+                                                    <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                    <div class="ml-10">
+                                                        <div class="text-15 lh-12 fw-500 js-search-option-target" style="font-weight: bold;">非洲</div>
+                                                        <div class="text-14 lh-12 text-light-1 mt-5">埃及、奈及利亞..</div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        <div>
+                                            <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option" onclick="regionChange(this);">
+                                                <div class="d-flex">
+                                                    <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                    <div class="ml-10">
+                                                        <div class="text-15 lh-12 fw-500 js-search-option-target" style="font-weight: bold;">大洋洲</div>
+                                                        <div class="text-14 lh-12 text-light-1 mt-5">澳洲、紐西蘭..</div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="searchMenu-loc px-30 lg:py-20 lg:px-0 js-form-dd js-liverSearch">
+                            <div data-x-dd-click="searchMenu-loc">
+                                <h4 class="text-15 fw-500 ls-2 lh-16" style="font-weight: bold;">國家</h4>
+                                <div class="text-15 text-light-1 ls-2 lh-16">
+                                    <input autocomplete="off" type="search" placeholder="請選擇" class="js-search js-dd-focus" readonly id="countryInput"/>
+                                </div>
+                            </div>
+                            <div class="searchMenu-loc__field shadow-2 js-popup-window" data-x-dd="searchMenu-loc" data-x-dd-toggle="-is-active" id="countryWindow">
+
+                                <div class="bg-white px-0 py-0 sm:px-0 sm:py-15 rounded-4">
+                                    <div class="y-gap-5 js-results" id="countryList">
+                                       
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="px-30 lg:py-20 lg:px-0 ">
+                            <div >
+                                <h4 class="text-15 fw-500 ls-2 lh-16" style="font-weight: bold;">關鍵字</h4>
+
+                                <div class="text-15 text-light-1 ls-2 lh-16">
+                                    <input autocomplete="off" id="keyword" type="text" placeholder="請輸入關鍵字" class="js-search js-dd-focus" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <a asp-area="Customer" asp-controller="Visa" asp-action="List" id="search" style="display:none;"></a>
+                        <div class="button-item">
+                            <button class="mainSearch__submit button -dark-1 h-60 px-35 col-12 rounded-100 bg-blue-1 text-white" onclick="searchbar();">
+                                <i class="icon-search text-20 mr-10"></i>
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="layout-pt-lg layout-pb-md">
+    <div class="container">
+
+        <div data-anim="slide-up delay-1" class="row y-gap-20 justify-between items-end is-in-view">
+            <div class="col-auto">
+                <div class="sectionTitle -md">
+                    <h2 class="sectionTitle__title">快速前往</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative pt-40 sm:pt-20 js-section-slider swiper-initialized swiper-horizontal swiper-pointer-events swiper-autoheight swiper-watch-progress swiper-backface-hidden is-in-view" data-gap="30" data-scrollbar="" data-slider-cols="base-2 xl-4 lg-3 md-2 sm-2 base-1" data-anim="slide-up delay-2">
+            <div class="swiper-wrapper" id="swiper-wrapper-10e337f7291107318f" aria-live="polite" style="height: 400px; transition-duration: 0ms; transform: translate3d(-285px, 0px, 0px);">
+                @{
+                    var CarouselIndex = 1;
+                    var l = ViewBag.Regions.Count;
+                }
+                @foreach (var region in ViewBag.Regions)
+                {
+                    <div class="swiper-slide swiper-slide-prev" role="group" aria-label="@CarouselIndex / @l" style="width: 255px; margin-right: 30px;">
+
+                        <div class="citiesCard -type-1 d-block rounded-4 ">
+                            <div class="citiesCard__image ratio ratio-3:4">
+                                <img src="/VRegion/@(region).jpg" alt="image" class="js-lazy loaded" data-ll-status="loaded" style="object-fit: cover;">
+                            </div>
+
+                            <div class="citiesCard__content d-flex flex-column justify-between text-center pt-10 pb-20 px-20">
+                                <div class="citiesCard__bg"></div>
+
+                                <h4 class="text-26 md:text-20 lh-13 text-white mb-0">@region</h4>
+
+                                <div class="citiesCard__top">
+                                    <div class="text-14 text-white">
+                                        @foreach (var country in ViewData[(region)])
+                                        {
+                                            if (country is string)
+                                            {
+                                                <a class="nav-link text-white" onclick="SaveCountryLocalStorage('@country');" asp-area="Customer" asp-controller="Visa" asp-action="List">@country</a>
+
+                                                <br />
+                                            }
+                                            else
+                                            {
+                                                <a class="nav-link text-white" onclick="SaveCountryLocalStorage('@country.FCountry');" asp-area="Customer" asp-controller="Visa" asp-action="List">@country.FCountry</a>
+
+                                                <br />
+                                            }
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="citiesCard__bottom">
+                                    @* <button class="button col-12 h-60 -blue-1 bg-white text-dark-1">Discover</button> *@
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    CarouselIndex++;
+                }
+            </div>
+
+
+            <button class="section-slider-nav -prev flex-center button -blue-1 bg-white shadow-1 size-40 rounded-full sm:d-none js-prev" tabindex="0" aria-label="Previous slide" aria-controls="swiper-wrapper-10e337f7291107318f" aria-disabled="false">
+                <i class="icon icon-chevron-left text-12"></i>
+            </button>
+
+            <button class="section-slider-nav -next flex-center button -blue-1 bg-white shadow-1 size-40 rounded-full sm:d-none js-next swiper-button-disabled" tabindex="-1" aria-label="Next slide" aria-controls="swiper-wrapper-10e337f7291107318f" aria-disabled="true" disabled="">
+                <i class="icon icon-chevron-right text-12"></i>
+            </button>
+
+
+            <div class="slider-scrollbar bg-light-2 mt-40 sm:d-none js-scrollbar" style="transition-duration: 0ms;"><div class="swiper-scrollbar-drag" style="transform: translate3d(588.142px, 0px, 0px); transition-duration: 0ms; width: 547.6px;"></div></div>
+
+            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+        </div>
+    </div>
+</section>
+
+
+<section class="layout-pt-md layout-pb-md">
+    <div data-anim-wrap="" class="container animated">
+        <div data-anim-child="slide-up delay-1" class="row y-gap-20 justify-between items-end is-in-view">
+            <div class="col-auto">
+                <div class="sectionTitle -md">
+                    <h2 class="sectionTitle__title">熱門申辦項目</h2>
+                </div>
+            </div>
+
+            <div class="col-auto">
+
+                <div class="d-flex x-gap-15 items-center justify-center pt-40 sm:pt-20">
+                    <div class="col-auto">
+                        <button class="d-flex items-center text-24 arrow-left-hover js-places-prev swiper-button-disabled" disabled="" tabindex="-1" aria-label="Previous slide" aria-controls="swiper-wrapper-e19e65aa879410ed5" aria-disabled="true">
+                            <i class="icon icon-arrow-left"></i>
+                        </button>
+                    </div>
+
+                    <div class="col-auto">
+                        <div class="pagination -dots text-border js-places-pag swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"><div class="pagination__item is-active" tabindex="0" role="button" aria-label="Go to slide 1" aria-current="true"></div><div class="pagination__item" tabindex="0" role="button" aria-label="Go to slide 2"></div><div class="pagination__item" tabindex="0" role="button" aria-label="Go to slide 3"></div><div class="pagination__item" tabindex="0" role="button" aria-label="Go to slide 4"></div><div class="pagination__item" tabindex="0" role="button" aria-label="Go to slide 5"></div><div class="pagination__item" tabindex="0" role="button" aria-label="Go to slide 6"></div></div>
+                    </div>
+
+                    <div class="col-auto">
+                        <button class="d-flex items-center text-24 arrow-right-hover js-places-next" tabindex="0" aria-label="Next slide" aria-controls="swiper-wrapper-e19e65aa879410ed5" aria-disabled="false">
+                            <i class="icon icon-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="pt-40 overflow-hidden js-section-slider swiper-initialized swiper-horizontal swiper-pointer-events swiper-autoheight swiper-watch-progress swiper-backface-hidden" data-gap="30" data-slider-cols="xl-5 lg-3 md-2 sm-2 base-1" data-nav-prev="js-places-prev" data-pagination="js-places-pag" data-nav-next="js-places-next">
+            <div class="swiper-wrapper" id="swiper-wrapper-e19e65aa879410ed5" aria-live="polite" style="height: 372px;">
+
+                <div data-anim-child="slide-left delay-4" class="swiper-slide is-in-view swiper-slide-visible swiper-slide-active" role="group" aria-label="1 / 8" style="width: 290px; margin-right: 30px;">
+
+                    <a class="citiesCard -type-2 " onclick="SaveCountryLocalStorage('台灣');" asp-area="Customer" asp-controller="Visa" asp-action="List">
+                        <div class="citiesCard__image rounded-4 ratio ratio-3:4">
+                            <img class="img-ratio rounded-4 js-lazy loaded" src="/VRegion/台灣.jpg" alt="image" data-ll-status="loaded">
+                        </div>
+
+                        <div class="citiesCard__content mt-10">
+                            <h4 class="text-18 lh-13 fw-500 text-dark-1">台灣護照或相關證件</h4>
+                        </div>
+                    </a>
+
+                </div>
+
+                <div data-anim-child="slide-left delay-5" class="swiper-slide is-in-view swiper-slide-visible swiper-slide-next" role="group" aria-label="2 / 8" style="width: 290px; margin-right: 30px;">
+
+                    <a class="citiesCard -type-2 " onclick="SaveCountryLocalStorage('中國');" asp-area="Customer" asp-controller="Visa" asp-action="List">
+                        <div class="citiesCard__image rounded-4 ratio ratio-3:4">
+                            <img class="img-ratio rounded-4 js-lazy loaded" src="/VRegion/中國.jpg" alt="image" data-ll-status="loaded">
+                        </div>
+
+                        <div class="citiesCard__content mt-10">
+                            <h4 class="text-18 lh-13 fw-500 text-dark-1">台胞證</h4>
+                        </div>
+                    </a>
+
+                </div>
+
+                <div data-anim-child="slide-left delay-6" class="swiper-slide is-in-view swiper-slide-visible" role="group" aria-label="3 / 8" style="width: 290px; margin-right: 30px;">
+
+                    <a class="citiesCard -type-2 " onclick="SaveCountryLocalStorage('泰國');" asp-area="Customer" asp-controller="Visa" asp-action="List">
+                        <div class="citiesCard__image rounded-4 ratio ratio-3:4">
+                            <img class="img-ratio rounded-4 js-lazy loaded" src="/VRegion/泰國.jpg" alt="image" data-ll-status="loaded">
+                        </div>
+
+                        <div class="citiesCard__content mt-10">
+                            <h4 class="text-18 lh-13 fw-500 text-dark-1">泰國簽證</h4>
+                        </div>
+                    </a>
+
+                </div>
+
+                <div data-anim-child="slide-left delay-7" class="swiper-slide is-in-view" role="group" aria-label="4 / 8" style="width: 290px; margin-right: 30px;">
+
+                    <a class="citiesCard -type-2 " onclick="SaveCountryLocalStorage('印度');" asp-area="Customer" asp-controller="Visa" asp-action="List">
+                        <div class="citiesCard__image rounded-4 ratio ratio-3:4">
+                            <img class="img-ratio rounded-4 js-lazy loaded" src="/VRegion/印度.jpg" alt="image" data-ll-status="loaded">
+                        </div>
+
+                        <div class="citiesCard__content mt-10">
+                            <h4 class="text-18 lh-13 fw-500 text-dark-1">印度簽證</h4>
+                        </div>
+                    </a>
+
+                </div>
+
+                <div data-anim-child="slide-left delay-8" class="swiper-slide is-in-view" role="group" aria-label="5 / 8" style="width: 290px; margin-right: 30px;">
+
+                    <a class="citiesCard -type-2 " onclick="SaveCountryLocalStorage('美國');" asp-area="Customer" asp-controller="Visa" asp-action="List">
+                        <div class="citiesCard__image rounded-4 ratio ratio-3:4">
+                            <img class="img-ratio rounded-4 js-lazy loaded" src="/VRegion/美國.jpg" alt="image" data-ll-status="loaded">
+                        </div>
+
+                        <div class="citiesCard__content mt-10">
+                            <h4 class="text-18 lh-13 fw-500 text-dark-1">美國簽證</h4>
+                        </div>
+                    </a>
+
+                </div>
+
+                <div data-anim-child="slide-left delay-9" class="swiper-slide is-in-view" role="group" aria-label="6 / 8" style="width: 290px; margin-right: 30px;">
+
+                    <a class="citiesCard -type-2 " onclick="SaveCountryLocalStorage('巴西');" asp-area="Customer" asp-controller="Visa" asp-action="List">
+                        <div class="citiesCard__image rounded-4 ratio ratio-3:4">
+                            <img class="img-ratio rounded-4 js-lazy" data-src="/VRegion/巴西.jpg" src="#" alt="image">
+                        </div>
+
+                        <div class="citiesCard__content mt-10">
+                            <h4 class="text-18 lh-13 fw-500 text-dark-1">巴西簽證</h4>
+                        </div>
+                    </a>
+
+                </div>
+
+                <div data-anim-child="slide-left delay-10" class="swiper-slide is-in-view" role="group" aria-label="7 / 8" style="width: 290px; margin-right: 30px;">
+
+                    <a class="citiesCard -type-2 " onclick="SaveCountryLocalStorage('杜拜');" asp-area="Customer" asp-controller="Visa" asp-action="List">
+                        <div class="citiesCard__image rounded-4 ratio ratio-3:4">
+                            <img class="img-ratio rounded-4 js-lazy" data-src="/VRegion/杜拜.jpg" src="#" alt="image">
+                        </div>
+
+                        <div class="citiesCard__content mt-10">
+                            <h4 class="text-18 lh-13 fw-500 text-dark-1">杜拜簽證</h4>
+                        </div>
+                    </a>
+
+                </div>
+
+                <div data-anim-child="slide-left delay-11" class="swiper-slide is-in-view" role="group" aria-label="8 / 8" style="width: 290px; margin-right: 30px;">
+
+                    <a class="citiesCard -type-2 " onclick="SaveCountryLocalStorage('越南');" asp-area="Customer" asp-controller="Visa" asp-action="List">
+                        <div class="citiesCard__image rounded-4 ratio ratio-3:4">
+                            <img class="img-ratio rounded-4 js-lazy" data-src="/VRegion/越南.jpg" src="#" alt="image">
+                        </div>
+
+                        <div class="citiesCard__content mt-10">
+                            <h4 class="text-18 lh-13 fw-500 text-dark-1">越南簽證</h4>
+                        </div>
+                    </a>
+
+                </div>
+
+            </div>
+            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        let currentDropdownCountry = '';
+        var allCountries = @Html.Raw(Json.Serialize(ViewData["國家列表"]));
+
+        function regionChange(e) {
+            const r = e.firstElementChild.lastElementChild.firstElementChild.innerText;
+            const FilterdC = allCountries.filter(c => {
+                return c.fRegion === r;
+            })
+            console.log(FilterdC);
+            if (FilterdC.length > 0) {
+                const countryList = document.getElementById('countryList');
+                let listHTML = ``;
+                for (var c of FilterdC) {
+                    listHTML += `<div>
+                                    <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option" onclick="countryChange(this)">
+                                        <div class="d-flex">
+                                            <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                            <div class="ml-10 d-flex align-items-center">
+                                                <div class="text-15 lh-12 fw-500 js-search-option-target" style="font-weight: bold;">${c.fCountry}</div>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </div>`;
+                }
+                countryList.innerHTML = listHTML;
+            }
+            const countryInput = document.getElementById('countryInput');
+            countryInput.value = null;
+        }
+
+        function countryChange(e) {
+            const countryWindow = document.getElementById('countryWindow');
+            const countryInput = document.getElementById('countryInput');
+            const c = e.firstElementChild.lastElementChild.firstElementChild.innerText;
+            currentDropdownCountry = c;
+            console.log(c);
+            countryInput.value = c;
+            countryWindow.classList.remove('-is-active');
+        }
+
+        function SaveCountryLocalStorage(country) {
+            // 清空localStorage
+            localStorage.clear();
+
+            // 將要存儲到本地存儲的資料
+            var dataToSave = { key: country };
+
+            // 將資料轉換為 JSON 字符串並存儲到本地存儲中
+            localStorage.setItem('country', JSON.stringify(dataToSave));
+        }
+
+        function searchbar() {
+            const countryInput = document.getElementById('countryInput').value;
+            const keyword = document.getElementById('keyword').value;
+            const search = document.getElementById('search');
+            if (keyword) {
+                // 清空localStorage
+                //localStorage.clear();
+
+                // 將要存儲到本地存儲的資料
+                var dataToSave = { key: keyword };
+
+                // 將資料轉換為 JSON 字符串並存儲到本地存儲中
+                localStorage.setItem('keyword', JSON.stringify(dataToSave));
+
+                search.click();
+            } else if (countryInput) {
+                // 清空localStorage
+                localStorage.clear();
+
+                // 將要存儲到本地存儲的資料
+                var dataToSave = { key: countryInput };
+
+                // 將資料轉換為 JSON 字符串並存儲到本地存儲中
+                localStorage.setItem('country', JSON.stringify(dataToSave));
+
+                search.click();
+            }
+        }
+    </script>
+}

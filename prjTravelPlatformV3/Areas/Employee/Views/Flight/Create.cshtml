@@ -1,0 +1,191 @@
+﻿<h3 class="m-4 mb-5"> 新增航班</h3>
+
+<form id="flightForm" class="mx-5">
+    @Html.AntiForgeryToken()
+    <div class="col-md-4">
+        <label for="fScheduleId" class="form-label" style="display:none">Id</label>
+    </div>
+    <div class="col-md-4">
+        <label for="fAirlineId" class="form-label">航空公司</label><br />
+        <select id="fAirlineId" name="fAirlineId" class="form-select" required>
+        </select>
+        @* <input type="text" class="form-control" id="fAirlineId" name="fAirlineId" /> *@
+    </div>
+    <div class="col-md-4">
+        <label for="fFlightName" class="form-label">航班代碼</label>
+        <input type="text" class="form-control" id="fFlightName" name="fFlightName" required />
+    </div>
+    <div class="col-md-4">
+        <label for="fDepartureTime" class="form-label">起飛時間</label>
+        <input type="datetime-local" class="form-control" id="fDepartureTime" name="fDepartureTime" required />
+    </div>
+    <div class="col-md-4">
+        <label for="fArrivalTime" class="form-label">降落時間</label>
+        <input type="datetime-local" class="form-control" id="fArrivalTime" name="fArrivalTime" required />
+    </div>
+    <div class="col-md-4">
+        <label for="fDepartureId" class="form-label">起飛地</label><br />
+        <select id="fDepartureId" name="fDepartureId" class="form-select" required>
+        </select>
+        @* <input type="text" class="form-control" id="fDepartureId" name="fDepartureId" /> *@
+    </div>
+    <div class="col-md-4">
+        <label for="fDestinationId" class="form-label">降落地</label><br />
+        <select id="fDestinationId" name="fDestinationId" class="form-select" required>
+        </select>
+        @* <input type="text" class="form-control" id="fDestinationId" name="fDestinationId" /> *@
+    </div>
+    <div class="col-md-4">
+        <label for="fClassId" class="form-label">艙等</label><br />
+        <select id="fClassId" name="fClassId" class="form-select" required>
+        </select>
+        @* <input type="text" class="form-control" id="fClassId" name="fClassId" /> *@
+    </div>
+    <div class="col-md-4">
+        <label for="fTicketPrice" class="form-label">定價</label>
+        <input type="text" class="form-control" id="fTicketPrice" name="fTicketPrice" required />
+        <div class="alert alert-warning" id="divWarning" style="display:none"></div>
+    </div>
+    <div class="col-md-4">
+        <label for="fQty" class="form-label">數量</label>
+        <input type="text" class="form-control" id="fQty" name="fQty" required />
+        <div class="alert alert-warning" id="divWarning" style="display:none"></div>
+    </div>
+    <button type="button" id="btnSubmit" class="btn btn-primary my-5">新增</button>
+    <button type="reset" id="btnCancel" class="btn btn-secondary my-5">清除</button>
+    <button type="button" id="btnBack" class="btn btn-secondary my-5">返回</button>
+</form>
+
+@section Scripts {
+
+    <script>
+        var airport = [];
+
+        (async () => {
+            //option載入
+            await dr_airline();
+            await dr_airport();
+            await dr_class();
+        })();
+
+        const btnSubmit = document.querySelector('#btnSubmit');
+        const btnBack = document.querySelector('#btnBack');
+
+        //返回按鈕
+        btnBack.addEventListener('click', () => {
+            window.location.href = '/employee/flight';
+        })
+
+        //新增按鈕
+        btnSubmit.addEventListener('click', async (event) => {
+            event.preventDefault();
+
+            let isValid = [...document.forms].map(e => e.reportValidity()).every(e => e);
+            if (!isValid) { return; }
+            //按下送出後資料會被塞入formData
+            const formData = new FormData(document.querySelector('#flightForm'))
+
+            const url = `@Url.Content("~/api/Flight/CreateFlight")`;
+            const response = await fetch(url, {
+                "method": "POST",
+                "body": formData
+            })
+            const data = await response.text();
+
+            //Swal.fire提示框，若資料儲存成功則顯示成功，失敗則顯示error並根據data的文字顯示給使用者失敗提示
+            Swal.fire({
+                title: data === '資料新增成功' ? 'Success' : 'Error',
+                text: data,
+                icon: data === '資料新增成功' ? 'success' : 'error'
+            }).then((result) => {
+                if (result.isConfirmed && data === '資料新增成功') {
+                    window.location.href = '/Employee/Flight';
+                }
+            });
+        })
+
+        ///起飛地跟降落地不相等
+        const btnCancel = document.querySelector('#btnCancel');
+        const select_Dep = document.querySelector('#fDepartureId');
+        const select_Dest = document.querySelector('#fDestinationId');
+
+        //按下清除時選項重置回初始
+        btnCancel.addEventListener('click', () => {
+            let conHTML = `<option value=''>請選擇</option>`;
+            airport.forEach((item, index) => {
+                conHTML += `<option value=${item.Value}>${item.Text}</option>`
+            })
+            select_Dest.innerHTML = conHTML;
+            select_Dep.innerHTML = conHTML;
+        })
+
+        //當選了起飛地，降落地選項自動拔除起飛地所選的選項
+        select_Dep.addEventListener('change', () => {
+            const tmp_val = select_Dest.value;
+            let conHTML = `<option value=''>請選擇</option>`;
+            airport.filter(x => x.Value != select_Dep.options[select_Dep.selectedIndex].value).forEach((item, index) => {
+                conHTML += `<option value=${item.Value}>${item.Text}</option>`
+            })
+            select_Dest.innerHTML = conHTML;
+            select_Dest.value = tmp_val;
+        })
+
+        //當選了降落地，起飛地選項自動拔除降落地所選的選項
+        select_Dest.addEventListener('change', () => {
+            const tmp_val = select_Dep.value;
+            let conHTML = `<option value=''>請選擇</option>`;
+            airport.filter(x => x.Value != select_Dest.options[select_Dest.selectedIndex].value).forEach((item, index) => {
+                conHTML += `<option value=${item.Value}>${item.Text}</option>`
+            })
+            select_Dep.innerHTML = conHTML;
+            select_Dep.value = tmp_val;
+        })
+
+
+        //填充航空公司選項
+        async function dr_airline() {
+            const response = await fetch('/api/Flight/dr_airline')
+            const data = await response.json();   //呼叫API得到JArray
+            //console.log(data);
+
+            let dr = document.getElementById('fAirlineId');
+            let conHTML = `<option value=''>請選擇</option>`;
+            data.forEach(( item, index ) => {
+                conHTML += `<option value=${item.Value}>${item.Text}</option>`
+            })
+            dr.innerHTML = conHTML;
+        }
+        //填充機場選項
+        async function dr_airport() {
+            const response = await fetch('/api/Flight/dr_airport')
+            const data = await response.json();
+
+            let dr_departure = document.getElementById('fDepartureId');
+            let dr_destination = document.getElementById('fDestinationId');
+
+            let conHTML = `<option value=''>請選擇</option>`;
+            data.forEach((item, index) => {
+                conHTML += `<option value=${item.Value}>${item.Text}</option>`
+                airport.push({ "Text": item.Text , "Value": item.Value });
+            })
+
+            dr_departure.innerHTML = conHTML;
+            dr_destination.innerHTML = conHTML;
+        }
+        //填充艙等選項
+        async function dr_class() {
+            const response = await fetch('/api/Flight/dr_class')
+            const data = await response.json();
+
+            let dr = document.getElementById('fClassId');
+            dr.innerHTML = '';
+            let conHTML = '';
+            data.forEach((item, index) => {
+                conHTML += `<option value=${item.Value}>${item.Text}</option>`
+            })
+            dr.innerHTML = conHTML;
+        }
+        //await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+    </script>
+}

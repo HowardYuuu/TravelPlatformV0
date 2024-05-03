@@ -1,0 +1,70 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.Discount.CouponViewModel
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="example1ModalLabel">@ViewBag.title</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div id="divModalContent" class="modal-body">
+    <form id="@ViewBag.formId">
+        @Html.AntiForgeryToken()
+
+        <input asp-for="CouponId" style="display:none" />
+
+        <div class="mb-3">
+            <label asp-for="CouponCode" class="form-label">@Html.DisplayNameFor(h=>h.CouponCode)</label>
+            <input asp-for="CouponCode" class="form-control" />
+            <span asp-validation-for="CouponCode" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="CouponName" class="form-label">@Html.DisplayNameFor(h=>h.CouponName)</label>
+            <input asp-for="CouponName" class="form-control">
+            <span asp-validation-for="CouponName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Amount" class="form-label">@Html.DisplayNameFor(h=>h.Amount)</label>
+            <input asp-for="Amount" class="form-control">
+            <span asp-validation-for="Amount" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Rule" class="form-label">@Html.DisplayNameFor(h=>h.Rule)</label>
+            <input asp-for="Rule" class="form-control">
+            <span asp-validation-for="Rule" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ProductType" class="form-label">@Html.DisplayNameFor(h=>h.ProductType)</label>
+            <input asp-for="ProductType" class="form-control">
+            <span asp-validation-for="ProductType" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Discount" class="form-label">@Html.DisplayNameFor(h=>h.Discount)</label>
+            <input asp-for="Discount" class="form-control">
+            <span asp-validation-for="Discount" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Enable" class="form-label">@Html.DisplayNameFor(h=>h.Enable)</label>
+            <input asp-for="Enable" class="form-control">
+            <span asp-validation-for="Enable" class="text-danger"></span>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            <button type="button" class="btn btn-primary" id="btnSave" onclick='sendFetchRequest("@ViewBag.formId")'>儲存</button>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+
+
+    </script>
+}

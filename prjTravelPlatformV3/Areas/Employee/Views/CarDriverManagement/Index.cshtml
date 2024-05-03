@@ -1,0 +1,256 @@
+﻿@model IEnumerable<prjTravelPlatformV3.Models.TRdriverInfo>
+@{
+    ViewData["Title"] = "駕駛資料管理";
+}
+@section Styles {
+    <link href="~/lib/datatables/css/jquery.datatables.css" rel="stylesheet" />
+    <style>
+        thead {
+            background-color: lightslategrey;
+            color: black;
+        }
+    </style>
+}
+<h3>駕駛資料管理</h3>
+<button id="createModel" type="button" class="btn btn-info" style="font-size:14px;" data-bs-toggle="modal" data-bs-target="#driverModalPartial" onclick="getEditPartial(0)"><i class="fa-solid fa-circle-plus"></i> 新增駕駛</button>
+<table class="table" id="tbCarDriver">
+    <thead>
+        <tr>
+            <th style="display: none">id</th>
+            <th>身分證字號</th>
+            <th>駕駛姓名</th>
+            <th>聯絡電話</th>
+            <th>駕照</th>
+            <th style="width:50px">功能</th>
+        </tr>
+    </thead>
+</table>
+<!--Modal-->
+<div class="modal fade" id="driverModalPartial" tabindex=" -1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="edit-modal">
+                @*引入partial*@
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--Modal2-->
+<div class="modal fade" id="driverModalPartial2" tabindex=" -1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="delete-modal">
+                @*引入partial*@
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="//cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+        const editModal = document.getElementById("edit-modal");
+        const createModal = document.getElementById("create-modal");
+        const deleteModal = document.getElementById("delete-modal");
+
+        const loadDriverData = () => {
+            $(document).ready(function () {
+                $('#tbCarDriver').dataTable({
+                    autoWidth: false,
+                    ajax: {
+                        type: 'GET',
+                        url: "/api/CarRent/Drivers",
+                        dataSrc: function (json) { return json; }
+                    },
+                    columns: [
+                        { "data": "fDriverId", "visible": false },
+                        { "data": "fId" },
+                        { "data": "fName" },
+                        { "data": "fPhone" },
+                        {
+                            data: null,
+                            render: function (data, type, row) {
+                                // 檢查 fLicenseImagePath 是否為空
+                                if (!row.fLicenseImagePath || row.fLicenseImagePath.trim() === '') {
+                                    // 如果是空值，設置預設圖片路徑
+                                    return `<img src="/img/noimage.jpg" style="width:240px" />`;
+                                } else {
+                                    // 如果不是空值，使用 fLicenseImagePath 的圖片路徑
+                                    return `<img src="/img/${row.fLicenseImagePath}" style="width:240px" />`;
+                                }
+                            }
+                        },
+                        {
+                            data: null,
+                            title: "功能",
+                            render: function (data, type, row) {
+                                return `<button id="createModel" type = "button" class="btn btn-primary btn-sm me-1" data-bs-toggle="modal" data-bs-target="#driverModalPartial" onclick="getEditPartial(${row.fDriverId})"><i class="fa-solid fa-pen-to-square" style="font-size:0.8rem"></i> 編輯</button> ` +
+                                    `<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#driverModalPartial2" onclick="getDeletePartial(${row.fDriverId})"><i class="fa-solid fa-trash" style="font-size:0.8rem"></i> 刪除</button>`
+                            }
+                        },
+                    ],
+                    fixedHeader: { header: true },
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json'
+                    },
+                })
+            })
+        }
+
+        const getEditPartial = async (id) => {
+            const response = await fetch(`@Url.Content("~/Employee/CarDriverManagement/GetPartial")?id=${id}`);
+            const data = await response.text();
+            editModal.innerHTML = data
+        }
+
+        const getDeletePartial = async (id) => {
+            const response = await fetch(`@Url.Content("~/Employee/CarDriverManagement/GetDeletePartial")?id=${id}`);
+            const data = await response.text();
+            deleteModal.innerHTML = data
+        }
+
+        //預覽圖片
+        function previewImage(input) {
+            var preview = document.getElementById('imagePreview');
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.src = '#';
+                preview.style.display = 'none';
+            }
+        }
+
+
+        //根據傳入的action name呼叫對應的api
+        const sendFetchRequest = async (actionName) => {
+            //抓取目前的form id
+            const formId = document.querySelector("form").getAttribute('id');
+            //目前的form id的DOM元素
+            const formIdDOM = document.getElementById(`${formId}`)
+            //新增form data物件
+            const formData = new FormData(formIdDOM);
+            //取得防偽標籤
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            try {
+                const res = await fetch(`@Url.Content("~/api/CarRent/")` + actionName, {
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    body: formData,
+                    method: 'POST'
+                });
+                if (!res.ok) {
+                    throw new Error(`${res.status}`)
+                }
+                const data = await res.json();
+
+                if (data.success) {
+                    console.log(data);
+                    //關閉modal
+                    var myModal = bootstrap.Modal.getInstance(driverModalPartial);
+                    myModal.hide();
+                    //顯示訊息
+                    Swal.fire({
+                        title: "Success",
+                        text: data.message,
+                        icon: "success"
+                    });
+                    //刷新datatable
+                    $('#tbCarDriver').DataTable().ajax.reload();
+                } else {
+                    //依自己的form增加需要驗證的欄位(驗證規則在partial view中)
+                    const errorId = document.querySelector(`[data-valmsg-for="fId"]`);
+                    const errorName = document.querySelector(`[data-valmsg-for="fName"]`);
+                    const errorPhone = document.querySelector(`[data-valmsg-for="fPhone"]`);
+                    if (errorId) {
+                        errorId.textContent = data.errors.fId[0];
+                    }
+                    if (errorName) {
+                        errorName.textContent = data.errors.fName[0];
+                    }
+                    if (errorPhone) {
+                        errorPhone.textContent = data.errors.fPhone[0];
+                    }
+                }
+            } catch (error) {
+                Swal.fire({
+                    title: "error",
+                    text: error.message,
+                    icon: "error"
+                });
+            }
+
+        }
+
+
+        const deleteDriver = async (id) => {
+            try {
+                const confirmation = await Swal.fire({
+                    title: '確認刪除',
+                    text: '您確定要刪除此車型嗎？',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: '是的，刪除它！'
+                });
+
+                if (confirmation.isConfirmed) {
+                    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                    const response = await fetch(`/api/CarRent/DeleteDriver/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': token
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success) {
+                            // 刪除成功後關閉 modal
+                            var myModal = bootstrap.Modal.getInstance(driverModalPartial2);
+                            myModal.hide();
+
+                            Swal.fire({
+                                title: '刪除成功',
+                                text: data.message,
+                                icon: 'success'
+                            });
+                            $('#tbCarDriver').DataTable().ajax.reload();
+                        } else {
+                            Swal.fire({
+                                title: '刪除失敗',
+                                text: data.message,
+                                icon: 'error'
+                            });
+                        }
+                    } else {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                }
+            } catch (error) {
+                Swal.fire({
+                    title: '錯誤',
+                    text: error.message,
+                    icon: 'error'
+                });
+            }
+        };
+
+
+        $(document).ready(() => {
+            loadDriverData();
+        })
+
+    </script>
+}

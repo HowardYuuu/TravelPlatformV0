@@ -1,0 +1,128 @@
+﻿@model IEnumerable<prjTravelPlatformV3.Models.TIorderView>
+@{
+    ViewData["Title"] = "實體商品管理";
+}
+
+@section Styles {
+    <link href="~/lib/datatables/css/jquery.datatables.css" rel="stylesheet" />
+    <style>
+        thead {
+            background-color: lightslategrey;
+            color: black;
+        }
+
+        table {
+            text-align: center; /* 讓表格內容文字置中 */
+        }
+
+        th, td {
+            text-align: center; /* 讓表格中的每個單元格文字置中 */
+        }
+    </style>
+}
+
+<h1>訂單管理</h1>
+<table class="table" id="tbOrder">
+    <thead>
+        <tr>
+            <th style="display: none">編號</th>
+            <th>訂單編號</th>
+            <th>廠商名稱</th>
+            <th>會員編號</th>
+            <th>會員名稱</th>
+            <th>訂單成立日期</th>
+            <th>付款方式</th>
+            <th>優惠券名稱</th>
+            <th>訂單總金額</th>
+            <th>訂單狀態</th>
+            <th style="width:50px">功能</th>
+        </tr>
+    </thead>
+</table>
+
+<!--Modal-->
+<div class="modal fade" id="hotelPartial" tabindex=" -1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="edit-modal">
+                @*引入partial*@
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="//cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#tbOrder").dataTable(
+                {
+                    autoWidth: false,
+                    ajax: {
+                        type: 'GET',
+                        url: "/api/Product/GetProductOrder",
+                        dataSrc: function (json) { return json; }
+                    },
+                    columns: [
+                        { "data": "fId", "visible": false },
+                        {
+                            "data": "fOrderId",
+                            "render": function (data, type, row) {
+                                return data + `<br><a href="#" class="order-detail-link" data-orderid="${data}">訂單明細</a>`;
+                            }
+                        },
+                        { "data": "fCompanyName" },
+                        { "data": "fCustomerId" },
+                        { "data": "fName" },
+                        { "data": "fOrderDate" },
+                        { "data": "fPayment" },
+                        { "data": "fCouponName" },
+                        { "data": "fTotal" },
+                        { "data": "fStatus" },
+                        {
+                            data: null,
+                            title: "功能",
+                            render: function (data, type, row) {
+                                return `<button id="t1" type = "button" class="btn btn-primary btn-sm me-1" data-bs-toggle="modal" data-bs-target="#hotelPartial" onclick="getEditPartial(${row.fHotelId})"><i class="fa-solid fa-pen-to-square" style="font-size:0.8rem"></i> 編輯</button> ` +
+                                    '<button type="button" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash" style="font-size:0.8rem"></i> 刪除</button>'
+                            }
+                        },
+                    ],
+                    fixedHeader: { header: true },
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json'
+                    },
+                });
+            $(document).on('click', '.order-detail-link', function () {
+                // 獲取訂單編號
+                var orderId = $(this).data('orderid');
+
+                // AJAX 請求，將 orderId 傳遞給 API Controller
+                $.ajax({
+                    type: 'GET',
+                    url: `/api/Product/GetDetailByOrderId?orderId=${orderId}`,
+                    success: function (data) {
+                        // 成功獲取數據後的處理
+                        // 這裡可以更新頁面上的資訊，例如填充訂單明細表格等
+                        console.log(data); // 可以在控制台檢查是否成功獲取到資料
+                        // 導航到訂單明細頁面
+                        window.location.href = `/Employee/IOrder/OrderDetail?orderId=${orderId}`;
+                    },
+                    error: function () {
+                        // 處理錯誤情況
+                        console.error('Failed to get order detail data');
+                    }
+                });
+            });
+
+        });
+
+
+    </script>
+}

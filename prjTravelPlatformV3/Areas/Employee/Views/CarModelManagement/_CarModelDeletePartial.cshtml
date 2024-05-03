@@ -1,0 +1,69 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.CarRent.CarModelViewModel
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">@ViewBag.title</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div id="divModalContent" class="modal-body">
+    <form id="@ViewBag.formId">
+        @Html.AntiForgeryToken()
+
+        <input asp-for="FModelId" style="display:none" />
+
+        <div class="mb-3">
+            <label asp-for="FModelName" class="form-label">@Html.DisplayNameFor(h => h.FModelName)</label>
+            <input asp-for="FModelName" class="form-control" readonly />
+            <span asp-validation-for="FModelName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="FNumOfLuggage" class="form-label">@Html.DisplayNameFor(h => h.FNumOfLuggage)</label>
+            <input asp-for="FNumOfLuggage" class="form-control" readonly>
+            <span asp-validation-for="FNumOfLuggage" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="FNumOfPsgr" class="form-label">@Html.DisplayNameFor(h => h.FNumOfPsgr)</label>
+            <input asp-for="FNumOfPsgr" class="form-control" readonly>
+            <span asp-validation-for="FNumOfPsgr" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="FRentalFee" class="form-label">@Html.DisplayNameFor(h => h.FRentalFee)</label>
+            <input asp-for="FRentalFee" class="form-control" value="@string.Format("{0:0}", Model.FRentalFee)" readonly>
+            <span asp-validation-for="FRentalFee" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="FImagePath" class="form-label">@Html.DisplayNameFor(h => h.FImagePath)</label>
+            <!-- 如果有現有的圖片，則顯示現有圖片 -->
+            @if (!string.IsNullOrEmpty(Model.FImagePath))
+            {
+                <img src="@Url.Content("~/img/" + Model.FImagePath)" class="img-thumbnail" alt="Image" style="max-width: 200px; max-height: 200px;" />
+            }
+        </div>
+        <div class="mb-3">
+            <label asp-for="FModelInUse" class="form-label">@Html.DisplayNameFor(h => h.FModelInUse)</label>
+            <div>
+                <input type="radio" id="FModelInUse_true" name="FModelInUse" value="true" @(Model.FModelInUse == true ? "checked" : "")>
+                <label for="FModelInUse_true" style="font-size:14px;">已啟用</label>
+                <input type="radio" id="FModelInUse_false" name="FModelInUse" value="false" @(Model.FModelInUse == false ? "checked" : "")>
+                <label for="FModelInUse_false" style="font-size:14px;">未啟用</label>
+            </div>
+            <span asp-validation-for="FModelInUse" class="text-danger"></span>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            <button type="button" class="btn btn-primary" id="btnDelete" onclick="deleteCarModel(@Model.FModelId)">刪除</button>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+
+
+    </script>
+}

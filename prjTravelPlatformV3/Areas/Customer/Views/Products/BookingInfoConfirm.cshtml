@@ -1,0 +1,767 @@
+﻿@{
+    ViewData["Title"] = "結帳";
+}
+@section Styles {
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/css/Itembootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="~/css/Itemstyle.css" rel="stylesheet">
+    <style>
+        th, td {
+            /* width: 20%; */ /* 設置寬度為父容器寬度的20% */
+            text-align: center;
+        }
+
+        input:not([type="range"]) {
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            width: 100%;
+            background-color: transparent;
+        }
+
+        .custom-input {
+            background-color: initial;
+            cursor: default;
+            appearance: auto !important;
+            box-sizing: border-box;
+            /* margin: 3px 3px 0px 5px; */
+            padding: initial;
+            border: initial;
+            width:5px;
+        }
+
+        .pt-40 {
+            padding-top: 15px !important;
+        }
+
+        .invalid-feedback {
+            display: none; /* 默认隐藏 */
+            color: red; /* 设置颜色为红色 */
+        }
+    </style>
+}
+<!-- Single Page Header start -->
+<div class="masthead__bg" style="position: relative">
+    <img src="~/img/Item/pbanner.jpg" style="filter: brightness(55%); width: 100%; height:300px; object-fit: cover;" />
+    <div class="text-center" style="position: absolute; top:60%; left:50%; transform:translate(-50%, -50%);">
+        <h1 class="text-30 fw-600 text-white">訂單資訊</h1>
+    </div>
+</div>
+<!-- Single Page Header End -->
+<main>
+    <section class="pt-40">
+        <div class="container">
+            <div class="row x-gap-40 y-gap-30 items-center">
+                <div class="col-auto">
+                    <div class="d-flex items-center">
+                        <div class="size-40 rounded-full flex-center bg-blue-1 text-white">1</div>
+                        <div class="text-18 fw-500 ml-10">確認訂單資訊</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="w-full h-1 bg-border"></div>
+                </div>
+                <div class="col-auto">
+                    <div class="d-flex items-center">
+                        <div class="size-40 rounded-full flex-center bg-blue-1-05 text-blue-1 fw-500">2</div>
+                        <div class="text-18 fw-500 ml-10">完成訂單</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="pt-40" id="dynamicContentSection">
+        <!-- 這裡動態生成的內容將插入 -->
+    </section>
+    <section class="pt-40">
+        <div class="container border-light" style="padding-top: 20px; padding-bottom: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+            <div class="d-flex align-items-center">
+                <!-- 使用 Flexbox -->
+                <h4 class="mb-0 me-4">付款方式:</h4>
+                <div class="mb-0">
+                    <input type="radio" class="custom-input me-2" id="credit" name="payment" value="1">
+                </div>
+                <div class="mb-0">
+                    <label for="credit" class="mb-0 me-2"> 信用卡</label> <!-- 添加 mb-0 me-2 类 -->
+                </div>
+                <div class="mb-0">
+                    <input type="radio" class="custom-input me-2" id="cash" name="payment" value="4">
+                </div>
+                <div class="mb-0">
+                    <label for="cash" class="mb-0 me-2"> 取貨付款</label> <!-- 添加 mb-0 me-2 类 -->
+                </div>
+                <div class="mb-0">
+                    <input type="radio" class="custom-input me-2" id="cash" name="payment" value="5">
+                </div>
+                <div class="mb-0">
+                    <label for="cash" class="mb-0 me-2"> 歐付寶</label> <!-- 添加 mb-0 me-2 类 -->
+                </div>
+            </div>
+        </div>
+        <div>
+            <form method="post" style="display:none" action="https://payment-stage.opay.tw/Cashier/AioCheckOut/V5">
+                <input type="text" name="MerchantID" />
+                <input type="text" name="MerchantTradeNo" />
+                <input type="text" name="MerchantTradeDate" />
+                <input type="text" name="PaymentType" />
+                <input type="number" name="TotalAmount" />
+                <input type="text" name="TradeDesc" />
+                <input type="text" name="ItemName" />
+                <input type="text" name="ReturnURL" />
+                <input type="text" name="OrderResultURL" />
+                <input type="text" name="ChoosePayment" />
+                <input type="text" name="CheckMacValue" />
+            </form>
+        </div>
+        <div class="my-4"></div>
+        
+    </section>
+    <!-- Cart Page End -->
+    <section class="layout-pb-md d-flex justify-content-center">
+        <div class="my-2"></div>
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <button id="backToCart" class="btn border-secondary rounded-pill text-primary flex-grow-1" type="button" style="height: 50px; max-width: 150px;">回上一步</button>
+                <button id="submit" class="btn border-secondary rounded-pill text-primary flex-grow-1" type="button" style="height: 50px; max-width: 150px;">確認無誤結帳</button>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+
+@section Scripts {
+    <!-- 包含 SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/easing/easing.min.js"></script>
+    <script src="~/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+    <!-- Template Javascript -->
+    <script src="~/js/Itemmain.js"></script>
+
+    <script>
+        (function () {
+            // 獲取傳遞進來的 CustomerId
+            var customerId = @ViewBag.CustomerId;
+            // 定義一個函數，用於獲取 URL 中的參數並轉換為 JavaScript 陣列
+            function getUrlParams() {
+                var params = {}; // 創建一個空物件來存儲 URL 參數
+                var queryString = window.location.search.substring(1); // 從 URL 中獲取查詢字符串（去掉問號）
+                var values = queryString.split('=')[1]; // 取得查詢參數的值部分
+                var selectedIds = values.split('&'); // 將值部分按照 & 符號分割成多個數值
+                params['selectedIds'] = selectedIds; // 將數值陣列存入 params 物件中
+                return params; // 返回包含 URL 參數的 JavaScript 物件
+            }
+
+            // 使用 getUrlParams 函數獲取 URL 參數
+            var queryParams = getUrlParams(); // 調用 getUrlParams 函數獲取 URL 參數
+            var selectedIds = queryParams['selectedIds']; // 從 URL 參數中獲取名為 'selectedIds' 的參數值
+
+            // 現在你可以使用 selectedIds 陣列中的值進行你的邏輯處理
+            console.log('selectedIds', selectedIds); // 在控制台打印 selectedIds，以便驗證是否正確接收到參數
+
+            var checkoutData = {};
+            // 將商品ID傳遞給API並獲取數據
+            var fetchPromises = selectedIds.map(function (id) {
+                return fetch('/api/ProductApi/GetCheckoutList?checkoutIds=' + id)
+                    .then(response => response.json())
+                    .then(data => {
+                        // 在這裡處理API返回的數據，例如將數據渲染到頁面上
+                        console.log('API response for ID:', id, data);
+                        // 將API返回的資料按照公司名稱分組
+                        if (data.length > 0) {
+                            var companyName = data[0].fCompanyName;
+                            if (!checkoutData[companyName]) {
+                                checkoutData[companyName] = [];
+                            }
+                            checkoutData[companyName].push(...data);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data for ID:', id, error);
+                    });
+            });
+
+            // 等待所有API請求完成後再執行後續操作
+            Promise.all(fetchPromises)
+                .then(() => {
+                    console.log('checkoutData', checkoutData);
+                    var checkoutListContainer = ''; // 在此宣告sectionHTML
+                    // 在這裡可以將 checkoutData 傳遞給頁面渲染函式
+                    $.each(checkoutData, function (companyName, items) {
+                        var totalSubtotal = 0; // 初始化總金額
+                        // 這裡寫動態生成結帳區的程式碼，使用 items 和 companyName
+                        var sectionHTML = `
+                                          <section class="pt-40"">
+                                            <div class="container">
+                                                <div class="row">
+                                                      <div class="border-light" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);>
+                                                        <div id="itemContainer" class="table-responsive">
+                                                            <p class="card-header py-3" style="font-size:18px"><strong>${companyName}</strong></p>
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col">商品圖片</th>
+                                                                        <th scope="col">商品名稱</th>
+                                                                        <th scope="col">商品規格</th>
+                                                                        <th scope="col">單價</th>
+                                                                        <th scope="col">購買數量</th>
+                                                                        <th scope="col">小計</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                            `;
+                        $.each(items, function (index, item) {
+                            totalSubtotal += item.fSubtotal; // 累加小計
+                            sectionHTML += `
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center justify-content-center">
+                                                       <img src="/img/Item/${item.specImg ? item.specImg : item.itemImg}" class="img-fluid rounded-circle" style="width: 80px; height: 80px;" alt="">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <p class="mb-0 mt-4">${item.fProductName}</p>
+                                                </td>
+                                                <td>
+                                                    <p class="mb-0 mt-4">${item.fSpecName}</p>
+                                                </td>
+                                                <td>
+                                                <p class="mb-0 mt-4">${item.fPrice}</p>
+                                                </td>
+                                                <td>
+                                                    <p class="mb-0 mt-4">${item.fQty}</p>
+                                                </td>
+                                                <td>
+                                                    <p class="mb-0 mt-4">${item.fSubtotal}</p>
+                                                </td>
+                                            </tr>
+                                        `;
+                        });
+                        sectionHTML += `
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="container">
+                                        <div class="row align-items-center">
+                                          <div class="col-lg-7 border-light" style="padding: 20px;">
+                                            <div class="d-flex justify-content-start">
+                                                 <h4 class="mb-0 me-4">填寫收件人資料</h4>
+                                                 <button id="dmBtn1_${companyName}" class="btn btn-primary me-3" style="color:floralwhite">Demo 按鈕1</button>
+                                                 <button id="dmBtn2_${companyName}" class="btn btn-primary" style="color:floralwhite">Demo 按鈕2</button>
+                                            </div>
+                                            <div class="row x-gap-20 y-gap-20">
+                                                <div class="col-md-6">
+                                                    <div class="form-input">
+                                                        <input id="nameInput_${companyName}" type="text" required>
+                                                        <label class="lh-1 text-16 text-light-1">姓名</label>
+                                                        <div class="invalid-feedback error-message" id="nameInputError_${companyName}" style="display: none; position: absolute; top: 100%; left: 5px;">請填寫姓名。</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-input">
+                                                        <input id="phoneInput_${companyName}" type="text" required>
+                                                        <label class="lh-1 text-16 text-light-1">手機</label>
+                                                        <div class="invalid-feedback error-message" id="phoneInputError_${companyName}" style="display: none; position: absolute; top: 100%; left: 5px;">請輸入手機號碼</div>
+                                                    </div>
+                                                </div>
+                                                <div id="addressDiv_${companyName}" class="col-12">
+                                                    <div class="form-input">
+                                                        <input id="addressInput_${companyName}" type="text" required>
+                                                        <label class="lh-1 text-16 text-light-1">收件地址</label>
+                                                        <div class="invalid-feedback error-message" id="addressInputError_${companyName}" style="display: none; position: absolute; top: 100%; left: 5px;">請填寫收件地址。</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-input">
+                                                        <textarea id="noteTxtarea_${companyName}" required rows="2"></textarea>
+                                                        <label class="lh-1 text-16 text-light-1">訂單備註</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            <div class="col-lg-5 p-4 ms-auto">
+                                                <div class="bg-light rounded">
+                                                    <div class="p-4">
+                                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                                            <h5 class="mb-0 me-4">金額小計:</h5>
+                                                            <h5 class="mb-0">NT:${totalSubtotal}</h5>
+                                                        </div>
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <h5 class="mb-0 me-4">配送方式:</h5>
+                                                            <div class="ms-auto">
+                                                                    <select id=deliverySelect_${companyName} class="form-select" aria-label="Default select example" style="width: 300px;">
+                                                                            <option value="0" selected>請選取</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <h5 class="mb-0 me-4">優惠券:</h5>
+                                                            <div class="ms-auto">
+                                                                 <select id=couponSelect_${companyName} class="form-select" aria-label="Default select example" style="width: 300px;">
+                                                                       <option value="0" selected>請選取</option>
+                                                                 </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="py-4 mb-4 border-top d-flex justify-content-between">
+                                                        <h5 class="mb-0 ps-4 me-4">總金額</h5>
+                                                        <h5 id=totalAmount_${companyName} class="mb-0 pe-4">NT:${totalSubtotal}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>`;
+                        checkoutListContainer += sectionHTML;
+                    });
+                    document.getElementById('dynamicContentSection').innerHTML = checkoutListContainer;
+                    //收到的中文會出現&#x53F0;&#x5317;&#x5E02;&#x5927;&#x5B89;&#x5340;&#x6771;&#x8C50;&#x8857;43&#x865F;45&#x865F;1&#x6A13;
+                    //這樣的編碼，透過 decodeEntities 轉成中文
+                    function decodeEntities(encodedString) {
+                        return encodedString.replace(/&#x([0-9A-Fa-f]+);/g, function (match, hex) {
+                            return String.fromCharCode(parseInt(hex, 16));
+                        });
+                    }
+
+                    var couponListData = {};
+                    var logisticsData = {}; // 全局變數用於存儲 logisticsData
+                    // 加載不同店家產品對應的運送方式選項
+                    $.each(checkoutData, function (companyName) {
+                        fetch(`/api/ProductApi/GetLogisticsList?companyName=${companyName}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log('LogisticsList', data);
+                                // 存儲 logisticsData 中以便後續使用
+                                logisticsData[companyName] = data;
+                                // 成功獲取到配送方式及                    // 在此處處理您的資料並動態生成選項
+                                var deliveryOptions = data.map(option => ({
+                                    name: option.fLogisticsName,
+                                    fee: option.fShipFee
+                                }));
+                                console.log('deliveryOptions', deliveryOptions);
+
+                                // 確保元素存在後才添加選項
+                                var selectElement = document.getElementById('deliverySelect_' + companyName);
+                                if (selectElement) {
+                                    // 清空選項
+                                    selectElement.innerHTML = '';
+                                    // 添加預設選項
+                                    var defaultOption = document.createElement('option');
+                                    defaultOption.value = '0';
+                                    defaultOption.text = '請選擇';
+                                    defaultOption.selected = true;
+                                    selectElement.appendChild(defaultOption);
+                                    // 添加配送方式選項
+                                    deliveryOptions.forEach(option => {
+                                        var optionElement = document.createElement('option');
+                                        // optionElement.text = `${option.name} (運費:${option.fee})元`;
+                                        optionElement.text = option.name;
+                                        optionElement.value = option.fee; // 設置選項的值為運費
+                                        selectElement.appendChild(optionElement);
+                                    });
+                                } else {
+                                    console.error('Delivery select element not found:', companyName);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error fetching logistics list:', error);
+                            });
+                        // 加載優惠券選項
+                        fetch(`/api/ProductApi/GetCusCouponList?customerId=${customerId}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log('CouponList', data);
+                                couponListData[companyName] = data;
+                                var couponOptions = data.map(option => ({
+                                    couponId: option.couponId,
+                                    couponCode: option.couponCode,
+                                    discount: option.discount
+                                }));
+
+                                //找到對應的優惠券選擇框並添加選項
+                                var selectElement = document.getElementById('couponSelect_' + companyName);
+                                if (selectElement) {
+                                    selectElement.innerHTML = '';
+                                    var defaultOption = document.createElement('option');
+                                    defaultOption.value = '0';
+                                    defaultOption.text = '請選擇';
+                                    defaultOption.selected = true;
+                                    selectElement.appendChild(defaultOption);
+                                    couponOptions.forEach(option => {
+                                        var optionElement = document.createElement('option');
+                                        optionElement.value = option.discount;
+                                        optionElement.text = option.couponCode;
+                                        selectElement.appendChild(optionElement);
+                                    });
+                                } else {
+                                    console.error('Coupon select element not found:', companyName);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error fetching coupon list:', error);
+                            });
+                    });
+                    // console.log('logisticsData', logisticsData);
+                    // 定義全局變數，以物件形式保存不同公司的選中配送方式的 ID
+
+                    var selectedLogisticsId = {};
+                    var selectedCouponId = {};
+                    console.log('selectedLogisticsId', selectedLogisticsId);
+                    $.each(checkoutData, function (companyName) {
+                        var selectElement = document.getElementById('deliverySelect_' + companyName);
+                        var couponSelectElement = document.getElementById('couponSelect_' + companyName); // 新增的優惠券選擇框元素
+                        var deliveryFee = 0;
+                        var discountAmount = 0;
+                        var initialTotalAmount = 0; // 保存初始總金額
+
+                        if (selectElement && couponSelectElement) {
+                            // 添加事件監聽器
+                            selectElement.addEventListener('change', function () {
+                                var selectedFee = parseFloat(this.value) || 0; // 獲取所選的運費，若為空則預設為0
+                                deliveryFee = selectedFee;
+                                updateTotalAmount(); // 更新總金額
+                                var deliveryOptionText = this.options[this.selectedIndex].text;
+                                var addressDiv = document.getElementById('addressDiv_' + companyName);
+                                var addressInput = document.getElementById('addressInput_' + companyName);
+                                if (addressDiv && addressInput) {
+                                    // 如果選擇的運送方式包含「7-11取貨」字樣
+                                    if (deliveryOptionText.includes('7-11取貨')) {
+                                        addressDiv.style.display = 'flex';
+                                        addressDiv.style.alignItems = 'center';
+                                        addressDiv.innerHTML = `
+                                        <div class="form-input col-8" style="margin-right: 10px;">
+                                            <input id="addressInput_${companyName}" type="text" required>
+                                            <label class="lh-1 text-16 text-light-1">收件地址</label>
+                                            <div class="invalid-feedback error-message" id="addressInputError_${companyName}" style="display: none; position: absolute; top: 100%; left: 5px;">請填寫收件地址。</div>
+                                        </div>
+                                        <div>
+                                            <button id="sendRequestBtn_${companyName}" class="btn border-secondary rounded-pill text-primary flex-grow-1" type="button" style="height: 50px; max-width: 250px;">選擇配送門市</button>
+                                        </div>
+                                    `;
+
+                                        // 選擇超商按鈕
+                                        document.querySelector(`#sendRequestBtn_${companyName}`).addEventListener("click", () => {
+                                            window.open("https://emap.presco.com.tw/c2cemap.ashx?url=https://localhost:7119/Customer/Products/RequestUrl");
+                                        });
+
+                                        window.map_return = function (storename, address) {
+                                            storename = decodeEntities(storename);
+                                            address = decodeEntities(address);
+                                            document.querySelector(`#addressInput_${companyName}`).value = `7-11 ${storename} ${address}`;
+                                        };
+
+                                    } else {
+                                        addressDiv.style.display = 'block';  // 恢復為 block
+                                        addressDiv.className = 'col-12';  // 恢復為 col-12
+                                        addressDiv.innerHTML = `
+                                        <div class="form-input">
+                                            <input id="addressInput_${companyName}" type="text" required>
+                                            <label class="lh-1 text-16 text-light-1">收件地址</label>
+                                            <div class="invalid-feedback error-message" id="addressInputError_${companyName}" style="display: none; position: absolute; top: 100%; left: 5px;">請填寫收件地址。</div>
+                                        </div>
+                                    `;
+                                    }
+                                    // 如果選擇的運送方式包含「到店自取」字樣，則隱藏收件地址輸入欄位
+                                    if (deliveryOptionText.includes('到店自取')) {
+                                        addressInput.disabled = true;
+                                        addressInput.value = '到店自取';
+                                        addressInput.dispatchEvent(new Event('input'));
+                                    } else {
+                                        addressInput.disabled = false;
+                                        addressInput.value = '';
+                                    }
+                                } else {
+                                    console.error('Address input element not found:', companyName);
+                                }
+
+                                // 在抓取到的 LogisticsList 中查找選中的配送方式的相應項目
+                                var selectedLogisticsItem = logisticsData[companyName].find(item => item.fLogisticsName === deliveryOptionText);
+                                if (selectedLogisticsItem) {
+                                    // 將選中配送方式的 ID 存儲到 selectedLogisticsId 物件中，以公司名稱為屬性名
+                                    selectedLogisticsId[companyName] = selectedLogisticsItem.fLogisticsId;
+                                    console.log('Selected logistics ID:', selectedLogisticsId[companyName]);
+                                    // 在這裡將 selectedLogisticsId 存回到資料庫中
+                                } else {
+                                    console.error('Selected logistics item not found:', deliveryOptionText);
+                                }
+                            });
+
+                            couponSelectElement.addEventListener('change', function () {
+                                var couponOptionText = this.options[this.selectedIndex].text;
+                                var selectedDiscount = parseFloat(this.value) || 0; // 獲取所選的優惠券折扣金額，若為空則預設為0
+                                discountAmount = selectedDiscount;
+                                updateTotalAmount(); // 更新總金額
+                                // 在抓取到的 LogisticsList 中查找選中的配送方式的相應項目
+                                var selecoupon = couponListData[companyName].find(item => item.couponCode === couponOptionText);
+                                if (selecoupon) {
+                                    // 將選中配送方式的 ID 存儲到 selectedLogisticsId 物件中，以公司名稱為屬性名
+                                    selectedCouponId[companyName] = selecoupon.couponId;
+                                    console.log('Selected logistics ID:', selectedCouponId[companyName]);
+                                    // 在這裡將 selectedLogisticsId 存回到資料庫中
+                                } else {
+                                    console.error('Selected logistics item not found:', couponOptionText);
+                                }
+                            });
+                            // // 選擇超商按鈕
+                            // document.querySelector(`#sendRequestBtn_${companyName}`).addEventListener("click", () => {
+                            //     window.open("https://emap.presco.com.tw/c2cemap.ashx?url=https://localhost:7119/Customer/Products/RequestUrl");
+                            // });
+
+                            // window.map_return = function (storename, address) {
+                            //     var storename = decodeEntities(storename);
+                            //     var address = decodeEntities(address);
+                            //     document.querySelector(`#addressInput_${companyName}`).value = `${storename} ${address}`;
+                            //     // document.querySelector('#address').value = decodeEntities(address);
+                            // };
+
+                            // 定義更新總金額的函數
+                            function updateTotalAmount() {
+                                var totalAmountElement = document.getElementById('totalAmount_' + companyName);
+                                if (totalAmountElement) {
+                                    if (initialTotalAmount === 0) {
+                                        // 第一次調用時保存初始總金額
+                                        initialTotalAmount = parseFloat(totalAmountElement.innerText.substring(3)) || 0;
+                                        totalAmountElement.dataset.initialAmount = initialTotalAmount;
+                                    }
+                                    var currentTotalAmount = parseFloat(totalAmountElement.dataset.initialAmount); // 使用保存的初始總金額
+                                    var newTotalAmount = currentTotalAmount + deliveryFee - discountAmount; // 計算新的總金額
+                                    totalAmountElement.innerText = 'NT:' + newTotalAmount; // 更新總金額顯示
+                                } else {
+                                    console.error('Total amount element not found:', companyName);
+                                }
+                            }
+                        } else {
+                            console.error('Delivery or coupon select element not found:', companyName);
+                        }
+                    });
+                    // 回上一頁按鈕
+                    document.getElementById('backToCart').addEventListener('click', function () {
+                        window.location.href = '@Url.Action("ItemCart", "Products", new { area = "Customer" })';
+                    });
+
+                    //在輸入時檢驗收件人信息的格式
+                    document.querySelectorAll('input[type="text"]').forEach(function (input) {
+                        input.addEventListener('input', function () {
+                            var value = this.value.trim(); // 獲取輸入的值並去除首尾空格
+                            var errorId = this.id.replace('Input', 'InputError');
+                            var errorElement = document.getElementById(errorId);
+
+                            // 檢查輸入值是否為空
+                            if (!value) {
+                                errorElement.style.display = 'block'; // 顯示錯誤提示
+                            } else {
+                                errorElement.style.display = 'none'; // 隱藏錯誤提示
+                                // 驗證手機號碼格式
+                                if (this.id.includes('phoneInput')) {
+                                    // 手機號碼正則表達式，以09開頭且後面接9位數字
+                                    var phoneRegex = /^09\d{8}$/;
+                                    if (!phoneRegex.test(value)) {
+                                        errorElement.textContent = '請輸入正確的手機號碼格式'; // 設置錯誤提示
+                                        errorElement.style.display = 'block'; // 顯示錯誤提示
+                                    }
+                                }
+                            }
+                        });
+                    });
+                    
+                    // 點擊結帳按鈕的觸發事件
+                    document.getElementById('submit').addEventListener('click', function () {
+                        console.log('按鈕測試');
+                        event.preventDefault(); // 阻止表單的預設提交行為
+                        var companyNames = Object.keys(checkoutData); // 假設 checkoutData 是您的資料物件
+                        // 驗證邏輯預設有效
+                        var isValid = true;
+                        // 獲取所有必填欄位的錯誤訊息元素
+                        var errorElements = document.querySelectorAll('.error-message');
+                        var isValid = true; // 驗證邏輯預設有效
+
+                        // 檢查是否有任何錯誤訊息元素是可見的，若是則表示驗證失敗
+                        errorElements.forEach(function (errorElement) {
+                            if (errorElement.style.display === 'block') {
+                                isValid = false;
+                            }
+                        });
+                        if (!isValid) {
+                            // 如果有漏填，顯示警告
+                            Swal.fire({
+                                title: '警告',
+                                text: '請填寫所有必填資訊',
+                                icon: 'warning'
+                            });
+                        } else {
+                            // 执行提交操作
+                            console.log('表单验证通过，执行提交操作');
+
+                            // 在这里可以添加您的提交逻辑
+                            // 例如，执行 AJAX 请求提交表单数据
+                            // 也可以在这里调用之前提到的提交函数或其他操作
+                            // 注意：此处为示例，具体操作取决于您的需求
+
+                            // 獲取所有表單的資料
+                            var orderDataList = [];
+ 
+                            companyNames.forEach(function (companyName) {
+                                var name = document.getElementById('nameInput_' + companyName).value;
+                                var phone = document.getElementById('phoneInput_' + companyName).value;
+                                var address = document.getElementById('addressInput_' + companyName).value;
+                                var note = document.getElementById('noteTxtarea_' + companyName).value;
+
+                                // 獲取選取的付款方式的 value
+                                var paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+                                // 創建用於存儲訂單詳細信息的陣列
+                                var orderDetails = [];
+
+                                // 遍歷當前公司的訂單詳細信息陣列
+                                checkoutData[companyName].forEach(function (orderDetail) {
+                                    // 構建訂單詳細信息物件
+                                    var orderDetailObj = {
+                                        FShoppingCartId: orderDetail.fShoppingCartId,
+                                        FQty: orderDetail.fQty,
+                                        FSpecId: orderDetail.fSpecId,
+                                        FSubtotal: orderDetail.fSubtotal
+                                        // 如果您有其他訂單詳細信息，可以在這裡添加
+                                    };
+
+                                    // 將訂單詳細信息物件添加到訂單詳細信息陣列中
+                                    orderDetails.push(orderDetailObj);
+                                });
+
+                                // 將表單資料和訂單詳細信息一起組織成物件
+                                var orderDatas = {
+                                    FMemberId: customerId,
+                                    FShipName: name,
+                                    FShipPhone: phone,
+                                    FShipAddress: address,
+                                    FNotes: note,
+                                    FLogisticsId: selectedLogisticsId[companyName], // 將選中的配送方式 ID 加入資料中
+                                    FPayId: paymentMethod,
+                                    FCoupponId: selectedCouponId[companyName],
+                                    OrderDetails: orderDetails  // 將訂單詳細信息陣列添加到訂單資料中
+                                };
+
+                                // 將訂單資料添加到 orderDataList 中
+                                orderDataList.push(orderDatas);
+                            });
+                            console.log('orderDataList', orderDataList)
+                            // 在這裡發送 AJAX 請求
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("POST", "/api/ProductApi/CreateOrder", true);
+                            xhr.setRequestHeader("Content-Type", "application/json");
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === XMLHttpRequest.DONE) {
+                                    var response = JSON.parse(xhr.responseText);
+                                    if (xhr.status === 200 && response.success) {
+                                        console.log("訂單新增成功");
+                                        console.log(response.paymentParams);
+                                        console.log("response.orderIds", response.orderIds);
+                                        // 在提交成功后重定向到指定页面
+                                        //var orderIdParams = response.orderIds.join('&');
+                                        if (response.paymentParams !== null) {
+                                            var form = document.querySelector('form[method="post"]');
+                                            form.querySelector('input[name="MerchantID"]').value = response.paymentParams.merchantID;
+                                            form.querySelector('input[name="MerchantTradeNo"]').value = response.paymentParams.merchantTradeNo;
+                                            form.querySelector('input[name="MerchantTradeDate"]').value = response.paymentParams.merchantTradeDate;
+                                            form.querySelector('input[name="PaymentType"]').value = response.paymentParams.paymentType;
+                                            form.querySelector('input[name="TotalAmount"]').value = response.paymentParams.totalAmount;
+                                            form.querySelector('input[name="TradeDesc"]').value = response.paymentParams.tradeDesc;
+                                            form.querySelector('input[name="ItemName"]').value = response.paymentParams.itemName;
+                                            form.querySelector('input[name="ReturnURL"]').value = response.paymentParams.returnURL;
+                                            form.querySelector('input[name="OrderResultURL"]').value = response.paymentParams.orderResultURL;
+                                            form.querySelector('input[name="ChoosePayment"]').value = response.paymentParams.choosePayment;
+                                            form.querySelector('input[name="CheckMacValue"]').value = response.paymentParams.checkMacValue;
+                                            form.submit();
+                                        }
+                                        else {
+                                            window.location.href = '@Url.Action("BookingFinish", "Products", new { area = "Customer", orderIds = "' + orderIdParams + '" })';
+                                        }
+                                    } else {
+                                        console.log("訂單新增失敗:", response.message);
+                                        // 在此處你可以處理失敗後的操作，例如顯示錯誤提示等
+                                    }
+                                }
+                            };
+                            xhr.send(JSON.stringify(orderDataList));
+                        }
+                        // 验证逻辑结束
+                    });
+
+
+                    // 示例按鈕
+                    var demoData1 = {
+                        name: "趙露露",
+                        phone: "0930180384",
+                        address: "臺北市中正區博愛路3號12樓之12",
+                        note: ""
+                    };
+
+                    var demoData2 = {
+                        name: "",
+                        phone: "0988",
+                        address: "",
+                        note: ""
+                    };
+                    // 循環中設置Demo按鈕點擊事件
+                    $.each(checkoutData, function (companyName, items) {
+                        $('#dmBtn1_' + companyName).click(function () {
+                            fillRecipientData(demoData1, companyName);
+                        });
+
+                        $('#dmBtn2_' + companyName).click(function () {
+                            fillRecipientData(demoData2, companyName);
+                        });
+                    });
+
+                    function fillRecipientData(data, companyName) {
+                        // 獲取收件人姓名、電話、地址和備註的輸入框元素
+                        var nameInput = document.getElementById('nameInput_' + companyName);
+                        var phoneInput = document.getElementById('phoneInput_' + companyName);
+                        var addressInput = document.getElementById('addressInput_' + companyName);
+                        var noteTextarea = document.getElementById('noteTxtarea_' + companyName);
+
+                        // 將預設的收件人資料填入輸入框
+                        if (nameInput) {
+                            nameInput.value = data.name;
+                            // 手動觸發值改變的事件
+                            nameInput.dispatchEvent(new Event('input'));
+                        }
+                        if (phoneInput) {
+                            phoneInput.value = data.phone;
+                            // 手動觸發值改變的事件
+                            phoneInput.dispatchEvent(new Event('input'));
+                        }
+                        if (addressInput) {
+                            addressInput.value = data.address;
+                            // 手動觸發值改變的事件
+                            addressInput.dispatchEvent(new Event('input'));
+                        }
+                        if (noteTextarea) {
+                            noteTextarea.value = data.note;
+                            // 手動觸發值改變的事件
+                            noteTextarea.dispatchEvent(new Event('input'));
+                        }
+                    }
+                });          
+        })();
+    </script>
+
+
+}

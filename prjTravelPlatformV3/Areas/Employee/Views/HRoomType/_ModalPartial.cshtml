@@ -1,0 +1,193 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.Hotel.RoomTypeViewModel
+@inject dbTravalPlatformContext _context;
+
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">@ViewBag.title</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div id="divModalContent" class="modal-body">
+
+    <!--頁籤按鈕-->
+    <div class="pageTab">
+        <div class="pageTab_item">
+            <button id="info-tab" class="pageTab_link is-current" onclick="openTab(event, 'info')">基本資料</button>
+        </div>
+        <div class="pageTab_item">
+            <button id="img-tab" class="pageTab_link" onclick="openTab(event, 'image')">圖片</button>
+        </div>
+        <div class="pageTab_item">
+            <button class="pageTab_link" onclick="openTab(event, 'facility')">設施</button>
+        </div>
+        <div class="pageTab_item">
+            <button class="pageTab_link" onclick="openTab(event, 'room')">房間</button>
+        </div>
+    </div>
+
+    <form id="@ViewBag.formId">
+
+        @Html.AntiForgeryToken()
+
+        <input asp-for="RoomTypeId" style="display:none" />
+
+
+        <!--info-->
+        <div class="row tabContent active" id="info">
+
+            @if (ViewBag.formId == "Create")
+            {
+                <div class="mb-3">
+                    <label asp-for="HotelId" class="form-label">選擇飯店</label>
+                    <select asp-for="HotelId" asp-items="Model.HotelSelectList" class="form-select">
+                        <option value="0">--請選擇飯店--</option>
+                        @* @foreach (var h in Model.Hotels)
+                    {
+                    <option value=@h.FHotelId>@h.FHotelName</option>
+                    } *@
+                    </select>
+                    <span asp-validation-for="HotelId" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <div class="mb-3">
+                    <label class="form-label">飯店名稱</label>
+                    @if (Model.HotelId != null)
+                    {
+                        <input readonly class="form-control" value=@_context.THotels.Find(Model.HotelId).FHotelName />
+                    }
+                    <input asp-for="HotelId" style="display:none" />
+                </div>
+            }
+            <div class="mb-3">
+                <label asp-for="RoomTypeName" class="form-label">@Html.DisplayNameFor(rt=>rt.RoomTypeName)</label>
+                <input asp-for="RoomTypeName" class="form-control" />
+                <span asp-validation-for="RoomTypeName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="BedType" class="form-label">@Html.DisplayNameFor(rt=>rt.BedType)</label>
+                <input asp-for="BedType" class="form-control">
+                <span asp-validation-for="BedType" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="BedNum" class="form-label">@Html.DisplayNameFor(rt=>rt.BedNum)</label>
+                <input asp-for="BedNum" class="form-control">
+                <span asp-validation-for="BedNum" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="MaxCapacity" class="form-label">@Html.DisplayNameFor(rt=>rt.MaxCapacity)</label>
+                <input asp-for="MaxCapacity" class="form-control">
+                <span asp-validation-for="MaxCapacity" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label">@Html.DisplayNameFor(h=>h.Price)</label>
+                <input asp-for="Price" class="form-control">
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!--image-->
+        <div class="row tabContent" id="image">
+            <!--現有圖片-->
+            <div class="d-flex align-items-center mb-1">
+                <h5 class="m-0">現有圖片</h5> &ensp;
+                <button id="delBtn" type="button" class="m-0 btn btn-danger btn-sm rounded-pill" disabled onclick="deletePhotoClick(@Model.RoomTypeId)">刪除圖片</button>
+            </div>
+            @if (Model.RoomTypeImages == null)
+            {
+                <div class="container">
+                    <div class="row">
+                        <h5 id="noPhoto" class="text-center">尚無圖片</h5>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="container">
+                    <div class="row">
+                        <partial name="_ShowPhotoPartial" model="Model" />
+                    </div>
+                </div>
+            }
+            <hr class="horizontal dark mt-3" />
+            <!--預覽-->
+            <div class="d-flex align-items-center mb-1">
+                <h5 class="m-0">上傳預覽</h5> &ensp;
+                <button type="button" class="m-0 btn btn-primary btn-sm rounded-pill" onclick="uploadPic()">上傳圖片</button>
+                <input type="file" name="file" id="file" multiple accept="image/*" style="display:none" onchange="onPictureChange(event)" />
+            </div>
+            <div class="container">
+                <div id="preview" class="row">
+                    <h5 id="noPhoto" class="text-center">尚無圖片</h5>
+                </div>
+            </div>
+        </div>
+
+        <!--facility-->
+        <div class="row tabContent" id="facility">
+            <h5>hello world</h5>
+        </div>
+
+        <!--Room-->
+        
+        <div class="card tabContent" id="room">
+            
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="ipAddRoom" placeholder="新增房間請填入號碼">
+                    </div>
+                </div>
+
+                @{
+                    string roomTypeName = _context.THroomTypes.FirstOrDefault(rt => rt.FRoomTypeId == Model.RoomTypeId).FRoomTypeName;
+                }
+                <button class="col-1 btn btn-secondary" type="button" id="button-addon2" onclick="addRoomClick('@roomTypeName', event)">確定</button>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-items-center mb-0" id="tbRoom">
+                    <thead style="background-color:#fff">
+                        <tr>
+                            <th class="text-uppercase font-weight-bold ">房型名稱</th>
+                            <th class="text-uppercase font-weight-bold  ps-2">房間號碼</th>
+                            <th class="text-uppercase font-weight-bold  ps-2"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tBody">
+                        @if (Model.rooms != null)
+                        {
+                            foreach (var room in Model.rooms)
+                            {
+                                <tr>
+                                    <td class="ps-4 p-3">
+                                        <p class=" text-secondary mb-0 font-weight-bold">@_context.THroomTypes.FirstOrDefault(rt=>rt.FRoomTypeId == room.FRoomTypeId).FRoomTypeName</p>
+                                    </td>
+                                    <td class="ps-4 p-3">
+                                        <p class=" text-secondary mb-0 font-weight-bold">@room.FRoomNumber</p>
+                                    </td>
+                                    <td class="align-middle">
+                                        <a href="javascript:;" class="text-secondary font-weight-bold " data-toggle="tooltip" data-original-title="Edit user">
+                                            刪除
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary mb-0" data-bs-dismiss="modal">關閉</button>
+            <button type="button" class="btn btn-primary mb-0" id="btnSave" onclick='sendFetchRequest("@ViewBag.formId")'>儲存</button>
+        </div>
+    </form>
+</div>
+
+
+
+

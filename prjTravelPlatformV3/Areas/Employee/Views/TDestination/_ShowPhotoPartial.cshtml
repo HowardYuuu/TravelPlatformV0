@@ -1,0 +1,22 @@
+﻿
+@model string
+
+<div id="photoContainer">
+    @foreach (var base64String in Model)
+    {
+        <img src="data:image/jpeg;base64,@base64String" alt="Photo" />
+    }
+</div>
+
+<script>
+    var imageList = @Html.Raw(Json.Serialize(Model));
+    var photoContainer = document.getElementById('photoContainer');
+    photoContainer.innerHTML = '';
+    imageList.forEach(function (base64String) {
+        var img = document.createElement('img');
+        img.src = 'data:image/jpeg;base64,' + base64String;
+        img.alt = 'Photo';
+        photoContainer.appendChild(img);
+    });
+</script>
+    

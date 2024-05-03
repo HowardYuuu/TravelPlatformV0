@@ -1,0 +1,884 @@
+﻿@section Styles {
+    <style>
+        .gendercontainer {
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+        }
+        .form-radio{
+            display: flex;
+            align-items: flex-start;
+            width: 45%; /* 調整每個 div 的寬度以確保在同一行排列 */
+        }
+
+        .gender-options {
+            display: flex;
+            flex-direction: row; /* 水平排列 */
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            margin: 0;
+        }
+    </style>
+}
+
+<body>
+
+    <main>
+        
+        <div class="masthead__bg" style="position: relative;">
+            <img src="~/img/airline/airplane.png" style="filter: brightness(55%); width: 100%; height:320px;" />
+            <div class="text-center" style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%);">
+                <h1 class="text-30 fw-600 text-white">訂購資訊</h1>
+            </div>
+        </div>
+        <section class="pt-40">
+            <div class="container">
+                <div class="row x-gap-40 y-gap-30 items-center">
+                    <div class="col-auto">
+                        <div class="d-flex items-center">
+                            <div class="size-40 rounded-full flex-center bg-blue-1">
+                                <i class="icon-check text-16 text-white"></i>
+                            </div>
+                            <div class="text-18 fw-500 ml-10">填寫訂單</div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="w-full h-1 bg-border"></div>
+                    </div>
+
+                    <div class="col-auto">
+                        <div class="d-flex items-center">
+                            <div class="size-40 rounded-full flex-center bg-blue-1-05 text-blue-1 fw-500">2</div>
+                            <div class="text-18 fw-500 ml-10">付款</div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="w-full h-1 bg-border"></div>
+                    </div>
+
+                    <div class="col-auto">
+                        <div class="d-flex items-center">
+                            <div class="size-40 rounded-full flex-center bg-blue-1-05 text-blue-1 fw-500">3</div>
+                            <div class="text-18 fw-500 ml-10">完成訂單</div>
+                        </div>
+                    </div>
+                    </div>                   
+                </div>
+            </div>
+        </section>
+
+        <section class="pt-40 layout-pb-md">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-8">
+
+                        @* <h2 class="text-22 fw-500 mt-40 mb-20 md:mt-24">訂購人資料</h2>
+                        <div class="col-auto">
+                            <button class="button -blue-1 bg-light-2 px-20 py-15">Demo資料</button>
+                        </div>
+                        <div class="row x-gap-20 y-gap-20 pt-20">
+                            <div class="col-md-6">
+
+                                <div class="form-input ">
+                                    <input type="text" required>
+                                    <label class="lh-1 text-16 text-light-1">姓氏</label>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-input ">
+                                    <input type="text" required>
+                                    <label class="lh-1 text-16 text-light-1">名字</label>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-input ">
+                                    <input type="text" required>
+                                    <label class="lh-1 text-16 text-light-1">手機</label>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-input ">
+                                    <input type="text" required>
+                                    <label class="lh-1 text-16 text-light-1">電子郵件</label>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-input ">
+                                    <input type="text" required>
+                                    <label class="lh-1 text-16 text-light-1">折扣優惠碼</label>
+                                    <button class="button -dark-1 bg-blue-1 text-white px-20 py-15 ml-10">套用</button>
+                                </div>
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <div class="form-input ">
+                                    <textarea required rows="3"></textarea>
+                                    <label class="lh-1 text-16 text-light-1">備註</label>
+                                </div>
+
+                            </div>
+                        </div> *@
+
+                        <h2 class="text-22 fw-500 mt-30 mb-20 md:mt-24">乘客資料</h2>
+                        <div class="row">
+                            <div class="col-auto">
+                                <button id="btnPsgDemo1" class="button -blue-1 bg-light-2 px-20 py-15">Demo1資料</button>
+                            </div>
+                            <div class="col-auto">
+                                <button id="btnPsgDemo2" class="button -blue-1 bg-light-2 px-20 py-15">Demo2資料</button>
+                            </div>
+                        </div>
+                       
+                        <form id="mainData">
+                        <div id="Passenger" class="row x-gap-20 y-gap-20 pt-20">                            
+                            @* 乘客欄 *@                           
+                        </div>
+                        </form>
+                     
+                        <div class="w-full h-1 bg-border mt-40 mb-40"></div>
+
+                        <div class="row y-gap-20 items-center justify-between">
+                            @* <div class="col-auto">
+
+                                <div class="d-flex items-center">
+                                    <div class="form-checkbox ">
+                                        <input type="checkbox" name="name">
+                                        <div class="form-checkbox__mark">
+                                            <div class="form-checkbox__icon icon-check"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-14 lh-10 text-light-1 ml-10">Get access to members-only deals, just like the millions of other email subscribers</div>
+
+                                </div>
+
+                            </div> *@
+
+                            <div class="col-auto">
+                                <h2 class="text-22 fw-500 mt-30 mb-20 md:mt-24">付款方式</h2>
+                                <button id="btnEcpaySubmit" type="button" class="button h-60 px-24 -dark-1 bg-blue-1 text-white m-2">
+                                    信用卡付款 <div class="icon-arrow-top-right ml-15"></div>
+                                </button>
+                                <button id="btnATMPaySubmit" type="button" class="button h-60 px-24 -dark-1 bg-blue-1 text-white m-2">
+                                    ATM轉帳付款 <div class="icon-arrow-top-right ml-15"></div>
+                                </button>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-xl-5 col-lg-4">
+                        <div class="ml-80 lg:ml-40 md:ml-0">
+                            <div id="FlightsDetail" class="px-30 py-30 border-light rounded-4">
+                            @* 訂購航班明細 *@
+                            </div>
+
+                            <div id="OrderTotal" class="px-30 py-30 border-light rounded-4 mt-30">
+                                @* <div class="text-20 fw-500 mb-20">訂購金額總計</div>
+
+                                <div class="row y-gap-5 justify-between">
+                                    <div class="col-auto">
+                                        <div class="text-15">去程</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="text-15">US$3,372.34</div>
+                                    </div>
+                                </div>
+
+                                <div class="row y-gap-5 justify-between pt-5">
+                                    <div class="col-auto">
+                                        <div class="text-15">回程</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="text-15">US$674.47</div>
+                                    </div>
+                                </div>
+
+                                <div class="row y-gap-5 justify-between pt-5">
+                                    <div class="col-auto">
+                                        <div class="text-15">折扣碼折抵</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="text-15">-</div>
+                                    </div>
+                                </div>
+
+                                <div class="px-20 py-20 bg-blue-2 rounded-4 mt-20">
+                                    <div class="row y-gap-5 justify-between">
+                                        <div class="col-auto">
+                                            <div class="text-18 lh-13 fw-500">總計</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="text-18 lh-13 fw-500">US$4,046.81</div>
+                                        </div>
+                                    </div>
+                                </div> *@
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <form method="post" id="payform" style="display:none" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5">
+                        <input type="text" name="MerchantID" />
+                        <input type="text" name="MerchantTradeNo" />
+                        <input type="text" name="MerchantTradeDate" />
+                        <input type="text" name="PaymentType" />
+                        <input type="number" name="TotalAmount" />
+                        <input type="text" name="TradeDesc" />
+                        <input type="text" name="ItemName" />
+                        <input type="text" name="ReturnURL" />
+                        <input type="text" name="OrderResultURL" />
+                        <input type="text" name="ChoosePayment" />
+                        <input type="text" name="EncryptType" />
+                        <input type="text" name="CheckMacValue" />
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+
+
+@section Scripts {
+
+    <script>
+
+
+        // 解析URL查詢參數
+        var urlParams = new URLSearchParams(window.location.search);
+        var outgoingScheduleId = urlParams.get('outgoingScheduleId');
+        var returnScheduleId = urlParams.get('returnScheduleId');
+        var Departure = urlParams.get('Departure');
+        var Destination = urlParams.get('Destination');
+        var DepartureDate = urlParams.get('DepartureDate');
+        var ReturnDate = urlParams.get('ReturnDate');
+        var Adult = urlParams.get('Adult');
+        var Children = urlParams.get('Children');
+        var Baby = urlParams.get('Baby');
+
+        // 将参数存储到会话中
+        sessionStorage.setItem('outgoingScheduleId', outgoingScheduleId);
+        sessionStorage.setItem('returnScheduleId', returnScheduleId);
+
+        //全域變數
+        var totalCount = 0;
+        var typeId;
+        var customerId= @ViewBag.CustomerId;
+        var customerEmail = '@ViewBag.Email';
+        console.log(customerEmail);
+
+
+        //讀取選中的航班資訊放到 訂購航班明細 頁面
+        const showSeletedFlights = async function () {
+            try {
+                const url = `/api/flightapi/SelectedFlights?Departure=${Departure}&Destination=${Destination}&DepartureDate=${DepartureDate}&ReturnDate=${ReturnDate}&Adult=${Adult}&Children=${Children}&Baby=${Baby}&outgoingScheduleId=${outgoingScheduleId}&returnScheduleId=${returnScheduleId}`;
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const datas = await response.json();
+                // 在這裡處理從後端獲取的資料，例如顯示在畫面上或做其他處理
+                console.log(datas);
+                console.log(datas.outgoingFlights[0].departureAirport); //松山機場
+
+                // 根據 AirlineId 設置不同圖片
+                let imagePath = '';
+                if (datas.outgoingFlights[0].fAirlineId === 12) {
+                    imagePath = `@Url.Content("~/img/airline/eva.jpg")`;
+                } else if (datas.outgoingFlights[0].fAirlineId === 13) {
+                    imagePath = `@Url.Content("~/img/airline/china.jpg")`;
+                } else {
+                    // 預設圖片
+                    imagePath = `@Url.Content("~/img/airline/noimg.png")`;
+                }
+
+                const FlightsDetail = document.getElementById('FlightsDetail');
+                FlightsDetail.innerHTML = `<div class="text-20 fw-500 mb-30">訂購明細</div>
+
+                                                <div class="row x-gap-15 y-gap-20">
+                                                    <div class="col">
+                                                        <div class="row y-gap-10 items-center">
+                                                            <div class="col-sm-auto">
+                                                                 <img class="size-40" src="${imagePath}" alt="image">
+                                                            </div>
+
+                                                            <div class="col">
+                                                                <div class="row x-gap-20 items-end">
+                                                                    <div class="col-auto">
+                                                                    <div class="lh-15 fw-500" id="departure">${datas.outgoingFlights[0].departureAirport}</div>
+                                                                    </div>
+
+                                                                    <div class="col text-center">
+                                                                        <div class="flightLine">
+                                                                            <div></div>
+                                                                            <div></div>
+                                                                        </div>
+                                                                        <div class="text-15 lh-15 text-light-1 mt-10">直達</div>
+                                                                    </div>
+
+                                                                    <div class="col-auto">
+                                                                    <div class="lh-15 fw-500" id="destination">${datas.outgoingFlights[0].destinationAirport}</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="border-top-light mt-30 mb-20"></div>
+
+                                                <div class="row y-gap-20 justify-between">
+                                                    <div class="col-auto">
+                                                       <div class="text-20 fw-500">去程</div>
+                                                        <div class="text-15 text-light-1">起飛時間：${datas.outgoingFlights[0].departureTime}</div>
+                                                        <div class="text-15 text-light-1">抵達時間：${datas.outgoingFlights[0].arrivalTime}</div>
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div class="border-top-light mt-30 mb-20"></div>
+
+                                                <div class="row y-gap-20 justify-between">
+                                                    <div class="col-auto ">
+                                                      <div class="text-20 fw-500">回程</div>
+                                                      <div class="text-15 text-light-1">起飛時間：${datas.returnFlights[0].departureTime}</div>
+                                                      <div class="text-15 text-light-1">抵達時間：${datas.returnFlights[0].arrivalTime}</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="border-top-light mt-30 mb-20"></div>
+
+                                                <div class="row y-gap-20 justify-between items-center">
+                                                    <div class="col-auto">
+                                                        <div class="text-20 fw-500">旅客人數</div>
+                                                          <div class="text-15 text-light-1">成人 <span id="adult"> 0 </span>人</div>
+                                                          <div class="text-15 text-light-1">孩童(2~12歲) <span id="children"> 0</span> 人</div>
+                                                          <div class="text-15 text-light-1">幼兒(0~2歲) <span id="baby"> 0</span> 人</div>
+                                                    </div>
+                                                </div>`;
+               
+                //將URL參數數值帶入動態生成的頁面
+
+                adult.innerText = Adult !== null ? Adult : 0;
+                children.innerText = Children !== null ? Children : 0;
+                baby.innerText = Baby !== null ? Baby : 0;
+
+                // 將成人、小孩、幼兒的數量轉為Int
+                const adultCount = Adult !== null ? parseInt(Adult) : 0;
+                const childrenCount = Children !== null ? parseInt(Children) : 0;
+                const babyCount = Baby !== null ? parseInt(Baby) : 0;
+
+                // // 計算去程與回程的票價總和
+                const outgoingPriceTotal = datas.outgoingFlights[0].fTicketPrice * adultCount +
+                    0.7 * datas.outgoingFlights[0].fTicketPrice * childrenCount; // 小孩票價為成人票價的 70%
+
+                const returnPriceTotal = datas.returnFlights[0].fTicketPrice * adultCount +
+                    0.7 * datas.returnFlights[0].fTicketPrice * childrenCount; // 小孩票價為成人票價的 70%
+                const Total = outgoingPriceTotal + returnPriceTotal;
+
+                // 格式化為千分號
+                const formattedOutgoingPriceTotal = outgoingPriceTotal.toLocaleString();
+                const formattedReturnPriceTotal = returnPriceTotal.toLocaleString();
+                const formattedTotal = Total.toLocaleString();
+
+                const OrderTotal = document.getElementById('OrderTotal');
+                OrderTotal.innerHTML = `<div class="text-20 fw-500 mb-20">訂購金額總計</div>
+
+                                        <div class="row y-gap-5 justify-between">
+                                            <div class="col-auto">
+                                                <div class="text-15">去程總額</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                         <div class="text-15">NTD$${formattedOutgoingPriceTotal}</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row y-gap-5 justify-between pt-5">
+                                            <div class="col-auto">
+                                                <div class="text-15">回程總額</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                        <div class="text-15">NTD$${formattedReturnPriceTotal}</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row y-gap-5 justify-between pt-5 mb-3">
+                                            <div class="col-auto">
+                                                <div class="text-15">優惠碼折抵</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <div class="text-15">-</div>
+                                            </div>
+                                        </div>
+
+                                            <div class="col-auto">
+                                                <div class="form-input ">
+                                                    <input type="text" required>
+                                                    <label class="lh-1 text-16 text-light-1">輸入優惠碼</label>
+                                                    <button class="button -dark-1 bg-blue-1 text-white px-20 py-15 ml-10">套用</button>
+                                                </div>
+                                            </div>
+
+                                        <div class="px-20 py-20 bg-blue-2 rounded-4 mt-20">
+                                            <div class="row y-gap-5 justify-between">
+                                                <div class="col-auto">
+                                                    <div class="text-18 lh-13 fw-500">總計</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                          <div class="text-18 lh-13 fw-500">NTD$${formattedTotal}</div>
+                                                </div>
+                                            </div>
+                                         </div>`;                
+
+            } catch (error) {
+                console.error("發生錯誤:", error);
+            };
+
+        };
+
+
+        //Function: 動態生成乘客資訊欄
+        const generatePassengerInfo = (container, type, count) => {
+
+            for (let i = 1; i <= count; i++) {
+                totalCount++
+                typeId = '';
+                if (type === '成人') {
+                    typeId = 'adult'
+                }
+                if (type === '孩童') {
+                    typeId = 'children'
+                }
+                if (type === '幼兒') {
+                    typeId = 'baby'
+                }
+
+                container.innerHTML += `
+                    <div class="row y-gap-20 pt-20">
+                        <div>${type} ${i}</div>
+                        <div class="col-md-6">
+                            <div class="form-input">
+                               <input type="hidden" name="type_${totalCount}" value="${typeId}">
+                               <input name="lastname_${totalCount}" type="text" required>
+                               <label class="lh-1 text-16 text-light-1">姓氏 *</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-input">
+                               <input name="firstname_${totalCount}" type="text" required>
+                               <label class="lh-1 text-16 text-light-1">名字 *</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-input">
+                                <input name="nationalId_${totalCount}" type="text" required>
+                                <label class="lh-1 text-16 text-light-1">身分證字號 *</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="gendercontainer">
+                                <label class="lh-1 text-16 text-light-1 m-2">性別*</label>
+
+                            <div class="gender-options">
+                                <div class="form-radio m-2">
+                                    <span class="lh-1 text-16 text-light-1">男性</span>
+                                    <input class="radio__mark" type="radio" name="gender_${totalCount}" value="true" required>
+                                </div>
+                                <div class="form-radio m-2">
+                                    <span class="lh-1 text-16 text-light-1">女性</span>
+                                    <input class="radio__mark" type="radio" name="gender_${totalCount}" value="false" required>
+                                </div>
+                             </div>
+
+                            </div>
+                        </div>
+                                <div class="col-md-6">
+
+                                        <div class="form-input ">
+                                            <input name="birth_${totalCount}" type="date" required>
+                                            <label class="lh-1 text-16 text-light-1">出生日期 *</label>
+                                        </div>
+
+                                    </div>
+                                ${type !== '幼兒' && type !== '孩童' ? `
+                        <div class="col-md-6">
+                            <div class="form-input ">
+                                  <input name="phone_${totalCount}" type="number" required>
+                                <label class="lh-1 text-16 text-light-1">手機(請輸入純數字)</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-input ">
+                                  <input name="email_${totalCount}" type="text" required>
+                                  <label class="lh-1 text-16 text-light-1">Email</label>
+                            </div>
+                        </div>
+                        ` : ''}
+                                </div>`
+                container.innerHTML += `<div id="warning_${totalCount}" class="validation-message" style="color: red;display:none;">驗證訊息</div>
+                    </div>`;
+            }
+        };
+
+        $(function(){
+            regEvent();
+            regEvent2();
+        })
+        
+        //送出訂單資料 使用EC Pay付款
+        function regEvent2() {
+            $('#btnEcpaySubmit').click(function () {
+                
+              //  console.log('Hi');
+                //還原警示狀態
+                var valiEle = document.getElementsByClassName('validation-message');
+                Array.from(valiEle).forEach(ele => { ele.style.display = 'none'; })
+
+                for (let c = 1; c <= totalCount; c++) {
+                    if (!document.getElementsByName(`lastname_${c}`)[0].checkValidity()) {
+                        document.getElementById(`warning_${c}`).style.display = '';
+                        document.getElementById(`warning_${c}`).textContent = '請輸入姓氏';
+                        document.getElementsByName(`lastname_${c}`)[0].focus();  //聚焦到未填寫的欄位
+                        return false;
+                    }
+                    if (!document.getElementsByName(`firstname_${c}`)[0].checkValidity()) {
+                        document.getElementById(`warning_${c}`).style.display = '';
+                        document.getElementById(`warning_${c}`).textContent = '請輸入名字';
+                        document.getElementsByName(`firstname_${c}`)[0].focus();  //聚焦到未填寫的欄位
+                        return false;
+                    }
+                    if (!document.getElementsByName(`nationalId_${c}`)[0].checkValidity()) {
+                        document.getElementById(`warning_${c}`).style.display = '';
+                        document.getElementById(`warning_${c}`).textContent = '請輸入身分證字號';
+                        document.getElementsByName(`nationalId_${c}`)[0].focus();  //聚焦到未填寫的欄位
+                        return false;
+                    }
+                    if (document.getElementsByName(`nationalId_${c}`)[0].value.search(/^[A-Z]{1}[1-2]{1}[0-9]{8}$/) == -1) {
+                        document.getElementById(`warning_${c}`).style.display = '';
+                        document.getElementById(`warning_${c}`).textContent = '身分證字號格式錯誤';
+                        document.getElementsByName(`nationalId_${c}`)[0].focus();  //聚焦到未填寫的欄位
+                        return false;
+                    }                    
+
+                    if (!document.getElementsByName(`gender_${c}`)[0].checkValidity()) {
+                        document.getElementById(`warning_${c}`).style.display = '';
+                        document.getElementById(`warning_${c}`).textContent = '請輸入性別'
+                        document.getElementsByName(`gender_${c}`)[0].focus();  //聚焦到未填寫的欄位
+                        return false;
+                    }
+                    if (!document.getElementsByName(`birth_${c}`)[0].checkValidity()) {
+                        document.getElementById(`warning_${c}`).style.display = '';
+                        document.getElementById(`warning_${c}`).textContent = '請輸入出生日期'
+                        document.getElementsByName(`birth_${c}`)[0].focus();  //聚焦到未填寫的欄位
+                        return false;
+                    }
+                }
+
+                // 組資料
+                let mainData = {
+                    OutgoingScheduleId: outgoingScheduleId,
+                    ReturnScheduleId: returnScheduleId,
+                    CustomerId: customerId,
+                    CustomerEmail: customerEmail,
+                    PaymentId: 1,
+                    Passengers: []
+                };                
+
+                // 乘客資料
+                for (let a = 1; a <= totalCount; a++) {
+
+                    const warningDiv = document.getElementById(`warning_${a}`);
+
+                   
+                    //將true/false字串轉成布林值
+                    const genderStringValue = document.getElementsByName(`gender_${a}`)[0].checked;
+                    const genderBooleanValue = genderStringValue === true;
+
+                    // 取得電話跟email的值
+                    const phoneInput = document.getElementsByName(`phone_${a}`)[0];
+                    const phoneValue = phoneInput ? phoneInput.value : null;
+
+                    const emailInput = document.getElementsByName(`email_${a}`)[0];
+                    const emailValue = emailInput ? emailInput.value : null;
+
+                    const passenger = {
+                        Type: document.getElementsByName(`type_${a}`)[0].value,
+                        LastName: document.getElementsByName(`lastname_${a}`)[0].value,
+                        FirstName: document.getElementsByName(`firstname_${a}`)[0].value,
+                        NationalId: document.getElementsByName(`nationalId_${a}`)[0].value,
+                        Gender: genderBooleanValue,
+                        Birth: document.getElementsByName(`birth_${a}`)[0].value,
+                        Phone: phoneValue,
+                        Email: emailValue
+                    };
+                    mainData.Passengers.push(passenger);
+                }
+
+                // 將 mainData 轉換為 JSON 格式
+                const jsonData = JSON.stringify(mainData);
+                console.log('EC Pay:',jsonData);
+
+                // 送資料
+                fetch('/api/flightapi/RoundTripOrder', {
+                    method: 'POST',
+                    body: jsonData,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json(); // 將回應轉換為 JSON
+                })
+                    .then(datas => {
+                        console.log('RoundTripOrder:', datas); // 在這裡處理 JSON 數據
+
+                        sessionStorage.setItem('orderId', datas.orderId);
+
+                        //綠界
+                        var form = document.getElementById('payform');
+                        form.querySelector('input[name="MerchantID"]').value = datas.paymentParams.merchantID;
+                        form.querySelector('input[name="MerchantTradeNo"]').value = datas.paymentParams.merchantTradeNo;
+                        form.querySelector('input[name="MerchantTradeDate"]').value = datas.paymentParams.merchantTradeDate;
+                        form.querySelector('input[name="PaymentType"]').value = datas.paymentParams.paymentType;
+                        form.querySelector('input[name="TotalAmount"]').value = datas.paymentParams.totalAmount;
+                        form.querySelector('input[name="TradeDesc"]').value = datas.paymentParams.tradeDesc;
+                        form.querySelector('input[name="ItemName"]').value = datas.paymentParams.itemName;
+                        form.querySelector('input[name="ReturnURL"]').value = datas.paymentParams.returnURL;
+                        form.querySelector('input[name="OrderResultURL"]').value = datas.paymentParams.orderResultURL;
+                        form.querySelector('input[name="ChoosePayment"]').value = datas.paymentParams.choosePayment;
+                        form.querySelector('input[name="EncryptType"]').value = datas.paymentParams.encryptType;
+                        form.querySelector('input[name="CheckMacValue"]').value = datas.paymentParams.checkMacValue;
+                        //構建下一個頁面的 URL
+                        form.submit();
+                        // var nextUrl = `/Customer/flight/OrderConfirm?outgoingScheduleId=${outgoingScheduleId}&returnScheduleId=${returnScheduleId}&orderId=${datas.orderId}`;
+                        // window.location.href = nextUrl;
+                    })
+                    .catch(error => {
+                        console.error('發生錯誤:', error);
+                        Swal.fire({
+                            title: '訂單成立失敗',
+                            text: error.message,
+                            icon: 'error'
+                        });
+                    });
+            })
+        }
+
+        //送出訂單資料 使用ATM 付款
+        function regEvent() {
+            $('#btnATMPaySubmit').click(function () {
+
+                //還原警示狀態
+                var valiEle = document.getElementsByClassName('validation-message');
+                Array.from(valiEle).forEach(ele => { ele.style.display = 'none'; })
+
+                for (let c = 1; c <= totalCount; c++) {
+                    if (!document.getElementsByName(`lastname_${c}`)[0].checkValidity()) {
+                        document.getElementById(`warning_${c}`).style.display = '';
+                        document.getElementById(`warning_${c}`).textContent = '請輸入姓氏';
+                        document.getElementsByName(`lastname_${c}`)[0].focus();  //聚焦到未填寫的欄位
+                        return false;
+                    }
+                    if (!document.getElementsByName(`firstname_${c}`)[0].checkValidity()) {
+                        document.getElementById(`warning_${c}`).style.display = '';
+                        document.getElementById(`warning_${c}`).textContent = '請輸入名字';
+                        document.getElementsByName(`firstname_${c}`)[0].focus();  //聚焦到未填寫的欄位
+                        return false;
+                    }
+                    if (!document.getElementsByName(`nationalId_${c}`)[0].checkValidity()) {
+                        document.getElementById(`warning_${c}`).style.display = '';
+                        document.getElementById(`warning_${c}`).textContent = '請輸入身分證字號';
+                        document.getElementsByName(`nationalId_${c}`)[0].focus();  //聚焦到未填寫的欄位
+                        return false;
+                    }
+                    if (document.getElementsByName(`nationalId_${c}`)[0].value.search(/^[A-Z]{1}[1-2]{1}[0-9]{8}$/) == -1) {
+                        document.getElementById(`warning_${c}`).style.display = '';
+                        document.getElementById(`warning_${c}`).textContent = '身分證字號格式錯誤';
+                        document.getElementsByName(`nationalId_${c}`)[0].focus();  //聚焦到未填寫的欄位
+                        return false;
+                    }
+
+                    if (!document.getElementsByName(`gender_${c}`)[0].checkValidity()) {
+                        document.getElementById(`warning_${c}`).style.display = '';
+                        document.getElementById(`warning_${c}`).textContent = '請輸入性別'
+                        document.getElementsByName(`gender_${c}`)[0].focus();  //聚焦到未填寫的欄位
+                        return false;
+                    }
+                    if (!document.getElementsByName(`birth_${c}`)[0].checkValidity()) {
+                        document.getElementById(`warning_${c}`).style.display = '';
+                        document.getElementById(`warning_${c}`).textContent = '請輸入出生日期'
+                        document.getElementsByName(`birth_${c}`)[0].focus();  //聚焦到未填寫的欄位
+                        return false;
+                    }
+                }
+
+                // 組資料
+                let mainData = {
+                    OutgoingScheduleId: outgoingScheduleId,
+                    ReturnScheduleId: returnScheduleId,
+                    CustomerId: customerId,
+                    CustomerEmail: customerEmail,
+                    PaymentId : 2,
+                    Passengers: []
+                };
+
+                // 乘客資料
+                for (let a = 1; a <= totalCount; a++) {
+
+                    const warningDiv = document.getElementById(`warning_${a}`);
+
+
+                    //將true/false字串轉成布林值
+                    const genderStringValue = document.getElementsByName(`gender_${a}`)[0].checked;
+                    const genderBooleanValue = genderStringValue === true;
+
+                    // 取得電話跟email的值
+                    const phoneInput = document.getElementsByName(`phone_${a}`)[0];
+                    const phoneValue = phoneInput ? phoneInput.value : null;
+
+                    const emailInput = document.getElementsByName(`email_${a}`)[0];
+                    const emailValue = emailInput ? emailInput.value : null;
+
+                    const passenger = {
+                        Type: document.getElementsByName(`type_${a}`)[0].value,
+                        LastName: document.getElementsByName(`lastname_${a}`)[0].value,
+                        FirstName: document.getElementsByName(`firstname_${a}`)[0].value,
+                        NationalId: document.getElementsByName(`nationalId_${a}`)[0].value,
+                        Gender: genderBooleanValue,
+                        Birth: document.getElementsByName(`birth_${a}`)[0].value,
+                        Phone: phoneValue,
+                        Email: emailValue
+                    };
+                    mainData.Passengers.push(passenger);
+                }
+
+                // 將 mainData 轉換為 JSON 格式
+                const jsonData = JSON.stringify(mainData);
+                console.log(jsonData);
+
+                // 送資料
+                fetch('/api/flightapi/RoundTripOrder', {
+                    method: 'POST',
+                    body: jsonData,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json(); // 將回應轉換為 JSON
+                })
+                    .then(datas => {
+                        console.log('RoundTripOrder:', datas); // 在這裡處理 JSON 數據
+
+                        sessionStorage.setItem('orderId', datas.orderId);
+
+                        //構建下一個頁面的 URL 直接跳轉訂單成功
+                        var nextUrl = `/Customer/flight/OrderConfirm`;
+                        window.location.href = nextUrl;
+                    })
+                    .catch(error => {
+                        console.error('發生錯誤:', error);
+                        Swal.fire({
+                            title: '訂單成立失敗',
+                            text: error.message,
+                            icon: 'error'
+                        });
+                    });
+            })
+        }
+
+        //填入Demo乘客資料(成人1)
+        const btnPsgDemo1 = document.getElementById('btnPsgDemo1');
+        btnPsgDemo1.addEventListener('click', function () {
+
+            const adult1Form = document.querySelector('#mainData');
+
+            // 填入驗證有誤假資料
+            adult1Form.querySelector('input[name="firstname_1"]').value = '欣欣';
+            adult1Form.querySelector('input[name="nationalId_1"]').value = 'A123'; // 添加身分證字號假資料
+            adult1Form.querySelector('input[name="gender_1"][value="true"]').checked = true; // 男性
+            adult1Form.querySelector('input[name="birth_1"]').value = '1990-01-01'; // 添加出生日期假資料
+            adult1Form.querySelector('input[name="phone_1"]').value = '0955-168-168'; // 添加手機假資料
+            adult1Form.querySelector('input[name="email_1"]').value = 'xiaobaolin@example.com'; // 添加電子郵件假資料
+
+        });
+        const btnPsgDemo2 = document.getElementById('btnPsgDemo2');
+        btnPsgDemo2.addEventListener('click', function () {
+
+            const adult1Form = document.querySelector('#mainData');
+
+            // 填入假資料
+            adult1Form.querySelector('input[name="lastname_1"]').value = '虞';
+            adult1Form.querySelector('input[name="firstname_1"]').value = '欣欣';
+            adult1Form.querySelector('input[name="nationalId_1"]').value = 'A223456789'; // 添加身分證字號假資料
+            adult1Form.querySelector('input[name="gender_1"][value="false"]').checked = true; // 女性
+            adult1Form.querySelector('input[name="birth_1"]').value = '1995-12-18'; // 添加出生日期假資料
+            adult1Form.querySelector('input[name="phone_1"]').value = '0955168168'; // 添加手機假資料
+            adult1Form.querySelector('input[name="email_1"]').value = 'yichiiing@gmail.com'; // 添加電子郵件假資料
+
+            adult1Form.querySelector('input[name="lastname_2"]').value = '虞';
+            adult1Form.querySelector('input[name="firstname_2"]').value = '書書';
+            adult1Form.querySelector('input[name="nationalId_2"]').value = 'A227896452'; // 添加身分證字號假資料
+            adult1Form.querySelector('input[name="gender_2"][value="false"]').checked = true; // 女性
+            adult1Form.querySelector('input[name="birth_2"]').value = '1998-01-12'; // 添加出生日期假資料
+            adult1Form.querySelector('input[name="phone_2"]').value = '0955312251'; // 添加手機假資料
+            adult1Form.querySelector('input[name="email_2"]').value = 'bookbook123@gmail.com'; // 添加電子郵件假資料
+
+        })
+
+        const generatePassengerDetails = () => {
+            const passengerContainer = document.getElementById('Passenger');
+            passengerContainer.innerHTML = ''; // 清空原有的乘客資訊欄
+
+            // 根據成人、孩童和幼兒的數量生成乘客資訊欄
+            if (Adult !== null) {
+                generatePassengerInfo(passengerContainer, '成人', parseInt(Adult));
+            }
+            if (Children !== null) {
+                generatePassengerInfo(passengerContainer, '孩童', parseInt(Children));
+            }
+            if (Baby !== null) {
+                generatePassengerInfo(passengerContainer, '幼兒', parseInt(Baby));
+            }
+        };
+        
+
+            (async () => {
+            var adult = document.getElementById('adult');
+            var children = document.getElementById('children');
+            var baby = document.getElementById('baby');
+                await showSeletedFlights();
+                await generatePassengerDetails();
+            })()
+                   
+        
+    </script>
+
+}

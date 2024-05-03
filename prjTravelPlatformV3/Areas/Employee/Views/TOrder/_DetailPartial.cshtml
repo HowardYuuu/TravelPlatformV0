@@ -1,0 +1,32 @@
+﻿@using prjTravelPlatformV3.Areas.Employee.ViewModels.TravelPlan
+
+<div class="modal-header">
+	<h5 class="modal-title" id="exampleModalLabel">行程</h5>
+	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div id="divModalContent" class="modal-body">
+	<form asp-action="" method="post" name="checkfor">
+		@Html.AntiForgeryToken()
+		@{
+			bool i = true;
+			int day=0;
+		}
+		@foreach (TFreePlanDetailView tv in ViewBag.detail)
+		{
+			if (i) { 
+				day++;
+				<h3>第 @day 天</h3>
+			}
+			
+			<div class="col text-start">
+				<label asp-for="@tv.FdestionationName" class="form-label">@(i? "上午行程":"下午行程")</label>
+				<input asp-for="@tv.FdestionationName" class="form-control" readonly style="margin-left:50px;width:70%">
+			</div>
+			i = !i;
+		}
+		<div class="modal-footer" style="margin-top:2%">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+		</div>
+	</form>
+</div>

@@ -1,0 +1,94 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.CarRent.CarInfoViewModel
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">@ViewBag.title</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div id="divModalContent" class="modal-body">
+    <form id="@ViewBag.formId">
+        @Html.AntiForgeryToken()
+
+        <input asp-for="fCarId" style="display:none" />
+
+        <div class="mb-3">
+            <label asp-for="fLicensePlateNum" class="form-label">@Html.DisplayNameFor(h => h.fLicensePlateNum)</label>
+            <input asp-for="fLicensePlateNum" class="form-control" readonly />
+            <span asp-validation-for="fLicensePlateNum" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="fModelId" class="form-label">@Html.DisplayNameFor(h => h.fModelName)</label>
+            <select id="fModelId" asp-for="fModelId" class="form-control" disabled>
+                <option value="">請選擇車型</option>
+                @if (Model.CarModels != null )
+                {
+                    @foreach (var carModel in Model.CarModels)
+                    {
+                        <option value="@carModel.FModelId">@carModel.FModelName</option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="fModelId" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label>車輛圖片</label>
+            @if (!string.IsNullOrEmpty(Model.fImagePath))
+            {
+                <img id="carImage" src="@Url.Content("~/img/" + Model.fImagePath)" class="img-thumbnail" alt="Image" style="max-width: 200px; max-height: 200px;" />
+            }
+            <span asp-validation-for="fModelId" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="fLocationId" class="form-label">@Html.DisplayNameFor(h => h.fLocationId)</label>
+            @* 使用 Html.DropDownList *@
+            <select asp-for="fLocationId" class="form-control" disabled>
+                <option value="">請選擇車輛所在地</option>
+                @if (Model.ServicePoints != null)
+                {
+                    @foreach (var servicePoint in Model.ServicePoints)
+                    {
+                        <option value="@servicePoint.FServicePointId">@servicePoint.FServicePoint</option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="fLocationId" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="fCompanyId" class="form-label">@Html.DisplayNameFor(h => h.fCompanyId)</label>
+            @* 使用 Html.DropDownList *@
+            <select asp-for="fCompanyId" class="form-control" disabled>
+                <option value="">請選擇車輛所屬公司</option>
+                @if (Model.Companys != null)
+                {
+                    @foreach (var company in Model.Companys)
+                    {
+                        <option value="@company.FId">@company.FCompanyName</option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="fCompanyId" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="fRentStatus" class="form-label">@Html.DisplayNameFor(h => h.fRentStatus)</label>
+            <div>
+                <input type="radio" id="fRentStatus_true" name="fRentStatus" disabled value="true" @(Model.fRentStatus == true ? "checked" : "")>
+                <label for="fRentStatus_true" style="font-size:14px;">出租中</label>
+                <input type="radio" id="fRentStatus_false" name="fRentStatus" disabled value="false" @(Model.fRentStatus == false ? "checked" : "")>
+                <label for="fRentStatus_false" style="font-size:14px;">未出租</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            <button type="button" class="btn btn-primary" id="btnDelete" onclick="deleteCar(@Model.fCarId)">刪除</button>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts 
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

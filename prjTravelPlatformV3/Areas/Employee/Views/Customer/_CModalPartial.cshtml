@@ -1,0 +1,80 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.Customer.CustomerViewModel
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">@ViewBag.title</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div id="divModalContent" class="modal-body">
+    <form id="@ViewBag.formId">
+        @Html.AntiForgeryToken()
+
+        <input asp-for="CustomerId" style="display:none" />
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">@Html.DisplayNameFor(c => c.Name)</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div id="pussy" class="mb-3">
+            <label asp-for="Password" class="form-label">@Html.DisplayNameFor(c => c.Password)</label>
+            <input asp-for="Password" class="form-control">
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Phone" class="form-label">@Html.DisplayNameFor(c => c.Phone)</label>
+            <input asp-for="Phone" class="form-control">
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="IdentityNumber" class="form-label">@Html.DisplayNameFor(c => c.IdentityNumber)</label>
+            <input asp-for="IdentityNumber" class="form-control">
+            <span asp-validation-for="IdentityNumber" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Gender" class="form-label">@Html.DisplayNameFor(c => c.Gender)</label>
+            <input asp-for="Gender" class="form-control">
+            <span asp-validation-for="Gender" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Birth" class="form-label">@Html.DisplayNameFor(c => c.Birth)</label>
+            <input asp-for="Birth" class="form-control">
+            <span asp-validation-for="Birth" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">@Html.DisplayNameFor(c => c.Email)</label>
+            <input asp-for="Email" class="form-control">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Address" class="form-label">@Html.DisplayNameFor(c => c.Address)</label>
+            <input asp-for="Address" class="form-control">
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="IsCheck" class="form-label">@Html.DisplayNameFor(c => c.IsCheck)</label>
+            <input asp-for="IsCheck" class="form-control">
+            <span asp-validation-for="IsCheck" class="text-danger"></span>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick='demo()'>Demo</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            <button type="button" class="btn btn-primary" id="btnSave" onclick='sendFetchRequest("@ViewBag.formId")'>儲存</button>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+
+
+    </script>
+}

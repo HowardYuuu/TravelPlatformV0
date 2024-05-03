@@ -1,0 +1,542 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.Product.ProductViewModel
+@{
+    ViewData["Title"] = "實體商品管理";
+}
+@section Styles {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <style>
+        .input-group-append {
+            cursor: pointer;
+        }
+
+        .btn:focus{
+            box-shadow: 0 0 0 0.05rem white, 0 0 0 0.15rem #70a193;
+        }
+    </style>
+}
+
+<h2>商品編輯</h2>
+@* 商品來源 *@
+<div class="row">
+    <div class="col-sm-2 d-flex align-items-center justify-content-center">
+        <label class="text-center">商品來源</label>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="radioProSource" id="radioProSource1" value="true">
+            <label class="form-check-label" for="flexRadioDefault1">伴手禮代購</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="radioProSource" id="radioProSource0" value="false">
+            <label class="form-check-label" for="flexRadioDefault2">平台周邊商品</label>
+        </div>
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+@* 廠商名稱 *@
+<div class="row">
+    <div class="col-sm-2 d-flex align-items-center justify-content-center">
+        <label class="text-center">廠商名稱</label>
+    </div>
+    <div class="col-sm-6">
+        <select class="form-select" aria-label="Default select example" id="sleSupplier">
+        <option>請選擇</option>
+        </select>
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+@* 商品名稱 *@
+<div class="row">
+    <div class="col-sm-2 d-flex align-items-center justify-content-center">
+        <label class="text-center">商品名稱</label>
+    </div>
+    <div class="col-sm-6">
+        <input type="text" class="form-control" name="fProductName"
+               placeholder="設定商品名稱(最多50個字元)" maxlength="50" autocomplete="off" onchange="" />
+        <div><span class="text-red">※ </span>請勿使用&()=;'"<>\等特殊符號</div>
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+@* 商品圖片 *@
+<div class="row">
+    <div class="col-sm-2 d-flex align-items-center justify-content-center">
+        <label class="text-center">商品圖片</label>
+    </div>
+    <div class="col-sm-6">
+        <div class="input-group mb-3">
+            <input type="file" class="form-control" id="inputProPic" onchange="previewImage(this)">
+        </div>
+        <div id="productImg"></div> <!-- 用於顯示圖片的容器 -->
+        <p id="imgFileName"></p>
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+@* 商品規格 *@
+<div class="row">
+    <div class="row">
+        <div class="col-sm-2 d-flex align-items-center justify-content-center">
+            <label class="text-center">商品規格</label>
+        </div>
+        <div class="col-sm-10 container-fluid" style="padding-left:0px">
+            <!-- 将第二个div放入col-sm-10中，使用container-fluid，使其充满整个父容器 -->
+            <div id="itemContainer" class="table-responsive">
+                <table class="table" style="width: 55%;">
+                    <!-- 设置table的宽度为100% -->
+                    <thead>
+                        <tr>
+                            <th scope="col">規格名稱</th>
+                            <th scope="col">成本</th>
+                            <th scope="col">單價</th>
+                            <th scope="col">購買上限數量</th>
+                            <th scope="col">備貨日數</th>
+                            <th scope="col">規格圖片</th>
+                            <th scope="col">變更</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+@* 商品類型 *@
+<div class="row">
+    <div class="col-sm-2 d-flex align-items-center justify-content-center">
+        <label class="text-center">商品類型</label>
+    </div>
+    <div class="col-sm-6">
+        <select class="form-select" aria-label="Default select example" id="sleProType">
+            <option>請選擇</option>
+        </select>
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+@* 商品發售日期 *@
+<div class="row">
+    <div class="col-sm-2 d-flex align-items-center justify-content-center">
+        <label class="text-center">商品發售日期</label>
+    </div>
+    <div class="col-sm-6">
+        <div class="col-5">
+            <div class="input-group date" id="datepicker">
+                <input type="text" class="form-control" id="date" />
+                <span class="input-group-append">
+                    <span class="input-group-text bg-light d-block" id="calendar">
+                        <i class="fa fa-calendar"></i>
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+@* 商品狀態 *@
+<div class="row">
+    <div class="col-sm-2 d-flex align-items-center justify-content-center">
+        <label class="text-center">商品狀態</label>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="rdproStatus" id="rdproStatus1" value="true">
+            <label class="form-check-label" for="flexRadioDefault1">上架</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="rdproStatus" id="rdproStatus0" value="false">
+            <label class="form-check-label" for="flexRadioDefault2">未上架</label>
+        </div>
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+@* 商品描述 *@
+<div class="row">
+    <div class="col-sm-2 d-flex align-items-center justify-content-center">
+        <label id="itemdesc" class="text-center">商品描述</label>
+    </div>
+    <div class="col-9">
+        <button id="demoBtn" class="btn btn-secondary">Demo</button>
+        <label class="control-label"></label>
+        <textarea class="form-control" id="editor"></textarea>
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+<div class="row">
+    <div class="col-sm-8 offset-sm-2">
+        <button type="button" class="btn btn-secondary" id="cancelButton">取消</button>
+        <button type="button" class="btn btn-primary" id="saveButton">儲存</button>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/ckeditor5/build/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.zh-TW.min.js"></script>
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="//cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+        // 使用 ClassicEditor.create() 方法将编辑器应用于 #editor 元素
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                // plugins: [
+                //     Alignment,
+                //     Autoformat,
+                //     Bold,
+                //     Italic,
+                //     BlockQuote,
+                //     CKBox,
+                //     CloudServices,
+                //     Essentials,
+                //     FontColor,
+                //     FontSize,
+                //     Heading,
+                //     AutoImage,
+                //     Image,
+                //     ImageCaption,
+                //     ImageInsert,
+                //     ImageResize,
+                //     ImageStyle,
+                //     ImageToolbar,
+                //     ImageUpload,
+                //     Indent,
+                //     Link,
+                //     List,
+                //     MediaEmbed,
+                //     Paragraph,
+                //     PasteFromOffice,
+                //     Table,
+                //     TableToolbar,
+                //     TextTransformation,
+                //     Undo
+                // ],
+                toolbar: {
+                    items: [
+                        'heading', '|',
+                        'bold', 'italic', '|',
+                        'alignment','bulletedlist', '|',
+                        'fontColor', 'fontSize', '|',
+                        'imageInsert', 'MediaEmbed', '|',
+                        'undo', 'redo'
+                    ]
+                }
+            })
+            .then(editor => {
+                console.log('Editor created successfully');
+                window.editor = editor;
+            })
+            .catch(error => {
+                console.error('Error initializing editor:', error);
+            });
+        // 修改 loadSupplierList，使其回傳 Promise
+        function loadSupplierList() {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/api/Product/GetSupplierInfoByType",
+                    type: "GET",
+                    dataType: "json",
+                    success: function (supplierList) {
+                        console.log('loadSupplierList', supplierList);
+                        $.each(supplierList, function (key, value) {
+                            $("#sleSupplier").append('<option value="' + value.fId + '">' + value.fCompanyName + '</option>');
+                        });
+                        resolve(); // 當 AJAX 呼叫成功時解決 Promise
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                        reject(error); // 如果有錯誤，則拒絕 Promise
+                    }
+                });
+            });
+        }
+
+        // 修改 loadProductTypes，使其回傳 Promise
+        function loadProductTypes() {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/api/Product/GetProTypeByTypeId",
+                    type: "GET",
+                    dataType: "json",
+                    success: function (typeList) {
+                        console.log('TypeList', typeList);
+                        $.each(typeList, function (key, value) {
+                            $("#sleProType").append('<option value="' + value.fTypeId + '">' + value.fType + '</option>');
+                        });
+                        resolve(); // 當 AJAX 呼叫成功時解決 Promise
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                        reject(error); // 如果有錯誤，則拒絕 Promise
+                    }
+                });
+            });
+        }
+        // 使用 AJAX 加載訂單資訊並填充表單
+        function loadProductInfo(productId) {
+            $.ajax({
+                type: 'GET',
+                url: `/api/Product/GetProductInfoById?ProductId=${productId}`,
+                success: function (data) {
+                    console.log(data);
+                    fillFormFields(data); // 將返回的資料填入表單
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+        // 填充表單元素的函數
+        function fillFormFields(data) {
+            // 將返回的資料填入對應的 HTML 元素中
+            $('input[name="fProductName"]').val(data.fProductName); // 將產品名稱填入 input 中
+            $("#sleSupplier").val(data.fSupplierId); // 將下拉式選單的值設置為 fSupplierId
+            $("#sleProType").val(data.fTypeId); // 將下拉式選單的值設置為 fSupplierId
+            $('#datepicker input').val(data.fRelease); // 將 fRelease 的值填入日期選擇器的文字輸入框中
+            window.editor.setData(data.fDescription);
+            $('#calendar').click(function () {
+                $('#datepicker input').datepicker('show');
+            });
+            // 載入圖片
+            var imagePath;
+            // 如果有圖片資訊，設置圖片路徑為資料夾路徑加上圖片檔名
+            if (data.fImagePath) {
+                imagePath = "/img/Item/" + data.fImagePath;
+            } else {
+                // 如果沒有圖片資訊，使用預設圖片
+                imagePath = "/img/no_product.png"; // 請替換為您的預設圖片路徑
+            }
+            // 創建 <img> 元素的 HTML 字符串
+            var imgHtml = '<img src="' + imagePath + '" alt="Product Image" width="100px">';
+
+            // 將圖片的 HTML 字符串添加到圖片容器中
+            $('#productImg').append(imgHtml);
+            // 如果有圖片路徑，則顯示文件名
+            if (data.fImagePath) {
+                var fileName = data.fImagePath.substring(data.fImagePath.lastIndexOf('/') + 1);
+                $('#imgFileName').text(fileName);
+            }
+            // 將商品來源對應到對應的 radio button
+            if (data.fProSource) {
+                $('#radioProSource1').prop('checked', true); // 將選項1選中
+                $('#radioProSource0').prop('checked', false); // 將選項0選中
+            } else {
+                $('#radioProSource1').prop('checked', false); // 將選項1選中
+                $('#radioProSource0').prop('checked', true); // 將選項0選中
+            }
+            // 將商品狀態對應到對應的 radio button
+            if (data.fProStatus) {
+                $('#rdproStatus1').prop('checked', true); // 將選項1選中
+                $('#rdproStatus0').prop('checked', false); // 將選項0選中
+            } else {
+                $('#rdproStatus1').prop('checked', false); // 將選項1選中
+                $('#rdproStatus0').prop('checked', true); // 將選項0選中
+            }
+        }
+        $(document).ready(function () {
+            // 獲取傳遞進來的 orderId
+            var productId = '@ViewBag.ProductId'; // 假設您將 orderId 傳遞到視圖中的 ViewBag 中
+            console.log(productId); // 打印到控制台
+            // 使用 Promise 來依序呼叫 loadSupplierList 和 loadProductTypes
+            loadSupplierList().then(function () {
+                return loadProductTypes();
+            }).then(function () {
+                // 當兩個函式都執行完後，再呼叫 loadProductInfo
+                return loadProductInfo(productId);
+            }).catch(function (error) {
+                console.error(error);
+            }); // 加載訂單資訊並填充表單
+
+            //日期選取器載入設定
+            $('#datepicker input').datepicker({
+                autoclose: true,
+                format: 'yyyymmdd',
+                todayBtn: true,
+                clearBtn: true
+            });
+            // 點擊日期後自動關閉日期選擇器
+            $('#datepicker input').on('changeDate', function () {
+                $('#datepicker input').datepicker('hide');
+            });
+            //載入規格清單
+            $.ajax({
+                url: `/api/Product/GetSpecListById?ProductId=${productId}`,
+                type: "GET",
+                dataType: "json",
+                success: function (item) {
+                    console.log('item', item); // 在控制台輸出返回的資料
+                    // 遍歷返回的數據
+                    // 获取表格的 tbody 元素
+                    var tbody = $('#itemContainer tbody');
+
+                    // 遍历 item 数组，生成表格内容
+                    item.forEach(function (spec) {
+                        // 使用模板字符串构建 HTML 片段
+                        var html = `
+                                        <tr>
+                                            <td class="text-center"><input type="text" class="form-control" value="${spec.fSpecName}"></td>
+                                            <td class="text-center"><input type="text" class="form-control" value="${spec.fCost}"></td>
+                                            <td class="text-center"><input type="text" class="form-control" value="${spec.fPrice}"></td>
+                                            <td class="text-center"><input type="text" class="form-control" value="${spec.fBuyLimited}"></td>
+                                            <td class="text-center"><input type="text" class="form-control" value="${spec.fStockTime}"></td>
+                                            <td class="text-center"><img src="/img/Item/${spec.fImagePath ? spec.fImagePath : 'noimage.jpg'}" class="rounded" style="width: 50px; height: 50px;"></td>
+                                            <td><button type="button" class="btn-dele btn me-1" data-mdb-toggle="tooltip" title="刪除"><i class="fas fa-trash" style="font-size: 10px;"></i></button></td>
+                                        </tr>
+                                `;
+
+                        // 将生成的 HTML 片段添加到 tbody 中
+                        tbody.append(html);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    // 處理錯誤
+                    console.error(xhr.responseText);
+                }
+            });
+
+            // 儲存按鈕的點擊事件
+            $(document).ready(function () {
+                $(document).on("click", '#saveButton', function () {
+
+                    console.log("imageBase64");
+
+                    // 檢查是否已經抓取到要儲存的資料
+                    var ProductId = productId;
+                    var productName = $('input[name="fProductName"]').val();
+                    var supplierId = $('#sleSupplier').val();
+                    var proType = $('#sleProType').val();
+                    var productStatus = $('input[name="rdproStatus"]:checked').val() === "true";
+                    var proSource = $('input[name="radioProSource"]:checked').val() === "true";
+                    var release = $('#datepicker input').val(); // 獲取日期選擇器中的值
+                    var imageFile = $('#inputProPic')[0].files[0]; // 獲取上傳的圖片文件
+                    var description = window.editor.getData(); // 获取 CKEditor 中的内容
+
+                    // 檢查是否有任何一個欄位為空
+                    if ((productName.trim() == "") || (supplierId <= 0) || (proType <= 0) || (release.trim() == "")) {
+                        //console.log(imageFile);
+                        console.log('請確保所有欄位都已填寫！');
+                        return; // 如果有欄位為空，則停止執行後續操作
+                    }
+
+                    var data = {
+                        "ProductId": parseInt(ProductId),
+                        "ProductName": productName,
+                        "ProSource": proSource,
+                        "SupplierId": parseInt(supplierId),
+                        "TypeId": parseInt(proType),
+                        "Release": release,
+                        "ProStatus": productStatus,
+                        "Description": description // 添加 CKEditor 中的内容到数据对象中
+                    };
+
+                    // 如果有選擇圖片，則讀取圖片並發送 AJAX 請求
+                    if (imageFile) {
+                        var reader = new FileReader();
+                        reader.readAsDataURL(imageFile);
+                        reader.onload = function () {
+
+                            data["ImagePath"] = reader.result;
+
+                            sendDataToServer(data); // 發送 AJAX 請求
+                        };
+                        reader.onerror = function (error) {
+                            console.log('Error: ', error);
+                        };
+                    } else {
+                        // 如果未選擇圖片，則檢查資料庫中是否有圖片檔名
+                        sendDataToServer(data);
+                    }
+                });
+                // 假设你的按钮有 ID 为 'demoBtn'
+                $('#demoBtn').click(function () {
+                    const additionalText = "https://i.imgur.com/ZtQFZax.jpeg"; // 这里定义你想要追加的文本
+                    const currentContent = window.editor.getData(); // 获取当前编辑器的内容
+                    const updatedContent = currentContent + additionalText; // 在现有内容后追加新的文本
+
+                    window.editor.setData(updatedContent); // 更新编辑器的内容
+                });
+            });
+            // 函式：發送資料到伺服器
+            function sendDataToServer(data) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/Product/Edit', // 替換成您的API端點
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (response) {
+                        alert('商品資料已成功儲存！');
+                        window.location.href = '/Employee/IProductManagement/Index'; // 跳轉到index頁面
+                        console.log('Data sent to API:', data);
+                        console.log('Response:', response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('儲存失敗，請稍後再試！');
+                    }
+                });
+            };
+            // 取消按鈕的點擊事件
+            $('#cancelButton').click(function () {
+                history.back(); // 返回前一個頁面
+            });
+        });
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#productImg').html('<img src="' + e.target.result + '" alt="Product Image" width="100px">');
+                }
+                reader.readAsDataURL(input.files[0]);
+                // 設置文件名
+                $('#imgFileName').text(input.files[0].name);
+            }
+        }       
+    </script>
+@*                         //把上傳的圖片檔轉成base64
+                //     var reader = new FileReader();
+                //     reader.readAsDataURL(imageFile);
+                //     reader.onload = function () {
+                //         console.log(reader.result);
+
+                //         var data = {
+                //             "ProductId": parseInt(ProductId),
+                //             "ProductName": productName,
+                //             "ProSource": proSource,
+                //             "SupplierId": parseInt(supplierId),
+                //             "TypeId": parseInt(proType),
+                //             "Release": release,
+                //             "ProStatus": productStatus,
+                //             "ImagePath": reader.result
+                //             // 其他資料...
+                //         };
+
+                //         console.log("data");
+                //         console.log(data);
+
+                //         $.ajax({
+                //             type: 'POST',
+                //             url: '/api/Product/Edit', // 替換成您的API端點
+                //             contentType: 'application/json',
+                //             data: JSON.stringify(data),
+                //             success: function (response) {
+                //                 // 儲存成功後的處理
+                //                 alert('商品資料已成功儲存！');
+                //                 //window.location.href = '/Employee/IProductManagement/Index'; // 跳轉到index頁面
+                //                 // 在成功回調函數中顯示傳遞到 API 的資料
+                //                 console.log('Data sent to API:', data);
+                //                 // 可以進行其他操作，如重新導向到其他頁面等
+                //                 console.log('res');
+                //                 console.log(response);
+                //             },
+                //             error: function (xhr, status, error) {
+                //                 // 處理錯誤
+                //                 console.error(xhr.responseText);
+                //                 alert('儲存失敗，請稍後再試！');
+                //             }
+                //         });
+                //     };
+                //     reader.onerror = function (error) {
+                //         console.log('Error: ', error);
+                //     };
+                //
+}); *@
+}

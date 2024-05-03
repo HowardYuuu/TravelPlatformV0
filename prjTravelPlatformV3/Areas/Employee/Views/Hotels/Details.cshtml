@@ -1,0 +1,54 @@
+﻿@model prjTravelPlatformV3.Models.THotel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>THotel</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FHotelName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FHotelName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FHotelEngName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FHotelEngName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FHotelAddress)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FHotelAddress)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FPhone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FPhone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FRegion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FRegion)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FTexId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FTexId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.FHotelId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

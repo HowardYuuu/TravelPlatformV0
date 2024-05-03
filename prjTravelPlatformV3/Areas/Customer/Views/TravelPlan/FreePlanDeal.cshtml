@@ -1,0 +1,187 @@
+﻿@using prjTravelPlatform_release.Areas.Customer.ViewModel.TravelPlan
+@model IQueryable<prjTravelPlatform_release.Areas.Customer.ViewModel.TravelPlan.TFreePlanDetailView>
+@{
+	ViewData["Title"] = "自由行結帳";
+}
+@section Styles {
+
+	<link href="~/allen/destionationdeal/css/vendors.css" rel="stylesheet" />
+	<link href="~/allen/destionationdeal/css/main.css" rel="stylesheet" />
+}
+<section class="layout-pt-lg layout-pb-lg bg-blue-2">
+	<div class="container">
+		<div class="row justify-center">
+			<div class="col-xl-10 col-lg-11">
+				<div class="bg-white rounded-4 mt-50">
+					<div class="layout-pt-lg layout-pb-lg px-50">
+						<div class="row justify-between">
+							<div class="col-xl-4">
+								<div class="text-20 fw-500">@ViewBag.Customer</div>
+							</div>
+							<div class="col-xl-4">
+								<div class="searchMenu-date px-30 lg:py-20 lg:px-0 js-form-dd js-calendar js-calendar-el">
+									<div data-x-dd-click="searchMenu-date">
+										<h4 class="text-15 fw-500 ls-2 lh-16">出發日期:</h4>
+
+										<div class="capitalize text-15 text-light-1 ls-2 lh-16">
+											<span class="js-first-date" style="display:none">Wed 2 Mar</span>
+
+											<span class="js-last-date">年/月/日</span>
+										</div>
+									</div>
+									<div class="searchMenu-date__field shadow-2" data-x-dd="searchMenu-date" data-x-dd-toggle="-is-active">
+										<div class="bg-white px-30 py-30 rounded-4">
+											<div class="elCalendar js-calendar-el-calendar"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xl-4">
+								<div class="text-15 text-light-1">優惠劵</div>
+								<select id="couponSelect" style="width: 100%; height: 30px;">
+									<option value="16">請選擇優惠劵</option>
+									@foreach (TDcCusCouponQtyView cp in ViewBag.Coupon)
+									{
+										<option value="@cp.FCouponId">@cp.FCouponName</option>
+									}
+								</select>
+							</div>
+						</div>
+						<div class="row pt-50">
+							<div class="col-12">
+								<table class="table col-12">
+									<thead class="bg-blue-1-05 text-blue-1">
+										<tr>
+											<th>品名</th>
+											<th>數量</th>
+											<th>價格</th>
+											<th>折購價</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach(var item in Model)
+										{
+											<tr>
+												<td>@item.FdestionationName</td>
+												<td><input type="number" style=" width: 50px;" value="1" readonly></td>
+												<td>$ @item.FPrice</td>
+											</tr>
+										}
+										
+										<tr>
+											<td class="text-18 fw-500">總計</td>
+											<td><input type="number" style=" width: 50px;" id="qty" value="1"></td>
+											<td class="text-18 fw-500" id="allmoney">@ViewBag.totalmoney</td>
+											<td id="afterCP" class="text-18 fw-500">@ViewBag.totalmoney</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="d-flex justify-end">
+							<button class="button h-50 px-24 -dark-1 bg-blue-1 text-white" onclick="buyitem()">
+								下單
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+@section Scripts {
+	<script src="~/allen/destionationDeal/js/vendors.js"></script>
+	<script src="~/allen/destionationDeal/js/main.js"></script>
+	<script>
+
+
+		const observer = new MutationObserver(function (mutationsList, observer) {
+			for (let mutation of mutationsList) {
+				if (mutation.type === 'childList' && mutation.target.classList.contains('js-last-date')) {
+					var activeElements = document.querySelectorAll('.-is-active');
+					activeElements.forEach(function (element) {
+						element.classList.remove('-is-active');
+					});
+				}
+			}
+			const today = new Date();
+			const targetNodeValue = new Date(Date.parse(targetNode.innerText.trim()));
+			// 如果選擇的日期早於當前日期，顯示警告消息
+			if (targetNodeValue < today) {
+				Swal.fire({
+					title: '您選擇的日期不能早於今天！',
+					text: '',
+					icon: 'warning'
+				});
+				targetNode.innerText = "年/月/日";
+			}
+		});
+		const config = { attributes: true, childList: true, subtree: true };
+		const targetNode = document.querySelector('.js-last-date');
+		observer.observe(targetNode, config);
+		var date = targetNode.value
+
+
+		var price = parseFloat('@ViewBag.totalmoney)');
+		var qty =  document.querySelector('#qty');
+		var allmoney = document.querySelector('#allmoney');
+		qty.addEventListener('change', function () {
+
+			var input = this;
+			var value = parseInt(input.value);
+			if (value <= 0 || isNaN(value)) {
+				input.value = 1;
+			}
+			allmoney.textContent = price * parseInt(qty.value);
+			document.getElementById('afterCP').textContent = parseFloat(allmoney.textContent) - cpprice;
+		})
+
+		var cpprice = 0;
+		var selectedCouponId = 16;
+		var afterCP = parseFloat(allmoney.textContent);
+		document.getElementById('couponSelect').addEventListener('change', function () {
+			selectedCouponId = this.value;
+			fetch(`@Url.Content("~/Customer/Destionation/Coupon")?id=${selectedCouponId}`)
+				.then(function (response) {
+					return response.text();
+				})
+				.then(function (data) {
+					cpprice = parseFloat(data);
+					afterCP = parseFloat(allmoney.textContent) - cpprice;
+					document.getElementById('afterCP').textContent = afterCP;
+
+				})
+				.catch(function (error) {
+					console.error('Error:', error);
+				});
+		});
+		// document.getElementById('afterCP').textContent = allmoney;
+
+		var id = "@ViewBag.FreeId";
+		function buyitem() {
+			const lastDateElement = document.querySelector('.js-last-date');
+			let lastDateValue = lastDateElement.innerText;
+			$.ajax({
+				url: '@Url.Content("~/Customer/TravelPlan/Order")',
+				type: 'GET',
+				data: { id: id, qty: parseInt(qty.value), date: lastDateValue, coupon: selectedCouponId },
+				success: function (response) {
+					if (response === false) { // 使用严格相等比较，需要将字符串 "false" 转换为布尔值 false
+						Swal.fire({
+							title: '錯誤',
+							text: '請選擇日期',
+							icon: 'error'
+						});
+					} else {
+						Swal.fire({
+							title: '成功下單',
+							text: '感謝您的購買',
+							icon: 'success'
+						});
+					}
+				}
+			});
+		}
+	</script>
+}	

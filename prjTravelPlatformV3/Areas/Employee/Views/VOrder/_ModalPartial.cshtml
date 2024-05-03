@@ -1,0 +1,189 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.Visa.VOrderViewModel
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">@ViewBag.title</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div id="divModalContent" class="modal-body">
+    <form id="@ViewBag.formId" class="overflow-auto">
+        @Html.AntiForgeryToken()
+
+        <input asp-for="FId" style="display:none" />
+        <div style="padding:5px;">
+            <div class="mb-3">
+                <label asp-for="FProductId" class="form-label">@Html.DisplayNameFor(h => h.FProductId)</label>
+                <select asp-for="FProductId" class="form-control" asp-items="@ViewBag.FProductId" onchange="getPrInEnByName(this.options[this.selectedIndex].text)">
+                    <option value="0">請選擇商品</option>
+                </select>
+                <span asp-validation-for="FProductId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="FCustomerId" class="form-label">@Html.DisplayNameFor(h => h.FCustomerId)</label>
+                <select asp-for="FCustomerId" class="form-control" asp-items="@ViewBag.FCustomerId">
+                    <option value="0">請選擇購買會員姓名</option>
+                </select>
+                <span asp-validation-for="FCustomerId" class="text-danger"></span>
+            </div>
+            <div class="d-flex">
+                <div class="mb-3 flex-grow-1" style="flex-basis:25%; margin-right:10px;">
+                    <label asp-for="FPrice" class="form-label">@Html.DisplayNameFor(h => h.FPrice)</label>
+                    <input asp-for="FPrice" class="form-control" readonly>
+                    <span asp-validation-for="FPrice" class="text-danger"></span>
+                </div>
+                <div class="mb-3 flex-grow-1" style="flex-basis:25%; margin-right:10px;">
+                    <label asp-for="FQuantity" class="form-label">@Html.DisplayNameFor(h => h.FQuantity)</label>
+                    <input asp-for="FQuantity" class="form-control" readonly>
+                    <span asp-validation-for="FQuantity" class="text-danger"></span>
+                </div>
+                <div class="mb-3 flex-grow-1" style="flex-basis:40%; margin-right:10px;">
+                    <label asp-for="FCouponId" class="form-label">@Html.DisplayNameFor(h => h.FCouponId)</label>
+                    <select asp-for="FCouponId" class="form-control" onchange="getTotal();" asp-items="@ViewBag.FCouponId">
+                        <option value="0">請選擇使用優惠券</option>
+                    </select>
+                    <span asp-validation-for="FCouponId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 flex-grow-1" style="flex-basis:20%;">
+                    <label>總價</label>
+                    <div class="d-flex justify-content-between align-items-center ml-1 border rounded" style="padding:7px 5px;"><h6 id="Total" class="m-0"></h6><h6 class="m-0 ml-1">元</h6></div>
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="mb-3 flex-grow-1" style="margin-right:15px;">
+                    <label asp-for="FDepartureDate" class="form-label">@Html.DisplayNameFor(h => h.FDepartureDate)</label>
+                    <input asp-for="FDepartureDate" class="form-control" onfocus="showDatePicker(this)">
+                    <span asp-validation-for="FDepartureDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3 flex-grow-1">
+                    <label asp-for="FMemo" class="form-label">@Html.DisplayNameFor(h => h.FMemo)</label>
+                    <textarea asp-for="FMemo" class="form-control" rows="1" wrap="hard"></textarea>
+                    <span asp-validation-for="FMemo" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3 d-none" id="SorD">
+                <input type="radio" id="selfPick" name="SorD" value="S" checked onchange="SorDToggle(this.value)" /><label for="S">自取</label>
+                <input type="radio" id="delivery" name="SorD" value="D" onchange="SorDToggle(this.value)" /><label for="D">配送</label>
+                <input asp-for="FForPickupOrDeliveryAddress" class="form-control d-none">
+                <span asp-validation-for="FForPickupOrDeliveryAddress" class="text-danger"></span>
+            </div>
+            <div class="mb-3 d-none" id="interview">
+                <label asp-for="FInterviewReminder" class="form-label">@Html.DisplayNameFor(h => h.FInterviewReminder)</label>
+                <select asp-for="FInterviewReminder" class="form-control">
+                    <option value=false>未提醒</option>
+                    <option value=true>已提醒</option>
+                </select>
+                <span asp-validation-for="FInterviewReminder" class="text-danger"></span>
+            </div>
+            <div class="d-flex">
+                <div class="mb-3 flex-grow-1" style="padding-right:20px;">
+                    <label asp-for="FStatusId" class="form-label">@Html.DisplayNameFor(h => h.FStatusId)</label>
+                    <select asp-for="FStatusId" class="form-control" asp-items="@ViewBag.FStatusId">
+                        <option value="0">請選擇訂單狀態</option>
+                    </select>
+                    <span asp-validation-for="FStatusId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 flex-grow-1">
+                    <label asp-for="FEvaluate" class="form-label">@Html.DisplayNameFor(h => h.FEvaluate)</label>
+                    <select asp-for="FEvaluate" class="form-control">
+                        <option value="0">未評價</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <span asp-validation-for="FEvaluate" class="text-danger"></span>
+                </div>
+            </div>
+
+
+
+            <div class="mb-3 flex-grow-1" style="padding-right:20px;">
+                <div class="d-flex;" id="travelValidation">
+                    <label asp-for="TVtravelerInfos" class="form-label">@Html.DisplayNameFor(h => h.TVtravelerInfos)</label>
+                    <span asp-validation-for="travelerInfos" class="text-danger"></span>
+                    <button onclick="newTr();" class="btn btn-info btn-sm" style="padding:8px 8px; margin:0 0 8px 4px;"><i class="fa-solid fa-circle-plus" style="font-size:0.8rem;"></i> 新增</button>
+                    <button onclick="minusTr();" class="btn btn-danger btn-sm" style="padding:8px 8px; margin:0 0 8px 4px;"><i class="fa-solid fa-circle-minus" style="font-size:0.8rem"></i> 減少</button>
+                    <button onclick="deleteTr();" class="btn btn-warning btn-sm" style="padding:8px 8px; margin:0 0 8px 4px;"><i class="fa-solid fa-trash" style="font-size:0.8rem"></i> 刪除</button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="d-none">FOrderId</th>
+                            <th>姓名</th>
+                            <th>性別</th>
+                            <th class="d-none">性別</th>
+                            <th>生日</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        @{
+                            var index = 0;
+                        }
+                        @foreach (var travelerInfo in Model.TVtravelerInfos)
+                        {
+                            <tr onclick="selectedRow(this);">
+                                <td class="d-none"><input name="travelerInfos" value="@Model.FId" class="form-control"></td>
+                                <td><input name="travelerInfos" value="@travelerInfo.FName" class="form-control"></td>
+                                <td class="align-middle">
+                                    @if (travelerInfo.FGender.HasValue)
+                                    {
+                                        if (travelerInfo.FGender.Value)
+                                        {
+                                            <input type="radio" id="male_@index" name="Gender_@index" value="True" onchange="changeGender(event)" checked />
+                                            <label for="male_@index" style="margin-bottom:0;">男</label>
+                                            <input type="radio" id="female_@index" name="Gender_@index" value="False" onchange="changeGender(event)" />
+                                            <label for="female_@index" style="margin-bottom:0;">女</label>
+                                        }
+                                        else
+                                        {
+                                            <input type="radio" id="male_@index" name="Gender_@index" value="True" onchange="changeGender(event)" />
+                                            <label for="male_@index" style="margin-bottom:0;">男</label>
+                                            <input type="radio" id="female_@index" name="Gender_@index" value="False" onchange="changeGender(event)" checked />
+                                            <label for="female_@index" style="margin-bottom:0;">女</label>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" id="male_@index" name="Gender_@index" value="True" onchange="changeGender(event)" />
+                                        <label for="male_@index" style="margin-bottom:0;">男</label>
+                                        <input type="radio" id="female_@index" name="Gender_@index" value="False" onchange="changeGender(event)" />
+                                        <label for="female_@index" style="margin-bottom:0;">女</label>
+                                    }
+                                </td>
+                                <td class="d-none"><input name="travelerInfos" value="@travelerInfo.FGender.ToString()" class="form-control"></td>
+                                <td><input name="travelerInfos" value="@travelerInfo.FBirthDate" class="form-control" onfocus="showDatePicker(this)"></td>
+                            </tr>
+                            index++;
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            <button type="button" class="btn btn-primary" id="btnSave" onclick='sendFetchRequest("@ViewBag.formId")'>儲存</button>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    
+
+
+    <script>
+        
+    </script>
+}

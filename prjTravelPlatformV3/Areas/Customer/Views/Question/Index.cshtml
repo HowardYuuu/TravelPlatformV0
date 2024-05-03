@@ -1,0 +1,142 @@
+﻿@using System.Security.Claims
+@inject IHttpContextAccessor _httpContextAccessor
+
+@model IEnumerable<prjTravelPlatformV3.Models.TDcQuestion>
+
+@{
+    ViewData["Title"] = "客服管理";
+}
+
+@section Styles {
+
+
+    <head>
+
+    </head>
+    <style>
+
+    </style>
+}
+
+<div class="masthead__bg" style="position: relative">
+    <img src="~/img/frontstage/shutterstock_1877056579.jpg" style="filter: brightness(55%); width: 100%; height:320px;" />
+    <div class="text-center" style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%);">
+        <h1 class="text-30 fw-600 text-white">客服中心</h1>
+    </div>
+</div>
+<section class="pt-40 pb-40 bg-light-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+            
+                <section class="search-area" data-v-03b467cc="">
+                    <div class="search-area_content" data-v-03b467cc="">
+                        <h2 data-v-03b467cc="">搜尋常見問題</h2> 
+                        <div class="search-area_content-searchbar" data-v-03b467cc="">
+                            <form data-v-03b467cc="">
+                                <input placeholder="搜尋常見問題" type="text" value="" data-v-03b467cc="">
+                                <button type="submit" data-spm-module="SearchForYourQuestions?trg=manual" data-spm-virtual-item="__virtual" data-v-03b467cc="">
+                                    <svg width="24" height="24" class="svg-icon klook-symbol-white-500" data-v-03b467cc="">
+                                        <use href="#common-icon_edit_search_m" xlink:href="#common-icon_edit_search_m"></use>
+                                        </svg>
+                                        </button>
+                                        </form>
+                                        <!---->
+                                    </div>
+                                    </div>
+                                    </section>
+
+
+
+                <section class="popular-topics help-center-section" data-v-03b467cc="">
+                    <div class="popular-topics_content" data-v-03b467cc="">
+                        <h2 data-v-03b467cc="">熱門常見問題</h2> <div class="popular-topics_content-collapse klk-collapse klk-collapse-normal" data-v-03b467cc="">
+                            <div data-spm-module="PopularTopics_LIST?oid=faq_934&amp;idx=0&amp;len=5" data-spm-virtual-item="__virtual" class="klk-collapse-item" data-v-03b467cc="">
+                                <!----> <div class="klk-collapse-item-main">
+                                    <div class="klk-collapse-item-header"><div class="klk-collapse-item-header-inner"><div class="klk-collapse-item-title-wrapper"><div class="klk-collapse-item-title"><h2>如何取消訂單並申請退款？</h2></div> <!----></div> <span class="klk-collapse-item-ctrl-btn i-icon i-icon-icon-chevron-down"><svg width="24" height="24" viewBox="0 0 48 48" fill="none"><path d="M10 17L24 32L31 24.5L38 17" stroke="#212121" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></div></div> <div class="klk-collapse-item-content" style="display:none;">
+                                        <div class="klk-collapse-item-content-inner">
+                                            <div class="answer" data-v-03b467cc="">
+                                                <div class="klk-markdown klk-markdown--highlight" data-v-03b467cc="">
+                                                    <p>視各活動取消政策而定</p>
+                                                    <p>
+                                                        【免費取消訂單】
+                                                        請於取消政策規定指定時間內自行取消訂單，步驟如下：
+                                                    </p>
+                                                    <ol>
+                                                        <li>前往訂單頁面</li>
+                                                        <li>選擇欲取消訂單，點擊「申請退款」</li>
+                                                        <li>選擇退款原因、退款數量，點擊「下一步」</li>
+                                                    </ol>
+                                                    <p>
+                                                        【有條件取消訂單】
+                                                        詳情請查看活動頁面取消政策說明；如欲申請退款，請透過線上客服與我們聯繫（前往訂單頁面 &gt; 選擇訂單 &gt; 點擊「線上客服」圖示）
+                                                    </p>
+                                                    <p>
+                                                        【不可取消訂單】
+                                                        抱歉，此類活動無法退款
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                            </div><div data-spm-module="PopularTopics_LIST?oid=faq_910&amp;idx=2&amp;len=5" data-spm-virtual-item="__virtual" class="klk-collapse-item" data-v-03b467cc="">
+                                <!----> <div class="klk-collapse-item-main">
+                                    <div class="klk-collapse-item-header"><div class="klk-collapse-item-header-inner"><div class="klk-collapse-item-title-wrapper"><div class="klk-collapse-item-title"><h2>下單後，何時會收到憑證？</h2></div> <!----></div> <span class="klk-collapse-item-ctrl-btn i-icon i-icon-icon-chevron-down"><svg width="24" height="24" viewBox="0 0 48 48" fill="none"><path d="M10 17L24 32L31 24.5L38 17" stroke="#212121" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></div></div> <div class="klk-collapse-item-content" style="display:none;">
+                                        <div class="klk-collapse-item-content-inner">
+                                            <div class="answer" data-v-03b467cc="">
+                                                <div class="klk-markdown klk-markdown--highlight" data-v-03b467cc="">
+                                                    <p>視預訂活動而定</p>
+                                                    <p>詳情請查看活動頁面說明（立即確認／24小時內確認／48小時內確認）</p>
+                                                    <p>如為「立即確認」活動，訂單將於5分鐘內確認</p>
+                                                    <p>如於時限內未收到確認郵件，建議先查看電子信箱的垃圾郵件匣</p>
+                                                    <p>如仍需協助，請透過線上客服與我們聯繫（前往訂單頁面 &gt; 選擇訂單 &gt; 點擊「線上客服」圖示）</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><div data-spm-module="PopularTopics_LIST?oid=faq_903&amp;idx=3&amp;len=5" data-spm-virtual-item="__virtual" class="klk-collapse-item" data-v-03b467cc="">
+                                <!----> <div class="klk-collapse-item-main">
+                                    <div class="klk-collapse-item-header"><div class="klk-collapse-item-header-inner"><div class="klk-collapse-item-title-wrapper"><div class="klk-collapse-item-title"><h2>可以幫家人和朋友預訂嗎？</h2></div> <!----></div> <span class="klk-collapse-item-ctrl-btn i-icon i-icon-icon-chevron-down"><svg width="24" height="24" viewBox="0 0 48 48" fill="none"><path d="M10 17L24 32L31 24.5L38 17" stroke="#212121" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></div></div> <div class="klk-collapse-item-content" style="display:none;">
+                                        <div class="klk-collapse-item-content-inner">
+                                            <div class="answer" data-v-03b467cc="">
+                                                <div class="klk-markdown klk-markdown--highlight" data-v-03b467cc="">
+                                                    <p>可以，但預訂時需填寫所有參加者的詳細資訊</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><div data-spm-module="PopularTopics_LIST?oid=faq_929&amp;idx=4&amp;len=5" data-spm-virtual-item="__virtual" class="klk-collapse-item" data-v-03b467cc="">
+                                <!----> <div class="klk-collapse-item-main">
+                                    <div class="klk-collapse-item-header"><div class="klk-collapse-item-header-inner"><div class="klk-collapse-item-title-wrapper"><div class="klk-collapse-item-title"><h2>如何取得開立統編的訂單收據？</h2></div> <!----></div> <span class="klk-collapse-item-ctrl-btn i-icon i-icon-icon-chevron-down"><svg width="24" height="24" viewBox="0 0 48 48" fill="none"><path d="M10 17L24 32L31 24.5L38 17" stroke="#212121" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></div></div> <div class="klk-collapse-item-content" style="display:none;">
+                                        <div class="klk-collapse-item-content-inner">
+                                            <div class="answer" data-v-03b467cc="">
+                                                <div class="klk-markdown klk-markdown--highlight" data-v-03b467cc="">
+                                                    <p>成功下單後，系統將自動傳送電子收據至您的電子信箱。請點擊郵件「備註」欄內連結，登入 Klook 帳戶，並於第一欄輸入統一編號（無需抬頭）、第二欄輸入代轉號碼、第三欄輸入公司名稱。若使用訪客身分完成下單，亦或無法順利完成統編收據開立，請透過線上客服與我們聯絡（前往訂單頁面 &gt; 選擇訂單 &gt; 點擊「線上客服」圖示）</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+
+   
+    <script>
+
+    </script>
+
+ }

@@ -1,0 +1,217 @@
+﻿<h3 class="m-4 mb-5"> 編輯訂單</h3>
+
+<form id="OrderForm" class="mx-5 col-md-10">
+    @Html.AntiForgeryToken()
+    <div class="col-md-4">
+        <label for="fId" class="form-label" style="display:none">Id</label>
+        <input type="text" class="form-control" id="fId" name="fId" style="display:none" />
+    </div>
+    <div class="col-md-4">
+        <label for="fOrderId" class="form-label">訂單編號</label><br />
+        <input type="text" class="form-control" id="fOrderId" name="fOrderId" readonly />
+    </div>
+    <div class="col-md-4">
+        <label for="fMemberId" class="form-label">會員編號</label>
+        <input type="text" class="form-control" id="fMemberId" name="fMemberId" readonly />
+    </div>
+    <div class="col-md-4">
+        <label for="fOrderDate" class="form-label">訂單日期</label>
+        <input type="date" class="form-control" id="fOrderDate" name="fOrderDate" readonly />
+    </div>
+    <div class="col-md-4">
+        <label for="fOrderStatusId" class="form-label">訂單狀態</label><br />
+        <select id="fOrderStatusId" name="fOrderStatusId" class="form-select" disabled>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label for="fPaymentStatusId" class="form-label">付款狀態</label><br />
+        <select id="fPaymentStatusId" name="fPaymentStatusId" class="form-select" disabled>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label for="fPaymentId" class="form-label">付款方式</label><br />
+        <select id="fPaymentId" name="fPaymentId" class="form-select" disabled>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label for="fCouponId" class="form-label">折扣碼</label>
+        <input type="text" class="form-control" id="fCouponId" name="fCouponId" />
+    </div>
+    <div class="col-md-4">
+        <label for="fTotal" class="form-label">總金額</label>
+        <input type="text" class="form-control" id="fTotal" name="fTotal" required />
+    </div>
+    <button type="button" id="btnSubmit" class="btn btn-primary my-5">儲存</button>
+    <button type="button" id="btnBack" class="btn btn-secondary my-5">返回</button>
+</form>
+@* <form id="OrderDetailForm" class="mx-5">
+    @Html.AntiForgeryToken()
+    <h4 class="m-4 mb-5"> 訂單細節</h4>
+    <div class="col-md-4">
+        <label for="fOrderDetailId" class="form-label" style="display:none">fOrderDetailId</label>
+        <input type="text" class="form-control" id="fScheduleId" name="fScheduleId" style="display:none" />
+    </div>
+    <div class="col-md-4">
+        <label for="fScheduleId" class="form-label">航班代碼</label>
+        <input type="text" class="form-control" id="fScheduleId" name="fScheduleId" readonly />
+    </div>
+    <div class="col-md-4">
+        <label for="fTicketTypeId" class="form-label">票種</label><br />
+        <select id="fPaymentStatusId" name="fTicketTypeId" class="form-select">
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label for="fPrice" class="form-label">票價</label><br />
+        <input type="text" class="form-control" id="fPrice" name="fPrice" required />
+    </div>
+    <div class="col-md-4">
+        <label for="fPsgrName" class="form-label">乘客姓名</label>
+        <input type="text" class="form-control" id="fPsgrName" name="fPsgrName" required />
+    </div>
+    <div class="col-md-4">
+        <label for="fNationalId" class="form-label">身分證字號</label>
+        <input type="text" class="form-control" id="fNationalId" name="fNationalId" required />
+    </div>
+    <div class="col-md-4">
+        <label for="fGender" class="form-label">性別</label>
+        <select id="fGender" name="fGender" class="form-select" readonly>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label for="fBirth" class="form-label">生日</label>
+        <input type="date" class="form-control" id="fBirth" name="fBirth" readonly />
+    </div>
+    <div class="col-md-4">
+        <label for="fEmail" class="form-label">電子郵件</label>
+        <input type="text" class="form-control" id="fEmail" name="fEmail" />
+    </div>
+    <div class="col-md-4">
+        <label for="fPhone" class="form-label">電話</label>
+        <input type="text" class="form-control" id="fPhone" name="fPhone" />
+    </div>
+    <div class="col-md-4">
+        <label for="fQRcode" class="form-label">QR-Code</label>
+        <input type="text" class="form-control" id="fQRcode" name="fQRcode" />
+    </div> *@
+
+@* </form> *@
+
+
+@section Scripts {
+    <script>
+        (async () => {
+            await dr_orderstatus();
+            await dr_paymentstatus();
+            await dr_payment();
+            await loadData();
+        })()
+
+        //抓資料
+        const para = new URLSearchParams(window.location.search);
+        var id = para.get('id');
+
+        async function loadData() {
+            let data = new FormData();
+            data.append('__RequestVerificationToken', document.getElementsByName('__RequestVerificationToken')[0].value);
+            data.append('id', id);
+            let maindata = await fetch('/api/Flight/EditOrder_Load', {
+                method: 'post',
+                body: data
+            }).then(res => {
+                return res.json();
+            })
+
+            console.log(maindata);
+
+            //Object.entries() 方法，將一個物件轉換為其對應的鍵/值對的數組
+            for (const [index, ele] of Object.entries(maindata)) {
+                $(`#${index}`).val(ele);
+            }
+        }
+
+        //返回前一頁
+        const btnBack = document.querySelector('#btnBack');
+        btnBack.addEventListener('click', () => {
+            window.location.href = '/employee/forder';
+        })
+
+        const btnSubmit = document.querySelector('#btnSubmit');
+
+        //編輯資料
+        btnSubmit.addEventListener('click', async () => {
+            event.preventDefault();
+            // 檢查網頁中所有表單的有效性
+            let isValid = [...document.forms] // 將所有表單轉換為陣列
+                .map(form => form.reportValidity()) // 對每個表單執行驗證並返回驗證結果
+                .every(valid => valid); // 檢查所有表單是否都通過驗證
+
+            // 如果有任何一個表單未通過驗證，則阻止進一步的動作
+            if (!isValid) {
+                return;
+            }
+
+            const formData = new FormData(document.getElementById('#OrderForm'));
+            const response = await fetch('/api/Flight/EditOrder_Update', {
+                method: 'POST',
+                body: formData
+            })
+            const data = await response.text();
+            //Swal.fire提示框，若資料儲存成功則顯示成功，失敗則顯示error並根據data的文字顯示給使用者失敗提示
+            Swal.fire({
+                title: data === '資料儲存成功' ? 'Success' : 'Error',
+                text: data,
+                icon: data === '資料儲存成功' ? 'success' : 'error'
+            }).then((result) => {
+                if (result.isConfirmed && data === '資料儲存成功') {
+                    window.location.href = '/Employee/Flight';
+                }
+            });
+        })
+
+        //填充下拉選單選項
+        //訂單狀態
+        async function dr_orderstatus() {
+            const response = await fetch('/api/Flight/dr_status')
+            const data = await response.json();
+            console.log(data);
+
+            let drOrderStatus = document.getElementById('fOrderStatusId');
+            let conHTML = `<option value=''>請選擇</option>`;
+            data.forEach((item, index) => {
+                conHTML += `<option value=${item.Value}>${item.Text}</option>`
+            })
+            drOrderStatus.innerHTML = conHTML;
+        }
+
+        //付款狀態
+        async function dr_paymentstatus() {
+            const response = await fetch('/api/Flight/dr_status')
+            const data = await response.json();
+            console.log(data);
+
+            let drOrderStatus = document.getElementById('fPaymentStatusId');
+            let conHTML = `<option value=''>請選擇</option>`;
+            data.forEach((item, index) => {
+                conHTML += `<option value=${item.Value}>${item.Text}</option>`
+            })
+            drOrderStatus.innerHTML = conHTML;
+        }
+        //付款方式
+        async function dr_payment() {
+            const response = await fetch('/api/Flight/dr_payment')
+            const data = await response.json();
+            console.log(data);
+
+            let drOrderStatus = document.getElementById('fPaymentId');
+            let conHTML = `<option value=''>請選擇</option>`;
+            data.forEach((item, index) => {
+                conHTML += `<option value=${item.Value}>${item.Text}</option>`
+            })
+            drOrderStatus.innerHTML = conHTML;
+        }
+
+
+
+    </script>
+}
+

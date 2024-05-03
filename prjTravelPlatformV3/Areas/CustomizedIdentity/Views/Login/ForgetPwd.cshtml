@@ -1,0 +1,111 @@
+﻿@{
+    ViewData["Title"] = "忘記密碼";
+}
+
+@section Styles {
+    <style>
+        .my-loading {
+            z-index: 7700;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        .emp-container {
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+            position: relative;
+            overflow: hidden;
+            width: 500px;
+            max-width: 100%;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+    </style>
+}
+
+<div class="emp-container" id="container">
+    <form id="forgetPwdForm">
+        <a href="/">
+            <img src="~/img/logof.png" style="width: 300px; height:50px" class="mb-3" />
+        </a>
+        <h3 class="mb-3">忘記密碼</h3>
+        <!--登入-->
+        <input name="email" id="email" placeholder="請輸入Email" />
+        <span id="errEmail" class="ps-2 w-100 text-start text-danger"></span>
+        <div class="d-flex justify-content-center col-12 mt-3">
+            <button class="col-3 px-2 m-1" type="button" onclick="btnDemo()">Demo</button>
+            <button class="col-6 px-3 m-1" id="btnForgetPwd" type="button" onclick="btnForgetPwdClick()">發送密碼重設郵件</button>
+        </div>
+    </form>
+    </<div>
+
+        @section Scripts {
+            <script>
+                const email = document.getElementById('email');
+                const btnDemo = () => {
+                    email.value = "traveldemo0329@gmail.com";
+                }
+                const btnForgetPwd = document.getElementById('btnForgetPwd');
+
+                const btnForgetPwdClick = async () => {
+
+                    btnForgetPwd.innerHTML = `<div class="d-flex align-items-center justify-content-center"><img src="https://localhost:7119/img/frontstage/tube-spinner_w.svg" style = "width: 20px; height: 20px" />&ensp;${btnForgetPwd.innerHTML}</div>`;
+
+                    const formData2 = new FormData(forgetPwdForm);
+
+                    const res = await fetch("/api/ApiLogin/ForgetPwd", {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: formDataToJson2(formData2),
+                        method: 'POST'
+                    });
+
+                    const resData = await res.json();
+
+                    btnForgetPwd.innerHTML = "發送密碼重設郵件";
+
+                    if (resData.success) {
+                        Swal.fire({
+                            title: "已發送",
+                            text: "重設密碼郵件已發送，請至信箱確認",
+                            heightAuto: false,
+                            imageUrl: "https://localhost:7119/img/Hotel/RoomType/icons8-success.gif",
+                            imageHeight: 100,
+                        });
+                    } else {
+                        if (resData.success === false) {
+                            Swal.fire({
+                                title: "Error",
+                                text: resData.message,
+                                imageUrl: "https://localhost:7119/img/Hotel/RoomType/delete-button.png",
+                                heightAuto: false
+                            });
+                            return;
+                        }
+                        const errEmail = document.getElementById('errEmail');
+                        if (resData.errors.Email) {
+                            errEmail.textContent = resData.errors.Email[0];
+                        }
+                    };
+                }
+                const formDataToJson2 = (formData2) => {
+                    let obj = {};
+                    for (var [key, value] of formData2.entries()) {
+                        obj[key] = value;
+                    }
+                    console.log(JSON.stringify(obj));
+                    return JSON.stringify(obj);
+                }
+            </script>
+        }

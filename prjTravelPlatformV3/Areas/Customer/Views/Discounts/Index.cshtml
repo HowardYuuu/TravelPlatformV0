@@ -1,0 +1,541 @@
+﻿@using System.Security.Claims
+@inject IHttpContextAccessor _httpContextAccessor
+@using prjTravelPlatform_release.Areas.Customer.ViewModel.Discounts
+
+@model CusCouponViewModel
+
+@{
+    ViewData["Title"] = "優惠管理";
+}
+
+@section Styles {
+
+    @*  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous"> *@
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+    <link href="~/lib/datatables/css/jquery.datatables.css" rel="stylesheet" />
+    <link href="~/css/chat/chat01.css" rel="stylesheet" />
+    @* <a href="~/lib/jquery/dist/jquery.min.map">~/lib/jquery/dist/jquery.min.map</a> *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <head>
+        <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+        <script>
+
+            // 頁面載入完成時執行
+            $(document).ready(function () {
+                // 傳送 AJAX 請求呼叫控制器方法
+                $.ajax({
+                    type: 'GET',
+                    url: `/api/CusCoupons/LoadWin`,
+                    contentType: 'application/json',
+                    success: function () {
+                        console.log('控制器方法執行成功');
+                        // // 重新載入特定的 div
+                        // $('#target-coupon').load(location.href + ' #target-coupon');
+                    },
+                    error: function () {
+                        console.error('呼叫控制器方法出錯');
+                    }
+                });
+            });
+        </script>
+        <link href="~/css/discount/chatbox.css" rel="stylesheet" />
+    </head>
+    <style>
+
+
+        input::placeholder {
+            font-size: 20px;
+        }
+
+        input[type="text"] {
+            font-weight: bolder;
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+            input[type="text"]:invalid {
+                border-color: initial;
+                box-shadow: none;
+            }
+
+    </style>
+}
+
+
+
+<div class="masthead__bg" style="position: relative">
+    <img src="~/img/discount/getcoupon03.png" style="filter: brightness(55%); width: 100%; height:320px;" />
+    <div class="text-center" style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%);">
+        <h1 class="text-30 fw-600 text-white">會員優惠卷</h1>
+        <a style="color:white" asp-area="Customer" asp-controller="Discounts" asp-action="GetCoupon">領取優惠卷</a>
+      @*   <a style="color:white" asp-area="Customer" asp-controller="Discounts" asp-action="ChatUITest">廣告</a> *@
+    </div>
+</div>
+<section class="pt-40 pb-40 bg-light-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+
+
+                <h2 style="color:black; font-weight:bold;">折扣碼專區 @ViewBag.ID</h2>
+
+                <!--輸入領取優惠卷action="/api/CusCoupons/inputCoupon"-->
+                <form>
+                    <div class="single-field relative d-flex  py-10">
+                        <input class="pl-25 border text-dark-1 h-80 rounded-8" style="background-color:white" type="text" placeholder="請輸入折扣碼" id="couponCode" name="couponCode" required value maxlength="20">
+                        <button class="couponbtn button -md -dark-1 bg-blue-1 text-white mt-0 " style="margin-left:10px ; width:150px ; font-weight:bolder ;font-size:20px;" type="submit" id="couponbtn">
+                            兌換
+                            @* <i class="icon-search text-20 px-15 text-dark-1"></i> *@
+                        </button>
+                    </div>
+                </form>
+
+                @* <input type="text" id="couponCode" placeholder="請輸入折扣碼">
+                <button onclick="addCoupon()">新增</button> *@
+
+                <div class="tabs -underline-2 pt-0 lg:pt-40 sm:pt-30 js-tabs" style="padding-top:0px" id="target-coupon">
+                    <div class="tabs__controls row x-gap-10 y-gap-10 js-tabs-controls">
+
+                        <div class="col-auto">
+                            <button class="tabs__button  text-20 fw-500 px-20 py-10 rounded-4 bg-light-2 js-tabs-button is-tab-el-active" data-tab-target=".-tab-item-1" style="font-weight:bold;">可使用</button>
+                        </div>
+
+                        <div class="col-auto">
+                            <button class="tabs__button text-20 fw-500 px-20 py-10 rounded-4 bg-light-2 js-tabs-button" data-tab-target=".-tab-item-2" style="font-weight:bold; ">已使用</button>
+                        </div>
+
+                        <div class="col-auto">
+                            <button class="tabs__button text-20 fw-500 px-20 py-10 rounded-4 bg-light-2 js-tabs-button" data-tab-target=".-tab-item-3" style="font-weight:bold; ">已過期</button>
+                        </div>
+                        @*  <hr style="color:black ;height:1px ;margin-top:0px" /> *@
+                    </div>
+
+                    <div class="tabs__content pt-15 js-tabs-content">
+
+                        <div class="tabs__pane -tab-item-1 is-tab-el-active">
+                            <p class="text-15 text-dark-1">
+                                <!--可使用優惠卷列表-->
+                                @foreach (var coupon in Model.VCouponQty.Where(x => x.使用狀態 == false && x.截止日期 >= DateTime.Now && x.客戶編號 == Convert.ToInt32(ViewBag.CusID)))
+                                {
+                                    <div class="card" style="margin-top:20px;margin-right:10px; border:2px  lightgrey solid;border-radius:25px; background-color:white;box-shadow:0px 0px 9px">
+                                        <div class="row no-gutters" style="padding:15px">
+                                            <div class="col-md-4 text-center" style="border-right: 2px dashed grey;background-image: url('../../img/Discount/noImage03.png');background-position: center center; background-size: cover;" id="couponImg" name="@Model.Coupon.FirstOrDefault(x => x.FCouponCode == @coupon.折扣碼).FProductType">
+                                                @*  <img style="width:200px;height:200px;" src="~/img/Discount/noImage03.png" class="card-img" alt="~/img/Discount/noImage03.png"> *@
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body" style="padding:10px;">
+
+                                                    <h3 class="card-title">@coupon.優惠卷名稱</h3>
+                                                    <div style="display: flex; justify-content: space-between;">
+                                                        <h2 class="card-title">@coupon.折扣碼</h2>
+                                                        <h2 class="text-50 lh-20 fw-500" style="color:red;font-weight:500;margin-right:20px"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(Model.Coupon.FirstOrDefault(x => x.FCouponCode == coupon.折扣碼).FDiscount))</h2>
+                                                    </div>
+                                                    @* <h2 class="card-title">@coupon.折扣碼</h2>
+                                                <h2 class="text-50 lh-20 fw-500" style="color:red;font-weight:500"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(Model.Coupon.FirstOrDefault(x => x.FCouponCode == coupon.折扣碼).FDiscount))</h2> *@
+                                                    <p class="card-title text-20">@coupon.啟用日期 ~ @coupon.截止日期</p>
+                                                    <p class="card-text"></p>
+                                                    <p class="card-text"></p>
+
+                                                    <p class="text-20" style="font-weight:bolder">類型：@Model.Coupon.FirstOrDefault(x => x.FCouponCode == @coupon.折扣碼).FProductType</p>
+
+
+                                                    <div class="row x-gap-10 y-gap-10 justify-end items-center md:justify-start">
+                                                        <div class="col-auto">
+
+                                                            @* <button type="button" class="couponbtn button -md -dark-1 bg-blue-1 text-white mt-24 float-right" data-id="@coupon.FCouponId" id="couponbtn">領取</button> *@
+                                                            @* <button type="button" class="button -md -dark-1 bg-blue-1 text-white mt-0 float-right  rounded-8 text-24" style="font-weight:bold;">使用</button> *@
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+
+
+                                <br><br>
+
+                            </p>
+                        </div>
+
+                        <div class="tabs__pane -tab-item-2">
+                            <p class="text-15 text-dark-1">
+                                <!--已使用折扣碼區-->
+                                @foreach (var coupon in Model.VCouponQty.Where(x => x.使用狀態 == true && x.客戶編號 == Convert.ToInt32(ViewBag.CusID)))
+                                {
+                                    <div class="card" style="margin-top:10px;margin-right:10px; border:2px  lightgrey solid;border-radius:25px; background-color:white;box-shadow:0px 0px 9px">
+                                        <div class="row no-gutters" style="padding:15px">
+                                            <div class="col-md-4 text-center" style="border-right: 2px dashed grey;background-image: url('../../img/Discount/noImage03.png');background-position: center center; background-size: cover;" id="couponImg" name="@Model.Coupon.FirstOrDefault(x => x.FCouponCode == @coupon.折扣碼).FProductType">
+                                                @*  <img style="width:200px;height:200px;" src="~/img/discount/noimage03.png" class="card-img" alt="~/img/discount/noimage03.png"> *@
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body" style="padding:10px;">
+
+                                                    <h3 class="card-title">@coupon.優惠卷名稱</h3>
+                                                    <div style="display: flex; justify-content: space-between;">
+                                                        <h2 class="card-title">@coupon.折扣碼</h2>
+                                                        <h2 class="text-50 lh-20 fw-500" style="color:red;font-weight:500;margin-right:20px"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(Model.Coupon.FirstOrDefault(x => x.FCouponCode == coupon.折扣碼).FDiscount))</h2>
+                                                    </div>
+                                                    @* <h2 class="card-title">@coupon.折扣碼</h2>
+                                                <h2 class=" text-50 lh-20 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(Model.Coupon.FirstOrDefault(x => x.FCouponCode == coupon.折扣碼).FDiscount))</h2> *@
+                                                    <p class="card-title text-20">@coupon.啟用日期 ~ @coupon.截止日期</p>
+                                                    <p class="card-title text-20">使用日期：@DateTime.Now</p>
+                                                    <p class="card-text"></p>
+
+                                                    <p class="text-20" style="font-weight:bolder">類型：@Model.Coupon.FirstOrDefault(x => x.FCouponCode == @coupon.折扣碼).FProductType</p>
+
+
+                                                    @* <button type="button" class="button -md -dark-1 bg-blue-1 text-white mt-24 float-right">使用</button> *@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <br><br>
+
+                            </p>
+                        </div>
+
+                        <div class="tabs__pane -tab-item-3">
+                            <p class="text-15 text-dark-1">
+                                <!--已過期折扣碼區-->
+                                @foreach (var coupon in Model.VCouponQty.Where(x => x.使用狀態 == false && x.截止日期 < @DateTime.Now && x.客戶編號 == Convert.ToInt32(ViewBag.CusID)))
+                                {
+                                    <div class="card" style="margin-top:10px;margin-right:10px; border:2px  lightgrey solid;border-radius:25px; background-color:white;box-shadow:0px 0px 9px">
+                                        <div class="row no-gutters" style="padding:15px">
+                                            <div class="col-md-4 text-center" style="border-right: 2px dashed grey;background-image: url('../../img/Discount/noImage03.png');background-position: center center; background-size: cover;" id="couponImg" name="@Model.Coupon.FirstOrDefault(x => x.FCouponCode == @coupon.折扣碼).FProductType">
+                                                @*  <img style="width:200px;height:200px;" src="~/img/Discount/noImage03.png" class="card-img" alt="~/img/Discount/noImage03.png"> *@
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body" style="padding:10px;">
+
+                                                    <h3 class="card-title">@coupon.優惠卷名稱</h3>
+                                                    <div style="display: flex; justify-content: space-between;">
+                                                        <h2 class="card-title">@coupon.折扣碼</h2>
+                                                        <h2 class="text-50 lh-20 fw-500" style="color:red;font-weight:500;margin-right:20px"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(Model.Coupon.FirstOrDefault(x => x.FCouponCode == coupon.折扣碼).FDiscount))</h2>
+                                                    </div>
+                                                    @* <h2 class="card-title">@coupon.折扣碼</h2>
+                                                <h2 class="text-50 lh-20 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(Model.Coupon.FirstOrDefault(x => x.FCouponCode == coupon.折扣碼).FDiscount))</h2> *@
+                                                    <p class="card-title text-20">@coupon.啟用日期 ~ @coupon.截止日期</p>
+
+                                                    <p class="text-20" style="font-weight:bolder">類型：@Model.Coupon.FirstOrDefault(x => x.FCouponCode == @coupon.折扣碼).FProductType</p>
+
+
+                                                    <p class="card-text"></p>
+                                                    <p class="card-text"></p>
+                                                    @* <button type="button" class="button -md -dark-1 bg-blue-1 text-white mt-24 float-right">使用</button> *@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <br><br>
+
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
+                
+
+
+                @* 測試PartialView
+                <div>
+                @await Html.PartialAsync("_CusCouponPartial", Model)
+                </div> *@
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts {
+    @* <script src="~/js/chat/chat01.js"></script> *@
+    
+    @* <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script> *@
+
+    @*  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js" integrity="sha384-lpyLfhYuitXl2zRZ5Bn2fqnhNAKOAaM/0Kr9laMspuaMiZfGmfwRNFh8HlMy49eQ" crossorigin="anonymous"></script> *@
+
+    @* <script src="~/js/discount/chatbox.js"></script> *@
+    <script>
+
+
+
+
+        // 頁面載入完成時執行
+        $(document).ready(function () {
+            // 傳送 AJAX 請求呼叫控制器方法
+            $.ajax({
+                type: 'GET',
+                url: `/api/CusCoupons/LoadWin`,
+                contentType: 'application/json',
+                success: function () {
+                    console.log('控制器方法執行成功');
+                    // // 重新載入特定的 div
+                    // $('#target-coupon').load(location.href + ' #target-coupon');
+                },
+                error: function () {
+                    console.error('呼叫控制器方法出錯');
+                }
+            });
+        });
+
+
+        // (function initCouponImages() {
+        //     // 獲取所有 id 為 couponImg 的 div 元素
+        //     var divs = document.querySelectorAll("div#couponImg");
+
+        //     // 遍歷每個 div 元素
+        //     divs.forEach(function (div) {
+        //         // 獲取 div 的 name 屬性值
+        //         var divName = div.getAttribute("name");
+
+        //         // 如果 div 的 name 屬性值等於某個類型
+        //         if (divName === "租車") {
+        //             // 檢查 div 是否已處理過，如果處理過則跳過
+        //             if (div.classList.contains("processed")) {
+        //                 return;
+        //             }
+        //             // 更改 div 的背景圖片
+        //             div.style.backgroundImage = "url('/img/Discount/couponCar.png')";
+
+        //             // 將處理過的 div 添加到已處理列表中
+        //             div.classList.add("processed");
+        //         } else if (divName === "旅遊") {
+        //             // 檢查 div 是否已處理過，如果處理過則跳過
+        //             if (div.classList.contains("processed")) {
+        //                 return;
+        //             }
+        //             // 更改 div 的背景圖片
+        //             div.style.backgroundImage = "url('/img/Discount/couponTravel.png')";
+
+        //             // 將處理過的 div 添加到已處理列表中
+        //             div.classList.add("processed");
+
+        //         } else if (divName === "伴手禮") {
+        //             // 檢查 div 是否已處理過，如果處理過則跳過
+        //             if (div.classList.contains("processed")) {
+        //                 return;
+        //             }
+        //             // 更改 div 的背景圖片
+        //             div.style.backgroundImage = "url('/img/Discount/couponProduct.png')";
+
+        //             // 將處理過的 div 添加到已處理列表中
+        //             div.classList.add("processed");
+
+        //         } else if (divName === "機票") {
+        //             // 檢查 div 是否已處理過，如果處理過則跳過
+        //             if (div.classList.contains("processed")) {
+        //                 return;
+        //             }
+        //             // 更改 div 的背景圖片
+        //             div.style.backgroundImage = "url('/img/Discount/couponFly.png')";
+
+        //             // 將處理過的 div 添加到已處理列表中
+        //             div.classList.add("processed");
+
+        //         } else if (divName === "代辦") {
+        //             // 檢查 div 是否已處理過，如果處理過則跳過
+        //             if (div.classList.contains("processed")) {
+        //                 return;
+        //             }
+        //             // 更改 div 的背景圖片
+        //             div.style.backgroundImage = "url('/img/Discount/couponVisa.png')";
+
+        //             // 將處理過的 div 添加到已處理列表中
+        //             div.classList.add("processed");
+
+        //         } else if (divName === "住宿") {
+        //             // 檢查 div 是否已處理過，如果處理過則跳過
+        //             if (div.classList.contains("processed")) {
+        //                 return;
+        //             }
+        //             // 更改 div 的背景圖片
+        //             div.style.backgroundImage = "url('/img/Discount/couponHotels.png')";
+
+        //             // 將處理過的 div 添加到已處理列表中
+        //             div.classList.add("processed");
+
+        //         } else if(divName === "平台"){
+
+        //             // 檢查 div 是否已處理過，如果處理過則跳過
+        //             if (div.classList.contains("processed")) {
+        //                 return;
+        //             }
+        //             // 更改 div 的背景圖片
+        //             div.style.backgroundImage = "url('/img/Discount/noImage03.png')";
+
+        //             // 將處理過的 div 添加到已處理列表中
+        //             div.classList.add("processed");
+                
+        //         } else {
+        //             // 檢查 div 是否已處理過，如果處理過則跳過
+        //             if (div.classList.contains("processed")) {
+        //                 return;
+        //             }
+        //             // // 更改 div 的背景圖片
+        //             // div.style.backgroundImage = "url('/img/Discount/noImage03.png')";
+
+        //             // 將處理過的 div 添加到已處理列表中
+        //             div.classList.add("processed");
+        //         }
+        //     });
+        // })();
+
+
+        (function initCouponImages() {
+            // 獲取所有 id 為 couponImg 的 div 元素
+            var divs = document.querySelectorAll("div#couponImg");
+
+            // 遍歷每個 div 元素
+            divs.forEach(function (div) {
+                // 獲取 div 的 name 屬性值
+                var divName = div.getAttribute("name");
+
+                // 檢查 div 是否已處理過，如果處理過則跳過
+                if (div.classList.contains("processed")) {
+                    return;
+                }
+                // 根據 div 的 name 屬性值設置不同的背景圖片
+                switch (divName) {
+                    case "租車":
+                        div.style.backgroundImage = "url('/img/Discount/couponCar.png')";
+                        break;
+                    case "旅遊":
+                        div.style.backgroundImage = "url('/img/Discount/couponTravel.png')";
+                        break;
+                    case "伴手禮":
+                        div.style.backgroundImage = "url('/img/Discount/couponProduct.png')";
+                        break;
+                    case "機票":
+                        div.style.backgroundImage = "url('/img/Discount/couponFly.png')";
+                        break;
+                    case "代辦":
+                        div.style.backgroundImage = "url('/img/Discount/couponVisa.png')";
+                        break;
+                    case "住宿":
+                        div.style.backgroundImage = "url('/img/Discount/couponHotels.png')";
+                        break;
+                    default:
+                        div.style.backgroundImage = "url('/img/Discount/noImage03.png')";
+                }
+
+                // 將處理過的 div 添加到已處理列表中
+                div.classList.add("processed");
+            });
+        })();
+
+
+        //輸入折扣事件
+        $(document).ready(function () {
+            $('.couponbtn').click(function (e) {
+                e.preventDefault(); //防止畫面重整
+                var targetElement = '#target-coupon';
+                var couponCode = $('#couponCode').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: `/api/CusCoupons/inputCoupon`,
+                    data: { couponCode: couponCode },
+                    success: function (response) {
+                        if (response.success) {
+                            // 添加成功
+                            Swal.fire({
+                                title: '領取成功!',
+                                text: '優惠卷已添加到您的帳戶。',
+                                icon: 'success',
+                                confirmButtonText: '確定'
+                            });
+                            // 加載新內容
+                            $(targetElement).load(location.href + ' ' + targetElement, function () {
+                                // 加載完成動畫
+                                $(targetElement).fadeIn('fast');
+                                $('.loading-spinner').hide();
+                                // 重新執行初始化圖片函式
+                               
+                            });
+                        } else {
+                            // 添加失敗
+                            Swal.fire({
+                                title: '添加失敗',
+                                text: response.errorMessage,
+                                icon: 'error',
+                                confirmButtonText: '確定'
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // 請求失敗
+                        Swal.fire({
+                            title: '請求失敗',
+                            text: '目前伺服器連線異常，請稍後再試。',
+                            icon: 'error',
+                            confirmButtonText: '確定'
+                        });
+                    }
+                });
+            });
+        });
+
+
+        // // 檢查用戶是否已登入的函式
+        // function checkLoginAndShowAlert() {
+        //     // 在這裡檢查用戶是否已登入
+        //     var isLoggedIn = @ViewBag.CusID;
+
+        //     // 如果用戶已登入，則執行以下程式碼
+        //     if (isLoggedIn) {
+        //         // 使用AJAX從後端獲取登入天數的資訊
+        //         $.ajax({
+        //             url: '/api/CusCoupons/LoginDay',
+        //             type: 'GET', // 這裡應該是你的後端API端點
+        //             success: function (data) {
+        //                 // 獲取登入天數
+        //                 var daysLoggedIn = data.daysLoggedIn;
+
+        //                 // 根據登入天數彈出SweetAlert視窗
+        //                 if (response.success) {
+        //                     // 簽到成功
+        //                     Swal.fire({
+        //                         title: '簽到成功!',
+        //                         text: '優惠卷已入帳戶',
+        //                         icon: 'success',
+        //                         confirmButtonText: '確定'
+        //                     });
+        //                 }
+        //             },
+        //             error: function (xhr, status, error) {
+        //                 // 處理錯誤
+        //                 console.error('無法獲取登入天數：' + error);
+        //             }
+        //         });
+        //     }
+        // }
+
+        // // 在頁面載入時檢查用戶是否已登入並彈出視窗
+        // $(document).ready(function () {
+        //     checkLoginAndShowAlert();
+        // });
+
+
+
+
+    </script>
+
+}
+
+

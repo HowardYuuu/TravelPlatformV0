@@ -1,0 +1,363 @@
+﻿@model prjTravelPlatform_release.Areas.Customer.ViewModel.Hotels.HotelOrderViewModel
+
+@{
+    ViewData["Title"] = "填寫資料";
+}
+<!--進度條-->
+<section style="margin-top:90px">
+    <div class="container pt-70 px-90">
+        <div class="row x-gap-40 y-gap-30 items-center">
+            <div class="col-auto">
+                <div class="d-flex items-center">
+                    <div class="size-40 rounded-full flex-center bg-blue-1">
+                        <i class="icon-check text-16 text-white"></i>
+                    </div>
+                    <div class="text-18 fw-500 ml-10">填寫資訊</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="w-full h-1 bg-border"></div>
+            </div>
+
+            <div class="col-auto">
+                <div class="d-flex items-center">
+                    <div class="d-flex items-center">
+                        <div class="size-40 rounded-full flex-center bg-blue-1-05 text-blue-1 fw-500">2</div>
+                        <div class="text-18 fw-500 ml-10">確認付款</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="w-full h-1 bg-border"></div>
+            </div>
+            <div class="col-auto">
+                <div class="d-flex items-center">
+                    <div class="size-40 rounded-full flex-center bg-blue-1-05 text-blue-1 fw-500">3</div>
+                    <div class="text-18 fw-500 ml-10">付款完成</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="pt-40 layout-pb-md" style="margin-top:40px">
+    <div class="container pl-120 pr-120">
+        <div class="row">
+            <!--入住資料-->
+            <div class="col-xl-7 col-lg-8">
+                <div class="border-light rounded-22 px-30 py-30">
+                    <div class="d-flex justify-end">
+                        <button onclick="btnInnerText()" type="button" class="button -md -dark-1 bg-blue-1 text-white" style="border-radius:22px">Demo</button>
+                    </div>
+                    <h2 class="text-20 fw-700 md:mt-24">入住資料</h2>
+                    <div class="row x-gap-20 y-gap-20 pt-20">
+                        <div class="col-12">
+                            <div class="form-input">
+                                <input id="ipName" type="text" required style="border-radius:22px">
+                                <label class="lh-1 text-16 text-light-1">房客姓名</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-input">
+                                <input id="ipEmail" type="text" required style="border-radius:22px">
+                                <label class="lh-1 text-16 text-light-1">電子郵件</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-input">
+                                <input id="ipPhone" type="text" required style="border-radius:22px">
+                                <label class="lh-1 text-16 text-light-1">電話</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-input">
+                                <input id="ipAddress" type="text" required style="border-radius:22px">
+                                <label class="lh-1 text-16 text-light-1">地址</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-light rounded-22 px-30 py-30 mt-20">
+                    <div class="text-20 fw-700 mb-15">立即付款</div>
+                    <label class="text-16 lh-1 fw-500 text-dark-1 mb-10 mt-40">付款方式</label>
+                    <div class="col-12 select js-select" data-select-value="">
+                        <button class="select__button js-button" style="border-radius:22px">
+                            <span class="js-button-title">請選擇付款方式</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="select__dropdown js-dropdown" style="border-radius:22px">
+                            <div class="select__options js-options">
+                                <div class="select__options__button" data-value="banking">信用卡</div>
+                                <div class="select__options__button" data-value="digital">LINE PAY</div>
+                                <div class="select__options__button" data-value="retail">街口支付</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="btn-confirm" class="button -md -dark-1 bg-blue-1 text-white px-30 py-15 mt-20" style="margin-left:auto" onclick="sendPayFlowReq()">確認</button>
+                </div>
+            </div>
+            <!--選取優惠券-->
+            <!--訂單細節-->
+            <div class="col-xl-5 col-lg-4">
+                <div class="lg:ml-40 md:ml-0">
+                    <div class="px-30 py-30 border-light rounded-22">
+                        <div class="text-20 fw-700 mb-30">訂單明細</div>
+                        <div class="row x-gap-15 y-gap-20">
+                            <div class="col-auto">
+                                <img src="~/img/Hotel/RoomType/@Model.RoomImg" alt="image" class="size-140 rounded-22 object-cover">
+                            </div>
+                            <div class="col">
+                                <div class="lh-17 fw-700" id="divNameValue">@Model.HotelName - @Model.RoomTypeName</div>
+                                <div class="text-14 lh-15 mt-5">@Model.BedNum 張 @Model.BedType</div>
+                            </div>
+                        </div>
+                        <div class="border-top-light mt-30 mb-20"></div>
+                        <div class="row y-gap-20 justify-between">
+                            <div class="col-auto">
+                                <div class="text-15">入住時間</div>
+                                <div class="fw-500" id="startDateDiv">@Model.StartDate</div>
+                            </div>
+                            <div class="col-auto md:d-none">
+                                <div class="h-full w-1 bg-border"></div>
+                            </div>
+                            <div class="col-auto text-right md:text-left">
+                                <div class="text-15">退房時間</div>
+                                <div class="fw-500" id="endDateDiv">@Model.EndDate</div>
+                            </div>
+                        </div>
+
+                        <div class="border-top-light mt-30 mb-20"></div>
+
+                        <div class="row y-gap-20 justify-between items-center">
+                            <div class="col-auto">
+                                <div class="fw-700">天數:</div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="text-15">@Model.DayCount 晚</div>
+                            </div>
+                        </div>
+
+                        <div class="border-top-light mt-30 mb-20"></div>
+
+                        <div class="row y-gap-20 justify-between items-center">
+                            <div class="col-auto">
+                                <div class="fw-700">人數及房間數:</div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="text-15"> @Model.PersonNum 人, @Model.RoomNum 間房</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="px-30 py-30 border-light rounded-22 mt-30">
+                        <div class="row y-gap-5 justify-between">
+                            <div class="col-auto">
+                                <div class="fw-700">單價</div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fw-700">NT$ @Model.Price</div>
+                            </div>
+                        </div>
+                        <div class="row y-gap-5 justify-between">
+                            <div class="col-auto">
+                                <div class="fw-700">@Model.RoomNum 間房, @Model.PersonNum 人 X @Model.DayCount 晚</div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fw-700">NT$ @Model.TotalPrice</div>
+                            </div>
+                        </div>
+                        <div class="row y-gap-5 justify-between pt-5">
+                            <div class="col-auto">
+                                <div class="fw-700">稅</div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="fw-700">NT$ @Model.Tax</div>
+                            </div>
+                        </div>
+                        <div class="px-20 py-20 bg-blue-2 rounded-22 mt-20">
+                            <div class="row y-gap-5 justify-between">
+                                <div class="col-auto">
+                                    <div class="text-18 lh-13 fw-700">付款金額</div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="text-18 lh-13 fw-500" id="divTotalPrice">NT$ @Model.TotalPriceAddTax</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div data-hotelId="@Model.HotelId"></div>
+    <div data-RoomTypeId="@Model.RoomTypeId"></div>
+    <div data-personNum="@Model.PersonNum"></div>
+    <div data-roomNum="@Model.RoomNum"></div>
+    <div data-price="@Model.Price"></div>
+    <div data-totalPrice="@Model.TotalPriceAddTax"></div>
+    <div data-roomtypeImg="@Model.RoomImg"></div>
+
+
+    @foreach (var i in Model.RoomIds)
+    {
+        <div data-roomId="@i"></div>
+    }
+    @foreach (var i in Model.RoomNumbers)
+    {
+        <div data-roomNumber="@i"></div>
+    }
+
+
+
+</section>
+
+@section Scripts {
+    <script>
+        const divNameValue = document.getElementById('divNameValue').innerText;
+        const hotelId = document.querySelector('[data-hotelId]').getAttribute('data-hotelId');
+        const roomTypeId = document.querySelector('[data-RoomTypeId]').getAttribute('data-RoomTypeId');
+        const startDate = document.getElementById('startDateDiv').innerText;
+        const endDate = document.getElementById('endDateDiv').innerText;
+        const personNum = document.querySelector('[data-personNum]').getAttribute('data-personNum');
+        const roomNum = document.querySelector('[data-roomNum]').getAttribute('data-roomNum');
+        const price = document.querySelector('[data-price]').getAttribute('data-price');
+        const totalPrice = document.querySelector('[data-totalPrice]').getAttribute('data-totalPrice');
+        const roomTypeImg = document.querySelector('[data-roomtypeImg]').getAttribute('data-roomtypeImg');
+
+        const btnConfirm = document.getElementById('btn-confirm');
+
+
+        const ipName = document.getElementById('ipName');
+        const ipEmail = document.getElementById('ipEmail');
+        const ipPhone = document.getElementById('ipPhone');
+        const ipAddress = document.getElementById('ipAddress');
+
+        
+
+        let lastOrderId = '';
+        let orderToDb = '';
+
+        roomIds = [];
+        var roomDivs = document.querySelectorAll('[data-roomId]');
+        Array.from(roomDivs).forEach((div) => {
+            roomIds.push(div.getAttribute('data-roomId'));
+        });
+
+        roomNumbers = [];
+        var numberDivs = document.querySelectorAll('[data-roomNumber]');
+        Array.from(numberDivs).forEach((div) => {
+            roomNumbers.push(div.getAttribute('data-roomNumber'));
+        });
+
+        const payload = {
+            HotelId: hotelId,
+            RoomTypeId: roomTypeId,
+            StartDate: startDate,
+            EndDate: endDate,
+            PersonNum: personNum,
+            roomNum: roomNum,
+            Price: price,
+            TotalPriceAddTax: totalPrice,
+            RoomIds: roomIds,
+            RoomNumbers: roomNumbers,
+            Name: "",
+            Email: "",
+            Phone: "",
+            Address: "",
+        }
+        //將訂單存入資料庫
+        const sendPayFlowReq = async () => {
+            btnConfirm.innerHTML += '&ensp; <img src="https://localhost:7119/img/frontstage/tube-spinner_w.svg" style = "width: 20px; height: 20px" />';
+            const response = await sendOrderReq();
+            lastOrderId = response.lastOrderId;
+            orderToDb = response.status;
+            if (orderToDb) {
+                await requestPayment();
+            }
+        }
+        const sendOrderReq = async () => {
+            try {
+                payload.Name = ipName.value;
+                payload.Email = ipEmail.value;
+                payload.Phone = ipPhone.value;
+                payload.Address = ipAddress.value;
+                const res = await fetch("https://localhost:7119/api/HotelApi/Order", {
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    method: "POST",
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) {
+                    throw new Error();
+                }
+                const resData = await res.json();
+                return resData;
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+        //line pay api
+        const totalPriceFormat = Number(totalPrice.replace(/,/g, ''));
+        const priceFormat = Number(price.replace(/,/g, ''));
+        const roomNumToNumber = Number(roomNum);
+        const baseLoginPayUrl = 'https://localhost:7119/api/LinePay/';
+        const payment = {
+            amount: totalPriceFormat,
+            currency: "TWD",
+            orderId: "",
+            packages: [
+                {
+                    id: roomTypeId,
+                    amount: totalPriceFormat,
+                    name: "測試",
+                    products: [
+                        {
+                            name: divNameValue,
+                            imageUrl: `https://localhost:7119/img/Hotel/RoomType/${roomTypeImg}`,
+                            quantity: roomNumToNumber,
+                            price: priceFormat * 1.05 | 0,
+                        }
+                    ],
+                   
+                },
+            ],
+            RedirectUrls: {
+                ConfirmUrl: "https://localhost:7119/Customer/Hotels/HotelOrderConfirm",
+                CancelUrl: "https://localhost:7119/Customer/Hotels/HotelOrderCancel",
+            },
+        }
+        const requestPayment = async () => {       
+            try {
+                payment.orderId = lastOrderId;
+                const res = await fetch(baseLoginPayUrl + "Create", {
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    method: "POST",
+                    body: JSON.stringify(payment)
+                });
+                if (!res.ok) {
+                    throw new Error();
+                }
+                const resData = await res.json();
+                window.location = resData.info.paymentUrl.web;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        const btnInnerText = () =>{
+            ipName.value = "虞欣欣";
+            ipEmail.value = "chixiang777@gmail.com";
+            ipPhone.value = "0912356789";
+            ipAddress.value = "台北市大安區復興南路一段390號2樓"
+        }
+
+    </script>
+}
+

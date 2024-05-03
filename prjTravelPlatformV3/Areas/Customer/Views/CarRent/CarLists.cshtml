@@ -1,0 +1,1684 @@
+﻿@section Styles
+{
+    <style>
+        .img-ratio {
+            object-fit: contain;
+        }
+    </style>
+}
+<!DOCTYPE html>
+<html lang="en" data-x="html" data-x-toggle="html-overflow-hidden">
+<body>
+    <main>
+        <section class="pt-60" style="margin-top:50px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="mainSearch -col-5 border-light bg-white px-20 py-20 lg:px-20 lg:pt-5 lg:pb-20 rounded-4 mt-30" style="border-radius:15px;">
+                            <div class="button-grid items-center" style="display:flex; flex-wrap:wrap;">
+                                <!-- 取車地點 -->
+                                <div class="searchMenu-loc pr-20 pl-10 lg:py-20 lg:px-0 js-form-dd">
+                                    <div data-x-dd-click="searchMenu-loc">
+                                        <h4 class="text-15 fw-500 ls-2 lh-16">取車地點</h4>
+
+                                        <div class="text-15 text-light-1 ls-2 lh-16">
+                                            <input autocomplete="off" type="search" placeholder="城市 或 服務據點" class="js-pickup-search js-dd-focus" />
+                                            <div class="warning-message" style="display: none; color:red;">* 請輸入取車地點</div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="searchMenu-loc__field shadow-2 js-popup-window" data-x-dd="searchMenu-loc" data-x-dd-toggle="-is-active" style="width:150%;">
+                                        <div class="bg-white px-30 py-30 sm:px-0 sm:py-15 rounded-4">
+                                            <div class="y-gap-5 js-pickup-results">
+                                                <!-- 取車地點搜尋結果 -->
+                                                <div>
+                                                    <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option">
+                                                        <div class="d-flex">
+                                                            <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                            <div class="ml-10">
+                                                                <div class="text-15 lh-12 fw-500 js-search-option-target">新北</div>
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option">
+                                                        <div class="d-flex">
+                                                            <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                            <div class="ml-10">
+                                                                <div class="text-15 lh-12 fw-500 js-search-option-target">新竹</div>
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option">
+                                                        <div class="d-flex">
+                                                            <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                            <div class="ml-10">
+                                                                <div class="text-15 lh-12 fw-500 js-search-option-target">高雄</div>
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 還車地點 -->
+                                <div class="searchMenu-loc pr-20 pl-10 lg:py-20 lg:px-0 js-form-dd ">
+                                    <div data-x-dd-click="searchMenu-loc">
+                                        <h4 class="text-15 fw-500 ls-2 lh-16">還車地點</h4>
+                                        <div class="text-15 text-light-1 ls-2 lh-16">
+                                            <input autocomplete="off" type="search" placeholder="城市 或 服務據點" class="js-dropoff-search js-dd-focus" />
+                                            <div class="warning-message" style="display: none; color:red;">* 請輸入還車地點</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="searchMenu-loc__field shadow-2 js-popup-window" data-x-dd="searchMenu-loc" data-x-dd-toggle="-is-active" style="width:150%;">
+                                        <div class="bg-white px-30 py-30 sm:px-0 sm:py-15 rounded-4">
+                                            <div class="y-gap-5 js-dropoff-results">
+                                                <!-- 還車地點搜尋結果 -->
+                                                <div>
+                                                    <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-dropoffsearch-option">
+                                                        <div class="d-flex">
+                                                            <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                            <div class="ml-10">
+                                                                <div class="text-15 lh-12 fw-500 js-dropoffsearch-option-target">新北</div>
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-dropoffsearch-option">
+                                                        <div class="d-flex">
+                                                            <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                            <div class="ml-10">
+                                                                <div class="text-15 lh-12 fw-500 js-dropoffsearch-option-target">新竹</div>
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-dropoffsearch-option">
+                                                        <div class="d-flex">
+                                                            <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                            <div class="ml-10">
+                                                                <div class="text-15 lh-12 fw-500 js-dropoffsearch-option-target">高雄</div>
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="searchMenu-date px-30 lg:py-20 lg:px-0">
+                                    <div>
+                                        <h4 class="text-15 fw-500 ls-2 lh-16">取車日期</h4>
+                                    </div>
+                                    <div class="input-group date" id="datepicker">
+                                        <input type="date" id="pickupDate" name="appointment" min="2024-01-01" max="2024-12-31">
+                                    </div>
+                                </div>
+                                <div class="searchMenu-pickupTime px-30 lg:py-20 lg:px-0">
+
+                                    <div data-x-dd-click="searchMenu-pickupTime">
+                                        <h4 class="text-15 fw-500 ls-2 lh-16">取車時間</h4>
+                                    </div>
+                                    <div class="input-group time capitalize text-15 text-light-1 ls-2 lh-16 " id="timepicker">
+                                        <input type="time" id="pickupTime" name="pickup_time" min="9:00" max="18:00">
+                                    </div>
+
+                                </div>
+                                <div class="searchMenu-date px-30 lg:py-20 lg:px-0">
+                                    <div>
+                                        <h4 class="text-15 fw-500 ls-2 lh-16">還車日期</h4>
+                                    </div>
+                                    <div class="input-group date" id="datepicker">
+                                        <input type="date" id="dropoffDate" name="appointment" min="2024-01-01" max="2024-12-31">
+                                    </div>
+
+                                </div>
+                                <div class="searchMenu-pickupTime px-30 lg:py-20 lg:px-0">
+
+                                    <div data-x-dd-click="searchMenu-pickupTime">
+                                        <h4 class="text-15 fw-500 ls-2 lh-16">還車時間</h4>
+                                    </div>
+                                    <div class="input-group time capitalize text-15 text-light-1 ls-2 lh-16 " id="timepicker">
+                                        <input type="time" id="dropoffTime" name="pickup_time" min="9:00" max="18:00">
+                                    </div>
+
+                                </div>
+
+                                <div class="button-item" style="flex: 1;">
+                                    <button id="searchCar" class="mainSearch__submit button -dark-1 py-20 px-35 col-12 rounded-4 bg-yellow-1 text-dark-1">
+                                        <i class="icon-search text-20 mr-10"></i>
+                                        尋找
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="layout-pt-md layout-pb-lg">
+            <div class="container">
+                <div class="row y-gap-30">
+                    <div class="col-xl-3 col-lg-4 lg:d-none">
+                        <aside class="sidebar y-gap-40">
+                            <div class="sidebar__item -no-border">
+                                <div class="flex-center ratio ratio-15:9 js-lazy" data-bg="/img/frontstage/v2/general/map.png">
+                                    <button data-x-click="mapFilter" class="button py-15 px-24 -blue-1 bg-white text-dark-1 absolute">
+                                        <i class="icon-destination text-22 mr-10"></i>
+                                        檢視地圖
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="sidebar__item -no-border">
+                                <h5 class="text-18 fw-500 mb-10">價格區間</h5>
+                                <div class="row x-gap-10 y-gap-30">
+                                    <div class="col-12">
+                                        <div id="price-range-slider" class="js-price-rangeSlider">
+                                            <div class="text-14 fw-500"></div>
+
+                                            <div class="d-flex justify-between mb-20">
+                                                <div class="text-15 text-dark-1">
+                                                    <span class="js-lower"></span>
+                                                    -
+                                                    <span class="js-upper"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="px-5">
+                                                <div class="js-slider"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--車種篩選-->
+                            <div class="sidebar__item" id="allCarType">
+                                <h5 class="text-18 fw-500 mb-10">車種</h5>
+                                <div class="sidebar-checkbox">
+
+                                    <div class="row y-gap-10 items-center justify-between">
+                                        <div class="col-auto">
+
+                                            <div class="d-flex items-center">
+                                                <div class="form-checkbox ">
+                                                    <input type="checkbox" name="carType" data-carType="小型車">
+                                                    <div class="form-checkbox__mark">
+                                                        <div class="form-checkbox__icon icon-check"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-15 ml-10">小型車</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row y-gap-10 items-center justify-between">
+                                        <div class="col-auto">
+
+                                            <div class="d-flex items-center">
+                                                <div class="form-checkbox ">
+                                                    <input type="checkbox" name="carType" data-carType="中大型車">
+                                                    <div class="form-checkbox__mark">
+                                                        <div class="form-checkbox__icon icon-check"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-15 ml-10">中大型車</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row y-gap-10 items-center justify-between">
+                                        <div class="col-auto">
+
+                                            <div class="d-flex items-center">
+                                                <div class="form-checkbox ">
+                                                    <input type="checkbox" name="carType" data-carType="SUV">
+                                                    <div class="form-checkbox__mark">
+                                                        <div class="form-checkbox__icon icon-check"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-15 ml-10">SUV</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row y-gap-10 items-center justify-between">
+                                        <div class="col-auto">
+
+                                            <div class="d-flex items-center">
+                                                <div class="form-checkbox ">
+                                                    <input type="checkbox" name="carType" data-carType="商務車">
+                                                    <div class="form-checkbox__mark">
+                                                        <div class="form-checkbox__icon icon-check"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-15 ml-10">商務休旅車</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--車載人數篩選-->
+                            <div class="sidebar__item" id="numOfPsgr">
+                                <h5 class="text-18 fw-500 mb-10">座位數</h5>
+                                <div class="sidebar-checkbox">
+
+                                    <div class="row y-gap-10 items-center justify-between">
+                                        <div class="col-auto">
+
+                                            <div class="d-flex items-center">
+                                                <div class="form-checkbox ">
+                                                    <input type="checkbox" name="psgrNum" data-psgrNum="6">
+                                                    <div class="form-checkbox__mark">
+                                                        <div class="form-checkbox__icon icon-check"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-15 ml-10">1-6人座</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row y-gap-10 items-center justify-between">
+                                        <div class="col-auto">
+
+                                            <div class="d-flex items-center">
+                                                <div class="form-checkbox ">
+                                                    <input type="checkbox" name="psgrNum" data-psgrNum="7">
+                                                    <div class="form-checkbox__mark">
+                                                        <div class="form-checkbox__icon icon-check"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-15 ml-10">7人以上</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--燃料動力篩選-->
+                            <div class="sidebar__item" id="allFuelType">
+                                <h5 class="text-18 fw-500 mb-10">燃料動力</h5>
+                                <div class="sidebar-checkbox">
+
+                                    <div class="row y-gap-10 items-center justify-between">
+                                        <div class="col-auto">
+
+                                            <div class="d-flex items-center">
+                                                <div class="form-checkbox ">
+                                                    <input type="checkbox" name="fuelType" data-fuelType="汽油車">
+                                                    <div class="form-checkbox__mark">
+                                                        <div class="form-checkbox__icon icon-check"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-15 ml-10">汽油</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row y-gap-10 items-center justify-between">
+                                        <div class="col-auto">
+
+                                            <div class="d-flex items-center">
+                                                <div class="form-checkbox ">
+                                                    <input type="checkbox" name="fuelType" data-fuelType="電動車">
+                                                    <div class="form-checkbox__mark">
+                                                        <div class="form-checkbox__icon icon-check"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-15 ml-10">電動</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row y-gap-10 items-center justify-between">
+                                        <div class="col-auto">
+
+                                            <div class="d-flex items-center">
+                                                <div class="form-checkbox ">
+                                                    <input type="checkbox" name="fuelType" data-fuelType="油電混合車">
+                                                    <div class="form-checkbox__mark">
+                                                        <div class="form-checkbox__icon icon-check"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-15 ml-10">油電混合</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--供應商篩選-->
+                            <div class="sidebar__item" id="allCompany">
+                                <h5 class="text-18 fw-500 mb-10">供應商</h5>
+                                <div class="data-company">
+
+                                    <div class="row y-gap-10 items-center justify-between">
+                                        <div class="col-auto">
+
+                                            <div class="d-flex items-center">
+                                                <div class="form-checkbox ">
+                                                    <input type="checkbox" name="company" data-company="格上租車">
+                                                    <div class="form-checkbox__mark">
+                                                        <div class="form-checkbox__icon icon-check"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-15 ml-10">格上租車</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row y-gap-10 items-center justify-between">
+                                        <div class="col-auto">
+
+                                            <div class="d-flex items-center">
+                                                <div class="form-checkbox ">
+                                                    <input type="checkbox" name="company" data-company="和運租車">
+                                                    <div class="form-checkbox__mark">
+                                                        <div class="form-checkbox__icon icon-check"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-15 ml-10">和運租車</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row y-gap-10 items-center justify-between">
+                                        <div class="col-auto">
+
+                                            <div class="d-flex items-center">
+                                                <div class="form-checkbox ">
+                                                    <input type="checkbox" name="company" data-company="全國租車">
+                                                    <div class="form-checkbox__mark">
+                                                        <div class="form-checkbox__icon icon-check"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-15 ml-10">全國租車</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row y-gap-10 items-center justify-between">
+                                        <div class="col-auto">
+
+                                            <div class="d-flex items-center">
+                                                <div class="form-checkbox ">
+                                                    <input type="checkbox" name="company" data-company="中租租車">
+                                                    <div class="form-checkbox__mark">
+                                                        <div class="form-checkbox__icon icon-check"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-15 ml-10">中租租車</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row y-gap-10 items-center justify-between">
+                                        <div class="col-auto">
+
+                                            <div class="d-flex items-center">
+                                                <div class="form-checkbox ">
+                                                    <input type="checkbox" name="company" data-company="固得租車">
+                                                    <div class="form-checkbox__mark">
+                                                        <div class="form-checkbox__icon icon-check"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-15 ml-10">固得租車</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+
+                    <div class="col-xl-9 col-lg-8">
+                        <div class="row y-gap-10 items-center justify-between">
+                            <div class="col-auto">
+                                <div class="text-18">共有 <span id="result-count" class="fw-500"> </span> 筆搜尋結果</div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="row x-gap-20 y-gap-20">
+                                    <div class="col-auto">
+                                        <button class="sort-button -blue-1 h-40 px-20 rounded-100 bg-blue-1-05 text-15 text-blue-1">
+                                            <i class="icon-up-down text-14 mr-10"></i>
+                                            依照價格排序
+                                        </button>
+                                    </div>
+
+                                    <div class="col-auto d-none lg:d-block">
+                                        <button data-x-click="filterPopup" class="button -blue-1 h-40 px-20 rounded-100 bg-blue-1-05 text-15 text-blue-1">
+                                            <i class="icon-up-down text-14 mr-10"></i>
+                                            Filter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="mt-30"></div>
+
+                        <div class="row y-gap-30">
+                            <div class="col-12" id="car-list">
+                                <!-- 通過API獲取的車輛資訊 -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+    </main>
+    <div class="mapFilter" data-x="mapFilter" data-x-toggle="-is-active" style="margin-top:80px;">
+        <div class="mapFilter__overlay"></div>
+
+        <div class="mapFilter__close">
+            <button class="button -blue-1 size-40 bg-white shadow-2" data-x-click="mapFilter">
+                <i class="icon-close text-15"></i>
+            </button>
+        </div>
+
+        <div class="mapFilter__grid" data-x="mapFilter__grid" data-x-toggle="-filters-hidden">
+            <div class="mapFilter-filter scroll-bar-1" style="width:330px;">
+                <!--地圖車輛篩選條件-->
+                <div class="px-20 py-20 md:px-15 md:py-15" >
+                    <div class="d-flex items-center justify-between">
+                        <div class="text-18 fw-500">篩選條件</div>
+
+                        <button class="size-40 flex-center rounded-full bg-blue-1" data-x-click="mapFilter__grid">
+                            <i class="icon-chevron-left text-12 text-white"></i>
+                        </button>
+                    </div>
+
+                    <div class="mapFilter-filter__item">
+                        <h5 class="text-18 fw-500 mb-10">價格區間</h5>
+                        <div class="row x-gap-10 y-gap-30">
+                            <div class="col-12">
+                                <div class="js-price-rangeSlider" id="price-range-slider">
+                                    <div class="text-14 fw-500"></div>
+
+                                    <div class="d-flex justify-between mb-20">
+                                        <div class="text-15 text-dark-1">
+                                            <span class="js-lower"></span>
+                                            -
+                                            <span class="js-upper"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="px-5">
+                                        <div class="js-slider"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mapFilter-filter__item">
+                        <h5 class="text-18 fw-500 mb-10">車種</h5>
+                        <div class="sidebar-checkbox">
+
+                            <div class="row y-gap-10 items-center justify-between">
+                                <div class="col-auto" id="allCarType">
+
+                                    <div class="d-flex items-center">
+                                        <div class="form-checkbox ">
+                                            <input type="checkbox" name="carType" data-carType="小型車">
+                                            <div class="form-checkbox__mark">
+                                                <div class="form-checkbox__icon icon-check"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-15 ml-10">小型車</div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row y-gap-10 items-center justify-between">
+                                <div class="col-auto">
+
+                                    <div class="d-flex items-center">
+                                        <div class="form-checkbox ">
+                                            <input type="checkbox" name="carType" data-carType="中大型車">
+                                            <div class="form-checkbox__mark">
+                                                <div class="form-checkbox__icon icon-check"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-15 ml-10">中大型車 </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row y-gap-10 items-center justify-between">
+                                <div class="col-auto">
+
+                                    <div class="d-flex items-center">
+                                        <div class="form-checkbox ">
+                                            <input type="checkbox" name="carType" data-carType="SUV">
+                                            <div class="form-checkbox__mark">
+                                                <div class="form-checkbox__icon icon-check"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-15 ml-10">SUV</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row y-gap-10 items-center justify-between">
+                                <div class="col-auto">
+
+                                    <div class="d-flex items-center">
+                                        <div class="form-checkbox ">
+                                            <input type="checkbox" name="carType" data-carType="商務車">
+                                            <div class="form-checkbox__mark">
+                                                <div class="form-checkbox__icon icon-check"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-15 ml-10">商務休旅車</div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="mapFilter-filter__item">
+                        <h5 class="text-18 fw-500 mb-10">座位數</h5>
+                        <div class="sidebar-checkbox" id="numOfPsgr">
+
+                            <div class="row y-gap-10 items-center justify-between">
+                                <div class="col-auto">
+
+                                    <div class="d-flex items-center ">
+                                        <div class="form-checkbox">
+                                            <input type="checkbox" name="psgrNum" data-psgrNum="6">
+                                            <div class="form-checkbox__mark">
+                                                <div class="form-checkbox__icon icon-check"></div>
+                                            </div>
+                                        </div>
+                                        <div class="ml-10">1-6人座</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row y-gap-10 items-center justify-between">
+                                <div class="col-auto">
+
+                                    <div class="d-flex items-center ">
+                                        <div class="form-checkbox">
+                                            <input type="checkbox" name="psgrNum" data-psgrNum="7">
+                                            <div class="form-checkbox__mark">
+                                                <div class="form-checkbox__icon icon-check"></div>
+                                            </div>
+                                        </div>
+                                        <div class="ml-10">7人以上</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="mapFilter-filter__item">
+                        <h5 class="text-18 fw-500 mb-10">燃料動力</h5>
+                        <div class="sidebar-checkbox">
+
+                            <div class="row y-gap-10 items-center justify-between" id="allFuelType">
+                                <div class="col-auto">
+
+                                    <div class="d-flex items-center">
+                                        <div class="form-checkbox ">
+                                            <input type="checkbox" name="fuelType" data-fuelType="汽油車">
+                                            <div class="form-checkbox__mark">
+                                                <div class="form-checkbox__icon icon-check"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-15 ml-10">汽油</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row y-gap-10 items-center justify-between">
+                                <div class="col-auto">
+
+                                    <div class="d-flex items-center">
+                                        <div class="form-checkbox ">
+                                            <input type="checkbox" name="fuelType" data-fuelType="電動車">
+                                            <div class="form-checkbox__mark">
+                                                <div class="form-checkbox__icon icon-check"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-15 ml-10">電動 </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row y-gap-10 items-center justify-between">
+                                <div class="col-auto">
+
+                                    <div class="d-flex items-center">
+                                        <div class="form-checkbox ">
+                                            <input type="checkbox" name="fuelType" data-fuelType="油電混合車">
+                                            <div class="form-checkbox__mark">
+                                                <div class="form-checkbox__icon icon-check"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-15 ml-10">油電混合</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mapFilter-filter__item">
+                        <h5 class="text-18 fw-500 mb-10">供應商</h5>
+                        <div class="sidebar-checkbox">
+
+                            <div class="row y-gap-10 items-center justify-between" id="allCompany">
+                                <div class="col-auto">
+
+                                    <div class="d-flex items-center">
+                                        <div class="form-checkbox ">
+                                            <input type="checkbox" name="company" data-company="格上租車">
+                                            <div class="form-checkbox__mark">
+                                                <div class="form-checkbox__icon icon-check"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-15 ml-10">格上租車</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row y-gap-10 items-center justify-between">
+                                <div class="col-auto">
+
+                                    <div class="d-flex items-center">
+                                        <div class="form-checkbox ">
+                                            <input type="checkbox" name="company" data-company="和運租車">
+                                            <div class="form-checkbox__mark">
+                                                <div class="form-checkbox__icon icon-check"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-15 ml-10">和運租車</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row y-gap-10 items-center justify-between">
+                                <div class="col-auto">
+
+                                    <div class="d-flex items-center">
+                                        <div class="form-checkbox ">
+                                            <input type="checkbox" name="company" data-company="全國租車">
+                                            <div class="form-checkbox__mark">
+                                                <div class="form-checkbox__icon icon-check"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-15 ml-10">全國租車</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row y-gap-10 items-center justify-between">
+                                <div class="col-auto">
+
+                                    <div class="d-flex items-center">
+                                        <div class="form-checkbox ">
+                                            <input type="checkbox" name="company" data-company="中租租車">
+                                            <div class="form-checkbox__mark">
+                                                <div class="form-checkbox__icon icon-check"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-15 ml-10">中租租車</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row y-gap-10 items-center justify-between">
+                                <div class="col-auto">
+
+                                    <div class="d-flex items-center">
+                                        <div class="form-checkbox ">
+                                            <input type="checkbox" name="company" data-company="固得租車">
+                                            <div class="form-checkbox__mark">
+                                                <div class="form-checkbox__icon icon-check"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-15 ml-10">固得租車 </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mapFilter-results scroll-bar-1">
+                <div class="px-20 py-20 md:px-15 md:py-15">
+                    <div class="row y-gap-10 justify-between">
+                        <div class="col-auto">
+                            <div class="text-14 text-light-1">
+                                共有 <span id="result-count2" class="fw-500"> </span> 筆搜尋結果
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row y-gap-10 d-flex justify-end">
+                        <div class="col-auto">
+                            <button class="location-button -blue-1 h-40 px-20 md:px-5 text-blue-1 bg-blue-1-05 rounded-100">
+                                <i class="fa-solid fa-location-crosshairs" style="color: #1c21b5;"></i>
+                                所在地
+                            </button>
+                        </div>
+                        <div class="col-auto">
+                            <button class="sort-button -blue-1 h-40 px-20 md:px-5 text-blue-1 bg-blue-1-05 rounded-100">
+                                <i class="icon-up-down mr-10"></i>
+                                依照價格排序
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="car-list2">
+                    <div class="mapFilter-results__item">
+                        <div class="row x-gap-20 y-gap-20">
+                            <div class="col-md-auto">
+                                <div class="ratio ratio-1:1 size-120">
+                                    <img src="/img/frontstage/v2/hotels/1.png" alt="image" class="img-ratio rounded-4">
+                                </div>
+                            </div>
+
+                            <div class="col-md">
+                                <div class="row x-gap-20 y-gap-10 justify-between">
+                                    <div class="col-lg">
+                                        <h4 class="text-16 lh-17 fw-500">
+                                            Great Northern Hotel, a Tribute Portfolio Hotel, London
+                                        </h4>
+                                    </div>
+                                </div>
+
+                                <div class="row y-gap-10 justify-between items-end pt-24 lg:pt-15">
+
+                                    <div class="col-auto">
+                                        <div class="d-flex items-center">
+                                            <div class="text-14 text-light-1 mr-10">8 nights</div>
+                                            <div class="fw-500">US$72</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="carLocations" class="mapFilter-map">
+                <div class="map js-map"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+@section Scripts
+{
+    <script>
+        // 將日期格式轉換為正確格式
+        function normalizeDate(dateString) {
+            const parts = dateString.split(/\D+/);
+            const year = parts[0];
+            const month = parts[1].padStart(2, '0');
+            const day = parts[2].padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // 取得今天的日期
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); // 一月是 0!
+        var yyyy = today.getFullYear();
+
+        var minDate = yyyy + '-' + mm + '-' + dd;
+
+        // 設置日期選擇器的最小值
+        $('#pickupDate').attr('min', minDate);
+        $('#dropoffDate').attr('min', minDate);
+
+        var carData = []; // 定義一個全域變數來存儲車輛數據
+        var data = [];
+        var startIndex = 0; // 定義變數來跟蹤目前顯示的資料索引
+        var dataPerPage = 5; // 每頁顯示的資料筆數
+        var loading = false; // 定義一個變數來追蹤是否正在加載資料
+        var sortOrder = 'asc'; // 初始排序方式為升序
+        var totalDataCount = 0;
+        var isSliderInitialized = false;// 定義一個全域變數來追蹤 slider 是否已經初始化
+        var isEndOfData = false; // 添加一個變數來追蹤是否已經到達最後一筆資料
+        // 獲取 URL 參數中的各項參數值
+        var urlParams = new URLSearchParams(window.location.search);
+        var pickupLocation = urlParams.get('pickup');
+        var dropoffLocation = urlParams.get('dropoff');
+        var pickupDate = urlParams.get('pickupDate');
+        var dropoffDate = urlParams.get('dropoffDate');
+        var pickupTime = urlParams.get('pickupTime');
+        var dropoffTime = urlParams.get('dropoffTime');
+        var pickupDateTime = pickupDate + ' ' + pickupTime;
+        var returnDateTime = dropoffDate + ' ' + dropoffTime;
+        // 定義一個全域變數用於存儲篩選後的車輛資料
+        var filteredCarData = [];
+        var selectedCompanies = [];
+        var selectedCarTypes = [];
+        var selectedFuelTypes = [];
+        var selectedSeats = [];
+        var minPrice;
+        var maxPrice;
+        // 定義全域變量來存儲地圖標記
+        var map;
+        var userLocationMarker;
+        var markers = [];
+        var nearbyMarkers = [];
+        var clickedLocationName;
+        var latitude;
+        var longitude;
+
+        window.addEventListener("load", function () {
+            //載入地圖
+            getAllCarLocations();
+        });
+
+        $(document).ready(function () {
+
+            var isLocating = false; // 標誌用於追蹤是否正在定位
+
+            $('.location-button').click(function () {
+                if (!isLocating) { // 如果未處於定位狀態，則執行定位操作
+                    if ("geolocation" in navigator) {
+                        // 獲取用戶的位置資訊
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            // 獲取經緯度
+                            latitude = position.coords.latitude;
+                            longitude = position.coords.longitude;
+                            console.log("緯度：" + latitude + ", 經度：" + longitude);
+
+                            // 在獲取位置資訊後將所在地標記在地圖上
+                            markUserLocation(latitude, longitude);
+
+                            // 在獲取位置資訊後發送 AJAX 請求
+                            sendAjaxRequest(latitude, longitude);
+                        });
+                    } else {
+                        // 若瀏覽器不支援 Geolocation API，顯示錯誤訊息
+                        console.log("很抱歉，您的瀏覽器不支援定位功能。");
+                    }
+                    isLocating = true; // 設置定位狀態為 true
+                } else { // 如果處於定位狀態，則取消定位操作，恢復原始搜尋結果
+                    // 恢復原始搜尋結果的程式碼邏輯，可以根據您的具體需求進行編寫
+                    carData = [];
+                    startIndex = 0; // 定義變數來跟蹤目前顯示的資料索引
+                    dataPerPage = 5; // 每頁顯示的資料筆數
+                    pickupLocation = urlParams.get('pickup');
+                    $(window).off('scroll');
+                    loading = false; // 定義一個變數來追蹤是否正在加載資料
+                    searchAndRenderCarList(pickupLocation, startIndex, dataPerPage, sortOrder, pickupDateTime,
+                        returnDateTime, 0, 20000, selectedCompanies, selectedCarTypes, selectedFuelTypes, selectedSeats);
+                    bindScrollEvents();
+                    getAllCarLocations();
+                    showMarkersForServicePoint(servicePoint);
+                    isLocating = false; // 設置定位狀態為 false
+                }
+            });
+
+            // 定義將用戶所在地標記在地圖上的函數
+            function markUserLocation(latitude, longitude) {
+                map = new google.maps.Map(document.querySelector('.js-map'), {
+                    zoom: 12, // 設定地圖初始放大倍率
+                    center: { lat: latitude, lng: longitude } // 將地圖中心點設置為用戶所在地
+                });
+
+                // 定義用戶位置標記的圖標
+                var userLocationIcon = {
+                    url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png', // 藍色圖標的 URL
+                    scaledSize: new google.maps.Size(40, 40), // 圖標大小
+                };
+
+                // 在地圖上標記用戶所在地
+                var userLocationMarker = new google.maps.Marker({
+                    position: { lat: latitude, lng: longitude },
+                    map: map,
+                    title: '您的位置',
+                    icon: userLocationIcon // 使用藍色圖標
+                });
+            }
+
+            // 定義處理 AJAX 響應的函數
+            function handleNearbyLocationsResponse(locations) {
+                // 移除先前的標記
+                nearbyMarkers.forEach(function (marker) {
+                    marker.setMap(null);
+                });
+                nearbyMarkers = [];
+
+                // 在地圖上標記附近的據點
+                locations.forEach(function (location) {
+                    // 使用地址進行地理編碼
+                    var geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({ 'address': location.address }, function (results, status) {
+                        if (status === 'OK') {
+                            var marker = new google.maps.Marker({
+                                position: results[0].geometry.location,
+                                map: map,
+                                title: location.pointName,
+                                icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png' // 使用紅色圖標
+                            });
+
+                            var infoWindowContent = '<div><strong>' + location.pointName + '</strong></div>' +
+                                '<div>' + location.address + '</div>';
+
+                            var infoWindow = new google.maps.InfoWindow({
+                                content: infoWindowContent
+                            });
+
+                            marker.addListener('click', function () {
+                                infoWindow.open(map, marker);
+                                clickedLocationName = location.pointName;
+                                pickupLocation = clickedLocationName;
+                                carData = [];
+                                startIndex = 0; // 定義變數來跟蹤目前顯示的資料索引
+                                dataPerPage = 5; // 每頁顯示的資料筆數
+                                $(window).off('scroll');
+                                loading = false; // 定義一個變數來追蹤是否正在加載資料
+                                searchAndRenderCarList(pickupLocation, startIndex, dataPerPage, sortOrder, pickupDateTime,
+                                    returnDateTime, 0, 20000, selectedCompanies, selectedCarTypes, selectedFuelTypes, selectedSeats);
+                                bindScrollEvents();
+                            });
+
+                            nearbyMarkers.push(marker);
+                        } else {
+                            console.error('地址轉換失敗:', status);
+                        }
+                    });
+                });
+            }
+
+            function sendAjaxRequest(latitude, longitude) {
+                $.ajax({
+                    url: '/api/RApi/getNearbyLocations',  // 後端的 API 端點
+                    type: 'POST',  // 使用 POST 方法
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({  // 將經緯度資訊作為請求主體傳送到後端
+                        latitude: latitude,
+                        longitude: longitude
+                    }),
+                    success: function (data) {
+                        // 在成功收到後端響應後執行的操作
+                        console.log('成功獲取附近位置資料:', data);
+                        handleNearbyLocationsResponse(data);
+                    },
+                    error: function (error) {
+                        // 在請求失敗時執行的操作
+                        console.error('發生錯誤:', error);
+                    }
+                });
+            }
+
+            // 先銷毀現有的 slider（如果存在）
+            destroySlider();
+            handleCheckboxSelections();
+            // 如果 pickupLocation 和 dropoffLocation 不為空，則將其設置為取還車地點 input 欄位的值
+            if (pickupLocation) { $('.js-pickup-search').val(pickupLocation); }
+            if (dropoffLocation) { $('.js-dropoff-search').val(dropoffLocation); }
+
+            if (pickupDate) { document.getElementById('pickupDate').value = pickupDate; }
+            if (pickupTime) { document.getElementById('pickupTime').value = pickupTime; }
+            if (dropoffDate) { document.getElementById('dropoffDate').value = dropoffDate; }
+            if (dropoffTime) { document.getElementById('dropoffTime').value = dropoffTime; }
+
+            // 加載初始資料，僅顯示前5筆
+            searchAndRenderCarList(pickupLocation, startIndex, dataPerPage, sortOrder,pickupDateTime, 
+                returnDateTime, 0, 20000, selectedCompanies, selectedCarTypes, selectedFuelTypes, selectedSeats);
+            bindScrollEvents();
+
+            // 監聽 checkbox 變更事件
+            $('input[type="checkbox"][name="carType"]').change(function () {
+                selectedCarTypes = []; // 創建一個空的陣列來存儲選中車種
+                // 遍歷所有的 checkbox
+                $('input[type="checkbox"][name="carType"]:checked').each(function () {
+                    var carType = $(this).attr('data-carType'); // 獲取被勾選的車種
+                    selectedCarTypes.push(carType); // 將車種添加到陣列中
+                });
+                carData = [];
+                startIndex = 0; // 定義變數來跟蹤目前顯示的資料索引
+                dataPerPage = 5; // 每頁顯示的資料筆數
+                $(window).off('scroll');
+                // 加載初始資料，僅顯示前5筆
+                searchAndRenderCarList(pickupLocation, startIndex, dataPerPage, sortOrder,pickupDateTime, 
+                    returnDateTime, 0, 20000, selectedCompanies, selectedCarTypes, selectedFuelTypes, selectedSeats);
+                bindScrollEvents();
+
+            });
+
+            $('input[type="checkbox"][name="fuelType"]').change(function () {
+                selectedFuelTypes = []; // 創建一個空的陣列來存儲選中車種
+                // 遍歷所有的 checkbox
+                $('input[type="checkbox"][name="fuelType"]:checked').each(function () {
+                    var fuelType = $(this).attr('data-fuelType'); // 獲取被勾選的車種
+                    selectedFuelTypes.push(fuelType); // 將車種添加到陣列中
+                });
+                carData = [];
+                startIndex = 0; // 定義變數來跟蹤目前顯示的資料索引
+                dataPerPage = 5; // 每頁顯示的資料筆數
+                $(window).off('scroll');
+                // 加載初始資料，僅顯示前5筆
+                searchAndRenderCarList(pickupLocation, startIndex, dataPerPage, sortOrder,pickupDateTime,
+                    returnDateTime, 0, 20000, selectedCompanies, selectedCarTypes, selectedFuelTypes, selectedSeats);
+                bindScrollEvents();
+            });
+
+            $('input[type="checkbox"][name="psgrNum"]').change(function () {
+                selectedSeats = [];
+                $('input[type="checkbox"][name="psgrNum"]:checked').each(function () {
+                    var numOfPsgr = $(this).attr('data-psgrNum');
+                    selectedSeats.push(numOfPsgr);
+                });
+                carData = [];
+                startIndex = 0; // 定義變數來跟蹤目前顯示的資料索引
+                dataPerPage = 5; // 每頁顯示的資料筆數
+                $(window).off('scroll');
+                // 加載初始資料，僅顯示前5筆
+                searchAndRenderCarList(pickupLocation, startIndex, dataPerPage, sortOrder, pickupDateTime,
+                    returnDateTime, 0, 20000, selectedCompanies, selectedCarTypes, selectedFuelTypes, selectedSeats);
+                bindScrollEvents();
+            });
+
+            $('input[type="checkbox"][name="company"]').change(function () {
+                selectedCompanies = []; // 創建一個空的陣列來存儲選中的公司名稱
+                // 遍歷所有的 checkbox
+                $('input[type="checkbox"][name="company"]:checked').each(function () {
+                    var company = $(this).data('company'); // 獲取被勾選的公司名稱
+                    selectedCompanies.push(company); // 將公司名稱添加到陣列中
+                });
+                carData = [];
+                startIndex = 0; // 定義變數來跟蹤目前顯示的資料索引
+                dataPerPage = 5; // 每頁顯示的資料筆數
+                $(window).off('scroll');
+                // 加載初始資料，僅顯示前5筆
+                searchAndRenderCarList(pickupLocation, startIndex, dataPerPage, sortOrder,pickupDateTime,
+                    returnDateTime, 0, 20000, selectedCompanies, selectedCarTypes, selectedFuelTypes, selectedSeats);
+                bindScrollEvents();
+            });
+
+            // 當輸入框中的內容發生變化時，觸發搜尋
+            $('.js-pickup-search').on('input', function () {
+                // $(this) 表示觸發事件的輸入框
+                var keyword = $(this).val();
+                // 只有在輸入超過1個字符時才發送請求
+                if (keyword.length >= 1) {
+                    // 發送 GET 請求到你的 API 端點，並帶上關鍵字參數
+                    $.get('/api/RApi/GetServicePoints', { keyword: keyword }, function (data) {
+                        // 清空原有的搜尋結果
+                        $('.js-pickup-results').empty();
+                        // 將返回的資料填充到下拉選單中
+                        $.each(data.slice(0, 5), function (index, item) { // 只取前五筆結果
+                            var option = $('<button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option"></button>');
+                            option.append('<div class="d-flex"><div class="icon-location-2 text-light-1 text-20 pt-4"></div><div class="ml-10"><div class="text-15 lh-12 fw-500 js-search-option-target">' + item.location + '</div></div></div>');
+                            option.on('click', function () {
+                                // 點擊選項後將選項的值填入輸入框中
+                                $('.js-pickup-search').val(item.location);
+                            });
+                            $('.js-pickup-results').append(option);
+                        });
+                    });
+                };
+            });
+            $('.js-dropoff-search').on('input', function () {
+                var keyword = $(this).val();
+                if (keyword.length >= 1) {
+                    $.get('/api/RApi/GetServicePoints', { keyword: keyword }, function (data) {
+                        // 清空原有的搜尋結果
+                        $('.js-dropoff-results').empty();
+                        // 將返回的資料填充到下拉選單中
+                        $.each(data.slice(0, 5), function (index, item) {
+                            var option = $('<button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-dropoffsearch-option"></button>');
+                            option.append('<div class="d-flex"><div class="icon-location-2 text-light-1 text-20 pt-4"></div><div class="ml-10"><div class="text-15 lh-12 fw-500 js-dropoffsearch-option-target">' + item.location + '</div></div></div>');
+                            option.on('click', function () {
+                                // 點擊選項後將選項的值填入輸入框中
+                                $('.js-dropoff-search').val(item.location);
+                            });
+                            $('.js-dropoff-results').append(option);
+                        });
+                    });
+                };
+            });
+            // 點擊預設選項時將其值填入輸入框中
+            $('.js-search-option').on('click', function () {
+                var value = $(this).find('.js-search-option-target').text();
+                $('.js-pickup-search').val(value);
+            });
+            $('.js-dropoffsearch-option').on('click', function () {
+                var selectedLocation = $(this).find('.js-dropoffsearch-option-target').text();
+                $('.js-dropoff-search').val(selectedLocation);
+            });
+
+            // 當輸入框中的內容發生變化時，隱藏警告訊息
+            $('.js-pickup-search').on('input', function () {
+                $(this).next('.warning-message').hide();
+            });
+            $('.js-dropoff-search').on('input', function () {
+                $('.warning-message').hide();
+            });
+
+            // 按下搜尋按鈕時觸發搜尋
+            $('#searchCar').on('click', function () {
+                pickupLocation = $('.js-pickup-search').val();
+                dropoffLocation = $('.js-dropoff-search').val();
+
+                // 檢查是否有輸入取車地點和還車地點，如果有則執行搜尋
+                if (pickupLocation) {
+                    updateUrlParams(pickupLocation, dropoffLocation);
+                    //console.log('取車地點搜尋:', pickupLocation)
+                    carData = [];
+                    startIndex = 0; // 定義變數來跟蹤目前顯示的資料索引
+                    dataPerPage = 5; // 每頁顯示的資料筆數
+                    $(window).off('scroll');
+                    loading = false; // 定義一個變數來追蹤是否正在加載資料
+                    // 在搜尋後重新渲染車輛清單
+                    searchAndRenderCarList(pickupLocation, startIndex, dataPerPage, sortOrder,pickupDateTime,
+                        returnDateTime, 0, 20000, selectedCompanies, selectedCarTypes, selectedFuelTypes, selectedSeats);
+                    bindScrollEvents();
+
+                } else {
+                    // 如果任一輸入框的值為空，則顯示警告文字
+                    if (pickupLocation.trim() === '') {$('.js-pickup-search').next('.warning-message').show();}
+                    if (dropoffLocation.trim() === '') {$('.js-dropoff-search').next('.warning-message').show();}
+                    return false; // 阻止表單提交
+                }
+
+            });
+
+            // 按鈕點擊事件處理排序
+            $('.sort-button').on('click', function () {
+                // 如果排序方式是升序，則改為降序；如果是降序，則改為升序
+                sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                carData = [];
+                startIndex = 0; // 定義變數來跟蹤目前顯示的資料索引
+                dataPerPage = 5; // 每頁顯示的資料筆數
+                $(window).off('scroll');
+                // 加載初始資料，僅顯示前5筆
+                searchAndRenderCarList(pickupLocation, startIndex, dataPerPage, sortOrder, pickupDateTime,
+                    returnDateTime, 0, 20000, selectedCompanies, selectedCarTypes, selectedFuelTypes, selectedSeats);
+                bindScrollEvents();
+            });
+
+            // 初始化 slider
+            priceRangeSliderInit();
+
+            $('#car-list').on('click', '.button#chooseCar', function () {
+                // 獲取車輛ID
+                var selectedCarId = $(this).closest('.car-item').data('car-id');
+                var carLocation = $('[data-car-id="' + selectedCarId + '"] #servicePoint').text();
+                var dropoffLocation = $('.js-dropoff-search').val();
+                var pickupDate = document.getElementById('pickupDate').value;
+                var dropoffDate = document.getElementById('dropoffDate').value;
+                var pickupTime = document.getElementById('pickupTime').value;
+                var dropoffTime = document.getElementById('dropoffTime').value;
+
+                // 導航到下一個頁面並將選擇的車輛ID作為查詢參數傳遞過去
+                window.location.href = '@Url.Action("CarDetails", "CarRent", new { area = "Customer" })'
+                    + '?carId=' + selectedCarId + '&pickup=' + carLocation + '&pickupDate=' + pickupDate + '&pickupTime=' + pickupTime
+                    + '&dropoff=' + dropoffLocation + '&dropoffDate=' + dropoffDate + '&dropoffTime=' + dropoffTime;
+            });
+
+            //載入地圖
+            getAllCarLocations();
+
+        });
+         
+        // 定義銷毀 slider 的函數
+        function destroySlider() {
+            const sliders = document.querySelectorAll('.noUi-target');
+
+            sliders.forEach(slider => {
+                slider.noUiSlider.destroy(); // 銷毀 slider
+            });
+
+            // 重置全域變數以指示 slider 現在未初始化
+            isSliderInitialized = false;
+        }
+
+        function priceRangeSliderInit() {
+            // 檢查是否已經初始化過 slider
+            if (!isSliderInitialized) {
+                const targets = document.querySelectorAll('.js-price-rangeSlider')
+                targets.forEach(el => {
+                    const slider = el.querySelector('.js-slider')
+                    noUiSlider.create(slider, {
+                        start: [0, 3000],
+                        step: 1000,
+                        connect: true,
+                        range: {
+                            'min': 0,
+                            'max': 20000
+                        },
+                        format: {
+                            to: function (value) {
+                                return "$" + value
+                            },
+                            from: function (value) {
+                                return value;
+                            }
+                        }
+                    })
+                    const snapValues = [
+                        el.querySelector('.js-lower'),
+                        el.querySelector('.js-upper')
+                    ]
+                    // 更新 snapValues 的內容
+                    slider.noUiSlider.on('update', function (values, handle) {
+                        snapValues[handle].innerHTML = values[handle];
+                    });
+                    // 當 slider 拉動時觸發
+                    slider.noUiSlider.on('change', function (values, handle) {
+                        // 清空舊資料
+                        carData = [];
+                        var startIndex = 0; // 定義變數來跟蹤目前顯示的資料索引
+                        var dataPerPage = 5; // 每頁顯示的資料筆數
+                        $(window).off('scroll');
+                        // 將數值轉換為浮點數並傳遞給篩選函數
+                        const minPrice = parseFloat(values[0].replace('$', '')).toFixed(0);
+                        const maxPrice = parseFloat(values[1].replace('$', '')).toFixed(0);
+                        searchAndRenderCarList(pickupLocation, startIndex, dataPerPage, sortOrder,pickupDateTime,
+                            returnDateTime, minPrice, maxPrice, selectedCompanies, selectedCarTypes, selectedFuelTypes, selectedSeats);
+                        $(window).scroll(function () {
+                            // 計算畫面的 2/3 高度
+                            var twoThirdsHeight = $(window).height() * 2 / 3;
+                            if ($(window).scrollTop() + $(window).height() >= $(document).height() - twoThirdsHeight) {
+                                if (!loading) { // 確保不在加載資料時才執行
+                                    loading = true; // 設置為正在加載資料狀態
+                                    startIndex += dataPerPage;
+                                    searchAndRenderCarList(pickupLocation, startIndex, dataPerPage, sortOrder,pickupDateTime,
+                                        returnDateTime, minPrice, maxPrice, selectedCompanies, selectedCarTypes, selectedFuelTypes, selectedSeats);
+                                };
+                            };
+                        });
+                        $('.mapFilter-results.scroll-bar-1').scroll(function () {
+                            var element = $(this);
+                            var twoThirdsHeight = element.height() * 2 / 3;
+                            if (element.scrollTop() + element.height() >= element[0].scrollHeight - twoThirdsHeight) {
+                                if (!loading) {
+                                    loading = true;
+                                    startIndex += dataPerPage;
+                                    searchAndRenderCarList(pickupLocation, startIndex, dataPerPage, sortOrder, pickupDateTime,
+                                        returnDateTime, minPrice, maxPrice, selectedCompanies, selectedCarTypes, selectedFuelTypes, selectedSeats);
+                                }
+                            }
+                        });
+                    });
+                })
+                // 將標誌設置為已經初始化
+                isSliderInitialized = true;
+            }
+        };
+
+        function handleCheckboxSelections() {
+            // 公司名稱
+            $('input[type="checkbox"][name="company"]').each(function () {
+                var company = $(this).data('company');
+                selectedCompanies.push(company);
+            });
+            // 車種
+            $('input[type="checkbox"][name="carType"]').each(function () {
+                var carType = $(this).attr('data-carType');
+                selectedCarTypes.push(carType);
+            });
+            // 燃料類型
+            $('input[type="checkbox"][name="fuelType"]').each(function () {
+                var fuelType = $(this).attr('data-fuelType');
+                selectedFuelTypes.push(fuelType);
+            });
+            // 座位數
+            $('input[type="checkbox"][name="psgrNum"]').each(function () {
+                var numOfPsgr = $(this).attr('data-psgrNum');
+                selectedSeats.push(numOfPsgr);
+                //console.log(selectedSeats);
+            });
+        }
+
+        // 定義一個函數來執行搜尋並更新車輛清單
+        function searchAndRenderCarList(pickupLocation, startIndex, dataPerPage, sortOrder,pickupDateTime, 
+            returnDateTime, minPrice, maxPrice, selectedCompanies, selectedCarTypes, selectedFuelTypes, selectedSeats) {
+
+            var paramsCar = {
+                pickup: pickupLocation,
+                startIndex: startIndex,
+                dataPerPage: dataPerPage,
+                sortOrder: sortOrder,
+                pickupDateTime: pickupDateTime,
+                returnDateTime: returnDateTime,
+                minPrice: minPrice,
+                maxPrice: maxPrice,
+                selectedCompanies: selectedCompanies,
+                selectedCarTypes: selectedCarTypes,
+                selectedFuelTypes: selectedFuelTypes,
+                selectedSeats: selectedSeats
+            };
+            
+            $.ajax({
+                url: '/api/RApi/GetCarList',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(paramsCar),
+                success: function (response) {
+
+                    data = response.carList; // 從後端返回的響應中獲取資料
+                    var totalCount = response.totalCount; // 從後端返回的響應中獲取總數量
+                    totalDataCount = totalCount;
+                    
+                    // 將新獲取的資料合併到全域變數中
+                    carData = carData.concat(data);
+                    //console.log('獲取資料carData:', carData);
+                    // 更新搜尋結果的總數量
+                    if (sortOrder === 'asc') {
+                        data.sort(function (a, b) {
+                            return a.fRentalFee - b.fRentalFee;
+                        });
+                    } else {
+                        data.sort(function (a, b) {
+                            return b.fRentalFee - a.fRentalFee;
+                        });
+                    }
+                    // 渲染車輛清單
+                    renderCarList(carData);
+                    renderCarList2(carData);
+                    loading = false; // 加載完成
+                },
+                error: function (error) {
+                    console.error('取得資料時發生錯誤:', error);
+                    loading = false; // 加載完成，即使出錯也要將 loading 設置為 false
+                }
+            });
+        };
+        // 定義渲染車輛清單的函數
+        function renderCarList(data) {
+            $('#car-list').empty();
+            $.each(data, function (index, car) {
+                // 渲染每個車輛項目的HTML
+                var carHtml = `
+                                <div class="border-top-light pt-30 car-item" data-car-id="${car.fCarId}" style="margin-top:20px">
+                                                        <div class="row x-gap-20 y-gap-20 car-detail">
+                                                            <div class="col-md-auto cardImage2">
+                                                                <div class="relative d-flex">
+                                                                    <div class="cardImage ratio ratio-2:1 w-250 md:w-1/1 rounded-4">
+                                                                        <div class="cardImage__content">
+                                                                            <img class="rounded-4 col-12" src="/img/carRent/${car.fImagePath}" alt="image">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md">
+                                                                <div class="d-flex flex-column h-full justify-between">
+                                                                    <div class="">
+                                                                        <div class="row x-gap-5 items-center">
+                                                                            <div class="col-auto">
+                                                                                <div class="text-14 text-light-1" id="servicePoint" >${car.fServicePoint}</div>
+                                                                            </div>
+                                                                            <div class="col-auto">
+                                                                                <div class="size-3 rounded-full bg-light-1"></div>
+                                                                            </div>
+                                                                            <div class="col-auto">
+                                                                                <div class="text-14 text-light-1">${car.fDescription}</div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <h3 class="text-18 lh-16 fw-500 mt-5">
+                                                                            ${car.fModelName}
+                                                                        </h3>
+                                                                    </div>
+                                                                    <div class="col-lg-7 mt-20">
+                                                                        <div class="row y-gap-5">
+                                                                            <div class="col-sm-6">
+                                                                                <div class="d-flex items-center">
+                                                                                    <i class="icon-user-2"></i>
+                                                                                    <div class="text-14 ml-10">${car.fNumOfPsgr}人座</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-6">
+                                                                                <div class="d-flex items-center">
+                                                                                    <i class="icon-luggage"></i>
+                                                                                    <div class="text-14 ml-10">${car.fNumOfLuggage}件行李</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-6">
+                                                                                    <div class="d-flex items-center">
+                                                                                        <i class="icon-transmission"></i>
+                                                                                        <div class="text-14 ml-10">${car.fDescription2}</div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-6">
+                                                                                    <div class="d-flex items-center">
+                                                                                        <i class="icon-speedometer"></i>
+                                                                                        <div class="text-14 ml-10">無限里程</div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-6">
+                                                                                    <div class="d-flex items-center">
+                                                                                        <i class="icon-transmission"></i>
+                                                                                        <div class="text-14 ml-10">空調</div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-6">
+                                                                                    <div class="d-flex items-center">
+                                                                                        <i class="icon-speedometer"></i>
+                                                                                        <div class="text-14 ml-10">滿油取還車</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-auto text-right md:text-left">
+                                                                <div class="row x-gap-10 y-gap-10 justify-end items-center md:justify-start">
+                                                                    <!-- Add car rating and reviews here -->
+                                                                </div>
+                                                                <div class="text-22 lh-12 fw-600 mt-70 md:mt-20">NT$${car.fRentalFee}</div>
+                                                                <div class="text-14 text-light-1 mt-5">Total</div>
+                                                                <a id="chooseCar" class="button h-50 px-24 bg-dark-1 -yellow-1 text-white mt-24 data-car-id="${car.fCarId}">
+                                                                    選擇 <div class="icon-arrow-top-right ml-15"></div>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>`;
+                $('#car-list').append(carHtml);
+            });
+            // 更新搜尋結果數量
+            $('#result-count').text(totalDataCount);
+        }
+        function renderCarList2(data) {
+            $('#car-list2').empty();
+            $.each(data, function (index, car) {
+                // 渲染每個車輛項目的HTML
+                var carHtml2 = 
+                    `<div class="mapFilter-results__item" id="car-mapList" data-service-point="${car.fServicePoint}">
+                            <div class="row x-gap-20 y-gap-20">
+                                <div class="col-md-auto">
+                                    <div class="ratio ratio-1:1 size-120">
+                                        <img src="/img/carRent/${car.fImagePath}" alt="image" class="img-ratio rounded-4" >
+                                    </div>
+                                </div>
+
+                                <div class="col-md">
+                                    <div class="row x-gap-20 y-gap-10 justify-between">
+                                        <div class="col-lg">
+                                            <h4 class="text-16 lh-17 fw-500">
+                                                ${car.fModelName}<br>       
+                                            </h4>
+                                            <div style="font-size:14px;">${car.fServicePoint}．${car.fDescription}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row y-gap-10 justify-between items-end pt-24 lg:pt-15">
+
+                                        <div class="col-auto">
+                                            <div class="d-flex items-center">
+                                                <div class="fw-500">NT$${car.fRentalFee}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                $('#car-list2').append(carHtml2);
+            });
+            // 點擊車輛資料時顯示相應據點的標記
+            $('.mapFilter-results__item').click(function () {
+                var servicePoint = $(this).data('service-point');
+                showMarkersForServicePoint(servicePoint);
+            });
+            // 更新搜尋結果數量
+            $('#result-count2').text(totalDataCount);
+        }
+        //滾動事件
+        function bindScrollEvents() {
+            $(window).scroll(function () {
+                var twoThirdsHeight = $(window).height() * 2 / 3;
+                if ($(window).scrollTop() + $(window).height() >= $(document).height() - twoThirdsHeight) {
+                    if (!loading) {
+                        loading = true;
+                        startIndex += dataPerPage;
+                        searchAndRenderCarList(pickupLocation, startIndex, dataPerPage, sortOrder, pickupDateTime,
+                            returnDateTime, 0, 20000, selectedCompanies, selectedCarTypes, selectedFuelTypes, selectedSeats);
+                    }
+                }
+            });
+
+            $('.mapFilter-results.scroll-bar-1').scroll(function () {
+                var element = $(this);
+                var twoThirdsHeight = element.height() * 2 / 3;
+                if (element.scrollTop() + element.height() >= element[0].scrollHeight - twoThirdsHeight) {
+                    if (!loading) {
+                        loading = true;
+                        startIndex += dataPerPage;
+                        searchAndRenderCarList(pickupLocation, startIndex, dataPerPage, sortOrder, pickupDateTime,
+                            returnDateTime, 0, 20000, selectedCompanies, selectedCarTypes, selectedFuelTypes, selectedSeats);
+                    }
+                }
+            });
+        }
+        function getAllCarLocations() {
+            $.ajax({
+                url: '/api/RApi/getAllCarLocation',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    // 創建地圖
+                    var map = new google.maps.Map(document.querySelector('.js-map'), {
+                        zoom: 12, // 設定地圖初始放大倍率
+                        center: { lat: 25.042632, lng: 121.520436 } // 設定地圖中心點
+                    });
+
+                    // 將地圖綁定到指定的 HTML 元素
+                    var mapContainer = document.getElementById('carLocations');
+                    mapContainer.appendChild(map.getDiv());
+
+                    // 定義 getInfoWindowContent 函式
+                    function getInfoWindowContent(location) {
+                        return '<div style="font-size:16px;"><strong>' + location.fServicePoint + '</strong></div>' +
+                            '<div style="font-size:14px;"><strong>地址:</strong> ' + location.fAddress + '</div>' +
+                            '<div style="font-size:14px; color:blue;"><a href="https://www.google.com/maps/search/?api=1&query=' +
+                            location.fAddress + '" target="_blank">顯示詳細地圖</a></div>';
+                    }
+
+                    // 使用 Google 地圖 API 將地址轉換為地理坐標並在地圖上標記
+                    response.forEach(function (location) {
+                        var geocoder = new google.maps.Geocoder();
+                        geocoder.geocode({ 'address': location.fAddress }, function (results, status) {
+                            if (status === 'OK') {
+                                // 在地圖上添加標記
+                                var marker = new google.maps.Marker({
+                                    map: map,
+                                    position: results[0].geometry.location,
+                                    title: location.fServicePoint
+                                });
+
+                                // 創建信息視窗
+                                var infoWindow = new google.maps.InfoWindow({
+                                    content: getInfoWindowContent(location)
+                                });
+
+                                // 點擊標記時顯示信息視窗
+                                marker.addListener('click', function () {
+                                    infoWindow.open(map, marker);
+                                });
+
+                                // 將標記存入 markers 陣列中
+                                markers.push(marker);
+                            } else {
+                                console.error('地址轉換失敗:', status);
+                            }
+                        });
+                    });
+                },
+                error: function (error) {
+                    console.error('獲取據點地址時發生錯誤:', error);
+                }
+            });
+        }
+        // 根據服務點顯示相應的標記並隱藏其他標記
+        function showMarkersForServicePoint(servicePoint) {
+            markers.forEach(function (marker) {
+                if (marker.title === servicePoint) {
+                    marker.setVisible(true); // 顯示符合服務點的標記
+                } else {
+                    marker.setVisible(false); // 隱藏其他標記
+                }
+            });
+        }
+        // 函數用於更新 URL 參數
+        function updateUrlParams(pickupLocation, dropoffLocation) {
+            var urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('pickup', pickupLocation);
+            urlParams.set('dropoff', dropoffLocation);
+
+            // 更新 URL
+            var newUrl = window.location.pathname + '?' + urlParams.toString();
+            window.history.pushState({}, '', newUrl);
+        }
+    </script>
+}

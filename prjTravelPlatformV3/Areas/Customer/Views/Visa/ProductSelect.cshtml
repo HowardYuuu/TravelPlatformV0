@@ -1,0 +1,721 @@
+﻿@using System.Security.Claims
+@inject IHttpContextAccessor _httpContextAccessor
+
+
+
+@section Styles{
+    <style>
+        body {
+            background: #f7f6f3;
+            font-family: sans-serif;
+        }
+
+        .date-picker {
+            margin: 20px auto;
+        }
+
+        .date-picker {
+            width: 100%;
+            height: auto;
+            max-height: 50px;
+            background: white;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s 0s ease-in-out;
+        }
+
+            .date-picker .input {
+                width: 100%;
+                height: 50px;
+                font-size: 0;
+                cursor: pointer;
+            }
+
+                .date-picker .input .result, .date-picker .input button {
+                    display: inline-block;
+                    vertical-align: top;
+                }
+
+                .date-picker .input .result {
+                    width: calc(100% - 50px);
+                    height: 50px;
+                    line-height: 50px;
+                    font-size: 16px;
+                    padding: 0 10px;
+                    color: grey;
+                    box-sizing: border-box;
+                }
+
+                .date-picker .input button {
+                    width: 50px;
+                    height: 50px;
+                    background-color: #8392A7;
+                    color: white;
+                    line-height: 50px;
+                    border: 0;
+                    font-size: 18px;
+                    padding: 0;
+                }
+
+                    .date-picker .input button:hover {
+                        background-color: #68768A;
+                    }
+
+                    .date-picker .input button:focus {
+                        outline: 0;
+                    }
+
+            .date-picker .calendar {
+                position: relative;
+                width: 100%;
+                background: #fff;
+                border-radius: 0px;
+                overflow: hidden;
+            }
+
+            .date-picker .ui-datepicker-inline {
+                position: relative;
+                width: 100%;
+            }
+
+            .date-picker .ui-datepicker-header {
+                height: 100%;
+                line-height: 50px;
+                background: #8392A7;
+                color: #fff;
+                margin-bottom: 10px;
+            }
+
+            .date-picker .ui-datepicker-prev, .date-picker .ui-datepicker-next {
+                width: 20px;
+                height: 20px;
+                text-indent: 9999px;
+                border: 2px solid #fff;
+                border-radius: 100%;
+                cursor: pointer;
+                overflow: hidden;
+                margin-top: 12px;
+            }
+
+            .date-picker .ui-datepicker-prev {
+                float: left;
+                margin-left: 12px;
+            }
+
+                .date-picker .ui-datepicker-prev:after {
+                    transform: rotate(45deg);
+                    margin: -43px 0px 0px 8px;
+                }
+
+            .date-picker .ui-datepicker-next {
+                float: right;
+                margin-right: 12px;
+            }
+
+                .date-picker .ui-datepicker-next:after {
+                    transform: rotate(-135deg);
+                    margin: -43px 0px 0px 6px;
+                }
+
+                .date-picker .ui-datepicker-prev:after, .date-picker .ui-datepicker-next:after {
+                    content: '';
+                    position: absolute;
+                    display: block;
+                    width: 4px;
+                    height: 4px;
+                    border-left: 2px solid #fff;
+                    border-bottom: 2px solid #fff;
+                }
+
+                .date-picker .ui-datepicker-prev:hover, .date-picker .ui-datepicker-next:hover, .date-picker .ui-datepicker-prev:hover:after, .date-picker .ui-datepicker-next:hover:after {
+                    border-color: #68768A;
+                }
+
+            .date-picker .ui-datepicker-title {
+                text-align: center;
+            }
+
+            .date-picker .ui-datepicker-calendar {
+                width: 100%;
+                text-align: center;
+            }
+
+                .date-picker .ui-datepicker-calendar thead tr th span {
+                    display: block;
+                    width: 100%;
+                    color: #8392A7;
+                    margin-bottom: 5px;
+                    font-size: 13px;
+                }
+
+            .date-picker .ui-state-default {
+                display: block;
+                text-decoration: none;
+                color: #b5b5b5;
+                line-height: 40px;
+                font-size: 12px;
+            }
+
+                .date-picker .ui-state-default:hover {
+                    background: rgba(0, 0, 0, 0.02);
+                }
+
+            .date-picker .ui-state-highlight {
+                color: #68768A;
+            }
+
+            .date-picker .ui-state-active {
+                color: #68768A;
+                background-color: rgba(131, 146, 167, 0.12);
+                font-weight: 600;
+            }
+
+            .date-picker .ui-datepicker-unselectable .ui-state-default {
+                color: #eee;
+                border: 2px solid transparent;
+            }
+
+            .date-picker.open {
+                max-height: 400px;
+            }
+
+                .date-picker.open .input button {
+                    background: #68768A;
+                }
+
+    </style>
+    <style>
+        #ProductInfo p {
+            padding: 0;
+        }
+
+        #ProductOrganizer p {
+            padding: 0;
+        }
+
+        #ProductRemark p {
+            padding: 0;
+        }
+        .disabled{
+            cursor: no-drop;
+        }
+    </style>
+}
+
+
+<section class="pt-120">
+    <div class="container ">
+        
+            <div class="row x-gap-40 y-gap-30 items-center">
+                <div class="col-auto">
+                    <div class="d-flex items-center">
+                        <div class="size-40 rounded-full flex-center bg-blue-1">
+                            <i class="icon-check text-16 text-white"></i>
+                        </div>
+                        <div class="text-26 fw-500 ml-10" style="font-weight:bold;">選擇商品</div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="w-full h-1 bg-border"></div>
+                </div>
+
+                <div class="col-auto">
+                    <div class="d-flex items-center">
+                        <div class="size-40 rounded-full flex-center bg-blue-1-05 text-blue-1 fw-500">2</div>
+                        <div class="text-26 fw-500 ml-10" style="font-weight:bold;">填寫資料</div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="w-full h-1 bg-border"></div>
+                </div>
+
+                <div class="col-auto">
+                    <div class="d-flex items-center">
+                        <div class="size-40 rounded-full flex-center bg-blue-1-05 text-blue-1 fw-500">3</div>
+                        <div class="text-26 fw-500 ml-10" style="font-weight:bold;">成立訂單</div>
+                    </div>
+                </div>
+            </div>
+        
+        
+    </div>
+</section>
+
+<section class="pt-40 layout-pb-md">
+    <div class="container">
+
+
+        <div class="row py-15 px-20 rounded-4 text-15 bg-blue-1-05">
+
+
+            <div class="col-md-2">
+                <h2 class="text-26" style="font-weight:bold;">商品資訊</h2>
+            </div>
+
+            
+            <div class="col-md-7">
+                <div class="accordion__item px-30 base-tr">
+                    <div class="row y-gap-30 justify-between">
+                        <div class="col">
+                            <div class="row y-gap-10 items-center">
+                                <div class="col-sm-auto" id="ProductPicture">
+                                    @* 國旗圖片 *@
+                                </div>
+
+                                <div class="col">
+                                    <div class="row x-gap-20 items-end">
+                                        <div class="col-auto">
+                                            <div class="lh-15" style="font-weight:600;" id="ProductName">@* 商品名稱 *@</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-auto">
+                                    <div class="row x-gap-10 y-gap-10 pt-20">
+
+
+                                        <div class="col-auto">
+                                            <div class=" rounded-100 py-5 px-20 text-14 lh-14 bg-info-1" id="ProductIsEntity">@* 實體or電子簽 *@</div>
+                                        </div>
+
+
+                                        <div class="col-auto">
+                                            <div class=" rounded-100 py-5 px-20 text-14 lh-14 bg-info-1" id="ProductValidity">@* 效期 *@</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col text-center mt-3">
+                                <div class="flightLine">
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+
+                            <div class="row y-gap-10 items-center pt-20">
+                                <div class="col">
+                                    <div class="row x-gap-20 items-end">
+                                        <div class="col-auto">
+                                            <div class="d-flex">
+                                                <div class="lh-15 mr-15 ml-15" style="font-weight:bold;">機關辦理天數: </div>
+                                                <div class="lh-15" id="ProductProcessing">@* 辦理耗時天數 *@</div>
+                                                <div class="lh-15"style="color:red;">(代辦約再加4個工作天且不含假日)</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-auto">
+                                            <div class="d-flex">
+                                                <div class="lh-15 mr-15 ml-15" style="font-weight:bold; margin-left:16px;">可停留天數: </div>
+                                                <div class="lh-15" id="ProductStayLength">@* 可停留天數 *@</div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-3 pl-40 pt-20">
+                <div class="lh-15 fw-500" style="font-weight:bold;">商品編號:</div>
+                <div class="lh-15 fw-500" id="ProductId">@* 商品編號 *@</div>
+            </div>
+
+
+        </div>
+
+
+        <div class="row py-15 px-20 mt-20 rounded-4 text-15 bg-blue-1-05">
+
+
+            <div class="col-md-2">
+                <h2 class="text-26" style="font-weight:bold;">訂購資訊</h2>
+            </div>
+
+
+            <div class="col-md-7">
+                <div class="accordion__item px-30 base-tr">
+                    <div class="row y-gap-30 justify-between">
+                        <div class="col">
+
+                            <div class="date-picker">
+                                <div class="input">
+                                    <div class="result">預計出國日: <span id="DepartureDate"></span></div>
+                                    <button><i class="fa fa-calendar"></i></button>
+                                </div>
+                                <div class="calendar"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-3 pl-40 pt-20">
+                <div class="lh-15" style="font-weight:bold;">辦理數量</div>
+                <div class="d-flex items-center" onclick="Counter(event);">
+                    <button class="button -outline-blue-1 text-blue-1 size-38 rounded-4" id="minus">
+                        <i class="icon-minus text-12"></i>
+                    </button>
+
+                    <div class="flex-center size-20 ml-15 mr-15">
+                        <div class="text-15" id="productCount">1</div>
+                    </div>
+
+                    <button class="button -outline-blue-1 text-blue-1 size-38 rounded-4" id="plus">
+                        <i class="icon-plus text-12"></i>
+                    </button>
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+        <div class="row py-15 px-20 mt-20 rounded-4 text-15 bg-blue-1-05">
+
+
+            <div class="col-md-2">
+                <h2 class="text-26" style="font-weight:bold;">應備資料</h2>
+            </div>
+
+
+            <div class="col-md-9">
+                <div class="mt-15 mb-15">
+                    <div class="accordion__item px-30 base-tr">
+                        <div class="row y-gap-30 justify-between" id="ProductForms">
+                            @* 所需表格 *@
+                            
+                        </div>
+                        <div class="mt-20" id="ProductInfo">
+                            @* 應備資料 *@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        <div class="row py-15 px-20 mt-20 rounded-4 text-15 bg-blue-1-05">
+
+
+            <div class="col-md-2">
+                <h2 class="text-26" style="font-weight:bold;">承辦單位</h2>
+            </div>
+
+
+            <div class="col-md-9">
+                <div class="mt-15 mb-15">
+                    <div class="accordion__item px-30 base-tr">
+                        <div class="row y-gap-30 justify-between" id="ProductOrganizer">
+                            @* 承辦單位 *@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        <div class="row py-15 px-20 mt-20 rounded-4 text-15 bg-blue-1-05">
+
+
+            <div class="col-md-2">
+                <h2 class="text-26" style="font-weight:bold;">備註</h2>
+            </div>
+
+
+            <div class="col-md-9">
+                <div class="mt-15 mb-15">
+                    <div class="accordion__item px-30 base-tr">
+                        <div class="row y-gap-30 justify-between" id="ProductRemark">
+                            @* 備註 *@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+
+        <div class="row py-15 px-20 mt-20 rounded-4 text-15 bg-blue-1-05">
+
+
+            <div class="col-md-2">
+                <h2 class="text-26" style="font-weight:bold;">訂購須知與明細</h2>
+            </div>
+
+
+            <div class="col-md-4 pl-40 pt-20">
+                <div class="y-gap-30">
+                    <div class="lh-15 text-24 px-15" style="font-weight:bold; border-bottom:solid lightgray 1px;">訂購須知</div><br />
+                    <div style="padding-top:0px; max-height:150px; overflow:scroll;">
+                        請詳細閱讀證照辦理相關規定，確認應備資料，並留意證照辦理作業工作天數，以因應您的出發日期。<br />
+
+                        ※為完成您訂購之商品，東南旅遊網須將必要的旅客個人資料交付予配合之服務提供業者(簽證中心)，代為向外交部或各國簽証辦事處進行作業，並
+                        依規約課予配合之服務提供業者依「個人資料保護法」之原則處理旅客資料。相關法律政策請參考隱私權保護政策及個資聲明。
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 pl-40 pt-20">
+                <div class="y-gap-30">
+                    <div class="lh-15 text-24 px-15" style="font-weight:bold; border-bottom:solid lightgray 1px;">金額明細</div><br />
+                    <div class="px-15" style="border-bottom:solid black 2px;">
+                        <div class="d-flex justify-between align-items-center">
+                            <div class="lh-15 text-20" style="font-weight:bold;" id="OrderProductName">@* 商品名稱 *@</div>
+                            <div class="lh-15 text-20" style="font-weight:bold;" id="OrderProductPrice">@* 商品價格 *@</div>
+                        </div>
+                        <span id="OrderCountPrice">$@* 商品價格 *@</span><span id="OrderCountNumber">1@* 購買數量 *@</span>
+                    </div>
+                    <div class="d-flex justify-between px-15">
+                        <div class="currency pull-left">幣別:新台幣</div>
+                        <div class="d-flex align-items-center">
+                            <span style="margin-right:16px;">總計</span>
+                            <p class="text-24" style="font-weight:bold; color:red;" id="OrderTotalPrice">$@* 商品價格 *@</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            
+
+
+
+
+
+        </div>
+
+
+        <div class="row px-20 mt-10 rounded-4 text-15">
+            <div class="col-md-12 pl-40 pt-20 d-flex justify-end">
+                <div class="y-gap-30">
+                    <button id="NextStop" onclick="GetOrder();" class="button -md -dark-1 bg-yellow-1 text-dark-1 disabled">下一步</button>
+                </div>
+            </div>
+        </div>
+
+               
+        <a asp-area="Customer" asp-controller="Visa" asp-action="InfoInput" id="OrderLink" style="display:none;"></a>
+
+        
+    </div>
+</section>
+
+
+
+@section Scripts{
+
+    <script src="~/js/VOrg.js" asp-append-version="true"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+    <script>
+
+        function loadProduct() {
+            const ProductPicture = document.getElementById('ProductPicture'); //html
+            const ProductName = document.getElementById('ProductName'); //text
+            const ProductIsEntity = document.getElementById('ProductIsEntity'); //text
+            const ProductValidity = document.getElementById('ProductValidity'); //text
+            const ProductProcessing = document.getElementById('ProductProcessing'); //text
+            const ProductStayLength = document.getElementById('ProductStayLength'); //text
+            const ProductId = document.getElementById('ProductId'); //text
+            
+            const ProductOrganizer = document.getElementById('ProductOrganizer'); //html
+            const OrderProductName = document.getElementById('OrderProductName'); //text
+            const OrderProductPrice = document.getElementById('OrderProductPrice'); //text
+            const OrderCountPrice = document.getElementById('OrderCountPrice') // text
+            const OrderCountNumber = document.getElementById('OrderCountNumber'); //text
+            const OrderTotalPrice = document.getElementById('OrderTotalPrice'); //text
+
+            const ProductInfo = document.getElementById('ProductInfo') //html
+            const ProductRemark = document.getElementById('ProductRemark') //html
+
+            ProductPicture.innerHTML = `<img class="size-40 shadow-2" src="/VCountry/${Product.國家}.png" alt="image" style="border-radius: 100%;">`;
+            ProductName.innerText = Product.商品名稱;
+            if (Product.實體or電子簽 === true) { ProductIsEntity.innerText = '實體簽證'; } else { ProductIsEntity.innerText = '電子簽證'; }
+            ProductValidity.innerText = Product.效期 + '效期';
+            ProductProcessing.innerText = Product.辦理耗時天數 + '個工作天';
+            ProductStayLength.innerText = Product.可留天數;
+            ProductId.innerText = 'VFP' + Product.商品編號;
+            OrderProductName.innerText = Product.商品名稱;
+            OrderProductPrice.innerText = Product.價格.toLocaleString();
+            OrderCountPrice.innerText = '$' + Product.價格.toLocaleString() + ' x ';
+            OrderTotalPrice.innerText = '$' + (Product.價格 * Number(OrderCountNumber.innerText)).toLocaleString();
+            ProductOrganizer.innerHTML = Org[Product.國家];
+            ProductInfo.innerHTML = Info[Product.國家];
+            ProductRemark.innerHTML = Remark[Product.國家];
+        }
+
+        function loadInfo() {
+            const ProductForms = document.getElementById('ProductForms'); //html
+            let InfoHtml = ``;
+            for (var f of Forms) {
+                // InfoHtml += `<a href="/VForms/${f.fFormName}">${f.fFormName.replace(/\..*/, "")}</a>`
+                InfoHtml += `<div class="text-20" style="font-weight:bold;"><a href="/VForms/${f.fFormName}">${f.fFormName.replace(/\..*$/, "")}<span class="text-16" style="font-weight:400;">(點我下載)</span></a></div>`;
+
+            }
+
+            ProductForms.innerHTML = InfoHtml;
+        }
+
+        let Product = {};
+        let Forms = [];
+        (async () => {
+            var storedId = localStorage.getItem('Id');
+            var parsedId = JSON.parse(storedId);
+            const id = parsedId.key;
+            try {
+                const response = await fetch(`@Url.Content("~/Customer/Visa/VProductById")?Id=${id}`)
+                if (!response.ok) {
+                    console.log(response.status);
+                    throw new Error(`${response.status}`);
+                }
+                const data = await response.json();
+                Product = data;
+                loadProduct();
+            }
+            catch (error) {
+                console.log(`${error.message}`);
+                console.log('fetchFail')
+                return false;
+            }
+        })();
+
+        (async () => {
+            var storedId = localStorage.getItem('Id');
+            var parsedId = JSON.parse(storedId);
+            const id = parsedId.key;
+            try {
+                const response = await fetch(`@Url.Content("~/Customer/Visa/VProductFormsById")?Id=${id}`)
+                if (!response.ok) {
+                    console.log(response.status);
+                    throw new Error(`${response.status}`);
+                }
+                const datas = await response.json();
+                for (var data of datas) {
+                    Forms.push(data);
+                }
+                loadInfo();
+            }
+            catch (error) {
+                console.log(`${error.message}`);
+                console.log('fetchFail')
+                return false;
+            }
+        })();
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+    <script>
+        $(function () {
+            $(".calendar").datepicker({
+                dateFormat: 'yy/m/d',
+                firstDay: 1
+            });
+
+            $(document).on('click', '.date-picker .input', function (e) {
+                var $me = $(this),
+                    $parent = $me.parents('.date-picker');
+                $parent.toggleClass('open');
+            });
+
+
+            $(".calendar").on("change", function () {
+                var $me = $(this),
+                    $selected = $me.val(),
+                    $parent = $me.parents('.date-picker');
+                $parent.find('.result').children('span').html($selected);
+            });
+        });
+    </script>
+
+    <script>
+        function Counter(e) {
+            const OrderCountNumber = document.getElementById('OrderCountNumber'); //text
+            const OrderTotalPrice = document.getElementById('OrderTotalPrice'); //text
+            const productCount = document.getElementById('productCount');
+            if (e.target.id === 'plus') {
+                productCount.innerText = Number(productCount.innerText) + 1;
+                OrderCountNumber.innerText = productCount.innerText;
+                OrderTotalPrice.innerText = '$' + (Product.價格 * Number(OrderCountNumber.innerText)).toLocaleString();
+            }
+            if (e.target.id === 'minus') {
+                const r = e.target.nextElementSibling.firstElementChild.innerText;
+                if (Number(productCount.innerText) >= 2) {
+                    productCount.innerText = Number(productCount.innerText) - 1;
+                    OrderCountNumber.innerText = productCount.innerText;
+                    OrderTotalPrice.innerText = '$' + (Product.價格 * Number(OrderCountNumber.innerText)).toLocaleString();
+                }
+            }
+        }
+    </script>
+
+    <script>
+        function GetOrder() {
+            const DepartureDate = document.getElementById('DepartureDate');
+            const productCount = document.getElementById('productCount');
+            const OrderLink = document.getElementById('OrderLink');
+
+            if (DepartureDate.innerText) {
+
+                // 將要存儲到本地存儲的資料
+                var DateToSave = { key: DepartureDate.innerText };
+
+                // 將資料轉換為 JSON 字符串並存儲到本地存儲中
+                localStorage.setItem('DepartureDate', JSON.stringify(DateToSave));
+
+                // 將要存儲到本地存儲的資料
+                var CountToSave = { key: Number(productCount.innerText) };
+
+                // 將資料轉換為 JSON 字符串並存儲到本地存儲中
+                localStorage.setItem('OrderCount', JSON.stringify(CountToSave));
+
+
+
+                OrderLink.click();
+                
+            }
+        }
+    </script>
+}

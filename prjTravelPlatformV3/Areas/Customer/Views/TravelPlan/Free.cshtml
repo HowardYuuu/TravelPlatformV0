@@ -1,0 +1,630 @@
+﻿@using prjTravelPlatform_release.Areas.Customer.ViewModel.TravelPlan
+@{
+	ViewData["Title"] = "自由行";
+}
+@section Styles {
+	<link href="~/allen/freetravelplan/vendors/bootstrap/bootstrap.min.css" rel="stylesheet" />
+	<link href="~/allen/freetravelplan/css/style.css" rel="stylesheet" />
+}
+<section class="product_description_area">
+	<div class="container" style="max-width: 40%;float: left;height: 100vh;margin-top:5%;margin-left:2%">
+		<ul class="nav nav-tabs" id="dayTab" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link active" id="home-tab" data-toggle="tab" href="#dayfactor" role="tab" aria-controls="dayfactor"
+				   aria-selected="true">選擇天數</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link " id="contact-tab" data-toggle="tab" href="#schedulefactor" role="tab" aria-controls="schedulefactor"
+				   aria-selected="false">選擇行程</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="updateplan" style="display:none" data-toggle="tab" role="tab" aria-controls=""
+				   aria-selected="false">更新行程</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="buyLink" style="display:none" data-toggle="tab" role="tab" aria-controls=""
+				   aria-selected="false">購買行程</a>
+			</li>
+		</ul>
+		<div class="tab-content" id="myTabContent" style=" overflow-y: auto;">
+			<div class="tab-pane fade show active" id="dayfactor" role="tabpanel" aria-labelledby="dayfactor-tab">
+				<table class="table">
+					<tbody>
+						<tr>
+							預計旅遊天數：
+							<td style="width: 70%;">
+								<select name="days" id="days" style="width: 150px; height: 30px;" class="select">
+									<option value="1">1天</option>
+									<option value="2">2天</option>
+									<option value="3">3天</option>
+									<option value="4">4天</option>
+									<option value="5">5天</option>
+									<option value="6">6天</option>
+									<option value="7">7天</option>
+									<option value="8">8天</option>
+									<option value="9">9天</option>
+								</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="tab-pane fade " id="schedulefactor" role="tabpanel" aria-labelledby="schedulefactor-tab">
+				<div id="scheduleContainer" style="max-height: 600px;">
+					<table class="table">
+						<tbody id="schedule">
+						</tbody>
+					</table>
+					<button onclick="demo()">Demo</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div style="clear: both"></div>
+
+	<div style="padding-left:2%">
+		<input id="originInput" ondragover="allowDrop(event)" ondrop="droparea(event)" type="text" class="form-control" style="background-color:white;border:1px solid;border-radius:20px;max-width:30%;margin-bottom:1%" placeholder="出發點">
+		<input id="waypointsInput" ondragover="allowDrop(event)" ondrop="droparea(event)" type="text" class="form-control" style="background-color:white;border:1px solid;border-radius:20px;max-width:30%;margin-bottom:1%" placeholder="中途沿靠">
+		<div style="display:flex">
+			<input id="destinationInput" ondragover="allowDrop(event)" ondrop="droparea(event)" type="text" class="form-control" style="background-color:white;border:1px solid;border-radius:20px;max-width:30%;margin-bottom:1%" placeholder="目的地">
+			<button onclick="search()" style="border: 0;background-color: none;margin-left:2%;margin-bottom:2%"><img src="~/allen/icons/search.ico" style="max-width: 100%;"></button>
+		</div>
+		<iframe id="mapFrame" width="600" height="450" frameborder="0" style="border:0" src=""></iframe>
+	</div>
+
+	<div class="fixed1">
+		<div class="row px-xl-5">
+			<!-- 商品列表 -->
+			<div style="flex: 0 0 100%;background-image: url('/allen/img/tree.jpg');">
+				<div style="padding-bottom: 0.25rem;display: flex;flex-wrap: wrap;">
+					<div style="padding-bottom: 0.25rem;flex: 0 0 100%;max-width: 100%;padding-top: 1rem;">
+						<div style="display: flex; align-items: center;">
+							<button id="starButton" style="border: 0;background-color: none;margin-right:1%">
+								<img id="starImage" src="~/allen/icons/star.ico" style="max-width: 100%;">
+							</button>
+							<div class="dropdown">
+								<button class="btn border dropdown-toggle" type="button" id="triggerId" style="background-color:white"
+										data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									類型
+								</button>
+								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
+									<a class="dropdown-item" onclick="getTypeFactor()">ALL</a>
+									@foreach (Ttype ty in ViewBag.type)
+									{
+										<a class="dropdown-item" id="@ty.FtypeId" onclick="getTypeFactor('@ty.FtypeId')">@ty.Ftype</a>
+									}
+								</div>
+							</div>
+							<div class="dropdown">
+								<button class="btn border dropdown-toggle" type="button" id="triggerId" style="background-color:white"
+										data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									地區
+								</button>
+								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId" style="max-height: 200px; overflow-y: auto;">
+									<a class="dropdown-item" onclick="getAreaFactor()">ALL</a>
+									@foreach (TtravelArea ta in ViewBag.area)
+									{
+										<a class="dropdown-item" id="@ta.FareaId" onclick="getAreaFactor('@ta.FareaId')">@ta.FareaName</a>
+									}
+								</div>
+							</div>
+							<div class="dropdown">
+								<button class="btn border dropdown-toggle" type="button" id="triggerId" style="background-color:white"
+										data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									排序
+								</button>
+								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
+									<a class="dropdown-item" onclick="getSort('follow')">最多追蹤</a>
+									<a class="dropdown-item" onclick="getSort('az')">價位高低</a>
+									<a class="dropdown-item" onclick="getSort('za')">價位低高</a>
+									<a class="dropdown-item" onclick="getSort('latest')">近期新增</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 內容-->
+					<div id="shoplist" class="border-bottom"
+						 style="padding-bottom: 0.25rem;flex: 0 0 100%;max-width: 101%; background-color:none;border-top-left-radius:20px;border-top-right-radius:20px;">
+					</div>
+					<!-- 頁籤 -->
+					<div class="col-12 pb-1" style="padding-top: 20px;margin-bottom: 0;">
+						<nav aria-label="Page navigation">
+							<ul class="pagination justify-content-center mb-3" id="num4page">
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<!-- 商品列表 End -->
+		</div>
+	</div>
+
+</section>
+@section Scripts {
+	<script src="~/allen/freetravelplan/vendors/jquery/jquery-3.2.1.min.js"></script>
+	<script src="~/allen/freetravelplan/vendors/bootstrap/bootstrap.bundle.min.js"></script>
+	<script src="~/allen/freetravelplan/vendors/nice-select/jquery.nice-select.min.js"></script>
+	<script>
+		var searchTypefactor = [];
+		var searchAreaFactor = [];
+		var sortfactor = '';
+		var follow = false;
+		var page;
+		const starButton = document.getElementById('starButton');
+		const buyitem = document.querySelector('#updateplan');
+		const HomeButton = document.getElementById('home-tab');
+		let dayData = null;
+		const deal = document.querySelector('#buyLink');
+
+
+		function demo(){
+			const day1time = document.querySelectorAll('.demotime');
+			day1time[0].value = '10:00';
+			day1time[1].value = '13:00';
+			day1time[2].value = '10:00';
+			day1time[3].value = '13:00';
+
+			dayData[0].fdestionationTime = day1time[0].value;
+			dayData[1].fdestionationTime = day1time[1].value;
+			dayData[2].fdestionationTime = day1time[2].value;
+			dayData[3].fdestionationTime = day1time[3].value;
+		}
+
+		//路線查詢
+		function search() {
+			var origin = document.getElementById('originInput').value;
+			var waypoints = document.getElementById('waypointsInput').value;
+			var destination = document.getElementById('destinationInput').value;
+
+			if (origin == '' || destination=='')
+			{
+				Swal.fire({
+					title: '請填寫',
+					text: '出發點&目的地',
+					icon: 'warning'
+				});
+				return;
+			}
+			if (waypoints == '') {
+				var iframeSrc = `https://www.google.com/maps/embed/v1/directions?key=AIzaSyCkdoxG9B0K7e4ies97y9xvPKJ6-jNmg_8&origin=${origin}&destination=${destination}`;
+			}
+			else {
+				var iframeSrc = `https://www.google.com/maps/embed/v1/directions?key=AIzaSyCkdoxG9B0K7e4ies97y9xvPKJ6-jNmg_8&origin=${origin}&waypoints=${waypoints}&destination=${destination}`;
+			}
+			document.getElementById('mapFrame').src = iframeSrc;
+		}
+
+		//排序
+		function getSort(sort) {
+			sortfactor = '';
+			sortfactor = sort;
+			getData(1, searchTypefactor, searchAreaFactor, sortfactor, follow);
+		}
+
+		//追蹤篩選
+		starButton.addEventListener('click', function () {
+			const starImage = document.getElementById('starImage');
+			const originalSrc = starImage.getAttribute('src');
+			follow = !follow;
+			// 如果原始來源為 star.ico，則切換為 lightstar.ico；否則切換為 star.ico
+			if (follow) {
+				starImage.src = "/allen/icons/lightstar.ico";
+			} else {
+				starImage.src = "/allen/icons/star.ico";
+			}
+			getData(1, searchTypefactor, searchAreaFactor, sortfactor, follow)
+		});
+
+		//主題篩選
+		function getTypeFactor(id) {
+			searchTypefactor = [];
+			if (id != null) {
+				searchTypefactor.push(id);
+			}
+			getData(1, searchTypefactor, searchAreaFactor, sortfactor, follow)
+		}
+
+		//地區篩選
+		function getAreaFactor(id) {
+			searchAreaFactor = [];
+			if (id != null) {
+				searchAreaFactor.push(id);
+			}
+			getData(1, searchTypefactor, searchAreaFactor, sortfactor, follow)
+		}
+
+		//追蹤
+		function addfollow(destinationId) {
+			$.ajax({
+				url: '@Url.Content("~/Customer/Destionation/Follow")',
+				type: 'POST',
+				data: { id: destinationId },
+				success: function (response) {
+					getData(page, searchTypefactor, searchAreaFactor, sortfactor, follow)
+				},
+				error: function (xhr, status, error) {
+					console.error('Error:', error);
+				}
+			});
+		}
+
+		//頁籤
+		function PageRange(page, type, place, sort = '', follow) {
+			const totalpageUrl = '@Url.Content("~/Customer/Destionation/Page2")';
+			$.ajax({
+				url: totalpageUrl,
+				type: 'GET',
+				data: { page: page, type: JSON.stringify(type), place: JSON.stringify(place), sort: sort, follow: follow },
+				success: function (data) {
+					const pages = $('#num4page');
+					pages.empty();
+					for (let i = 1; i <= data; i++) {
+						const li = $('<li>').addClass('page-item').css('background-color', 'white');
+						if (i == page) {
+							li.addClass('active');
+						}
+						const a = $('<a>').addClass('page-link').text(i.toString());
+						li.append(a);
+						pages.append(li);
+					}
+				},
+				error: function (xhr, status, error) {
+					console.error('Error:', error);
+				}
+			});
+		}
+
+		//畫面生成
+		function getData(page, type, place, sort = '', follow) {
+			$.ajax({
+				url: '@Url.Content("~/Customer/Destionation/List2")',
+				type: 'GET',
+				data: { page: page, type: JSON.stringify(type), place: JSON.stringify(place), sort: sort, follow: follow },
+				success: function (response) {
+					if (response.length === 0 && page > 1) {
+						getData(page - 1, type, place, sort, follow);
+					} else {
+						$('#shoplist').empty();
+						var cardCount = 0;
+						var indexcount = 0;
+						$.each(response, function (index, item) {
+							if (cardCount % 3 === 0) {
+								$('#shoplist').append('<div class="d-flex flex-wrap "></div>');
+							}
+							var html = '<div style="padding-left: 1rem;padding-right: 1rem;padding-top: 1rem;flex: 0 0 32%;max-width: 32%;" draggable="true" ondragstart="drag(event, \'' + item.fDestinationId + '\', \'' + item.fDestinationName + '\')" id="' + item.fDestinationId + '">';
+							html += '<div>';
+							html += '<div>';
+
+							html += '</div>';
+							html += '<div style="background-color: #f2f2f2;border-radius:10px	; ">'; 
+							html += '<div style="padding-bottom: 0;margin-bottom: 0;">';
+							html += '<div style="height: 70px;padding: 1.5rem;">';
+							html += '<h5 style="margin-bottom: 0;">' + item.fDestinationName + '</h5>';
+							html += '<div style="display:none;">' + item.fDestinationId + '</div>';
+							html += '</div>';
+							html += '<div style="display: flex;align-items:end;justify-content: space-between;padding: 1.5rem; padding-bottom: 0.5rem;">';
+							html += '<div>'
+							html += '<h6>瀏覽 : ' + item.fCount + ' 次</h6>';
+							html += '<h6>追蹤中 : ' + item.fTotalFollow + ' 人</h6>';
+							html += '</div>'
+							html += "<button type='button' style='width: 60px;height:60px;margin-left: auto;margin-top: 0px;border: 0;' onclick=\"addfollow('" + item.fDestinationId + "')\">";
+							if (item.fFollow) {
+								html += `<img src='/allen/icons/lightstar.ico' style='max-width: 100%;' >`;
+							}
+							else {
+								html += `<img src='/allen/icons/star.ico' style='max-width: 100%;' >`;
+							}
+							html += '</button>';
+							html += '</div>';
+							html += '</div>';
+							html += '<div style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px ;color: var(--bs-white);transition: 0.5s;display: flex;width: 100%; bottom: 0; left: 0; z-index: 5; background-color: #13357b; border-right: 0;border-left: 0;border: 1px solid #dee2e6;">';
+							html += '<small style="flex: 1 1 auto; text-align: center; padding-top: .5rem; padding-bottom: .5rem; border-right: 1px solid #dee2e6;">';
+							html += '<i style="color:white;font-size: 1rem;">' + item.ftype + '</i>';
+							html += '</small>';
+							html += '<small style="flex: 1 1 auto; text-align: center; padding-top: .5rem; padding-bottom: .5rem; border-right: 1px solid #dee2e6;">';
+							html += '<i style="color:white;font-size: 1rem;">$' + item.fPrice + '</i>';
+							html += '</small>';
+							html += '<small style="flex: 1 1 auto; text-align: center; padding-top: .5rem; padding-bottom: .5rem;">';
+							html += '<i style="color:white;font-size: 1rem;">' + item.fAreaName + '</i>';
+							html += '</small>';
+							html += '</div>';
+
+							html += '</div>';
+							html += '</div>';
+							$('#shoplist > .d-flex:last-child').append(html);
+							cardCount++;
+							indexcount++;
+						});
+						PageRange(page, searchTypefactor, searchAreaFactor, sortfactor, follow)
+					}
+				},
+				error: function (xhr, status, error) {
+					console.error(xhr.responseText);
+				}
+			});
+		}
+
+		//初始呼叫畫面生成與頁籤功能實現
+		$(document).ready(function () {
+			var currentPage = 1;
+			getData(currentPage, searchTypefactor, searchAreaFactor);
+			$('.pagination').on('click', 'a', function (e) {
+				e.preventDefault();
+				page = $(this).text();
+				$('.page-item.active').removeClass('active');
+				getData(page, searchTypefactor, searchAreaFactor, sortfactor, follow)
+			});
+		});
+
+		//防止瀏覽器禁止推移行為
+		function allowDrop(event) {
+			event.preventDefault();
+		}
+
+		//拖移目標
+		function drag(event, id, name) {
+			event.dataTransfer.setData("id", id.toString());
+			event.dataTransfer.setData("name", name);
+		}
+
+		//拖移目的地(行程內容)
+		function drop(event, tripIndex, isMorning, day) {
+			deal.style.display = 'none';
+			event.preventDefault();
+			const data = event.dataTransfer.getData("name");
+			const id = event.dataTransfer.getData("id");
+			const targetElement = event.target;
+			let target = targetElement;
+			while (target && !target.ondrop) {
+				target = target.parentElement;
+			}
+			const aElement = target.querySelector('a');
+			if (aElement) {
+				aElement.textContent = data;
+				aElement.id = id;
+			}
+			target.setAttribute('ondrop', `drop(event, ${tripIndex}, ${isMorning},${day})`);
+			dayData[tripIndex].fdestinationId = id;
+			dayData[tripIndex].fdestionationName = data;
+			dayData[tripIndex].fdestionationState = isMorning;
+			dayData[tripIndex].ftravelDay = day;
+
+			console.log(dayData[tripIndex])
+		}
+		
+		//拖移目的地(地圖應用)
+		function droparea(event) {
+			const data = event.dataTransfer.getData("name");
+			const targetElement = event.target;
+			let target = targetElement;
+			target.value = data;
+		}
+
+		//更新活動時間
+		function updateDestinationTime(tripIndex, isMorning) {
+			deal.style.display = 'none';
+			const inputElement = event.target;
+			let value = inputElement.value;
+			if (value) {
+				// 拆分時間字符串並檢查是否有兩個部分（小時和分鐘）
+				const parts = value.split(":");
+				if (parts.length === 2) {
+					// 將 "hh:mm" 格式轉換為 "hh:mm:ss" 格式
+					value = value + ":00";
+				}
+			}
+			dayData[tripIndex].fdestionationTime = value;
+		}
+
+		//關閉下單功能
+		HomeButton.addEventListener('click', function () {
+			buyitem.style.display = 'none';
+			deal.style.display = 'none';
+		});
+
+		//下單功能
+		deal.addEventListener('click', function () {
+			const freeId = '@ViewBag.freeid';
+			const dealurl = `@Url.Content("~/Customer/TravelPlan/FreePlanDeal")?id=${freeId}`;
+			fetch(dealurl, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({})
+			})
+				.then(response => {
+					if (response.ok) {
+						window.location.href = dealurl;
+					} else {
+						console.error('Request failed. Status:', response.status);
+					}
+				})
+				.catch(error => {
+					// 處理錯誤
+					console.error('Error occurred:', error);
+				});
+		});
+
+		document.addEventListener('DOMContentLoaded', function () {
+
+			const selectDayButton = document.getElementById('contact-tab');
+			const daysSelect = document.getElementById('days');
+
+			dayData = null;
+			//讀取用戶自由行內容資料的天數
+			fetch(`@Url.Content("~/Customer/TravelPlan/Day")`)
+				.then(function (response) {
+					return response.json();
+				})
+				.then(function (data) {
+					if (data != null && data != 0) {
+						daysSelect.value = data;
+					}
+				})
+				.catch(function (error) {
+					console.log('Error fetching data:', error);
+				});
+
+			//讀取用戶自由行內容資料
+			fetch('@Url.Content("~/Customer/TravelPlan/FreeDetail")')
+				.then(function (response) {
+					return response.json();
+				})
+				.then(function (data) {
+					dayData = data;
+
+				})
+				.catch(function (error) {
+					console.log('Error fetching data:', error);
+				});
+
+			//生成自由行內容
+			selectDayButton.addEventListener('click', function () {
+				deal.style.display = 'none';
+				var schudel = dayData;
+				const selectedDays = parseInt(daysSelect.value);
+				const scheduleTableBody = document.getElementById('schedule');
+				buyitem.style.display = 'block';
+				scheduleTableBody.innerHTML = '';
+				let tripIndex = 0;
+				if (selectedDays < schudel.length) {
+					schudel.splice(selectedDays * 2);
+				}
+				if (schudel != null) {
+					for (let i = 1; i <= selectedDays; i++) {
+						const morningDataIndex = tripIndex * 2;
+						const afternoonDataIndex = tripIndex * 2 + 1;
+						let destinationId = 0;
+						let destinationName = '尚未安排';
+						let destinationTime = '';
+						let isMorning = true;
+						let fPrice = '';
+						let fcustomerId = '@ViewBag.customer';
+						let freeId = '@ViewBag.freeid';
+						if (morningDataIndex < schudel.length) {
+							destinationId = dayData[morningDataIndex].fdestinationId;
+							destinationName = dayData[morningDataIndex].fdestionationName;
+							destinationTime = dayData[morningDataIndex].fdestionationTime;
+							isMorning = true;
+						} else {
+							fPrice = '';
+							fcustomerId = fcustomerId;
+							freeId = freeId;
+							destinationId = 0;
+							destinationName = '尚未安排';
+							destinationTime = '';
+							isMorning = true;
+							dayData.push({
+								fcustomerId: parseInt(fcustomerId),
+								fdestinationId: destinationId,
+								fdestionationName: destinationName,
+								ftravelDay: i,
+								freeId: freeId,
+								fPrice: null,
+								fdestionationTime: destinationTime,
+								fdestionationState: isMorning
+							});
+						}
+						const morningTr = document.createElement('tr');
+						morningTr.innerHTML = `
+								<td style="white-space: nowrap;padding:0;width: 30%">第${i}天 上午行程</td>
+								<td style="width: 70%" ondragover="allowDrop(event)" ondrop="drop(event, ${morningDataIndex}, true,${i})">
+									<a id="${destinationId}">${destinationName}</a>
+									<input style="margin-top: 5%;" type="time" class="select demotime" value="${destinationTime}" onchange="updateDestinationTime(${morningDataIndex}, true)">
+								</td>`;
+						scheduleTableBody.appendChild(morningTr);
+						if (afternoonDataIndex < dayData.length) {
+							destinationId = dayData[afternoonDataIndex].fdestinationId;
+							destinationName = dayData[afternoonDataIndex].fdestionationName;
+							destinationTime = dayData[afternoonDataIndex].fdestionationTime;
+							isMorning = false;
+						} else {
+							fPrice;
+							fcustomerId = fcustomerId;
+							freeId = freeId;
+							destinationId = 0;
+							destinationName = '尚未安排';
+							destinationTime = '';
+							isMorning = false;
+							dayData.push({
+								fcustomerId: parseInt(fcustomerId),
+								fdestinationId: destinationId,
+								fdestionationName: destinationName,
+								ftravelDay: i,
+								freeId: freeId,
+								fPrice: null,
+								fdestionationTime: destinationTime,
+								fdestionationState: isMorning
+							});
+						}
+						const afternoonTr = document.createElement('tr');
+						afternoonTr.innerHTML = `
+								<td style="white-space: nowrap;padding:0;width: 30%;">第${i}天 下午行程</td>
+								<td style="width: 70%" ondragover="allowDrop(event)" ondrop="drop(event, ${afternoonDataIndex}, false,${i})">
+									<a id="${destinationId}">${destinationName}</a>
+											<input style="margin-top: 5%;" type="time" class="select demotime" value="${destinationTime}"onchange="updateDestinationTime(${afternoonDataIndex}, true)">
+								</td>`;
+						scheduleTableBody.appendChild(afternoonTr);
+						tripIndex++;
+					}
+				}
+			});
+		});
+
+		//更新行程
+		document.getElementById('updateplan').addEventListener('click', function () {
+			let incompletePlan = false; // 用於標記是否有不完整的計劃
+			dayData.forEach(function (item) {
+				if (item.fdestinationId === "0" || item.fdestionationTime === "") {
+					Swal.fire({
+						title: '安排不完整',
+						text: '請檢查行程',
+						icon: 'warning'
+					});
+					incompletePlan = true; // 標記為不完整的計劃
+					return;
+				}
+			});
+			// 如果有不完整的計劃，則不執行後續程式碼
+			if (incompletePlan) {
+				return;
+			}
+			// 如果所有計劃都完整，執行後續程式碼
+			var jsonData = JSON.stringify(dayData);
+			fetch('/Customer/TravelPlan/SaveFreeDetail', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: jsonData
+			})
+				.then(function (response) {
+					if (response.ok) {
+						fetch('@Url.Content("~/Customer/TravelPlan/FreeDetail")')
+							.then(function (response) {
+								return response.json();
+							})
+							.then(function (data) {
+								dayData = data;
+								Swal.fire({
+									title: '儲存成功',
+									text: '',
+									icon: 'success'
+								});
+								deal.style.display = 'block';
+							})
+							.catch(function (error) {
+								console.log('Error fetching data:', error);
+							});
+					} else {
+						console.error('Request failed. Status: ' + response.status);
+					}
+				})
+				.catch(function (error) {
+					console.error('Error:', error);
+				});
+		});
+	</script>
+}

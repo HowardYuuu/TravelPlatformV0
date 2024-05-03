@@ -1,0 +1,612 @@
+﻿@section Styles {
+	<link href="~/allen/destionationdetail/vendors/bootstrap/bootstrap.min.css" rel="stylesheet" />
+	<link href="~/allen/destionationdetail/vendors/fontawesome/css/all.min.css" rel="stylesheet" />
+	<link href="~/allen/destionationdetail/vendors/linericon/style.css" rel="stylesheet" />
+	<link href="~/allen/destionationdetail/vendors/owl-carousel/owl.carousel.min.css" rel="stylesheet" />
+	<link href="~/allen/destionationdetail/css/style.css" rel="stylesheet" />
+}
+
+<body>
+	<!--================Single Product Area =================-->
+	<div class="product_image_area">
+		<div class="container" style="max-width: 80%;">
+			<div class="row s_product_inner">
+				<div class="col-lg-5" style="border-radius:20px;max-width: 20%;background-image: url('@Url.Content("~/allen/icons/tree.jpg")'); background-size: cover; background-position: center;">
+					<div class="s_product_text" style="margin:4%">
+						<div class="card_area d-flex align-items-center">
+							<h3>南投三日遊</h3>
+							@* <button style="background-color: none;border: 0; margin-bottom: 20px;">
+								<img src="~/allen/destionationdetail/img/icon/1709267094.ico" style="max-width: 100%;">
+							</button> *@
+						</div>
+						<h2>$900</h2>
+						<ul class="list">
+							<li><a href="#">#3日遊</a></li>
+							<li><a href="#">#主題樂園</a></li>
+							<li><a href="#">#南投縣</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-5 offset-lg-1" style="border-radius:20px;margin-left: 5%;max-width: 40%;background-image: url('@Url.Content("~/allen/icons/tree.jpg")'); background-size: cover; background-position: center;">
+					<div class="s_product_text" style="margin:4%">
+						<p>
+							九族文化村位於日月潭,是以台灣原住民文化為主題,所
+							打造的歡樂多元的主題樂園,園區內有原住民文化、歡樂世界、歐洲花園
+							和日月潭纜車等四大旅遊主題園區,每年二月櫻花盛開是台灣最大的賞櫻盛會。
+						</p>
+						<div style="display: flex; align-items: center; margin-top: 5%;">
+							<label for="qty" style="margin-right: 3%; max-width: 20%;margin-top:2%">購買數量:</label>
+
+							<button onclick="var result = document.getElementById('sst'); var sst = result.value; if (!isNaN(sst) && sst > 1) result.value--; return false;"
+									type="button"
+									style="margin-right: 3%; margin-top: 0; background-color: #E05000; border: 1px solid black; width: 5%;border-radius:25px;">
+								-
+							</button>
+							<input type="number" name="qty" id="sst" size="2" maxlength="12" value="1" title="Quantity:"
+								   class="form-control" style="margin-right: 3%; max-width: 20%; background-color: white;border:2px solid black" min="0" max="1000">
+							<button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+									type="button"
+									style="margin-right: 3%; margin-top: 0; background-color: #E05000; border: 1px solid black; width: 5%;border-radius:25px;">
+								+
+							</button>
+							<a class="button button--active" href="#" style="max-width: 60%;">立即購買</a>
+						</div>
+
+
+					</div>
+				</div>
+				<div class="col-lg-5 offset-lg-1" style="border-radius:20px;margin-left: 5%;max-width: 30%;margin-top: 0;background-image: url('@Url.Content("~/allen/icons/tree.jpg")'); background-size: cover; background-position: center;">
+					<div class="s_product_text" style="margin:4%">
+						<p>行程簡介</p>
+						<div class="owl-carousel owl-theme s_Product_carousel" style="margin-left: -5%;">
+							<div class="single-prd-item">
+								<div style="flex: 1; margin-right: 10px; margin-left:5%;">
+									<div>第1天</div>
+									<div style="display: flex; justify-content: space-between;">
+										<span>九族文化村</span>
+										<span>09:00</span>
+									</div>
+									<div style="display: flex; justify-content: space-between;">
+										<span>南投 Cona's 妮娜巧克力夢想城堡</span>
+										<span>14:00</span>
+									</div>
+									<div style="display: flex; justify-content: space-between;">
+										<span>飯店</span>
+										<span>18:00</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--================End Single Product Area =================-->
+	<!--================Product Description Area =================-->
+	<section class="product_description_area">
+		<div class="container">
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" id="home-tab" data-toggle="tab" href="#remind" role="tab"
+					   aria-controls="remind" aria-selected="true">行前提醒</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="Comment-tab" data-toggle="tab" href="#Comment" role="tab"
+					   aria-controls="Comment" aria-selected="false">評論</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="contact-tab" data-toggle="tab" href="#day1" role="tab"
+					   aria-controls="contact" aria-selected="false">第一天</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link " id="contact-tab" data-toggle="tab" href="#day2" role="tab"
+					   aria-controls="contact" aria-selected="false">第二天</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link " id="contact-tab" data-toggle="tab" href="#day3" role="tab"
+					   aria-controls="contact" aria-selected="false">第三天</a>
+				</li>
+			</ul>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show active" id="remind" role="tabpanel" aria-labelledby="remind-tab">
+					<table class="table">
+						<tbody>
+							<tr>
+								<td style="width: 30%;">
+									<h5>文件準備：</h5>
+								</td>
+								<td>
+									<ol>
+										<li>確保你的護照仍然有效，並且沒有過期。</li>
+										<li>如果需要，辦理相應的簽證或其他入境文件。</li>
+										<li>備份所有重要文件，如護照、機票、預訂確認等，並將其存放在安全的地方，例如雲端存儲或電子郵件中。</li>
+									</ol>
+
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h5>健康與安全：</h5>
+								</td>
+								<td>
+									<ol>
+										<li>確保你的旅遊保險是有效的，並且能夠涵蓋你計劃中的目的地和活動。</li>
+										<li>如果你有任何慢性疾病或需要特別的藥物，確保攜帶足夠的供應量，並且了解目的地的醫療服務和藥物供應情況。</li>
+										<li>查看目的地的安全情況，包括政治局勢、天氣狀況和犯罪率等。</li>
+									</ol>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h5>財務準備：</h5>
+								</td>
+								<td>
+									<ol>
+										<li>確保你的信用卡能在目的地使用，並且知道你可能會面臨的匯率和貨幣情況。</li>
+										<li>攜帶一些當地貨幣，以應付你抵達時的基本開支，例如交通、食宿和小買。</li>
+									</ol>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h5>行李準備：</h5>
+								</td>
+								<td>
+									<ol>
+										<li>根據你的目的地和計劃，合理選擇行李和裝備。確保你的行李符合航空公司的規定，並且能夠方便搬運。/li>
+										<li>確保你攜帶了必要的旅行用品，例如適合當地天氣的衣物、日常用品、旅行文件和個人護理用品等。</li>
+									</ol>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h5>通訊準備：</h5>
+								</td>
+								<td>
+									<ol>
+										<li>如果你計劃在目的地使用移動數據或通話服務，確保你的手機計劃能夠支持這些需求，或者考慮在抵達時購買當地的SIM卡或通訊服務。</li>
+										<li>確保你有家人或朋友的聯繫方式，並且能夠在需要時與他們保持聯繫。</li>
+									</ol>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h5>目的地研究：</h5>
+								</td>
+								<td>
+									<ol>
+										<li>事先研究目的地的文化、風俗和法律規定，以避免不必要的尷尬或麻煩。</li>
+										<li>查找有關當地的景點、餐廳、交通和活動的信息，並且制定一個大致的行程計劃，以充分利用你的旅行時間。</li>
+									</ol>
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="Comment" role="tabpanel" aria-labelledby="Comment-tab">
+					<div class="row" style="max-width: 100%;margin-right: 5%; margin-left:5%;margin-top: 5%;">
+						<div class="col-lg-6">
+							<div class="review_list">
+								<div class="review_item">
+									<div class="media">
+										<div class="d-flex">
+											<img src="~/allen/destionationdetail/img/product/review-1.png" alt="">
+										</div>
+										<div class="media-body">
+											<h4>Blake Ruiz</h4>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+										</div>
+									</div>
+									<p>
+										Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+										incididunt ut labore et
+										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+										laboris nisi ut aliquip ex ea
+										commodo
+									</p>
+								</div>
+								<div class="review_item">
+									<div class="media">
+										<div class="d-flex">
+											<img src="~/allen/destionationdetail/img/product/review-2.png" alt="">
+										</div>
+										<div class="media-body">
+											<h4>Blake Ruiz</h4>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+										</div>
+									</div>
+									<p>
+										Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+										incididunt ut labore et
+										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+										laboris nisi ut aliquip ex ea
+										commodo
+									</p>
+								</div>
+								<div class="review_item">
+									<div class="media">
+										<div class="d-flex">
+											<img src="~/allen/destionationdetail/img/product/review-3.png" alt="">
+										</div>
+										<div class="media-body">
+											<h4>Blake Ruiz</h4>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+											<i class="fa fa-star"></i>
+										</div>
+									</div>
+									<p>
+										Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+										incididunt ut labore et
+										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+										laboris nisi ut aliquip ex ea
+										commodo
+									</p>
+								</div>
+								<button type="submit" class="button button--active button-review">查看更多</button>
+							</div>
+						</div>
+
+						<div class="col-lg-6">
+							<div class="col-6"
+								 style="max-width: 100%; margin-bottom: 20%;margin-left: 0;padding-left: 0;">
+								<div class="box_total">
+									<h3>評價</h3>
+									<div class="review_box">
+										<ul class="list">
+											<span>4.0</span>
+											<li><a href="#"><i class="fa fa-star"></i></a></li>
+											<li><a href="#"><i class="fa fa-star"></i></a></li>
+											<li><a href="#"><i class="fa fa-star"></i></a></li>
+											<li><a href="#"><i class="fa fa-star"></i></a></li>
+											<li><a href="#"><i class="fa fa-star"></i></a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+							<div class="review_box">
+								<h4>新增評論</h4>
+
+
+								<form action="#/" class="form-contact form-review mt-3">
+									<div class="form-group">
+										<input class="form-control" name="name" type="text"
+											   placeholder="Enter your name" required>
+									</div>
+									<div class="form-group">
+										<input class="form-control" name="email" type="email"
+											   placeholder="Enter email address" required>
+									</div>
+									<div class="form-group">
+										<input class="form-control" name="subject" type="text"
+											   placeholder="Enter Subject">
+									</div>
+									<div class="form-group">
+										<textarea class="form-control different-control w-100" name="textarea"
+												  id="textarea" cols="30" rows="5" placeholder="Enter Message"></textarea>
+									</div>
+									<div class="form-group text-center text-md-right mt-3">
+										<button type="submit" class="button button--active button-review">送出</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade" id="day1" role="tabpanel" aria-labelledby="contact-tab">
+					<div class="product_image_area">
+						<div class="container" style="max-width: 80%;">
+							<div class="row s_product_inner">
+
+								<div class="col-lg-6">
+									<div class="owl-carousel owl-theme s_Product_carousel">
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村1.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村2.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村3.jpg" alt="">
+										</div>
+									</div>
+								</div>
+
+								<div class="col-lg-5 offset-lg-1" style="margin-left: 5%;">
+									<div class="s_product_text">
+										<h3>九族文化村</h3>
+										<ul class="list">
+											<li><a href="#">#南投縣魚池鄉金天巷45號</a></li>
+										</ul>
+										<p>九族文化村位於日月潭,是以台灣原住民文化為主題,所打造的歡樂多元的主題樂園,園區內有原住民文化、歡樂世界、歐洲花園和日月潭纜車等四大旅遊主題園區,每年二月櫻花盛開是台灣最大的賞櫻盛會。</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="product_image_area">
+						<div class="container" style="max-width: 80%;">
+							<div class="row s_product_inner">
+
+								<div class="col-lg-6">
+									<div class="owl-carousel owl-theme s_Product_carousel">
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村1.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村2.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村3.jpg" alt="">
+										</div>
+									</div>
+								</div>
+
+								<div class="col-lg-5 offset-lg-1" style="margin-left: 5%;">
+									<div class="s_product_text">
+										<h3>九族文化村</h3>
+										<ul class="list">
+											<li><a href="#">#南投縣魚池鄉金天巷45號</a></li>
+										</ul>
+										<p>九族文化村位於日月潭,是以台灣原住民文化為主題,所打造的歡樂多元的主題樂園,園區內有原住民文化、歡樂世界、歐洲花園和日月潭纜車等四大旅遊主題園區,每年二月櫻花盛開是台灣最大的賞櫻盛會。</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="product_image_area">
+						<div class="container" style="max-width: 80%;">
+							<div class="row s_product_inner">
+
+								<div class="col-lg-6">
+									<div class="owl-carousel owl-theme s_Product_carousel">
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村1.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村2.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村3.jpg" alt="">
+										</div>
+									</div>
+								</div>
+
+								<div class="col-lg-5 offset-lg-1" style="margin-left: 5%;">
+									<div class="s_product_text">
+										<h3>九族文化村</h3>
+										<ul class="list">
+											<li><a href="#">#南投縣魚池鄉金天巷45號</a></li>
+										</ul>
+										<p>九族文化村位於日月潭,是以台灣原住民文化為主題,所打造的歡樂多元的主題樂園,園區內有原住民文化、歡樂世界、歐洲花園和日月潭纜車等四大旅遊主題園區,每年二月櫻花盛開是台灣最大的賞櫻盛會。</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade" id="day2" role="tabpanel" aria-labelledby="contact-tab">
+					<div class="product_image_area">
+						<div class="container" style="max-width: 80%;">
+							<div class="row s_product_inner">
+
+								<div class="col-lg-6">
+									<div class="owl-carousel owl-theme s_Product_carousel">
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村1.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村2.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村3.jpg" alt="">
+										</div>
+									</div>
+								</div>
+
+								<div class="col-lg-5 offset-lg-1" style="margin-left: 5%;">
+									<div class="s_product_text">
+										<h3>九族文化村</h3>
+										<ul class="list">
+											<li><a href="#">#南投縣魚池鄉金天巷45號</a></li>
+										</ul>
+										<p>九族文化村位於日月潭,是以台灣原住民文化為主題,所打造的歡樂多元的主題樂園,園區內有原住民文化、歡樂世界、歐洲花園和日月潭纜車等四大旅遊主題園區,每年二月櫻花盛開是台灣最大的賞櫻盛會。</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="product_image_area">
+						<div class="container" style="max-width: 80%;">
+							<div class="row s_product_inner">
+
+								<div class="col-lg-6">
+									<div class="owl-carousel owl-theme s_Product_carousel">
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村1.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村2.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村3.jpg" alt="">
+										</div>
+									</div>
+								</div>
+
+								<div class="col-lg-5 offset-lg-1" style="margin-left: 5%;">
+									<div class="s_product_text">
+										<h3>九族文化村</h3>
+										<ul class="list">
+											<li><a href="#">#南投縣魚池鄉金天巷45號</a></li>
+										</ul>
+										<p>九族文化村位於日月潭,是以台灣原住民文化為主題,所打造的歡樂多元的主題樂園,園區內有原住民文化、歡樂世界、歐洲花園和日月潭纜車等四大旅遊主題園區,每年二月櫻花盛開是台灣最大的賞櫻盛會。</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="product_image_area">
+						<div class="container" style="max-width: 80%;">
+							<div class="row s_product_inner">
+
+								<div class="col-lg-6">
+									<div class="owl-carousel owl-theme s_Product_carousel">
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村1.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村2.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村3.jpg" alt="">
+										</div>
+									</div>
+								</div>
+
+								<div class="col-lg-5 offset-lg-1" style="margin-left: 5%;">
+									<div class="s_product_text">
+										<h3>九族文化村</h3>
+										<ul class="list">
+											<li><a href="#">#南投縣魚池鄉金天巷45號</a></li>
+										</ul>
+										<p>九族文化村位於日月潭,是以台灣原住民文化為主題,所打造的歡樂多元的主題樂園,園區內有原住民文化、歡樂世界、歐洲花園和日月潭纜車等四大旅遊主題園區,每年二月櫻花盛開是台灣最大的賞櫻盛會。</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade" id="day3" role="tabpanel" aria-labelledby="contact-tab">
+					<div class="product_image_area">
+						<div class="container" style="max-width: 80%;">
+							<div class="row s_product_inner">
+
+								<div class="col-lg-6">
+									<div class="owl-carousel owl-theme s_Product_carousel">
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村1.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村2.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村3.jpg" alt="">
+										</div>
+									</div>
+								</div>
+
+								<div class="col-lg-5 offset-lg-1" style="margin-left: 5%;">
+									<div class="s_product_text">
+										<h3>九族文化村</h3>
+										<ul class="list">
+											<li><a href="#">#南投縣魚池鄉金天巷45號</a></li>
+										</ul>
+										<p>九族文化村位於日月潭,是以台灣原住民文化為主題,所打造的歡樂多元的主題樂園,園區內有原住民文化、歡樂世界、歐洲花園和日月潭纜車等四大旅遊主題園區,每年二月櫻花盛開是台灣最大的賞櫻盛會。</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="product_image_area">
+						<div class="container" style="max-width: 80%;">
+							<div class="row s_product_inner">
+
+								<div class="col-lg-6">
+									<div class="owl-carousel owl-theme s_Product_carousel">
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村1.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村2.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村3.jpg" alt="">
+										</div>
+									</div>
+								</div>
+
+								<div class="col-lg-5 offset-lg-1" style="margin-left: 5%;">
+									<div class="s_product_text">
+										<h3>九族文化村</h3>
+										<ul class="list">
+											<li><a href="#">#南投縣魚池鄉金天巷45號</a></li>
+										</ul>
+										<p>九族文化村位於日月潭,是以台灣原住民文化為主題,所打造的歡樂多元的主題樂園,園區內有原住民文化、歡樂世界、歐洲花園和日月潭纜車等四大旅遊主題園區,每年二月櫻花盛開是台灣最大的賞櫻盛會。</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="product_image_area">
+						<div class="container" style="max-width: 80%;">
+							<div class="row s_product_inner">
+
+								<div class="col-lg-6">
+									<div class="owl-carousel owl-theme s_Product_carousel">
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村1.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村2.jpg" alt="">
+										</div>
+										<div class="single-prd-item" style="margin-left: 1%;">
+											<img class="img-fluid" src="~/allen/destionationdetail/img/category/九族文化村3.jpg" alt="">
+										</div>
+									</div>
+								</div>
+
+								<div class="col-lg-5 offset-lg-1" style="margin-left: 5%;">
+									<div class="s_product_text">
+										<h3>九族文化村</h3>
+										<ul class="list">
+											<li><a href="#">#南投縣魚池鄉金天巷45號</a></li>
+										</ul>
+										<p>九族文化村位於日月潭,是以台灣原住民文化為主題,所打造的歡樂多元的主題樂園,園區內有原住民文化、歡樂世界、歐洲花園和日月潭纜車等四大旅遊主題園區,每年二月櫻花盛開是台灣最大的賞櫻盛會。</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+
+@section Scripts {
+
+
+
+
+
+
+	<script src="~/allen/destionationdetail/vendors/jquery/jquery-3.2.1.min.js"></script>
+	<script src="~/allen/destionationdetail/vendors/bootstrap/bootstrap.bundle.min.js"></script>
+	<script src="~/allen/destionationdetail/vendors/skrollr.min.js"></script>
+	<script src="~/allen/destionationdetail/vendors/owl-carousel/owl.carousel.min.js"></script>
+	<script src="~/allen/destionationdetail/vendors/nice-select/jquery.nice-select.min.js"></script>
+	<script src="~/allen/destionationdetail/js/main.js"></script>
+}

@@ -1,0 +1,356 @@
+﻿@model IEnumerable<prjTravelPlatformV3.Models.VDcusCouponView>
+
+@{
+    ViewData["Title"] = "優惠管理";
+}
+
+@section Styles {
+    <link href="~/lib/datatables/css/jquery.datatables.css" rel="stylesheet" />
+    <style>
+        thead {
+            background-color: lightslategrey;
+            color: black;
+        }
+    </style>
+}
+<h3>優惠卷管理</h3>
+
+<button id="t1" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#couponPartial" onclick="getEditPartial(0)" style="font-size:1.2rem"><i class="fa-solid fa-circle-plus" style="font-size:1.2rem"></i> 新增</button>
+<button id="checkCoupon" type="button" class="btn btn-info" style="font-size:1.2rem"><i class="fa-solid fa-circle-check" style="font-size:1.2rem"></i> 檢查優惠卷狀態</button>
+@* <button id="t1" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#adPartial" onclick="getEditPartial(0)"><i class="fa-solid fa-circle-plus" style="font-size:0.8rem"></i> 廣告管理</button> *@
+<table class="table" id="tbCoupon">
+    <thead>
+        <tr>
+            <th style="display: none">id</th>
+            @* <th>優惠卷編號</th> *@
+            <th>折扣碼</th>
+            <th>名稱</th>
+            @* <th>使用金額</th> *@
+            <th>折扣值</th>
+            <th>啟用日期</th>
+            <th>截止日期</th>
+            <th>商品類型</th>
+            <th>使用規則</th>
+			@* <th>備註</th> *@
+			<th>啟用狀態</th>
+            <th style="width:50px">功能</th>
+        </tr>
+    </thead>
+</table>
+
+<!--Modal-->
+<div class="modal fade" id="couponPartial" tabindex=" -1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="edit-modal">
+                @*引入partial*@
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="//cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+        let couponCode;
+        let autoGenerateCheckbox;
+
+        const editModal = document.getElementById("edit-modal");
+        const createModal = document.getElementById("create-modal");
+
+        const btnSave = document.getElementById("btnSave");
+
+
+        const loadCouponData = () => {
+            $("#tbCoupon").dataTable({
+                autoWidth: false,
+                ajax: {
+                    type: 'GET',
+                    url: "/api/Discounts/GetData",
+                    dataSrc: function (json) { return json; }
+                },
+                columns: [
+                    { "data": "fCouponId", "visible": false },
+                    { "data": "fCouponCode" },
+                    { "data": "fCouponName" },
+                    // { "data": "fAmount" },
+                    { "data": "fDiscount" },
+                    { "data": "fStartDate" },
+                    { "data": "fEndDate" },
+                    { "data": "fProductType" },
+                    { "data": "fRule" },
+                    // { "data": "備註" },
+                    { "data": "fEnable" },
+                    {
+                        data: null,
+                        title: "功能",
+                        render: function (data, type, row) {
+                            return `<button id="t1" type = "button" class="btn btn-primary btn-sm me-1" data-bs-toggle="modal" data-bs-target="#couponPartial" onclick="getEditPartial(${row.fCouponId})"><i class="fa-solid fa-pen-to-square" style="font-size:0.8rem"></i> 編輯</button> ` +
+                                '<button type="button" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash" style="font-size:0.8rem"></i> 刪除</button>'
+                        }
+                    },
+                ],
+                fixedHeader: { header: true },
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json'
+                },
+
+
+            })
+        }
+
+
+        // 取得partial view，新增跟編輯都呼叫這個function，新增id參數帶0，編輯是選到的那列資料的id
+        const getEditPartial = async (id) => {
+            const response = await fetch(`@Url.Content("~/Employee/DCoupon/GetPartial")?id=${id}`);
+            const data = await response.text();
+            editModal.innerHTML = data;
+
+            $("#demo1").click(function () {
+                // 將 demo 元素的內容放入輸入框中
+                $("#inputName").val("結訓超級大優惠");
+                $("#inputDiscount").val("999");
+                $("#inputStartDate").val("2024-03-29");
+                $("#inputEndDate").val("2024-04-01");
+               
+            });
+         // 重新绑定 checkbox 变更事件
+                bindCheckboxChangeEvent();
+            // 重新绑定 select 变更事件
+            bindSelectChangeEvent();
+            // 绑定保存按钮点击事件
+            document.getElementById("btnSave").addEventListener("click", function () {
+                console.log("儲存按鈕被點擊了！");
+                var couponCode = document.getElementById("couponCode");
+                var couponName = document.getElementById("inputName");
+                var couponAmount = document.getElementById("inputAmount");
+                var couponDiscount = document.getElementById("inputDiscount");
+                // var couponProductType = document.getElementById("inputProductType");
+                // var couponRule = document.getElementById("inputRule");
+                // var couponEnable = document.getElementById("inputEnable");
+                var couponStartDate = document.getElementById("inputStartDate");
+                var couponEndDate = document.getElementById("inputEndDate");
+                var checklist = document.getElementById("checklist");
+
+                
+
+            
+                // couponStartDate.value = document.getElementById("StartDate").value;
+                // couponEndDate.value = document.getElementById("EndDate").value;
+
+                // 进行表单验证
+                if (!couponCode.value ||
+                    !couponName.value ||
+                    !couponAmount.value ||
+                    !couponDiscount.value ||
+                    !couponProductType.value ||
+                    !couponRule.value ||
+                    !couponEnable.value ||
+                    !couponStartDate.value ||
+                    !couponEndDate.value) {
+                    // 如果验证未通过，阻止表单提交
+                    checklist.style.display = "block";
+                    // $("#btnSave").prop("disabled", true);
+                    return;
+                }
+                
+                // $("#btnSave").prop("disabled", false);
+                // 进行其他保存操作
+                // TODO: 根据需要执行保存操作
+
+            });
+        };
+
+        // 监听 checkbox 的变更事件
+        function bindCheckboxChangeEvent() {
+            document.getElementById("autoGenerateCheckbox").addEventListener("change", function () {
+                var checkbox = this;
+                var couponCodeInput = document.getElementById("couponCode");
+                if (checkbox.checked) {
+                    // 生成十码折扣码
+                    var discountCode = generateDiscountCode(10);
+                    // 将折扣码填充到 input 元素中
+                    couponCodeInput.value = discountCode;
+                } else {
+                    // 清空 input 元素
+                    couponCodeInput.value = '';
+                }
+            });
+        }
+
+        // 监听 select 的变更事件
+        function bindSelectChangeEvent() {
+            var select1 = document.getElementById("selProductType");
+            var select2 = document.getElementById("selRule");
+            var choice1 = document.getElementById("selEnable");
+            var couponProductType = document.getElementById("inputProductType");
+            var couponRule = document.getElementById("inputRule");
+            var couponEnable = document.getElementById("inputEnable");
+
+            select1.addEventListener("change", function () {
+                // 将选择框的值赋给输入框
+                couponProductType.value = this.value;
+               
+            });
+            select2.addEventListener("change", function () {
+                // 将选择框的值赋给输入框
+                // 获取其他相关值的逻辑也可以在这里处理
+                couponRule.value = this.value;
+               
+            });
+            // 遍历每个单选框元素
+            radioButtons.forEach(function (radioButton) {
+                // 监听单选框的点击事件
+                radioButton.addEventListener('click', function () {
+                    // 将选中的单选框的值设置为隐藏输入字段的值
+                    couponEnable.value = this.value;
+                });
+            });
+            choice1.addEventListener("change", function () {
+                couponEnable.value = this.value;
+            });
+        };
+
+        // 生成指定长度的折扣码
+        function generateDiscountCode(length) {
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            var discountCode = '';
+            for (var i = 0; i < length; i++) {
+                discountCode += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return discountCode;
+        }
+
+
+
+        //排程
+        $(document).ready(function () {
+            $("#checkCoupon").click(function () {
+                // 第一個請求 - SendBirthday
+                var request1 = $.ajax({
+                    type: "GET",
+                    url: "/api/CheckCoupon/SendBirthdayCoupon"
+                });
+
+                // 第二個請求 - UpdateStatus
+                var request2 = request1.then(function () {
+                    return $.ajax({
+                        type: "GET",
+                        url: "/api/CheckCoupon/UpdateCouponStatus"
+                    });
+                });
+
+                // 依次處理兩個請求
+                $.when(request1, request2).done(function (response1, response2) {
+                    console.log(response1);
+                    console.log(response2);
+                    // 提取文本消息
+                    var response1Text = response1[0];
+                    var response2Text = response2[0];
+                    $('#tbCoupon').DataTable().ajax.reload();
+                    // 顯示兩個SweetAlert
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: response1Text,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    }).then(function () {
+                       
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response2Text,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+                }).fail(function (xhr, textStatus, errorThrown) {
+                    // 顯示錯誤SweetAlert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: '伺服器目前異常，更新優惠卷狀態失敗，請稍後再試！',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                });
+            });
+        });
+        // 根據傳入的action name呼叫對應的api
+                const sendFetchRequest = async (actionName) => {
+                    //抓取目前的form id
+                    const formId = document.querySelector("form").getAttribute('id');
+                    //目前的form id的DOM元素
+                    const formIdDOM = document.getElementById(`${formId}`)
+                    //新增form data物件
+                    const formData = new FormData(formIdDOM);
+                    //取得防偽標籤
+                    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                    try {
+                        const res = await fetch(`@Url.Content("~/api/Discounts/")` + actionName, {
+                            headers: {
+                                'RequestVerificationToken': token
+                            },
+                            body: formData,
+                            method: 'POST'
+                        });
+                        if (!res.ok) {
+                            throw new Error(`${res.status}`)
+                        }
+                        const data = await res.json();
+
+                        if (data.success) {
+                            console.log(data);
+                            //關閉modal
+                            var myModal = bootstrap.Modal.getInstance(couponPartial);
+                            myModal.hide();
+                            //顯示訊息
+                            Swal.fire({
+                                title: "Success",
+                                text: data.message,
+                                icon: "success"
+                            });
+                            //刷新datatable
+                            $('#tbCoupon').DataTable().ajax.reload();
+                        } else {
+                            //依自己的form增加需要驗證的欄位(驗證規則在partial view中)
+                            const errorCouponCode = document.querySelector(`[data-valmsg-for="CouponCode"]`);
+                            const errorDiscount = document.querySelector(`[data-valmsg-for="Discount"]`);
+                            const errorProductType = document.querySelector(`[data-valmsg-for="ProductType"]`);
+                            if (errorCouponCode) {
+                                errorCouponCode.textContent = data.errors.CouponCode[0];
+                            }
+                            if (errorDiscount) {
+                                errorDiscount.textContent = data.errors.Discount[0];
+                            }
+                            if (errorProductType) {
+                                errorProductType.textContent = data.errors.ProductType[0];
+                            }
+                        }
+                    } catch (error) {
+                        Swal.fire({
+                            title: "error",
+                            text: error.message,
+                            icon: "error"
+                        });
+                    }
+
+
+                }
+
+        $(document).ready(() => {
+            loadCouponData();
+        })
+
+    </script>
+ }
+

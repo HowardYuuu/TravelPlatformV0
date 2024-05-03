@@ -1,0 +1,867 @@
+﻿@using System.Security.Claims
+
+@section Styles {
+
+}
+
+<div class="masthead__bg" style="position: relative">
+    <img src="~/img/frontstage/shutterstock_1877056579.jpg" style="filter: brightness(55%); width: 100%; height:160px; object-fit: cover;" />
+    <div class="text-center" style="position: absolute; top:60%; left:50%; transform:translate(-50%, -50%);">
+        <h1 class="text-30 fw-600 text-white">簽證列表</h1>
+    </div>
+    <div style="position: absolute; top:60%; left:70%;">
+        <a class="button px-24 fw-400 text-20 border-white -outline-white h-40 text-white ml-20 mr-20 rounded-100" asp-area="Customer" asp-controller="Visa" asp-action="Index">
+            簽證索引 <div class="icon-arrow-top-right ml-15"></div>
+        </a>
+    </div>
+    <div style="position: absolute; top:60%; left:20%;">
+        <a class="button px-24 fw-400 text-20 border-white -outline-white h-40 text-white ml-20 mr-20 rounded-100" asp-area="Customer" asp-controller="Visa" asp-action="Map">
+            簽證地圖 <div class="icon-arrow-top-right ml-15"></div>
+        </a>
+    </div>
+</div>
+
+
+@* searchbar *@
+<section class="pt-40 pb-40 bg-light-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+
+
+                <div class="mainSearch -col-3-big bg-white px-10 py-10 lg:px-20 lg:pt-5 lg:pb-20 rounded-100">
+                    <div class="button-grid items-center" style="grid-template-columns: 1fr 1fr 1.2fr auto;">
+
+
+
+                        <div class="searchMenu-loc px-30 lg:py-20 lg:px-0 js-form-dd js-liverSearch">
+                            <div data-x-dd-click="searchMenu-loc">
+                                <h4 class="text-15 fw-500 ls-2 lh-16" style="font-weight: bold;">洲別</h4>
+                                <div class="text-15 text-light-1 ls-2 lh-16">
+                                    <input autocomplete="off" type="text" placeholder="請選擇" class="js-search js-dd-focus" readonly />
+                                </div>
+                            </div>
+                            <div class="searchMenu-loc__field shadow-2 js-popup-window" data-x-dd="searchMenu-loc" data-x-dd-toggle="-is-active">
+
+                                @* dropdownlist *@
+                                <div class="bg-white px-0 py-0 sm:px-0 sm:py-15 rounded-4">
+                                    <div class="y-gap-5 js-results">
+
+
+                                        <div>
+                                            <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option" onclick="regionChange(this);">
+                                                <div class="d-flex">
+                                                    <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                    <div class="ml-10">
+                                                        <div class="text-15 lh-12 fw-500 js-search-option-target" style="font-weight: bold;">亞洲</div>
+                                                        <div class="text-14 lh-12 text-light-1 mt-5">台灣、日本、中國..</div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        <div>
+                                            <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option" onclick="regionChange(this);">
+                                                <div class="d-flex">
+                                                    <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                    <div class="ml-10">
+                                                        <div class="text-15 lh-12 fw-500 js-search-option-target" style="font-weight: bold;">北美洲</div>
+                                                        <div class="text-14 lh-12 text-light-1 mt-5">美國、加拿大..</div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        <div>
+                                            <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option" onclick="regionChange(this);">
+                                                <div class="d-flex">
+                                                    <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                    <div class="ml-10">
+                                                        <div class="text-15 lh-12 fw-500 js-search-option-target" style="font-weight: bold;">中南美洲</div>
+                                                        <div class="text-14 lh-12 text-light-1 mt-5">巴西、阿根廷、智利..</div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        <div>
+                                            <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option" onclick="regionChange(this);">
+                                                <div class="d-flex">
+                                                    <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                    <div class="ml-10">
+                                                        <div class="text-15 lh-12 fw-500 js-search-option-target" style="font-weight: bold;">歐洲</div>
+                                                        <div class="text-14 lh-12 text-light-1 mt-5">荷蘭、奧地利..</div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        <div>
+                                            <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option" onclick="regionChange(this);">
+                                                <div class="d-flex">
+                                                    <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                    <div class="ml-10">
+                                                        <div class="text-15 lh-12 fw-500 js-search-option-target" style="font-weight: bold;">非洲</div>
+                                                        <div class="text-14 lh-12 text-light-1 mt-5">埃及、奈及利亞..</div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        <div>
+                                            <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option" onclick="regionChange(this);">
+                                                <div class="d-flex">
+                                                    <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                    <div class="ml-10">
+                                                        <div class="text-15 lh-12 fw-500 js-search-option-target" style="font-weight: bold;">大洋洲</div>
+                                                        <div class="text-14 lh-12 text-light-1 mt-5">澳洲、紐西蘭..</div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="searchMenu-loc px-30 lg:py-20 lg:px-0 js-form-dd js-liverSearch">
+                            <div data-x-dd-click="searchMenu-loc">
+                                <h4 class="text-15 fw-500 ls-2 lh-16" style="font-weight: bold;">國家</h4>
+                                <div class="text-15 text-light-1 ls-2 lh-16">
+                                    <input autocomplete="off" type="search" placeholder="請選擇" class="js-search js-dd-focus" readonly id="countryInput" />
+                                </div>
+                            </div>
+                            <div class="searchMenu-loc__field shadow-2 js-popup-window" data-x-dd="searchMenu-loc" data-x-dd-toggle="-is-active" id="countryWindow">
+
+                                <div class="bg-white px-0 py-0 sm:px-0 sm:py-15 rounded-4">
+                                    <div class="y-gap-5 js-results" id="countryList">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="px-30 lg:py-20 lg:px-0 ">
+                            <div>
+                                <h4 class="text-15 fw-500 ls-2 lh-16" style="font-weight: bold;">關鍵字</h4>
+
+                                <div class="text-15 text-light-1 ls-2 lh-16">
+                                    <input autocomplete="off" type="text" placeholder="請輸入關鍵字" id="keywordText" class="js-search js-dd-focus" />
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="button-item">
+                            <button class="mainSearch__submit button -dark-1 h-60 px-35 col-12 rounded-100 bg-blue-1 text-white" onclick="SearchbarFilter();">
+                                <i class="icon-search text-20 mr-10"></i>
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="layout-pb-md bg-light-2">
+    <div class="container">
+        <div class="row y-gap-30">
+
+
+
+            <div class="row y-gap-10 justify-between items-center" style="padding-left:27%;">
+
+                @* 查詢結果 *@
+                <div class="col-auto" id="searchResult"></div>
+
+                <div class="col-auto">
+                    <button class="button -blue-1 h-40 px-30 rounded-100 bg-blue-1-05 text-15 text-blue-1" onclick="Sort();">
+                        <i class="icon-up-down text-14 mr-10"></i>
+                        價格排序
+                    </button>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="col-xl-3 col-lg-4">
+                <aside class="sidebar py-20 px-20 rounded-4 bg-white">
+                    <h3 class="mb-5">進階篩選</h3>
+                    <div class="row y-gap-40 px-10">
+
+
+
+                        <div id="ProcessingDays" style="padding-bottom:0px;"></div>
+
+                        <div id="ValidityPeriod" style="padding-bottom:0px;"></div>
+
+                        <div id="LengthOfStay" style="padding-bottom:0px;"></div>
+
+                        <div id="EntityOrElectronic"></div>
+
+
+
+
+
+                        
+                        
+
+                    </div>
+                </aside>
+            </div>
+
+            <div class="col-xl-9 col-lg-8">
+
+                
+
+                @* 簽證card *@
+                <div id="productCards"></div>
+
+
+
+
+                <a asp-area="Customer" asp-controller="Visa" asp-action="ProductSelect" id="OrderLink" style="display:none;"></a>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts
+{
+    <script>
+        //從local Storage撈出querystring
+        var storedCountry = localStorage.getItem('country');
+        var storedKeyword = localStorage.getItem('keyword');
+        var QueryString = '';
+        if (storedKeyword) {
+            var parsedKeyword = JSON.parse(storedKeyword);
+            QueryString = parsedKeyword.key;
+        } else if (storedCountry) {
+            var parsedCountry = JSON.parse(storedCountry);
+            QueryString = parsedCountry.key;
+        }
+
+        var Products = [];
+        var FProducts = [];
+
+        function filterByCountry(country) {
+            const FilteredP = Products.filter(p => {
+                return p.國家 === country;
+            })
+
+            //更新全域filter國家後的資料
+            FProducts = [];
+            for (var p of FilteredP) {
+                FProducts.push(p);
+            }
+
+            loadSearchResult(FilteredP, country);
+
+            loadProductCards(FilteredP);
+
+            loadCheckbox(FilteredP);
+            
+        }
+
+
+        function filterByKeyword(keyword) {
+            const FilteredP = Products.filter(p => {
+                return p.商品名稱.includes(keyword);
+            })
+            console.log(FilteredP)
+            //更新全域filter國家後的資料
+            FProducts = [];
+            for (var p of FilteredP) {
+                FProducts.push(p);
+            }
+
+            loadSearchResult(FilteredP, keyword);
+
+            loadProductCards(FilteredP);
+
+            loadCheckbox(FilteredP);
+        }
+
+
+        function SearchbarFilter() {
+            const keywordText = document.getElementById('keywordText').value;
+            const countryInput = document.getElementById('countryInput').value;
+
+            if (keywordText) {
+                // 將要存儲到本地存儲的資料
+                var dataToSave = { key: keywordText };
+
+                // 將資料轉換為 JSON 字符串並存儲到本地存儲中
+                localStorage.setItem('keyword', JSON.stringify(dataToSave));
+
+                filterByKeyword(keywordText);
+            }
+            else if (countryInput) {
+                // 清空localStorage
+                localStorage.clear();
+
+                // 將要存儲到本地存儲的資料
+                var dataToSave = { key: countryInput };
+
+                // 將資料轉換為 JSON 字符串並存儲到本地存儲中
+                localStorage.setItem('country', JSON.stringify(dataToSave));
+
+                filterByCountry(countryInput);
+            }
+        }
+
+
+
+        function filterByCheckbox() {
+            //遍歷checkbox所有toggle
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+            // 初始化一个空的筛选条件数组
+            let filterConditions1 = [];
+            let filterConditions2 = [];
+            let filterConditions3 = [];
+            let filterConditions4 = [];
+
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    console.log(`${checkbox.name}: ${checkbox.value}`);
+
+                    // 构建筛选条件
+                    let condition1;
+                    let condition2;
+                    let condition3;
+                    let condition4;
+                    if (!isNaN(checkbox.value)) {
+                        condition1 = p => p[checkbox.name] === Number(checkbox.value);
+                    } else if (checkbox.value === 'true') {
+                        condition2 = p => p[checkbox.name] === true;
+                    } else if (checkbox.value === 'false') {
+                        condition2 = p => p[checkbox.name] === false;
+                    }
+                    else if (checkbox.name === '可留天數') {
+                        condition3 = p => p[checkbox.name] === checkbox.value;
+                    }
+                    else if (checkbox.name === '效期') {
+                        condition4 = p => p[checkbox.name] === checkbox.value;
+                    }
+
+                    // 将筛选条件添加到数组中
+                    if (condition1) filterConditions1.push(condition1);
+                    if (condition2) filterConditions2.push(condition2);
+                    if (condition3) filterConditions3.push(condition3);
+                    if (condition4) filterConditions4.push(condition4);
+                }
+            });
+
+            if (filterConditions1.length !== 0 || filterConditions2.length !== 0 || filterConditions3.length !== 0 || filterConditions4.length !== 0) {
+                // 应用“或”逻辑进行筛选
+                let FilterdP1;
+                if (filterConditions1.length !== 0) {
+                    FilterdP1 = FProducts.filter(p => filterConditions1.some(condition => condition(p)));
+                } else { FilterdP1 = FProducts; }
+
+                let FilterdP2;
+                if (filterConditions2.length !== 0) {
+                    FilterdP2 = FProducts.filter(p => filterConditions2.some(condition => condition(p)));
+                } else { FilterdP2 = FProducts; }
+
+                let FilterdP3;
+                if (filterConditions3.length !== 0) {
+                    FilterdP3 = FProducts.filter(p => filterConditions3.some(condition => condition(p)));
+                } else { FilterdP3 = FProducts; }
+
+                let FilterdP4;
+                if (filterConditions4.length !== 0) {
+                    FilterdP4 = FProducts.filter(p => filterConditions4.some(condition => condition(p)));
+                } else { FilterdP4 = FProducts; }
+
+                const FilterdP = FilterdP1.filter(value =>
+                    FilterdP2.includes(value) &&
+                    FilterdP3.includes(value) &&
+                    FilterdP4.includes(value)
+                );
+
+                loadSearchResult(FilterdP, QueryString);
+
+                loadProductCards(FilterdP);
+            } else {
+                loadSearchResult(FProducts, QueryString);
+
+                loadProductCards(FProducts);
+            }
+
+
+            
+        }
+
+
+
+        function loadSearchResult(products, keyword) {
+            const searchResult = document.getElementById('searchResult');
+            searchResult.innerHTML = `<div class="text-18 d-flex align-items-center"><h2>${keyword}&nbsp;</h2>查詢結果：${products.length}筆(金額單位：新台幣含稅)</div>`;
+        }
+
+        function loadProductCards(x) {
+            const productCards = document.getElementById('productCards');
+            let CardsHtml = ``;
+            for (var p of x) {
+                CardsHtml += `<div class="js-accordion">
+                                    <div class="accordion__item py-30 px-30 bg-white rounded-4 base-tr mb-30" data-x="flight-item-1" data-x-toggle="shadow-2">
+                                        <div class="row y-gap-30 justify-between">
+                                            <div class="row">
+                                                <div class="y-gap-10 col-md-9">
+                                                    <div class="col-sm-auto">
+
+                                                        <div class="d-flex align-items-center">
+
+                                                            <div class="shadow-2 rounded-full">
+                                                                <img class="size-40" src="/VCountry/${p.國家}.png" alt="image" style="border-radius: 100%;">
+                                                            </div>
+                                                            
+                                                            <div class="row x-gap-20 items-end">
+                                                                <div class="col-auto">
+                                                                <div class="lh-15 ml-10" style="font-weight:bold;">${p.商品名稱}</div>
+                                                            </div>
+                                                                    
+                                                            <div class="col-md-auto d-flex align-items-center">
+                                                                <div class="row x-gap-10 y-gap-10 ml-20">
+
+                                                                    ${p.實體or電子簽 === true ?
+                                                                    `
+                                                                    <div class="col-auto">
+                                                                        <div class="border-light rounded-100 py-5 px-20 text-14 lh-14 bg-blue-1-05">實體簽證</div>
+                                                                    </div>
+                                                                    ` 
+                                                                    :
+                                                                    `
+                                                                    <div class="col-auto">
+                                                                        <div class="border-light rounded-100 py-5 px-20 text-14 lh-14 bg-blue-1-05">電子簽證</div>
+                                                                    </div>
+                                                                    `
+                                                                    }
+                                                                    <div class="col-auto">
+                                                                        <div class="border-light rounded-100 py-5 px-20 text-14 lh-14 bg-blue-1-05">${p.效期}效期</div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col text-center mt-3">
+                                                    <div class="flightLine">
+                                                        <div></div>
+                                                        <div></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row y-gap-10 items-center pt-20">
+                                                    <div class="col">
+                                                        <div class="row x-gap-20 items-end">
+                                                            <div class="col-auto">
+                                                                <div class="lh-15 fw-500">機關辦理天數:</div>
+                                                                <div class="lh-15 fw-500 mt-1">可停留天數:</div>
+                                                            </div>
+
+                                                            <div class="col-auto">
+                                                                <div class="lh-15 fw-500 d-flex align-items-center">
+                                                                    ${p.辦理耗時天數}個工作天<span style="color: red;">(代辦約再加4個工作天且不含假日)</span>
+                                                                    <div class="tooltip -right h-20 ml-10 bg-white rounded-8 d-flex justify-start">
+                                                                        <div class="tooltip__content" style="width:220px;">處理天數僅代表機關/單位處理時間，不包含送件與收件時間。</div>
+                                                                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="lh-15 fw-500 mt-1">${p.可留天數}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="d-flex justify-end items-center h-full border-left-light h-full md:d-none pl-50">
+                                                    
+
+                                                    <div>
+                                                        <div class="text-right md:text-left mb-10">
+                                                            <div class="text-18 lh-16 fw-500 mr-15">$${p.價格.toLocaleString()}</div>
+                                                                    
+                                                        </div>
+                                                        
+                                                        <div class="accordion__button">
+                                                            <button class="button -dark-1 px-30 h-50 bg-blue-1 text-white" data-x-click="flight-item-1" id="${p.商品編號}" onclick="Order(this.id);">
+                                                                訂購
+                                                            </button>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+            }
+            productCards.innerHTML = CardsHtml;
+        }
+
+        function loadCheckbox(products) {
+            const ProcessingDaysElement = document.getElementById('ProcessingDays');
+            const ValidityPeriodElement = document.getElementById('ValidityPeriod');
+            const LengthOfStayElement = document.getElementById('LengthOfStay');
+            const EntityOrElectronicElement = document.getElementById('EntityOrElectronic');
+
+
+            //辦理耗時天數的set
+            var ProcessingDays = new Set();
+
+            products.forEach(item => {
+                ProcessingDays.add(item["辦理耗時天數"]);
+            });
+
+            //將Set轉換為陣列
+            var ProcessingDaysArray = Array.from(ProcessingDays);
+
+            //進行排序
+            ProcessingDaysArray.sort((a, b) => {
+                // 比較數字部分，根據大小返回相應的比較結果
+                return a - b;
+            });
+            console.log(ProcessingDaysArray);
+            
+
+
+            //效期的set
+            var ValidityPeriod = new Set();
+
+            products.forEach(item => {
+                ValidityPeriod.add(item["效期"]);
+            });
+
+            //將Set轉換為陣列
+            var ValidityPeriodArray = Array.from(ValidityPeriod);
+
+            //進行排序
+            // 检查数组中是否有无数字的字符串
+            const VhasNonNumericStrings = ValidityPeriodArray.some(item => isNaN(parseInt(item.match(/\d+/))));
+
+            // 如果数组中存在无数字的字符串，则不进行排序
+            if (!VhasNonNumericStrings) {
+                // 进行排序
+                ValidityPeriodArray.sort((a, b) => {
+                    // 提取字串中的數字部分（使用正則表達式）
+                    var numA = parseInt(a.match(/\d+/)[0]);
+                    var numB = parseInt(b.match(/\d+/)[0]);
+
+                    // 比較數字部分，根據大小返回相應的比較結果
+                    return numA - numB;
+                });
+            }
+            console.log(ValidityPeriodArray);
+
+
+
+            //可留天數的set
+            var LengthOfStay = new Set();
+
+            products.forEach(item => {
+                LengthOfStay.add(item["可留天數"]);
+            });
+
+            //將Set轉換為陣列
+            var LengthOfStayArray = Array.from(LengthOfStay);
+
+            //進行排序
+            // 检查数组中是否有无数字的字符串
+            const LhasNonNumericStrings = LengthOfStayArray.some(item => isNaN(parseInt(item.match(/\d+/))));
+
+            // 如果数组中存在无数字的字符串，则不进行排序
+            if (!LhasNonNumericStrings) {
+                // 进行排序
+                LengthOfStayArray.sort((a, b) => {
+                    // 提取字串中的數字部分（使用正則表達式）
+                    var numA = parseInt(a.match(/\d+/)[0]);
+                    var numB = parseInt(b.match(/\d+/)[0]);
+
+                    // 比較數字部分，根據大小返回相應的比較結果
+                    return numA - numB;
+                });
+            }
+
+            console.log(LengthOfStayArray);
+
+
+
+            //實體簽or電子簽的set
+            var EntityOrElectronic = new Set();
+            products.forEach(item => {
+                EntityOrElectronic.add(item["實體or電子簽"]);
+            });
+            //將Set轉換為陣列
+            var EntityOrElectronicArray = Array.from(EntityOrElectronic);
+            console.log(EntityOrElectronicArray);
+
+
+
+            //印出辦理耗時天數checkbox
+            if (ProcessingDaysArray.length >= 2) {
+                let ProcessingDaysHtml = `<div class="sidebar__item -no-border">
+                                                <h5 class="text-18 fw-500 mb-10"style="font-weight: bold;">機關辦理天數</h5>
+                                                <div class="sidebar-checkbox">`;
+                for (var p of ProcessingDaysArray) {
+                    ProcessingDaysHtml += `<div class="row y-gap-10 items-center justify-between">
+                                                <div class="col-auto">
+
+                                                    <div class="d-flex items-center">
+                                                        <div class="form-checkbox ">
+                                                            <input type="checkbox" name="辦理耗時天數" value="${p}" onchange="filterByCheckbox();">
+                                                            <div class="form-checkbox__mark">
+                                                                <div class="form-checkbox__icon icon-check"></div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="text-15 ml-10">${p}天</div>
+
+                                                    </div>
+                                                </div>
+                                            </div>`;
+                }
+                ProcessingDaysHtml += `</div></div>`;
+                ProcessingDaysElement.innerHTML = ProcessingDaysHtml;
+            }
+            else {
+                ProcessingDaysElement.innerHTML = ``;
+            }
+
+            //印出效期checkbox
+            if (ValidityPeriodArray.length >= 2) {
+                let ValidityPeriodHtml = `<div class="sidebar__item">
+                                                <h5 class="text-18 fw-500 mb-10 mt-10" style="font-weight: bold;">簽證效期</h5>
+                                                <div class="sidebar-checkbox">`;
+                for (var v of ValidityPeriodArray) {
+                    ValidityPeriodHtml += `<div class="row y-gap-10 items-center justify-between">
+                                                <div class="col-auto">
+
+                                                    <div class="d-flex items-center">
+                                                        <div class="form-checkbox ">
+                                                            <input type="checkbox" name="效期" value="${v}" onchange="filterByCheckbox();">
+                                                            <div class="form-checkbox__mark">
+                                                                <div class="form-checkbox__icon icon-check"></div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="text-15 ml-10">${v}</div>
+
+                                                    </div>
+                                                </div>
+                                            </div>`;
+                }
+                ValidityPeriodHtml += `</div></div>`;
+                ValidityPeriodElement.innerHTML = ValidityPeriodHtml;
+            }
+            else {
+                ValidityPeriodElement.innerHTML = ``;
+            }
+
+            //印出可留天數checkbox
+            if (LengthOfStayArray.length >= 2) {
+                let LengthOfStayHtml = `<div class="sidebar__item">
+                                                <h5 class="text-18 fw-500 mb-10 mt-10" style="font-weight: bold;">可停留天數</h5>
+                                                <div class="sidebar-checkbox">`;
+                for (var l of LengthOfStayArray) {
+                    LengthOfStayHtml += `<div class="row y-gap-10 items-center justify-between">
+                                                                    <div class="col-auto">
+
+                                                                        <div class="d-flex items-center">
+                                                                            <div class="form-checkbox ">
+                                                                                <input type="checkbox" name="可留天數" value="${l}" onchange="filterByCheckbox();">
+                                                                                <div class="form-checkbox__mark">
+                                                                                    <div class="form-checkbox__icon icon-check"></div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="text-15 ml-10">${l}</div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>`;
+                }
+                LengthOfStayHtml += `</div></div>`;
+                LengthOfStayElement.innerHTML = LengthOfStayHtml;
+            }
+            else {
+                LengthOfStayElement.innerHTML = ``;
+            }
+
+            //印出實體簽or電子簽checkbox
+            if (EntityOrElectronicArray.length === 2) {
+                EntityOrElectronicElement.innerHTML = `<div class="sidebar__item">
+                                    <h5 class="text-18 fw-500 mb-10 mt-10" style="font-weight: bold;">簽證性質</h5>
+                                    <div class="sidebar-checkbox">
+
+                                        <div class="row y-gap-10 items-center justify-between">
+                                            <div class="col-auto">
+
+                                                <div class="d-flex items-center">
+                                                    <div class="form-checkbox ">
+                                                        <input type="checkbox" name="實體or電子簽" value=true onchange="filterByCheckbox();">
+                                                        <div class="form-checkbox__mark">
+                                                            <div class="form-checkbox__icon icon-check"></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="text-15 ml-10">實體簽</div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row y-gap-10 items-center justify-between">
+                                            <div class="col-auto">
+
+                                                <div class="d-flex items-center">
+                                                    <div class="form-checkbox ">
+                                                        <input type="checkbox" name="實體or電子簽" value=false onchange="filterByCheckbox();">
+                                                        <div class="form-checkbox__mark">
+                                                            <div class="form-checkbox__icon icon-check"></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="text-15 ml-10">電子簽</div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+            }
+            else {
+                EntityOrElectronicElement.innerHTML = ``;
+            }
+        }
+
+
+        (async () => {
+            try {
+                const response = await fetch(`@Url.Content("~/Customer/Visa/VVProductEnabled")`)
+                if (!response.ok) {
+                    console.log(response.status);
+                    throw new Error(`${response.status}`);
+                }
+                const datas = await response.json();
+                for (var data of datas) {
+                    Products.push(data);
+                }
+                if (storedKeyword) {
+                    filterByKeyword(QueryString);
+                }
+                else if (storedCountry) {
+                    filterByCountry(QueryString);
+                }
+            }
+            catch (error) {
+                console.log(`${error.message}`);
+                console.log('fetchFail')
+                return false;
+            }
+        })();
+
+        let currentDropdownCountry = '';
+        var allCountries = @Html.Raw(Json.Serialize(ViewData["國家列表"]));
+
+        function regionChange(e) {
+            const r = e.firstElementChild.lastElementChild.firstElementChild.innerText;
+            const FilterdC = allCountries.filter(c => {
+                return c.fRegion === r;
+            })
+            console.log(FilterdC);
+            if (FilterdC.length > 0) {
+                const countryList = document.getElementById('countryList');
+                let listHTML = ``;
+                for (var c of FilterdC) {
+                    listHTML += `<div>
+                                            <button class="-link d-block col-12 text-left rounded-4 px-20 py-15 js-search-option" onclick="countryChange(this)">
+                                                <div class="d-flex">
+                                                    <div class="icon-location-2 text-light-1 text-20 pt-4"></div>
+                                                    <div class="ml-10 d-flex align-items-center">
+                                                        <div class="text-15 lh-12 fw-500 js-search-option-target" style="font-weight: bold;">${c.fCountry}</div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>`;
+                }
+                countryList.innerHTML = listHTML;
+            }
+            const countryInput = document.getElementById('countryInput');
+            countryInput.value = null;
+        }
+
+        function countryChange(e) {
+            const countryWindow = document.getElementById('countryWindow');
+            const countryInput = document.getElementById('countryInput');
+            const c = e.firstElementChild.lastElementChild.firstElementChild.innerText;
+            currentDropdownCountry = c;
+            console.log(c);
+            countryInput.value = c;
+            countryWindow.classList.remove('-is-active');
+        }
+
+        function Order(id) {
+            const OrderLink = document.getElementById('OrderLink');
+
+            // 將要存儲到本地存儲的資料
+            var dataToSave = { key: id };
+
+            // 將資料轉換為 JSON 字符串並存儲到本地存儲中
+            localStorage.setItem('Id', JSON.stringify(dataToSave));
+
+            //點按連結
+            OrderLink.click();
+
+
+
+        }
+
+
+
+
+        let SortingByAsc = true;
+        function Sort() {
+
+            if (SortingByAsc) {
+                FProducts.sort(function (a, b) {
+                    return a.價格 - b.價格;
+                })
+                loadProductCards(FProducts);
+                SortingByAsc = !SortingByAsc;
+                return;
+            }
+            if (!SortingByAsc) {
+                FProducts.sort(function (a, b) {
+                    return b.價格 - a.價格;
+                })
+                loadProductCards(FProducts);
+                SortingByAsc = !SortingByAsc;
+                return;
+            }
+        }
+    </script>
+}

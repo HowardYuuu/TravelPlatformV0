@@ -1,0 +1,127 @@
+﻿@model IEnumerable<prjTravelPlatformV3.Models.TIproduct>
+@{
+    ViewData["Title"] = "實體商品管理";
+}
+
+@section Styles {
+    <link href="~/lib/datatables/css/jquery.datatables.css" rel="stylesheet" />
+    <style>
+        thead {
+            background-color: lightslategrey;
+            color: black;
+        }
+
+        table {
+            text-align: center; /* 讓表格內容文字置中 */
+        }
+
+        th, td {
+            text-align: center; /* 讓表格中的每個單元格文字置中 */
+        }
+    </style>
+}
+
+<h1>商品管理</h1>
+<button id="t1" type="button" class="btn btn-info" onclick="redirectToCreate()"><i class="fa-solid fa-circle-plus" style="font-size:0.8rem"></i> 新增</button>
+<table class="table" id="tbProducts">
+    <thead>
+        <tr>
+            <th>編號</th>
+            <th>廠商名稱</th>
+            <th>商品名稱</th>
+            <th>商品圖片</th>
+            <th style="display: none">商品來源</th>
+            <th>商品類型</th>
+            <th>商品發售日期</th>
+            <th>商品狀態</th>
+            <th style="width:50px">功能</th>
+        </tr>
+    </thead>
+</table>
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="//cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#tbProducts").dataTable(
+                {
+                    autoWidth: false,
+                    ajax: {
+                        type: 'GET',
+                        url: "/api/Product/GetProductList",
+                        dataSrc: function (json) {
+                            console.log(json);
+                            return json; }
+                    },
+                    columns: [
+                        { "data": "fProductId" },
+                        { "data": "fSupplierName" },
+                        { "data": "fProductName" },
+                        {
+                            "data": "fImagePath",
+                            "render": function (data, type, row) {
+                                if (data) {
+                                    // 構建圖片路徑
+                                    var imagePath = '/img/Item/' + data; // 資料夾位置相對於網站的根目錄
+                                    // 回傳圖片標籤
+                                    return '<img src="' + imagePath + '" alt="Product Image" width="100px">';
+                                } else {
+                                    // 如果沒有圖片，顯示預設圖片或文字
+                                    return '<img src="/img/no_product.png" alt="Product Image" width="100px">';
+                                }
+                            }
+                        },
+                        { "data": "fProSource", "visible": false },
+                        { "data": "fTypeName" },
+                        { "data": "fRelease" },
+                        { "data": "fProStatus" },
+                        {
+                            data: null,
+                            title: "功能",
+                            render: function (data, type, row) {
+                                var productId = row.fProductId; // 獲取產品 ID
+                                return `<button id="t1" type = "button" class="btn btn-primary btn-sm me-1" onclick="redirectToEditPage(${productId})">
+                                <i class="fa-solid fa-pen-to-square" style="font-size:0.8rem"></i> 編輯</button> ` +
+                                    `<button type="button" class="btn btn-danger btn-sm" onclick="deleteProduct(${productId})"><i class="fa-solid fa-trash" style="font-size:0.8rem"></i> 刪除</button>`
+                            }
+                        },
+                    ],
+                    fixedHeader: { header: true },
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json'
+                    },
+                });
+        });
+        function redirectToEditPage(productId) {
+            // 導航到編輯頁面
+            window.location.href = `/Employee/IProductManagement/Edit?productId=${productId}`;
+        };
+        function redirectToCreate() {
+            // 導航到編輯頁面
+            window.location.href = '/Employee/IProductManagement/Create';
+        };
+        function deleteProduct(productId) {
+            if (confirm('確定要刪除此商品嗎？')) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: `/api/Product/Delete?ProductId=${productId}`, // 替換成您的 API 端點
+                    success: function (response) {
+                        // 刷新 DataTable 或執行其他操作以反映刪除的變化
+                        $('#tbProducts').DataTable().ajax.reload();
+                        alert('商品已成功刪除！');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('刪除失敗，請稍後再試！');
+                        console.log(productId);
+                    }
+                });
+            }
+        }
+
+    </script>
+}

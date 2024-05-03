@@ -1,0 +1,60 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.TravelPlan.TravelPlanOrderEditView
+
+<div class="modal-header">
+	<h5 class="modal-title" id="exampleModalLabel">@ViewBag.title</h5>
+	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div id="divModalContent" class="modal-body">
+	<form id="@ViewBag.formId" asp-action="@ViewBag.model" method="post" name="checkfor">
+		@Html.AntiForgeryToken()
+		<input asp-for="FOrderId " style="display:none" />
+
+		<div class="row mb-3">
+			<div class="col text-start">
+				<label asp-for="FName" class="form-label">@Html.DisplayNameFor(h => h.FName)</label>
+				<input asp-for="FName" class="form-control" readonly>
+				<span asp-validation-for="FName" class="text-danger"></span>
+			</div>
+			<div class="col text-start">
+				<label asp-for="FOrderDate" class="form-label">@Html.DisplayNameFor(h => h.FOrderDate)</label>
+				<input asp-for="FOrderDate" type="date" class="form-control"  disabled>
+
+				<span asp-validation-for="FOrderDate" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div class="col">
+				<label asp-for="FEmail" class="form-label">@Html.DisplayNameFor(h => h.FEmail)</label>
+				<input asp-for="FEmail" class="form-control" readonly>
+				<span asp-validation-for="FEmail" class="text-danger"></span>
+			</div>
+			<div class="col">
+				<label asp-for="FPhone" class="form-label">@Html.DisplayNameFor(h => h.FPhone)</label>
+				<input asp-for="FPhone" class="form-control" readonly>
+				<span asp-validation-for="FPhone" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div class="col text-start">
+				<label asp-for="FQty" class="form-label">@Html.DisplayNameFor(h => h.FQty)</label>
+				<input asp-for="FQty" class="form-control" readonly>
+				<span asp-validation-for="FQty" class="text-danger"></span>
+			</div>
+			<div class="col text-start">
+				<label asp-for="FPrice" class="form-label">@Html.DisplayNameFor(h => h.FPrice)</label>
+				<input asp-for="FPrice" class="form-control" readonly>
+				<span asp-validation-for="FPrice" class="text-danger"></span>
+			</div>
+			<div class="col">
+				<label asp-for="FCoupomName" class="form-label">@Html.DisplayNameFor(h => h.FCoupomName)</label>
+				<input asp-for="FCoupomName" class="form-control" readonly>
+				<span asp-validation-for="FCoupomName" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+			<button type="button" class="btn btn-primary" id="btnSave" onclick='sendFetchRequest("@ViewBag.formId")'>儲存</button>
+		</div>
+	</form>
+</div>

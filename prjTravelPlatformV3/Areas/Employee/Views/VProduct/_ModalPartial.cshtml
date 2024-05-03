@@ -1,0 +1,169 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.Visa.VProductViewModel
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">@ViewBag.title</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div id="divModalContent" class="modal-body">
+    <form id="@ViewBag.formId" class="overflow-auto">
+        @Html.AntiForgeryToken()
+
+        <input asp-for="FId" style="display:none" />
+        <div style="padding:5px;">
+
+            <div class="d-flex">
+                <div class="mb-3 flex-grow-1" style="margin-right:10px;">
+                    <label asp-for="FName" class="form-label">@Html.DisplayNameFor(h => h.FName)</label>
+                    <input asp-for="FName" class="form-control">
+                    <span asp-validation-for="FName" class="text-danger"></span>
+                </div>
+                <div class="mb-3 flex-grow-1">
+                    <label asp-for="FSupplierId" class="control-label"></label>
+                    <select asp-for="FSupplierId" class="form-control" asp-items="ViewBag.FSupplierId"></select>
+                    <span asp-validation-for="FSupplierId" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="d-flex">
+                <div class="mb-3 flex-grow-1" style="margin-right:10px;">
+                    <label asp-for="FCountryId" class="control-label"></label>
+                    <select asp-for="FCountryId" class="form-control" asp-items="ViewBag.FCountryId"></select>
+                    <span asp-validation-for="FCountryId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 flex-grow-1">
+                    <label class="control-label">地區(洲別)</label>
+                    <select class="form-control" asp-items="ViewBag.FRegionId" onchange="changeRegion(this.value);">
+                        <option value="0">所有地區</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="d-flex" style="margin-bottom:0;">
+                <div class="mb-3 flex-grow-1" style="margin-right:10px; margin-bottom:0;">
+                    <label asp-for="FNewOrLost" class="control-label"></label>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="FNewOrLost" value="true" id="FNewOrLost_true">
+                            <label class="form-check-label" for="FNewOrLost_true">新辦</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="FNewOrLost" value="false" id="FNewOrLost_false">
+                            <label class="form-check-label" for="FNewOrLost_false">遺失/毀損</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3 flex-grow-1" style="margin-right:10px; margin-bottom:0;">
+                    <label asp-for="FInterviewRequirement" class="control-label"></label>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="FInterviewRequirement" value="true" id="FInterviewRequirement_true">
+                            <label class="form-check-label" for="FInterviewRequirement_true">需面試</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="FInterviewRequirement" value="false" id="FInterviewRequirement_false">
+                            <label class="form-check-label" for="FInterviewRequirement_false">不需面試</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3 flex-grow-1" style="margin-bottom:0;">
+                    <label asp-for="FEntityOrElectronic" class="control-label"></label>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="FEntityOrElectronic" value="true" id="FEntityOrElectronic_true">
+                            <label class="form-check-label" for="FEntityOrElectronic_true">實體簽</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="FEntityOrElectronic" value="false" id="FEntityOrElectronic_false">
+                            <label class="form-check-label" for="FEntityOrElectronic_false">電子簽</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="d-flex">
+                <div class="mb-3 flex-grow-1" style="margin-right:10px;">
+                    <label asp-for="FProcessingTimeId" class="control-label"></label>
+                    <select asp-for="FProcessingTimeId" class="form-control" asp-items="ViewBag.FProcessingTimeId"></select>
+                    <span asp-validation-for="FProcessingTimeId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 flex-grow-1" style="margin-right:10px;">
+                    <label asp-for="FValidityPeriodId" class="control-label"></label>
+                    <select asp-for="FValidityPeriodId" class="form-control" asp-items="ViewBag.FValidityPeriodId"></select>
+                    <span asp-validation-for="FValidityPeriodId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 flex-grow-1">
+                    <label asp-for="FLengthOfStayId" class="control-label"></label>
+                    <select asp-for="FLengthOfStayId" class="form-control" asp-items="ViewBag.FLengthOfStayId"></select>
+                    <span asp-validation-for="FLengthOfStayId" class="text-danger"></span>
+                </div>
+            </div>
+
+            
+            <div class="d-flex">
+
+                <div class="mb-3 flex-grow-1" style="margin-right:10px; flex-basis:12%;">
+                    <label asp-for="FPrice" class="control-label"></label>
+                    <input asp-for="FPrice" class="form-control" />
+                    <span asp-validation-for="FPrice" class="text-danger"></span>
+                </div>
+
+
+                <div class="mb-3 flex-grow-1" style="margin-right:20px; flex-basis:40%;">
+                    <div class="d-flex">
+                        <label asp-for="TVproductFormsRequireds" class="control-label" style="margin-left:25px;"></label>
+                        <input type="file" id="fileInput" style="display: none;" onchange="uploadFile();" />
+                        <button onclick="clickFile(event)" class="btn btn-info btn-sm" style="padding:8px 8px; margin:0 0 8px 4px;"><i class="fa-solid fa-circle-plus" style="font-size:0.8rem;"></i> 上傳</button>
+                        <button onclick="deleteFile(event)" class="btn btn-danger btn-sm" style="padding:8px 8px; margin:0 0 8px 4px;"><i class="fa-solid fa-trash" style="font-size:0.8rem;"></i> 刪除</button>
+                    </div>
+                    
+                    
+                    <div id="partialContainer" style="height:120px; overflow: auto; padding-left:25px;">
+                        <partial name="_CheckBoxPartial" model="@Model" view-data="ViewData" />
+                    </div>
+                </div>
+
+
+                <div class="mb-3 flex-grow-1" style="flex-basis:20%;">
+                    <label asp-for="FEnabled" class="control-label"></label>
+                    <div class="form-group" style="padding-left:15px;">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="FEnabled" value="true" id="FEnabled_true">
+                            <label class="form-check-label" for="FEnabled_true">啟用</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" asp-for="FEnabled" value="false" id="FEnabled_false">
+                            <label class="form-check-label" for="FEnabled_false">停用</label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            <button type="button" class="btn btn-primary" id="btnSave" onclick='sendFetchRequest("@ViewBag.formId")'>儲存</button>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+
+
+
+    <script>
+
+    </script>
+}

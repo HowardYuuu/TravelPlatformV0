@@ -1,0 +1,20 @@
+[
+  {
+    "outputFileName": "wwwroot/js/soft-ui-dashboard.min.js",
+    "inputFiles": [
+      "wwwroot/js/soft-ui-dashboard.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/soft-ui-dashboard.min.css",
+    "inputFiles": [
+      "wwwroot/css/soft-ui-dashboard.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/datatables/css/jquery.dataTables.min.css",
+    "inputFiles": [
+      "wwwroot/lib/datatables/css/jquery.dataTables.css"
+    ]
+  }
+]

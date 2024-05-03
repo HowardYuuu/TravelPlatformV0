@@ -1,0 +1,387 @@
+﻿@using System.Security.Claims
+
+
+@section Styles
+{
+    <link href="~/css/loadingPic.css" asp-append-version="true" rel="stylesheet" />
+    <style>
+        /* body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        } */
+
+        #chartdiv {
+            width: 97%;
+            height: 600px;
+        }
+
+        #autocomplete {
+            position:relative;
+            width: 200px;
+            padding: 15px 12px;
+            margin: 20px 5px 5px 20px;
+            border-radius: 10px;
+            border: 1px solid #e5e5e5;
+            border-bottom: 2px solid #ddd;
+            background: #f2f2f2;
+            color: #555;
+        }
+
+        #listgroup {
+            position:absolute;
+            z-index:1000;
+            width: 200px;
+            padding: 15px 12px;
+            margin: 0px 5px 5px 20px;
+            border-radius: 10px;
+        }
+
+        .active {
+            background: #f2f2f2;
+        }
+    </style>
+}
+
+
+<div class="masthead__bg" style="position: relative">
+    <img src="~/img/frontstage/shutterstock_1877056579.jpg" style="filter: brightness(55%); width: 100%; height:160px; object-fit: cover;" />
+    <div class="text-center" style="position: absolute; top:60%; left:50%; transform:translate(-50%, -50%);">
+        <h1 class="text-30 fw-600 text-white">簽證地圖</h1>
+    </div>
+    <div style="position: absolute; top:60%; left:70%;">
+    <a class="button -md -blue-1 bg-blue-1-05 text-white text-20" asp-area="Customer" asp-controller="Visa" asp-action="Index">
+    返回簽證索引 <div class="icon-arrow-top-right ml-15"></div>
+    </a>
+    </div>
+</div>
+
+
+
+<div id="div">
+    <input type="text" id="autocomplete" autocomplete="off" placeholder="請輸入欲尋找國家" />
+    <ul id="listgroup">
+    </ul>
+</div>
+
+<div class="load-6" style="display:none;">
+    <div class="letter-holder">
+        <div class="l-1 letter">正</div>
+        <div class="l-2 letter">在</div>
+        <div class="l-3 letter">擷</div>
+        <div class="l-4 letter">取</div>
+        <div class="l-5 letter">使</div>
+        <div class="l-6 letter">館</div>
+        <div class="l-7 letter">資</div>
+        <div class="l-8 letter">訊</div>
+        <div class="l-9 letter">.</div>
+        <div class="l-10 letter">.</div>
+    </div>
+</div>
+
+
+<a class="filterLink" asp-area="Customer" asp-controller="Visa" asp-action="List" style="display:none;"></a>
+
+
+
+
+
+<div id="chartdiv"></div>
+
+
+
+
+
+
+
+@section Scripts
+{
+    <script>
+        let countries = [];
+        let resultObject = {};
+        let regions = [];
+        let EmbassiesData = [];
+
+        const fetchString = '@Url.Content("~/Customer/Visa/VVProductEnabled")'
+
+        async function getProductCount() {
+            try {
+                const response = await fetch(fetchString)
+                if (!response.ok) {
+                    console.log(response.status);
+                    throw new Error(`${response.status}`);
+                }
+                const data = await response.json();
+
+                const countryCount = {};
+                data.forEach(item => {
+                    const country = item["國家"];
+                    if (country in countryCount) {
+                        countryCount[country]++;
+                    } else {
+                        countryCount[country] = 1;
+                    }
+                });
+
+                Object.keys(countryCount).forEach(country => {
+                    resultObject[country] = countryCount[country];
+                });
+
+                const convertedData = [];
+
+                // 遍历resultObject中的每个键值对
+                for (const country in resultObject) {
+                    if (resultObject.hasOwnProperty(country)) {
+                        // 将中文国家名称转换为大写的英文名称
+                        const englishCountry = Object.keys(am5geodata_lang_tw_ZH).find(key => am5geodata_lang_tw_ZH[key] === country);
+
+                        // 检查englishCountry是否存在于lang中，如果存在，则获取其对应的字母代号作为id
+                        const id = englishCountry;
+
+                        // 如果id存在，则将该条数据添加到convertedData中
+                        if (id) {
+                            convertedData.push({
+                                id: id,
+                                detail: "商品數量: " + resultObject[country]
+                            });
+                        }
+                    }
+                }
+                groupData.push({
+                    "name": "商品地區",
+                    "data": convertedData
+                });
+
+                return true;
+            }
+            catch (error) {
+                console.log(`${error.message}`);
+                console.log('fetchFail')
+                return false;
+            }
+        }
+
+        (async () => {
+            try {
+                const response = await fetch('@Url.Content("~/Customer/Visa/countries")')
+                if (!response.ok) {
+                    console.log(response.status);
+                    throw new Error(`${response.status}`);
+                }
+                const datas = await response.json();
+
+                for (var data of datas) {
+                    countries.push(data)
+                }
+
+                var Regions = datas.reduce(function (groups, item) {
+                    if (!groups[item.fRegion]) {
+                        groups[item.fRegion] = [];
+                    }
+                    groups[item.fRegion].push(item);
+                    return groups;
+                }, {});
+                regions = Regions;
+            }
+            catch (error) {
+                console.log(`${error.message}`);
+                console.log('fetchFail')
+                return false;
+            }
+        })();
+    </script>
+    <script src="~/js/visaData.js" asp-append-version="true"></script>
+    <script src="//cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="//cdn.amcharts.com/lib/5/map.js"></script>
+    <script src="//cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
+    <script src="~/js/translate.js" asp-append-version="true"></script>
+    <script src="//cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="~/js/createMap.js" asp-append-version="true"></script>
+
+    <script>
+        function regionChange(e, v) {
+            if (v === 0) {
+                return;
+            }
+            else {
+                const filteredCountries = countries.filter(function (item) {
+                    return item.fRegion === v;
+                });
+                if (filteredCountries.length > 0) {
+                    let html = `<option value=0>請選擇國家</option>`;
+                    for (var c of filteredCountries) {
+                        html += `<option value=${c.fId}>${c.fCountry}</option>`
+                    }
+                    e.target.nextElementSibling.nextElementSibling.innerHTML = html;
+                }
+            }
+        }
+        const enterance = document.getElementById('enterance');
+
+    </script>
+
+
+    <script>
+        const div = document.getElementById("div");
+        const searchbar = document.getElementById("autocomplete");
+        const listgroup = document.getElementById("listgroup");
+
+        function searching(keyword) {
+            //地圖動畫
+            for (var i = 0; i < polygonSeries.mapPolygons._values.length; i++) {
+                if (polygonSeries.mapPolygons._values[i].dataItem.dataContext.name === keyword) {
+                    if (root.container.children._values[0]._settings.panY === 'translateY') {
+                        chart.goHome();
+                        polygonSeries.zoomToDataItem(polygonSeries.mapPolygons._values[i].dataItem);
+                        break;
+                    }
+                    else if (root.container.children._values[0]._settings.panY === 'rotateY') {
+                        var target = polygonSeries.mapPolygons._values[i].dataItem.get("mapPolygon");
+                        if (target) {
+                            var centroid = target.geoCentroid();
+                            if (centroid) {
+                                chart.goHome();
+                                chart.animate({ key: "rotationX", to: -centroid.longitude, duration: 1500, easing: am5.ease.inOut(am5.ease.cubic) });
+                                chart.animate({ key: "rotationY", to: -centroid.latitude, duration: 1500, easing: am5.ease.inOut(am5.ease.cubic) });
+                            }
+                        }
+                    }
+                }
+            }
+            searchbar.value = keyword
+            listgroup.innerHTML = ""
+        }
+        async function loadSearchingList(keyword) {
+            if (keyword === '') { listgroup.innerHTML = ""; return; }
+            const result = [];
+            for (const code in window.am5geodata_lang_tw_ZH) {
+                if (window.am5geodata_lang_tw_ZH.hasOwnProperty(code)) {
+                    if (window.am5geodata_lang_tw_ZH[code].includes(keyword)) {
+                        result.push(window.am5geodata_lang_tw_ZH[code]);
+                    }
+                }
+            }
+
+            let listhtml = ``
+            if (result != null) {
+                for (var title of result) {
+                    listhtml += `<li><a href="#" onclick="searching('${title}')">${title}</a></li>`
+                    listgroup.innerHTML = ""
+                    listgroup.innerHTML = listhtml
+                }
+            }
+            else { listgroup.innerHTML = "" }
+        }
+
+        div.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown') {
+                e.preventDefault()
+                if (e.target.nextElementSibling.querySelector('.active') === null) {//如果目前沒有任何active
+                    if (e.target.nextElementSibling.firstElementChild) {
+                        e.target.nextElementSibling.firstElementChild.classList.add("active")//把第一個active
+                        searchbar.value = e.target.nextElementSibling.querySelector('.active').innerText//searchbar裡的字更新
+                    }
+                }
+                else {//若已有active
+                    if (e.target.nextElementSibling.querySelector('.active').nextElementSibling !== null) {//若還沒到底
+                        e.target.nextElementSibling.querySelector('.active').nextElementSibling.classList.add("active")//下一位active
+                        e.target.nextElementSibling.querySelector('.active').classList.remove("active")//acitve中的第一位取消active
+                        searchbar.value = e.target.nextElementSibling.querySelector('.active').innerText//searchbar裡的字更新
+                    }
+                    else {//若已經到底
+                        e.target.nextElementSibling.querySelector('.active').classList.remove("active")//acitve移除
+                        e.target.nextElementSibling.firstElementChild.classList.add("active")//第一位active
+                        searchbar.value = e.target.nextElementSibling.querySelector('.active').innerText//searchbar裡的字更新
+                    }
+                }
+            }
+            if (e.key === 'ArrowUp') {
+                e.preventDefault()
+                if (e.target.nextElementSibling.querySelector('.active') === null) {
+                    if (e.target.nextElementSibling.lastElementChild) {
+                        e.target.nextElementSibling.lastElementChild.classList.add("active")
+                        searchbar.value = e.target.nextElementSibling.querySelector('.active').innerText
+                    }
+                }
+                else {
+                    if (e.target.nextElementSibling.querySelector('.active').previousElementSibling !== null) {
+                        e.target.nextElementSibling.querySelector('.active').previousElementSibling.classList.add("active")
+                        const activelist = e.target.nextElementSibling.querySelectorAll('.active')
+                        activelist[activelist.length - 1].classList.remove("active")
+                        searchbar.value = e.target.nextElementSibling.querySelector('.active').innerText
+                    }
+                    else {
+                        e.target.nextElementSibling.querySelector('.active').classList.remove("active")
+                        e.target.nextElementSibling.lastElementChild.classList.add("active")
+                        searchbar.value = e.target.nextElementSibling.querySelector('.active').innerText
+                    }
+                }
+            }
+        })
+
+        searchbar.addEventListener('input', async (e) => {
+            await loadSearchingList(e.target.value)
+        })
+        searchbar.addEventListener('focus', async (e) => {
+            await loadSearchingList(e.target.value)
+        })
+        // searchbar.addEventListener('blur', () => {
+        //     listgroup.innerHTML = ""
+        // })
+        searchbar.addEventListener('keydown', async (e) => {
+            if (e.key === 'Enter') {
+                if (e.target.value === '') { return; }
+                searching(e.target.value)
+                listgroup.innerHTML = ""
+                searchbar.blur()
+            }
+        })
+    </script>
+
+
+    <script>
+        function SaveCountryLocalStorage(country) {
+            //清除localStorage
+            localStorage.clear();
+
+            // 將要存儲到本地存儲的資料
+            var dataToSave = { key: country };
+
+            // 將資料轉換為 JSON 字符串並存儲到本地存儲中
+            localStorage.setItem('country', JSON.stringify(dataToSave));
+        }
+
+    </script>
+    <script>
+        async function GetEmbassies() {
+            try {
+                const response = await fetch('@Url.Content("~/Customer/Visa/Embassies")');
+                if (!response.ok) {
+                    console.log(response.status);
+                    throw new Error(`${response.status}`);
+                }
+                const countries = await response.json();
+                originalData = countries.map(country => {
+                    return {
+                        id: countryTranslations[country.country],
+                        url: country.url
+                    };
+                });
+
+                EmbassiesData = {
+                    name: "使館資訊",
+                    data: originalData.map(item => ({ id: item.id, Url: item.url }))
+                };
+
+                groupData.push(EmbassiesData)
+
+
+                return true;
+            }
+            catch (error) {
+                console.log(`${error.message}`);
+                console.log('fetchFail')
+                return false;
+            }
+        }
+
+    </script>
+}

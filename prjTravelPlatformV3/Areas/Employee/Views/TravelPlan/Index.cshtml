@@ -1,0 +1,445 @@
+﻿	@{
+	ViewData["Title"] = "方案管理";
+}
+
+@section Styles {
+	<link href="~/lib/datatables/css/jquery.datatables.css" rel="stylesheet" />
+	<style>
+		thead {
+			background-color: lightslategrey;
+			color: black;
+		}
+
+		.hover-highlight {
+			background-color: #f0f0f0 !important;
+		}
+	</style>
+}
+
+<h3>方案管理</h3>
+<button id="t1" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#travelplanPartial" onclick="getEditPartial(0)"><i class="fa-solid fa-circle-plus" style="font-size:0.8rem"></i> 新增</button>
+<div style="display: flex;align-items: start;">
+	<div style="flex: 1;    margin-right: 20px;">
+		<table class="table" id="tbplan">
+			<thead>
+				<tr>
+					<th style="display: none">id</th>
+					<th>狀態</th>
+					<th>方案名稱</th>
+					<th>方案類型</th>
+					<th>景點地區</th>
+					<th>天數</th>
+					<th>數量</th>
+					<th>價格</th>
+					<th style="width:50px">功能</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	<div style="flex: 2;    margin-right: 20px;">
+		<figure style="border:130px">
+			<h3>景點敘述</h3>
+			<figcaption id="travelplancontext" style="width:250px">依據左方列表點選變更</figcaption>
+		</figure>
+	</div>
+</div>
+
+<div style="display: none; align-items: start;" id="schedule">
+	<div style="flex: 1; margin-right: 20px;">
+		<div>
+			<h3>方案行程</h3>
+			<select id="fortravelday">
+			</select>
+			<button class="btn btn-primary btn-sm me-1" style="margin-top:15px ;flex-shrink: 0;" id="Saveschudle">儲存</button>
+			<div style="display: flex; align-items: center;">
+				<div id="morningid"></div>
+				<input type="text" id="morning" value="無安排">
+				<input type="time" id="morningtime" style="width:130px">
+				<button class="btn btn-primary btn-sm me-1" style="margin-top:15px ;flex-shrink: 0;" id="Abutton">更換</button>
+			</div>
+			<div style="display: flex; align-items: center;">
+				<div id="afterid"></div>
+				<input type="text" id="after" value="無安排">
+				<input type="time" id="aftertime" style="width:130px">
+				<button class="btn btn-primary btn-sm me-1" style="margin-top:15px ;flex-shrink: 0;" id="Mbutton">更換</button>
+			</div>
+		</div>
+	</div>
+	<div style="flex: 2; margin-right: 20px;">
+		<div id="controllermordetail" style="display:none">
+			<table class="table" id="tbmordes">
+				<thead>
+					<tr>
+						<th style="display: none">id</th>
+						<th>景點名稱</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div id="controllerafterdetail" style="display:none">
+			<table class="table" id="tbaftdes">
+				<thead>
+					<tr>
+						<th style="display: none">id</th>
+						<th>景點名稱</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+
+<!--Modal-->
+<div class="modal fade" id="travelplanPartial" tabindex=" -1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div id="edit-modal">
+				<!--引入 ModalPartial-->
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+
+	<script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+	<script src="//cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+
+	<script>
+		let selectElement = document.getElementById('fortravelday');
+		let morning = document.getElementById('morning');
+		let after = document.getElementById('after');
+		let morningid = document.getElementById('morningid');
+		let afterid = document.getElementById('afterid');
+		let morningtime = document.getElementById('morningtime');
+		let aftertime = document.getElementById('aftertime');
+		var fId = "";
+		var totalday = "";
+		var now = 1;
+		let Saveschu = document.getElementById('Saveschudle');
+		let scheduletable = document.getElementById('schedule');
+
+
+		const loadTravelT = () => {
+			$("#tbplan").dataTable({
+				autoWidth: false,
+				ajax: {
+					type: 'GET',
+					url: "/api/TApi/GetAllTravelPlan",
+					dataSrc: function (json) { return json; }
+				},
+				columns: [
+					{ "data": "fTravelId", "visible": false },
+					{ "data": "fState" },
+					{ "data": "fTravelName" },
+					{ "data": "fTravelType" },
+					{ "data": "fArea" },
+					{ "data": "fDay" },
+					// { "data": "fTransport" },
+					{ "data": "fStock" },
+					{ "data": "fPrice" },
+					{
+						data: null,
+						title: "功能",
+						render: function (data, type, row) {
+							return '<button id="t1" type="button" class="btn btn-primary btn-sm me-1" data-bs-toggle="modal" data-bs-target="#travelplanPartial" onclick="getEditPartial(\'' + row.fTravelId + '\')"><i class="fa-solid fa-pen-to-square" style="font-size:0.8rem"></i> 編輯</button>' +
+								'<button id="t1" type="button" class="btn btn-primary btn-sm me-1" onclick="getSchedulePartial(\'' + row.fTravelId + '\')"><i class="fa-solid fa-pen-to-square" style="font-size:0.8rem"></i> 行程</button>' +
+								'<button type="button" class="btn btn-danger btn-sm" onclick="getChange(\'' + row.fTravelId + '\')"><i class="fa-solid fa-trash" style="font-size:0.8rem"></i>上/下架</button>'
+						}
+					},
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json'
+				},
+				rowCallback: function (row, data) {
+					if (data.fState == "上架中") {
+						$('td:eq(0)', row).css('background-color', '#00ab5e').css('color', 'white');//綠色
+					} else {
+						$('td:eq(0)', row).css('background-color', '#ff333a').css('color', 'white'); //紅色
+					}
+				}
+			});
+		}
+
+		//呼叫編輯介面
+		const getEditPartial = async (id) => {
+			const response = await fetch(`@Url.Content("~/Employee/TravelPlan/GetPartial")?id=${id}`);
+			const data = await response.text();
+			document.getElementById('edit-modal').innerHTML = data;
+		}
+
+		//生成第一天的行程並畫面聚焦
+		const getSchedulePartial = async (id, days) => {
+			scheduletable.style.display = 'flex';
+			if (days == null) {
+				days = 1;
+			}
+			now = days;
+			const morresonse = await fetch(`@Url.Content("~/Employee/TravelPlan/GetMorDestionation")?id=${id}&day=${days}`);
+			const mordata = await morresonse.json();
+			morningid.value = mordata[0].fdestinationId;
+			morning.value = mordata[0].fdestinationName;
+			morningtime.value = mordata[0].fdestionationTime;
+
+			const afterresonse = await fetch(`@Url.Content("~/Employee/TravelPlan/GetAfterDestionation")?id=${id}&day=${days}`);
+			const afterdata = await afterresonse.json();
+			afterid.value = afterdata[0].fdestinationId;
+			after.value = afterdata[0].fdestinationName;
+			aftertime.value = afterdata[0].fdestionationTime;
+			selectElement.focus();
+		}
+
+		//切換行程天數
+		selectElement.addEventListener('change', function () {
+			getSchedulePartial(fId, selectElement.value);
+		});
+
+		//更新當天行程
+		Saveschu.addEventListener('click', function () {
+			const morresonse = fetch(`@Url.Content("~/Employee/TravelPlan/UpdateDestionationMorning")?id=${fId}&des=${morningid.value}&day=${now}&time=${morningtime.value}`);
+			const afterresonse = fetch(`@Url.Content("~/Employee/TravelPlan/UpdateDestionationAfter")?id=${fId}&des=${afterid.value}&day=${now}&time=${aftertime.value}`);
+		});
+
+		//上下架
+		const getChange = async (id) => {
+			Swal.fire({
+				title: '您確定要上架/下架嗎？',
+				text: "點擊 'Yes' 來執行操作",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: 'Yes',
+				cancelButtonText: 'No',
+			}).then(async (result) => {
+				if (result.isConfirmed) {
+					const response = await fetch(`@Url.Content("~/Employee/TravelPlan/Change")?id=${id}`);
+
+					if (response.ok) {
+						const data = await response.json();
+						if (data === false) {
+							Swal.fire({
+								title: '上架失敗',
+								text: '該方案行程安排不完整',
+								icon: 'error',
+								confirmButtonText: '確定'
+							});
+						}
+						$('#tbplan').DataTable().ajax.reload();
+					}
+				}
+			});
+		}
+
+		//根據傳入的action name呼叫對應的api
+		const sendFetchRequest = async (actionName) => {
+			//抓取目前的form id
+			const formId = document.querySelector("form").getAttribute('id');
+			//目前的form id的DOM元素
+			const formIdDOM = document.getElementById(`${formId}`)
+			//新增form data物件
+			const formData = new FormData(formIdDOM);
+			//取得防偽標籤
+			const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+			const btnSave = document.getElementById('btnSave');
+			// 禁用按钮
+			btnSave.disabled = true;
+			try {
+				const res = await fetch(`@Url.Content("~/Employee/TravelPlan/")` + actionName, {
+					headers: {
+						'RequestVerificationToken': token
+					},
+					body: formData,
+					method: 'POST'
+				});
+				if (!res.ok) {
+					throw new Error(`${res.status}`)
+				}
+				const data = await res.json();
+
+				if (data.success) {
+					//關閉modal
+					var myModal = bootstrap.Modal.getInstance(travelplanPartial);
+					myModal.hide();
+					//顯示訊息
+					Swal.fire({
+						title: "Success",
+						text: data.message,
+						icon: "success"
+					});
+
+					//刷新網頁
+					location.reload();
+					//刷新datatable
+					// $('#tbdes').DataTable().ajax.reload();
+				} else {
+					//依自己的form增加需要驗證的欄位(驗證規則在partial view中)
+					const errorTName = document.querySelector(`[data-valmsg-for="FTravelName"]`);
+					const errorPrice = document.querySelector(`[data-valmsg-for="FPrice"]`);
+					const errorStock = document.querySelector(`[data-valmsg-for="FStock"]`);
+					const errorDay = document.querySelector(`[data-valmsg-for="FDay"]`);
+					const errorFTransport = document.querySelector(`[data-valmsg-for="FTransport"]`);
+					const errorFTravelContent = document.querySelector(`[data-valmsg-for="FTravelContent"]`);
+					if (errorTName) {
+						errorTName.textContent = data.errors.FTravelName[0];
+					}
+					if (errorPrice) {
+						errorPrice.textContent = data.errors.FPrice[0];
+					}
+					if (errorStock) {
+						errorStock.textContent = data.errors.FStock[0];
+					}
+					if (errorDay) {
+						errorDay.textContent = data.errors.FDay[0];
+					}
+					if (errorFTransport) {
+						errorFTransport.textContent = data.errors.FTransport[0];
+					}
+					if (errorFTravelContent) {
+						errorFTravelContent.textContent = data.errors.FTravelContent[0];
+					}
+				}
+			} catch (error) {
+				Swal.fire({
+					title: "error",
+					text: error.message,
+					icon: "error"
+				});
+			}
+		}
+
+		//生成用於修改行程內容的資料
+		const getmordesdetail = () => {
+			$("#tbmordes").dataTable({
+				autoWidth: false,
+				ajax: {
+					type: 'GET',
+					url: "/api/TApi/GetAllOnLineDestionation",
+					dataSrc: function (json) { return json; }
+				},
+				columns: [
+					{ "data": "fDestinationId", "visible": false },
+					{ "data": "fDestinationName" }
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json'
+				},
+			})
+		}
+		
+		//生成用於修改行程內容的資料
+		const getaftdesdetail = () => {
+			$("#tbaftdes").dataTable({
+				autoWidth: false,
+				ajax: {
+					type: 'GET',
+					url: "/api/TApi/GetAllOnLineDestionation",
+					dataSrc: function (json) { return json; }
+				},
+				columns: [
+					{ "data": "fDestinationId", "visible": false },
+					{ "data": "fDestinationName" }
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json'
+				},
+			})
+		}
+
+		// 在頁面加載完成後，為按鈕添加點擊事件監聽器
+		document.addEventListener('DOMContentLoaded', function () {
+			document.getElementById('Abutton').addEventListener('click', function () {
+				toggleDisplay('controllermordetail');
+				hideOtherDivs('controllermordetail');
+			});
+
+			document.getElementById('Mbutton').addEventListener('click', function () {
+				toggleDisplay('controllerafterdetail');
+				hideOtherDivs('controllerafterdetail');
+			});
+		});
+
+		// 函數：切換給定 ID 的元素的顯示/隱藏狀態
+		function toggleDisplay(elementId) {
+			var element = document.getElementById(elementId);
+			element.style.display = (element.style.display === 'none') ? 'block' : 'none';
+		}
+
+		// 函數：隱藏除了給定 ID 的其他所有 div 元素
+		function hideOtherDivs(exceptId) {
+			var divs = document.querySelectorAll('div[id^="controller"]');
+			divs.forEach(function (div) {
+				if (div.id !== exceptId) {
+					div.style.display = 'none';
+				}
+			});
+		}
+
+		$(document).ready(() => {
+			loadTravelT();
+			getmordesdetail();
+			getaftdesdetail();
+			//行程內容
+			$('#tbplan tbody').on('click', 'tr', function () {
+				var data = $(this).closest('table').DataTable().row(this).data();
+				fId = data.fTravelId;
+				totalday = data.fDay;
+				const url = '@Url.Content("~/api/TApi/GetAllTravelPlan")';
+				fetch(url)
+					.then(response => response.json())
+					.then(data => {
+						const matchingData = data.find(item => item.fTravelId === fId);
+						if (matchingData) {
+							const fTravelPlanContent = matchingData.fTravelPlanContent;
+							const context = document.getElementById("travelplancontext");
+							context.innerHTML = fTravelPlanContent;
+							const ftravelDay = matchingData.fDay;
+							selectElement.innerHTML = '';
+							for (let i = 1; i <= ftravelDay; i++) {
+								const option = document.createElement('option');
+								option.value = i;
+								option.textContent = "第" + i + "天";
+								selectElement.appendChild(option);
+							}
+						} else {
+							console.log("未找到 fDestinationId 等於 " + fDestinationid + " 的資料");
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+					});
+			});
+
+			$('#tbmordes tbody').on('click', 'tr', function () {
+				var data = $(this).closest('table').DataTable().row(this).data();
+				var fDId = data.fDestinationId;
+				var fDname = data.fDestinationName
+				morningid.value = fDId;
+				morning.value = fDname;
+				morning.focus();
+			});
+
+			$('#tbaftdes tbody').on('click', 'tr', function () {
+				var data = $(this).closest('table').DataTable().row(this).data();
+				var fDId = data.fDestinationId;
+				var fDname = data.fDestinationName
+				afterid.value = fDId;
+				after.value = fDname;
+				after.focus();
+			});
+
+			$('#tbplan tbody').on('mouseenter', 'tr', function () {
+				$(this).addClass('hover-highlight');
+			});
+
+			$('#tbplan tbody').on('mouseleave', 'tr', function () {
+				$(this).removeClass('hover-highlight');
+			});
+		});
+	</script>
+}

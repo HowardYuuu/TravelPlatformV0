@@ -1,0 +1,415 @@
+﻿@using System.Security.Claims
+@inject IHttpContextAccessor _httpContextAccessor
+@using prjTravelPlatform_release.Areas.Customer.ViewModel.Discounts
+
+@model CusCouponViewModel
+
+@{
+    ViewData["Title"] = "優惠管理";
+}
+
+@section Styles {
+
+    @*  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous"> *@
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+    <link href="~/lib/datatables/css/jquery.datatables.css" rel="stylesheet" />
+    <head>
+
+    </head>
+    <style>
+        /* 聊天框樣式 */
+        .chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px; /* 初始縮小寬度 */
+            height: 40px; /* 初始縮小高度 */
+            border-radius: 999em;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+            overflow: hidden; /* 隱藏溢出內容 */
+            transition: width 0.5s ease, height 0.5s ease; /* 添加過渡效果 */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* 垂直方向上的空間均分 */
+            cursor: move; /* 添加拖動游標 */
+        }
+
+        /* 聊天框頭部樣式 */
+        .chat-header {
+            background-color: transparent;
+            color: #333;
+            padding: 0;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 聊天框頭部圓形按鈕樣式 */
+        .chat-header-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #333;
+            color: #fff;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* 聊天框內容樣式 */
+        .chat-body {
+            display: none; /* 初始隱藏聊天內容 */
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            flex-grow: 1; /* 讓聊天內容自動填滿剩餘空間 */
+        }
+
+        /* 輸入框樣式 */
+        .chat-input-container {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .chat-input {
+            padding: 10px;
+            width: calc(100% - 42px); /* 考慮到按鈕的寬度 */
+            border: none;
+            border-top: 1px solid #ccc;
+            background-color: #f9f9f9;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        /* 輸入按鈕樣式 */
+        .input-button {
+            width: 32px;
+            height: 32px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 50%; /* 圓形按鈕 */
+            background-color: #ccc;
+            cursor: pointer;
+        }
+
+        input::placeholder {
+            font-size: 20px;
+        }
+
+        input[type="text"] {
+            font-weight: bolder;
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+        }
+            /* 取消输入框的红色提醒线 */
+            input[type="text"]:invalid {
+                border-color: initial; /* 将边框颜色设置为初始值 */
+                box-shadow: none; /* 取消阴影效果 */
+            }
+    </style>
+}
+
+
+
+<div class="masthead__bg" style="position: relative">
+    <img src="~/img/frontstage/shutterstock_1877056579.jpg" style="filter: brightness(55%); width: 100%; height:320px;" />
+    <div class="text-center" style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%);">
+        <h1 class="text-30 fw-600 text-white">會員優惠卷</h1>
+        <a style="color:white" asp-area="Customer" asp-controller="Discounts" asp-action="GetCoupon">領取優惠卷</a>
+        <a style="color:white" asp-area="Customer" asp-controller="Discounts" asp-action="ChatUI">ChatUI</a>
+    </div>
+</div>
+<section class="pt-40 pb-40 bg-light-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+
+
+                <h2 style="color:black; font-weight:bold;">折扣碼專區 @ViewBag.ID</h2>
+
+                <!--輸入領取優惠卷action="/api/CusCoupons/inputCoupon"-->
+                <form>
+                    <div class="single-field relative d-flex  py-10">
+                        <input class="pl-25 border text-dark-1 h-80 rounded-8" style="background-color:white" type="text" placeholder="請輸入折扣碼" id="couponCode" name="couponCode" required value maxlength="20">
+                        <button class="couponbtn button -md -dark-1 bg-blue-1 text-white mt-0 " style="margin-left:10px ; width:150px ; font-weight:bolder ;font-size:20px;" type="submit" id="couponbtn">
+                            新增
+                            @* <i class="icon-search text-20 px-15 text-dark-1"></i> *@
+                        </button>
+                    </div>
+                </form>
+
+                @* <input type="text" id="couponCode" placeholder="請輸入折扣碼">
+                <button onclick="addCoupon()">新增</button> *@
+
+                <div class="tabs -underline-2 pt-0 lg:pt-40 sm:pt-30 js-tabs" style="padding-top:0px" id="target-coupon">
+                    <div class="tabs__controls row x-gap-10 y-gap-10 js-tabs-controls">
+
+                        <div class="col-auto">
+                            <button class="tabs__button  text-20 fw-500 px-20 py-10 rounded-4 bg-light-2 js-tabs-button is-tab-el-active" data-tab-target=".-tab-item-1" style="font-weight:bold;">可使用</button>
+                        </div>
+
+                        <div class="col-auto">
+                            <button class="tabs__button text-20 fw-500 px-20 py-10 rounded-4 bg-light-2 js-tabs-button" data-tab-target=".-tab-item-2" style="font-weight:bold; ">已使用</button>
+                        </div>
+
+                        <div class="col-auto">
+                            <button class="tabs__button text-20 fw-500 px-20 py-10 rounded-4 bg-light-2 js-tabs-button" data-tab-target=".-tab-item-3" style="font-weight:bold; ">已過期</button>
+                        </div>
+                        @*  <hr style="color:black ;height:1px ;margin-top:0px" /> *@
+                    </div>
+
+                    <div class="tabs__content pt-15 js-tabs-content">
+
+                        <div class="tabs__pane -tab-item-1 is-tab-el-active">
+                            <p class="text-15 text-dark-1">
+                                <!--可使用優惠卷列表-->
+                                @foreach (var coupon in Model.VCouponQty.Where(x => x.使用狀態 == false && x.截止日期 >= DateTime.Now && x.客戶編號 == Convert.ToInt32(ViewBag.CusID)))
+                                {
+                                    <div class="card" style="margin-top:10px;margin-right:10px; border:2px  lightgrey solid;border-radius:10px; background-color:white;">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-center" style="">
+                                                <img style="width:200px;height:200px;" src="~/img/Discount/noImage03.png" class="card-img" alt="~/img/Discount/noImage03.png">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body" style="padding:10px;">
+
+                                                    <h3 class="card-title">@coupon.優惠卷名稱</h3>
+                                                    <h2 class="card-title">@coupon.折扣碼</h2>
+                                                    <h2 class="text-50 lh-20 fw-500" style="color:red;font-weight:500"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(Model.Coupon.FirstOrDefault(x => x.FCouponCode == coupon.折扣碼).FDiscount))</h2>
+                                                    <p class="card-text">@coupon.啟用日期 ~ @coupon.截止日期</p>
+                                                    <p class="card-text"></p>
+                                                    <p class="card-text"></p>
+                                                    <div class="row x-gap-10 y-gap-10 justify-end items-center md:justify-start">
+                                                        <div class="col-auto">
+
+                                                            @* <button type="button" class="couponbtn button -md -dark-1 bg-blue-1 text-white mt-24 float-right" data-id="@coupon.FCouponId" id="couponbtn">領取</button> *@
+                                                            <button type="button" class="button -md -dark-1 bg-blue-1 text-white mt-0 float-right">使用</button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+
+
+                                <br><br>
+
+                            </p>
+                        </div>
+
+                        <div class="tabs__pane -tab-item-2">
+                            <p class="text-15 text-dark-1">
+                                <!--已使用折扣碼區-->
+                                @foreach (var coupon in Model.VCouponQty.Where(x => x.使用狀態 == true && x.客戶編號 == Convert.ToInt32(ViewBag.CusID)))
+                                {
+                                    <div class="card" style="margin-top:10px;margin-right:10px; border:2px  lightgrey solid;border-radius:10px; background-color:white;">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-center" style="">
+                                                <img style="width:200px;height:200px;" src="~/img/discount/noimage03.png" class="card-img" alt="~/img/discount/noimage03.png">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body" style="padding:10px;">
+
+                                                    <h3 class="card-title">@coupon.優惠卷名稱</h3>
+                                                    <h2 class="card-title">@coupon.折扣碼</h2>
+                                                    <h2 class=" text-50 lh-20 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(Model.Coupon.FirstOrDefault(x => x.FCouponCode == coupon.折扣碼).FDiscount))</h2>
+                                                    <p class="card-text">@coupon.啟用日期 ~ @coupon.截止日期</p>
+                                                    <p class="card-text">使用日期：@DateTime.Now</p>
+                                                    <p class="card-text"></p>
+                                                    @* <button type="button" class="button -md -dark-1 bg-blue-1 text-white mt-24 float-right">使用</button> *@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <br><br>
+
+                            </p>
+                        </div>
+
+                        <div class="tabs__pane -tab-item-3">
+                            <p class="text-15 text-dark-1">
+                                <!--已過期折扣碼區-->
+                                @foreach (var coupon in Model.VCouponQty.Where(x => x.截止日期 < @DateTime.Now && x.客戶編號 == Convert.ToInt32(ViewBag.CusID)))
+                                {
+                                    <div class="card" style="margin-top:10px;margin-right:10px; border:2px  lightgrey solid;border-radius:10px; background-color:white;">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4 text-center" style="">
+                                                <img style="width:200px;height:200px;" src="~/img/Discount/noImage03.png" class="card-img" alt="~/img/Discount/noImage03.png">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body" style="padding:10px;">
+
+                                                    <h3 class="card-title">@coupon.優惠卷名稱</h3>
+                                                    <h2 class="card-title">@coupon.折扣碼</h2>
+                                                    <h2 class="text-50 lh-20 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(Model.Coupon.FirstOrDefault(x => x.FCouponCode == coupon.折扣碼).FDiscount))</h2>
+                                                    <p class="card-text">@coupon.啟用日期 ~ @coupon.截止日期</p>
+                                                    <p class="card-text"></p>
+                                                    <p class="card-text"></p>
+                                                    @* <button type="button" class="button -md -dark-1 bg-blue-1 text-white mt-24 float-right">使用</button> *@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <br><br>
+
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+                <div class="chat-container" id="chatContainer">
+                    <!-- 聊天框頭部 -->
+                    <button class="chat-header" id="chatHeader">
+                        <span class="chat-header-button">&#x1F4AC;</span>
+                    </button>
+
+                    <!-- 聊天框內容 -->
+                    <div class="chat-body" id="chatBody">
+                        <!-- 這裡是聊天內容 -->
+                        <p>歡迎使用聊天功能！</p>
+                        <p>隨意發言。</p>
+                    </div>
+
+                    <!-- 輸入框和圖標 -->
+                    <div class="chat-input-container">
+                        <input type="text" id="chatInput" class="chat-input" placeholder="在這裡輸入...">
+                        <button class="input-button" id="sendButton">&#x27A4;</button>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts {
+
+    @* <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script> *@
+
+    @*  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js" integrity="sha384-lpyLfhYuitXl2zRZ5Bn2fqnhNAKOAaM/0Kr9laMspuaMiZfGmfwRNFh8HlMy49eQ" crossorigin="anonymous"></script> *@
+    <script>
+        $(document).ready(function () {
+            $('.couponbtn').click(function (e) {
+                e.preventDefault(); //防止畫面重整
+                var targetElement = '#target-coupon';
+                var couponCode = $('#couponCode').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: `/api/CusCoupons/inputCoupon`,
+                    data: { couponCode: couponCode },
+                    success: function (response) {
+                        if (response.success) {
+                            // 添加成功
+                            Swal.fire({
+                                title: '領取成功!',
+                                text: '優惠卷已添加到您的帳戶。',
+                                icon: 'success',
+                                confirmButtonText: '確定'
+                            });
+
+
+                            // 加載新內容
+                            $(targetElement).load(location.href + ' ' + targetElement, function () {
+                                // 加載完成動畫
+                                $(targetElement).fadeIn('fast');
+                                $('.loading-spinner').hide();
+                            });
+
+                        } else {
+                            // 添加失敗
+                            Swal.fire({
+                                title: '添加失敗',
+                                text: response.errorMessage,
+                                icon: 'error',
+                                confirmButtonText: '確定'
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // 請求失敗
+                        Swal.fire({
+                            title: '請求失敗',
+                            text: '目前伺服器連線異常，請稍後再試。',
+                            icon: 'error',
+                            confirmButtonText: '確定'
+                        });
+                    }
+                });
+            });
+        });
+
+
+
+
+
+        // 獲取聊天框頭部和內容
+        var chatContainer = document.getElementById("chatContainer");
+        var chatHeader = document.getElementById("chatHeader");
+        var chatBody = document.getElementById("chatBody");
+        var chatExpanded = false; // 變量來跟踪聊天框的狀態
+
+        // 設置鼠標按下事件監聽器
+        chatHeader.addEventListener("mousedown", function (event) {
+            // 設置鼠標移動事件監聽器
+            document.addEventListener("mousemove", moveChat);
+
+            // 設置鼠標釋放事件監聽器
+            document.addEventListener("mouseup", function () {
+                // 刪除鼠標移動事件監聽器
+                document.removeEventListener("mousemove", moveChat);
+            });
+
+            // 函數用於移動聊天框
+            function moveChat(event) {
+                event.preventDefault();
+                // 設置聊天框的新位置
+                chatContainer.style.right = window.innerWidth - event.clientX + "px";
+                chatContainer.style.bottom = window.innerHeight - event.clientY + "px";
+            }
+        });
+
+        // 聊天框頭部點擊事件處理程序
+        chatHeader.addEventListener("click", function () {
+            // 切換聊天框內容的顯示狀態
+            if (!chatExpanded) { // 如果聊天框是縮小的，則將其展開
+                chatContainer.style.width = "300px"; // 顯示時正常寬度
+                chatContainer.style.height = "300px"; // 顯示時正常高度
+                chatBody.style.display = "block";
+                chatExpanded = true; // 設置為展開狀態
+            } else { // 如果聊天框是展開的，則將其縮小
+                chatContainer.style.width = "40px"; // 隱藏時較小寬度
+                chatContainer.style.height = "40px"; // 隱藏時較小高度
+                chatBody.style.display = "none";
+                chatExpanded = false; // 設置為縮小狀態
+            }
+        });
+
+    </script>
+
+}
+
+

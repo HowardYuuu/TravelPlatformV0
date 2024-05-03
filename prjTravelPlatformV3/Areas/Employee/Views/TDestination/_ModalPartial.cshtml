@@ -1,0 +1,105 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.TravelPlan.DestionationEditView
+
+<div class="modal-header">
+	<h5 class="modal-title" id="exampleModalLabel">@ViewBag.title</h5>
+	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div id="divModalContent" class="modal-body">
+	<form id="@ViewBag.formId" asp-action="@ViewBag.model" method="post" enctype="multipart/form-data" name="checkfor">
+		@Html.AntiForgeryToken()
+		<input asp-for="FDestinationId" style="display:none" />
+		<div class="row mb-3">
+			<div class="col text-start">
+				<label asp-for="FDestinationName" class="form-label">@Html.DisplayNameFor(h => h.FDestinationName)</label>
+				<input asp-for="FDestinationName" class="form-control">
+				<span asp-validation-for="FDestinationName" class="text-danger"></span>
+			</div>
+			<div class="col">
+				<label asp-for="FDestinationTypeId" class="form-label">@Html.DisplayNameFor(h => h.FDestinationTypeId)</label>
+				<select asp-for="FDestinationTypeId" class="form-select">
+					@foreach (Ttype x in ViewBag.type)
+					{
+						<option value="@x.FtypeId">@x.Ftype</option>
+					}
+				</select>
+				<span asp-validation-for="FDestinationTypeId" class="text-danger"></span>
+			</div>
+			<div class="col">
+				<label asp-for="FPriority" class="form-label">@Html.DisplayNameFor(h => h.FPriority)</label>
+				<select asp-for="FPriority" class="form-select">
+					@foreach (Tpriority y in ViewBag.priority)
+					{
+						<option value="@y.Fid">@y.FpriorityName</option>
+					}
+				</select>
+				<span asp-validation-for="FPriority" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div class="col">
+				<label asp-for="FPrice" class="form-label">@Html.DisplayNameFor(h => h.FPrice)</label>
+				<input asp-for="FPrice" class="form-control">
+				<span asp-validation-for="FPrice" class="text-danger"></span>
+			</div>
+			<div class="col text-start">
+				<label asp-for="FStock" class="form-label">@Html.DisplayNameFor(h => h.FStock)</label>
+				<input asp-for="FStock" class="form-control">
+				<span asp-validation-for="FStock" class="text-danger"></span>
+			</div>
+			<div class="col text-start">
+				<label asp-for="FAreaId" class="form-label">@Html.DisplayNameFor(h => h.FAreaId)</label>
+				<select asp-for="FAreaId" class="form-select">
+					@foreach (TtravelArea x in ViewBag.area)
+					{
+						<option value="@x.FareaId">@x.FareaName</option>
+					}
+				</select>
+				<span asp-validation-for="FAreaId" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="mb-3">
+			<label asp-for="FAddress" class="form-label">@Html.DisplayNameFor(h => h.FAddress)</label>
+			<input asp-for="FAddress" class="form-control">
+			<span asp-validation-for="FAddress" class="text-danger"></span>
+		</div>
+		<div class="mb-3">
+			<label asp-for="FDestinationContent" class="form-label">@Html.DisplayNameFor(h => h.FDestinationContent)</label>
+			<textarea asp-for="FDestinationContent" class="form-control" rows="3"></textarea>
+			<span asp-validation-for="FDestinationContent" class="text-danger"></span>
+		</div>
+		<div class="mb-3">
+			<label asp-for="TdestinationPhotos" class="form-label">@Html.DisplayNameFor(h => h.TdestinationPhotos)</label>
+			@if (Model.TdestinationPhotos != null)
+			{
+				@foreach (var photoData in Model.TdestinationPhotos)
+				{
+					var base64String = Convert.ToBase64String(photoData);
+					var imgSrc = $"data:image/jpeg;base64,{base64String}";
+
+					<img src="@imgSrc" style="width:200px;height:150px;padding-right:10px" alt="Photo" data-photo="@Json.Serialize(photoData)" onclick='imagebeClick(@Json.Serialize(photoData),this)' />
+				}
+			}
+			else
+			{
+				<div class="row">
+					<h5 id="noPhoto" class="text-center">圖片尚未加入</h5>
+				</div>
+			}
+		</div>
+		<div class="mb-3">
+			<label class="form-label" for="inputGroupFile01">上傳圖片</label>
+			<input name="upload" type="file" class="form-control" id="inputGroupFile01" onchange="readimg(this)" multiple>
+			<div id="imgCreate">
+				<div class="container">
+					<div class="row">
+						<h5 id="noPhoto" class="text-center">尚無圖片</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+			<button type="button" class="btn btn-primary" id="btnSave" onclick='sendFetchRequest("@ViewBag.formId")'>儲存</button>
+		</div>
+	</form>
+</div>

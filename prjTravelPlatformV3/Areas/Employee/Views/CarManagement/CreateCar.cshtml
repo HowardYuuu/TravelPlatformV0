@@ -1,0 +1,53 @@
+﻿@model prjTravelPlatformV3.Models.TRcarInfo
+@{
+    ViewData["Title"] = "CreateCar";
+}
+
+<h1>CreateCar</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="FCarId" />
+            <div class="form-group">
+                <label asp-for="FLicensePlateNum" class="control-label"></label>
+                <input asp-for="FLicensePlateNum" class="form-control" />
+                <span asp-validation-for="FLicensePlateNum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FModelId" class="control-label"></label>
+                <input asp-for="FModelId" class="form-control" />
+                <span asp-validation-for="FModelId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FRentStatus" class="control-label"></label>
+                <input asp-for="FRentStatus" class="form-control" />
+                <span asp-validation-for="FRentStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FCompanyId" class="control-label"></label>
+                <input asp-for="FCompanyId" class="form-control" />
+                <span asp-validation-for="FCompanyId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FLocationId" class="control-label"></label>
+                <input asp-for="FLocationId" class="form-control" />
+                <span asp-validation-for="FLocationId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

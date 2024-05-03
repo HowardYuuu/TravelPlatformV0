@@ -1,0 +1,1166 @@
+﻿@using System.Security.Claims
+@using prjTravelPlatform_release.Areas.Customer.ViewModel.Discounts
+@inject IHttpContextAccessor _httpContextAccessor
+
+@model CusCouponViewModel
+
+@{
+    ViewData["Title"] = "領取優惠卷";
+}
+
+@section Styles {
+
+
+    <head>
+		@* <link href="~/css/discount/coupon01.css" rel="stylesheet" /> *@
+    </head>
+    <style>
+        .radious-img{
+            border-radius:50%;
+        }
+        .copy-button{
+            background-color:white;
+            color:white;
+            padding:8px 20 px;
+            border:none;
+            cursor:pointer;
+            border-radius:5px;
+            display:inline-flex;   
+            align-items:center;
+            justify-content: center;
+        }
+
+        .copy-button svg{
+                width: 20px; 
+                height: 20px; 
+        }
+
+        .notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .containerImg {
+            width: 500px;
+            height: 300px;
+            background-image: url('~/img/discount/orange-background.png'); /* 更改 'your-image.jpg' 为你的图像路径 */ 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .swal-text {
+            font-weight: 900;
+            font-size: 20px;
+           
+        }
+
+    </style>
+}
+
+<div class="masthead__bg" style="position: relative">
+    <img src="~/img/discount/getcoupon03.png" style="filter: brightness(55%); width: 100%; height:320px;" />
+    <div class="text-center" style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%);">
+        <h1 class="text-30 fw-600 text-white">領取優惠卷</h1>
+        <a style="color:white" asp-area="Customer" asp-controller="Discounts" asp-action="Index">會員優惠卷</a>
+    </div>
+</div>
+
+<section class="pt-0 pb-0 bg-light-2" >
+    <div style="">
+       
+    <div class="container" >
+
+        <div class="row">
+            <div class="col-12">
+
+
+                <div class="tabs -underline-2 pt-10 lg:pt-40 sm:pt-30 js-tabs" style="padding-top:0px" id="target-coupon">
+                    <div class="tabs__controls row x-gap-10 y-gap-10 justify-center js-tabs-controls">
+
+                        <div class="col-auto">
+                                <button class="tabs__button  text-30 fw-500 px-20 py-5 rounded-8 bg-light-2 js-tabs-button is-tab-el-active" data-tab-target=".-tab-item-1" style="font-weight:bold; ">全站</button>
+                        </div>
+                        <div class="col-auto">
+                                <button class="tabs__button text-30 fw-500 px-20 py-5 rounded-8 bg-light-2 js-tabs-button" data-tab-target=".-tab-item-2" style="font-weight:bold; ">旅遊方案</button>
+                        </div>
+                        <div class="col-auto">
+                                <button class="tabs__button text-30 fw-500 px-20 py-5 rounded-8 bg-light-2 js-tabs-button" data-tab-target=".-tab-item-3" style="font-weight:bold; ">住宿</button>
+                        </div>
+
+                        <div class="col-auto">
+                                <button class="tabs__button text-30 fw-500 px-20 py-5 rounded-8 bg-light-2 js-tabs-button" data-tab-target=".-tab-item-4" style="font-weight:bold; ">航班</button>
+                        </div>
+                        <div class="col-auto">
+                                <button class="tabs__button text-30 fw-500 px-20 py-5 rounded-8 bg-light-2 js-tabs-button" data-tab-target=".-tab-item-5" style="font-weight:bold; ">租車</button>
+                        </div>
+                       
+                        <div class="col-auto">
+                                <button class="tabs__button text-30 fw-500 px-20 py-5 rounded-8 bg-light-2 js-tabs-button" data-tab-target=".-tab-item-6" style="font-weight:bold; ">旅遊服務</button>
+                        </div>
+                        <div class="col-auto">
+                                <button class="tabs__button text-30 fw-500 px-20 py-5 rounded-8 bg-light-2 js-tabs-button" data-tab-target=".-tab-item-7" style="font-weight:bold; ">伴手禮</button>
+                        </div>
+                        @*  <hr style="color:black ;height:1px ;margin-top:0px" /> *@
+                    </div>
+                
+
+                    <div class="tabs__content pt-15 js-tabs-content">
+
+                        <div class="tabs__pane -tab-item-1 is-tab-el-active">
+                            <p class="text-15 text-dark-1">
+
+                                <div class="row">
+
+                                    @foreach (var coupon in Model.Coupon.Where(x => x.FEndDate >= DateTime.Now&&x.FProductType!="平台"))
+                                    {
+                                        bool isGetCoupon = isGet(coupon.FCouponId);
+                                        if (!isGetCoupon)
+                                        {
+                                                /* border:2px  lightgrey solid; */
+												<div id="@coupon.FCouponId" name="@coupon.FProductType" class="couponCard row x-gap-80 y-gap-30" style="margin-top:10px; margin-left:1px;margin-bottom:20px ;border-radius:25px; background-color:white; box-shadow:0px 0px 9px">
+                                                    <div class="col-md-auto" style="border-right: 2px dashed grey;background-position: center center; padding-top:0px;background-size: cover;width:400px;" id="couponImg" name="@coupon.FProductType">
+
+                                                           @*  <img class="rounded-4 col-12 " src="~/img/Discount/noImage03.png" alt="~/img/Discount/noImage03.png"> *@
+                                                        
+                                                </div>
+                                                <div class="col-md">
+                                                    <p style="display:none;" value="@coupon.FCouponId" id="FCouponId">@coupon.FCouponId</p>
+                                                    <h3 class="text-30" style="font-weight:bolder">@coupon.FCouponName</h3>
+
+                                                    <div class="col-md">
+                                                        <div class="row x-gap-10 y-gap-10 justify-end ">
+                                                        </div>
+
+                                                        <h3 class="copyText text-40" style="font-weight:bolder" onclick="copyText('@coupon.FCouponCode')">
+                                                             <div style="display: flex; justify-content: space-between;">
+																	<div>
+																		<button class="copy-button" onclick="copyText()">
+																			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z" /><path d="M16 1H6c-1.1 0-1.99.9-1.99 2L4 21c0 1.1.89 2 1.99 2H16c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm-6 2h2v2h-2V3zm6 16H6V6h10v13zm-4-7h4v1h-4v-1z" /></svg>
+																		</button>
+																		@coupon.FCouponCode
+																	</div>
+                                                                    
+                                                                    <h2 class="text-50 lh-14 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(coupon.FDiscount))</h2>
+                                                            </div>
+                                                        </h3>
+                                                       @*  <h2 class="text-50 lh-14 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(coupon.FDiscount))</h2> *@
+                                                        <p></p>
+                                                        <p class="text-18 lh-14 fw-500">@coupon.FStartDate 生效<button data-x-click="mapFilter" class="text-blue-1 underline ml-10">使用規則</button></p>
+                                                        <div class="row x-gap-10 y-gap-10 items-center pt-20">
+                                                            <div class="col-auto">
+                                                                <p class="text-20" style="font-weight:bolder">
+                                                                    @coupon.FNote
+
+                                                                </p>
+                                                            </div>
+
+                                                            @* <div class="col-auto">
+                                                    <div class="size-3 rounded-full bg-light-1"></div>
+                                                    </div> *@
+
+                                                            <div class="col-end">
+                                                                <p class="text-20" style="font-weight:bolder">類型：@coupon.FProductType</p>
+                                                                    <div class="row x-gap-10 y-gap-10 justify-end items-center md:justify-start">
+
+                                                                        @* <div class="col-auto">
+                                                                            <h2 class="text-50 lh-14 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(coupon.FDiscount))</h2>
+                                                                </div> *@
+
+                                                                        <div class="col-auto">
+                                                                            <button type="button" class="couponbtn button -md -dark-1 bg-blue-1 text-white mt-24 float-right text-24  rounded-8" style="font-weight:bold" data-id="@coupon.FCouponId" id="couponbtn">領取</button>
+                                                                        </div>
+                                                                    </div>
+                                                            </div>
+                                                               
+                                                        </div>
+
+                                                        @*
+                                                <div class="row x-gap-10 y-gap-10 pt-20">
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Breakfast</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">WiFi</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Spa</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Bar</div>
+                                                </div>
+
+                                                </div> *@<!--商品含有物小框框-->
+                                                    </div>
+
+                                                    @* <div class="col-md-auto text-right md:text-left"> *@
+                                                    @* <div class="d-flex flex-column justify-between h-full"> *@
+                                                    <div class="row x-gap-10 y-gap-10 justify-end items-center md:justify-start" style="display:none">
+
+                                                        @* <div class="col-auto">
+                                                <div class="text-14 lh-14 fw-500">Exceptional</div>
+                                                <div class="text-14 lh-14 text-light-1">3,014 reviews</div>
+                                                </div> *@
+
+                                                        <div class="col-auto">
+                                                                <button type="button" class="couponbtn button -md -dark-1 bg-blue-1 text-white mt-24 float-right text-24  rounded-8" style="font-weight:bold" data-id="@coupon.FCouponId" id="couponbtn">領取</button>
+                                                        </div>
+                                                    </div>
+
+                                                    @*  <div class="pt-24">
+                                            <div class="fw-500">Starting from</div>
+                                            <span class="fw-500 text-blue-1">US$72</span> / night
+                                            </div> *@
+                                                    @* </div> *@
+                                                    @* </div> *@
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+                                </div>
+
+
+
+                                <br><br>
+
+                            </p>
+                        </div>
+
+                        <div class="tabs__pane -tab-item-2">
+                            <p class="text-15 text-dark-1">
+                                <div class="row">
+                                        @foreach (var coupon in Model.Coupon.Where(x => x.FEndDate >= DateTime.Now && x.FProductType == "旅遊" && x.FProductType != "平台"))
+                                    {
+                                        bool isGetCoupon = isGet(coupon.FCouponId);
+                                        if (!isGetCoupon)
+                                        {
+                                                <div id="@coupon.FCouponId" name="@coupon.FProductType" class="couponCard row x-gap-80 y-gap-30" style="margin-top:10px; margin-left:1px;margin-bottom:20px ;border-radius:25px; background-color:white; box-shadow:0px 0px 9px">
+                                                    <div class="col-md-auto" style="border-right: 2px dashed grey;background-position: center center; padding-top:0px;background-size: cover;width:400px;" id="couponImg" name="@coupon.FProductType">
+
+                                                  @*   <div class="cardImage ratio ratio-1:1 w-200  md:w-1/1 rounded-4">
+                                                        <div class="cardImage__content">
+                                                            <img class="rounded-4 col-12 " src="~/img/Discount/noImage03.png" alt="~/img/Discount/noImage03.png">
+                                                        </div>
+                                                    </div> *@
+
+                                                </div>
+                                                <div class="col-md">
+                                                    <p style="display:none;" value="@coupon.FCouponId" id="FCouponId">@coupon.FCouponId</p>
+                                                    <h3 class="text-30" style="font-weight:bolder">@coupon.FCouponName</h3>
+
+                                                    <div class="col-md">
+                                                        <div class="row x-gap-10 y-gap-10 justify-end ">
+                                                        </div>
+
+                                                        <h3 class="copyText text-40" style="font-weight:bolder" onclick="copyText('@coupon.FCouponCode')">
+                                                                <div style="display: flex; justify-content: space-between;">
+                                                                    <div>
+                                                                        <button class="copy-button" onclick="copyText()">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z" /><path d="M16 1H6c-1.1 0-1.99.9-1.99 2L4 21c0 1.1.89 2 1.99 2H16c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm-6 2h2v2h-2V3zm6 16H6V6h10v13zm-4-7h4v1h-4v-1z" /></svg>
+                                                                        </button>
+                                                                        @coupon.FCouponCode
+                                                                    </div>
+
+                                                                    <h2 class="text-50 lh-14 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(coupon.FDiscount))</h2>
+                                                                </div>
+                                                        </h3>
+                                                        @* <h2 class="text-30 lh-14 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(coupon.FDiscount))</h2> *@
+                                                        <p></p>
+                                                        <p class="text-18 lh-14 fw-500">@coupon.FStartDate 生效<button data-x-click="mapFilter" class="text-blue-1 underline ml-10">使用規則</button></p>
+                                                        <div class="row x-gap-10 y-gap-10 items-center pt-20">
+                                                            <div class="col-auto">
+                                                                <p class="text-20" style="font-weight:bolder">
+                                                                    @coupon.FNote
+
+                                                                </p>
+                                                            </div>
+
+                                                            @* <div class="col-auto">
+                                                    <div class="size-3 rounded-full bg-light-1"></div>
+                                                    </div> *@
+
+                                                            <div class="col-end">
+                                                                <p class="text-20" style="font-weight:bolder">類型：@coupon.FProductType</p>
+
+                                                            </div>
+
+                                                        </div>
+                                                        @*
+                                                <div class="row x-gap-10 y-gap-10 pt-20">
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Breakfast</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">WiFi</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Spa</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Bar</div>
+                                                </div>
+
+                                                </div> *@<!--商品含有物小框框-->
+                                                    </div>
+
+                                                    @* <div class="col-md-auto text-right md:text-left"> *@
+                                                    @* <div class="d-flex flex-column justify-between h-full"> *@
+                                                    <div class="row x-gap-10 y-gap-10 justify-end items-center md:justify-start">
+                                                        @* <div class="col-auto">
+                                                <div class="text-14 lh-14 fw-500">Exceptional</div>
+                                                <div class="text-14 lh-14 text-light-1">3,014 reviews</div>
+                                                </div> *@
+
+                                                        <div class="col-auto">
+                                                                <button type="button" class="couponbtn button -md -dark-1 bg-blue-1 text-white mt-24 float-right text-24  rounded-8" style="font-weight:bold" data-id="@coupon.FCouponId" id="couponbtn">領取</button>
+                                                        </div>
+                                                    </div>
+
+                                                    @*  <div class="pt-24">
+                                            <div class="fw-500">Starting from</div>
+                                            <span class="fw-500 text-blue-1">US$72</span> / night
+                                            </div> *@
+                                                    @* </div> *@
+                                                    @* </div> *@
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+                                </div>
+                                <br><br>
+
+                            </p>
+                        </div>
+
+                        <div class="tabs__pane -tab-item-3">
+                            <p class="text-15 text-dark-1">
+                                <div class="row">
+                                        @foreach (var coupon in Model.Coupon.Where(x => x.FEndDate >= DateTime.Now && x.FProductType == "住宿" && x.FProductType != "平台"))
+                                    {
+                                        bool isGetCoupon = isGet(coupon.FCouponId);
+                                        if (!isGetCoupon)
+                                        {
+                                                <div id="@coupon.FCouponId" name="@coupon.FProductType" class="couponCard row x-gap-80 y-gap-30" style="margin-top:10px; margin-left:1px;margin-bottom:20px ;border-radius:25px; background-color:white; box-shadow:0px 0px 9px">
+                                                    <div class="col-md-auto" style="border-right: 2px dashed grey;background-position: center center; padding-top:0px;background-size: cover;width:400px;" id="couponImg" name="@coupon.FProductType">
+
+                                                    @* <div class="cardImage ratio ratio-1:1 w-200  md:w-1/1 rounded-4">
+                                                        <div class="cardImage__content">
+                                                            <img class="rounded-4 col-12 " src="~/img/Discount/noImage03.png" alt="~/img/Discount/noImage03.png">
+                                                        </div>
+                                                    </div> *@
+
+                                                </div>
+                                                <div class="col-md">
+                                                    <p style="display:none;" value="@coupon.FCouponId" id="FCouponId">@coupon.FCouponId</p>
+                                                    <h3 class="text-30" style="font-weight:bolder">@coupon.FCouponName</h3>
+
+                                                    <div class="col-md">
+                                                        <div class="row x-gap-10 y-gap-10 justify-end ">
+                                                        </div>
+
+                                                        <h3 class="copyText text-40" style="font-weight:bolder" onclick="copyText('@coupon.FCouponCode')">
+                                                                <div style="display: flex; justify-content: space-between;">
+                                                                    <div>
+                                                                        <button class="copy-button" onclick="copyText()">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z" /><path d="M16 1H6c-1.1 0-1.99.9-1.99 2L4 21c0 1.1.89 2 1.99 2H16c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm-6 2h2v2h-2V3zm6 16H6V6h10v13zm-4-7h4v1h-4v-1z" /></svg>
+                                                                        </button>
+                                                                        @coupon.FCouponCode
+                                                                    </div>
+
+                                                                    <h2 class="text-50 lh-14 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(coupon.FDiscount))</h2>
+                                                                </div>
+                                                        </h3>
+                                                        @* <h2 class="text-30 lh-14 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(coupon.FDiscount))</h2> *@
+                                                        <p></p>
+                                                        <p class="text-18 lh-14 fw-500">@coupon.FStartDate 生效<button data-x-click="mapFilter" class="text-blue-1 underline ml-10">使用規則</button></p>
+                                                        <div class="row x-gap-10 y-gap-10 items-center pt-20">
+                                                            <div class="col-auto">
+                                                                <p class="text-20" style="font-weight:bolder">
+                                                                    @coupon.FNote
+
+                                                                </p>
+                                                            </div>
+
+                                                            @* <div class="col-auto">
+                                                    <div class="size-3 rounded-full bg-light-1"></div>
+                                                    </div> *@
+
+                                                            <div class="col-end">
+                                                                <p class="text-20" style="font-weight:bolder">類型：@coupon.FProductType</p>
+
+                                                            </div>
+
+                                                        </div>
+                                                        @*
+                                                <div class="row x-gap-10 y-gap-10 pt-20">
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Breakfast</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">WiFi</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Spa</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Bar</div>
+                                                </div>
+
+                                                </div> *@<!--商品含有物小框框-->
+                                                    </div>
+
+                                                    @* <div class="col-md-auto text-right md:text-left"> *@
+                                                    @* <div class="d-flex flex-column justify-between h-full"> *@
+                                                    <div class="row x-gap-10 y-gap-10 justify-end items-center md:justify-start">
+                                                        @* <div class="col-auto">
+                                                <div class="text-14 lh-14 fw-500">Exceptional</div>
+                                                <div class="text-14 lh-14 text-light-1">3,014 reviews</div>
+                                                </div> *@
+
+                                                        <div class="col-auto">
+                                                                <button type="button" class="couponbtn button -md -dark-1 bg-blue-1 text-white mt-24 float-right text-24  rounded-8" style="font-weight:bold" data-id="@coupon.FCouponId" id="couponbtn">領取</button>
+                                                        </div>
+                                                    </div>
+
+                                                    @*  <div class="pt-24">
+                                            <div class="fw-500">Starting from</div>
+                                            <span class="fw-500 text-blue-1">US$72</span> / night
+                                            </div> *@
+                                                    @* </div> *@
+                                                    @* </div> *@
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+                                </div>
+                                <br><br>
+
+                            </p>
+                        </div>
+
+
+                        <div class="tabs__pane -tab-item-4">
+                            <p class="text-15 text-dark-1">
+                                <div class="row">
+                                        @foreach (var coupon in Model.Coupon.Where(x => x.FEndDate >= DateTime.Now && x.FProductType == "機票" && x.FProductType != "平台"))
+                                    {
+                                        bool isGetCoupon = isGet(coupon.FCouponId);
+                                        if (!isGetCoupon)
+                                        {
+                                                <div id="@coupon.FCouponId" name="@coupon.FProductType" class="couponCard row x-gap-80 y-gap-30" style="margin-top:10px; margin-left:1px;margin-bottom:20px ;border-radius:25px; background-color:white; box-shadow:0px 0px 9px">
+                                                    <div class="col-md-auto" style="border-right: 2px dashed grey;background-position: center center; padding-top:0px;background-size: cover;width:400px;" id="couponImg" name="@coupon.FProductType">
+
+                                                    @* <div class="cardImage ratio ratio-1:1 w-200  md:w-1/1 rounded-4">
+                                                        <div class="cardImage__content">
+                                                            <img class="rounded-4 col-12 " src="~/img/Discount/noImage03.png" alt="~/img/Discount/noImage03.png">
+                                                        </div>
+                                                    </div> *@
+
+                                                </div>
+                                                <div class="col-md">
+                                                    <p style="display:none;" value="@coupon.FCouponId" id="FCouponId">@coupon.FCouponId</p>
+                                                    <h3 class="text-30" style="font-weight:bolder">@coupon.FCouponName</h3>
+
+                                                    <div class="col-md">
+                                                        <div class="row x-gap-10 y-gap-10 justify-end ">
+                                                        </div>
+
+                                                        <h3 class="copyText text-40" style="font-weight:bolder" onclick="copyText('@coupon.FCouponCode')">
+                                                                <div style="display: flex; justify-content: space-between;">
+                                                                    <div>
+                                                                        <button class="copy-button" onclick="copyText()">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z" /><path d="M16 1H6c-1.1 0-1.99.9-1.99 2L4 21c0 1.1.89 2 1.99 2H16c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm-6 2h2v2h-2V3zm6 16H6V6h10v13zm-4-7h4v1h-4v-1z" /></svg>
+                                                                        </button>
+                                                                        @coupon.FCouponCode
+                                                                    </div>
+
+                                                                    <h2 class="text-50 lh-14 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(coupon.FDiscount))</h2>
+                                                                </div>
+                                                        </h3>
+                                                        @* <h2 class="text-30 lh-14 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(coupon.FDiscount))</h2> *@
+                                                        <p></p>
+                                                        <p class="text-18 lh-14 fw-500">@coupon.FStartDate 生效<button data-x-click="mapFilter" class="text-blue-1 underline ml-10">使用規則</button></p>
+                                                        <div class="row x-gap-10 y-gap-10 items-center pt-20">
+                                                            <div class="col-auto">
+                                                                <p class="text-20" style="font-weight:bolder">
+                                                                    @coupon.FNote
+
+                                                                </p>
+                                                            </div>
+
+                                                            @* <div class="col-auto">
+                                                    <div class="size-3 rounded-full bg-light-1"></div>
+                                                    </div> *@
+
+                                                            <div class="col-end">
+                                                                <p class="text-20" style="font-weight:bolder">類型：@coupon.FProductType</p>
+
+                                                            </div>
+
+                                                        </div>
+                                                        @*
+                                                <div class="row x-gap-10 y-gap-10 pt-20">
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Breakfast</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">WiFi</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Spa</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Bar</div>
+                                                </div>
+
+                                                </div> *@<!--商品含有物小框框-->
+                                                    </div>
+
+                                                    @* <div class="col-md-auto text-right md:text-left"> *@
+                                                    @* <div class="d-flex flex-column justify-between h-full"> *@
+                                                    <div class="row x-gap-10 y-gap-10 justify-end items-center md:justify-start">
+                                                        @* <div class="col-auto">
+                                                <div class="text-14 lh-14 fw-500">Exceptional</div>
+                                                <div class="text-14 lh-14 text-light-1">3,014 reviews</div>
+                                                </div> *@
+
+                                                        <div class="col-auto">
+                                                                <button type="button" class="couponbtn button -md -dark-1 bg-blue-1 text-white mt-24 float-right text-24  rounded-8" style="font-weight:bold" data-id="@coupon.FCouponId" id="couponbtn">領取</button>
+                                                        </div>
+                                                    </div>
+
+                                                    @*  <div class="pt-24">
+                                            <div class="fw-500">Starting from</div>
+                                            <span class="fw-500 text-blue-1">US$72</span> / night
+                                            </div> *@
+                                                    @* </div> *@
+                                                    @* </div> *@
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+                                </div>
+                                <br><br>
+
+                            </p>
+                        </div>
+
+
+                        <div class="tabs__pane -tab-item-5">
+                            <p class="text-15 text-dark-1">
+                                <div class="row">
+                                        @foreach (var coupon in Model.Coupon.Where(x => x.FEndDate >= DateTime.Now && x.FProductType == "租車" && x.FProductType != "平台"))
+                                    {
+                                        bool isGetCoupon = isGet(coupon.FCouponId);
+                                        if (!isGetCoupon)
+                                        {
+                                                <div id="@coupon.FCouponId" name="@coupon.FProductType" class="couponCard row x-gap-80 y-gap-30" style="margin-top:10px; margin-left:1px;margin-bottom:20px ;border-radius:25px; background-color:white; box-shadow:0px 0px 9px">
+                                                    <div class="col-md-auto" style="border-right: 2px dashed grey;background-position: center center; padding-top:0px;background-size: cover;width:400px;" id="couponImg" name="@coupon.FProductType">
+
+                                                    @* <div class="cardImage ratio ratio-1:1 w-200  md:w-1/1 rounded-4">
+                                                        <div class="cardImage__content">
+                                                            <img class="rounded-4 col-12 " src="~/img/Discount/noImage03.png" alt="~/img/Discount/noImage03.png">
+                                                        </div>
+                                                    </div> *@
+
+                                                </div>
+                                                <div class="col-md">
+                                                    <p style="display:none;" value="@coupon.FCouponId" id="FCouponId">@coupon.FCouponId</p>
+                                                    <h3 class="text-30" style="font-weight:bolder">@coupon.FCouponName</h3>
+
+                                                    <div class="col-md">
+                                                        <div class="row x-gap-10 y-gap-10 justify-end ">
+                                                        </div>
+
+                                                        <h3 class="copyText text-40" style="font-weight:bolder" onclick="copyText('@coupon.FCouponCode')">
+                                                                <div style="display: flex; justify-content: space-between;">
+                                                                    <div>
+                                                                        <button class="copy-button" onclick="copyText()">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z" /><path d="M16 1H6c-1.1 0-1.99.9-1.99 2L4 21c0 1.1.89 2 1.99 2H16c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm-6 2h2v2h-2V3zm6 16H6V6h10v13zm-4-7h4v1h-4v-1z" /></svg>
+                                                                        </button>
+                                                                        @coupon.FCouponCode
+                                                                    </div>
+
+                                                                    <h2 class="text-50 lh-14 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(coupon.FDiscount))</h2>
+                                                                </div>
+                                                        </h3>
+                                                       @*  <h2 class="text-30 lh-14 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(coupon.FDiscount))</h2> *@
+                                                        <p></p>
+                                                        <p class="text-18 lh-14 fw-500">@coupon.FStartDate 生效<button data-x-click="mapFilter" class="text-blue-1 underline ml-10">使用規則</button></p>
+                                                        <div class="row x-gap-10 y-gap-10 items-center pt-20">
+                                                            <div class="col-auto">
+                                                                <p class="text-20" style="font-weight:bolder">
+                                                                    @coupon.FNote
+
+                                                                </p>
+                                                            </div>
+
+                                                            @* <div class="col-auto">
+                                                    <div class="size-3 rounded-full bg-light-1"></div>
+                                                    </div> *@
+
+                                                            <div class="col-end">
+                                                                <p class="text-20" style="font-weight:bolder">類型：@coupon.FProductType</p>
+
+                                                            </div>
+
+                                                        </div>
+                                                        @*
+                                                <div class="row x-gap-10 y-gap-10 pt-20">
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Breakfast</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">WiFi</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Spa</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Bar</div>
+                                                </div>
+
+                                                </div> *@<!--商品含有物小框框-->
+                                                    </div>
+
+                                                    @* <div class="col-md-auto text-right md:text-left"> *@
+                                                    @* <div class="d-flex flex-column justify-between h-full"> *@
+                                                    <div class="row x-gap-10 y-gap-10 justify-end items-center md:justify-start">
+                                                        @* <div class="col-auto">
+                                                <div class="text-14 lh-14 fw-500">Exceptional</div>
+                                                <div class="text-14 lh-14 text-light-1">3,014 reviews</div>
+                                                </div> *@
+
+                                                        <div class="col-auto">
+                                                                <button type="button" class="couponbtn button -md -dark-1 bg-blue-1 text-white mt-24 float-right text-24  rounded-8" style="font-weight:bold" data-id="@coupon.FCouponId" id="couponbtn">領取</button>
+                                                        </div>
+                                                    </div>
+
+                                                    @*  <div class="pt-24">
+                                            <div class="fw-500">Starting from</div>
+                                            <span class="fw-500 text-blue-1">US$72</span> / night
+                                            </div> *@
+                                                    @* </div> *@
+                                                    @* </div> *@
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+                                </div>
+                                <br><br>
+
+                            </p>
+                        </div>
+
+
+                        <div class="tabs__pane -tab-item-6">
+                            <p class="text-15 text-dark-1">
+                                <div class="row">
+                                        @foreach (var coupon in Model.Coupon.Where(x => x.FEndDate >= DateTime.Now && x.FProductType == "代辦" && x.FProductType != "平台"))
+                                    {
+                                        bool isGetCoupon = isGet(coupon.FCouponId);
+                                        if (!isGetCoupon)
+                                        {
+                                                <div id="@coupon.FCouponId" name="@coupon.FProductType" class="couponCard row x-gap-80 y-gap-30" style="margin-top:10px; margin-left:1px;margin-bottom:20px ;border-radius:25px; background-color:white; box-shadow:0px 0px 9px">
+                                                    <div class="col-md-auto" style="border-right: 2px dashed grey;background-position: center center; padding-top:0px;background-size: cover;width:400px;" id="couponImg" name="@coupon.FProductType">
+
+                                                   @*  <div class="cardImage ratio ratio-1:1 w-200  md:w-1/1 rounded-4">
+                                                        <div class="cardImage__content">
+                                                            <img class="rounded-4 col-12 " src="~/img/Discount/noImage03.png" alt="~/img/Discount/noImage03.png">
+                                                        </div>
+                                                    </div> *@
+
+                                                </div>
+                                                <div class="col-md">
+                                                    <p style="display:none;" value="@coupon.FCouponId" id="FCouponId">@coupon.FCouponId</p>
+                                                    <h3 class="text-30" style="font-weight:bolder">@coupon.FCouponName</h3>
+
+                                                    <div class="col-md">
+                                                        <div class="row x-gap-10 y-gap-10 justify-end ">
+                                                        </div>
+
+                                                        <h3 class="copyText text-40" style="font-weight:bolder" onclick="copyText('@coupon.FCouponCode')">
+                                                                <div style="display: flex; justify-content: space-between;">
+                                                                    <div>
+                                                                        <button class="copy-button" onclick="copyText()">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z" /><path d="M16 1H6c-1.1 0-1.99.9-1.99 2L4 21c0 1.1.89 2 1.99 2H16c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm-6 2h2v2h-2V3zm6 16H6V6h10v13zm-4-7h4v1h-4v-1z" /></svg>
+                                                                        </button>
+                                                                        @coupon.FCouponCode
+                                                                    </div>
+
+                                                                    <h2 class="text-50 lh-14 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(coupon.FDiscount))</h2>
+                                                                </div>
+                                                        </h3>
+                                                      @*   <h2 class="text-30 lh-14 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(coupon.FDiscount))</h2> *@
+                                                        <p></p>
+                                                        <p class="text-18 lh-14 fw-500">@coupon.FStartDate 生效<button data-x-click="mapFilter" class="text-blue-1 underline ml-10">使用規則</button></p>
+                                                        <div class="row x-gap-10 y-gap-10 items-center pt-20">
+                                                            <div class="col-auto">
+                                                                <p class="text-20" style="font-weight:bolder">
+                                                                    @coupon.FNote
+
+                                                                </p>
+                                                            </div>
+
+                                                            @* <div class="col-auto">
+                                                    <div class="size-3 rounded-full bg-light-1"></div>
+                                                    </div> *@
+
+                                                            <div class="col-end">
+                                                                <p class="text-20" style="font-weight:bolder">類型：@coupon.FProductType</p>
+
+                                                            </div>
+
+                                                        </div>
+                                                        @*
+                                                <div class="row x-gap-10 y-gap-10 pt-20">
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Breakfast</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">WiFi</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Spa</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Bar</div>
+                                                </div>
+
+                                                </div> *@<!--商品含有物小框框-->
+                                                    </div>
+
+                                                    @* <div class="col-md-auto text-right md:text-left"> *@
+                                                    @* <div class="d-flex flex-column justify-between h-full"> *@
+                                                    <div class="row x-gap-10 y-gap-10 justify-end items-center md:justify-start">
+                                                        @* <div class="col-auto">
+                                                <div class="text-14 lh-14 fw-500">Exceptional</div>
+                                                <div class="text-14 lh-14 text-light-1">3,014 reviews</div>
+                                                </div> *@
+
+                                                        <div class="col-auto">
+                                                                <button type="button" class="couponbtn button -md -dark-1 bg-blue-1 text-white mt-24 float-right text-24  rounded-8" style="font-weight:bold" data-id="@coupon.FCouponId" id="couponbtn">領取</button>
+                                                        </div>
+                                                    </div>
+
+                                                    @*  <div class="pt-24">
+                                            <div class="fw-500">Starting from</div>
+                                            <span class="fw-500 text-blue-1">US$72</span> / night
+                                            </div> *@
+                                                    @* </div> *@
+                                                    @* </div> *@
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+                                </div>
+                                <br><br>
+
+                            </p>
+                        </div>
+
+
+                        <div class="tabs__pane -tab-item-7">
+                            <p class="text-15 text-dark-1">
+                                <div class="row">
+                                        @foreach (var coupon in Model.Coupon.Where(x => x.FEndDate >= DateTime.Now && x.FProductType == "伴手禮" && x.FProductType != "平台"))
+                                    {
+                                        bool isGetCoupon = isGet(coupon.FCouponId);
+                                        if (!isGetCoupon)
+                                        {
+                                                <div id="@coupon.FCouponId" name="@coupon.FProductType" class="couponCard row x-gap-80 y-gap-30" style="margin-top:10px; margin-left:1px;margin-bottom:20px ;border-radius:25px; background-color:white; box-shadow:0px 0px 9px">
+                                                    <div class="col-md-auto" style="border-right: 2px dashed grey;background-position: center center; padding-top:0px;background-size: cover;width:400px;" id="couponImg" name="@coupon.FProductType">
+
+                                                        @* <div class="cardImage ratio ratio-1:1 w-200  md:w-1/1 rounded-4 ">
+                                                        <div class="cardImage__content">
+                                                            <img class="rounded-4 col-12 " src="~/img/Discount/noImage03.png" alt="~/img/Discount/noImage03.png">
+                                                        </div>
+                                                    </div> *@
+
+                                                </div>
+                                                <div class="col-md">
+                                                    <p style="display:none;" value="@coupon.FCouponId" id="FCouponId">@coupon.FCouponId</p>
+                                                    <h3 class="text-30" style="font-weight:bolder">@coupon.FCouponName</h3>
+
+                                                    <div class="col-md">
+                                                        <div class="row x-gap-10 y-gap-10 justify-end ">
+                                                        </div>
+
+                                                        <h3 class="copyText text-40" style="font-weight:bolder" onclick="copyText('@coupon.FCouponCode')">
+                                                                <div style="display: flex; justify-content: space-between;">
+                                                                    <div>
+                                                                        <button class="copy-button" onclick="copyText()">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z" /><path d="M16 1H6c-1.1 0-1.99.9-1.99 2L4 21c0 1.1.89 2 1.99 2H16c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm-6 2h2v2h-2V3zm6 16H6V6h10v13zm-4-7h4v1h-4v-1z" /></svg>
+                                                                        </button>
+                                                                        @coupon.FCouponCode
+                                                                    </div>
+
+                                                                    <h2 class="text-50 lh-14 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(coupon.FDiscount))</h2>
+                                                                </div>
+                                                        </h3>
+                                                        @* <h2 class="text-30 lh-14 fw-500" style="color:red;"><small class="text-18" style="color:red;">$</small>@Math.Floor(Convert.ToDecimal(coupon.FDiscount))</h2> *@
+                                                        <p></p>
+                                                        <p class="text-18 lh-14 fw-500">@coupon.FStartDate 生效<button data-x-click="mapFilter" class="text-blue-1 underline ml-10">使用規則</button></p>
+                                                        <div class="row x-gap-10 y-gap-10 items-center pt-20">
+                                                            <div class="col-auto">
+                                                                <p class="text-20" style="font-weight:bolder">
+                                                                    @coupon.FNote
+
+                                                                </p>
+                                                            </div>
+
+                                                            @* <div class="col-auto">
+                                                    <div class="size-3 rounded-full bg-light-1"></div>
+                                                    </div> *@
+
+                                                            <div class="col-end">
+                                                                <p class="text-20" style="font-weight:bolder">類型：@coupon.FProductType</p>
+
+                                                            </div>
+
+                                                        </div>
+                                                        @*
+                                                <div class="row x-gap-10 y-gap-10 pt-20">
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Breakfast</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">WiFi</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Spa</div>
+                                                </div>
+
+                                                <div class="col-auto">
+                                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">Bar</div>
+                                                </div>
+
+                                                </div> *@<!--商品含有物小框框-->
+                                                    </div>
+
+                                                    @* <div class="col-md-auto text-right md:text-left"> *@
+                                                    @* <div class="d-flex flex-column justify-between h-full"> *@
+                                                    <div class="row x-gap-10 y-gap-10 justify-end items-center md:justify-start">
+                                                        @* <div class="col-auto">
+                                                <div class="text-14 lh-14 fw-500">Exceptional</div>
+                                                <div class="text-14 lh-14 text-light-1">3,014 reviews</div>
+                                                </div> *@
+
+                                                        <div class="col-auto">
+                                                                <button type="button" class="couponbtn button -md -dark-1 bg-blue-1 text-white mt-24 float-right text-24  rounded-8" style="font-weight:bold" data-id="@coupon.FCouponId" id="couponbtn">領取</button>
+                                                        </div>
+                                                    </div>
+
+                                                    @*  <div class="pt-24">
+                                            <div class="fw-500">Starting from</div>
+                                            <span class="fw-500 text-blue-1">US$72</span> / night
+                                            </div> *@
+                                                    @* </div> *@
+                                                    @* </div> *@
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+                                </div>
+                                <br><br>
+
+                            </p>
+                        </div>
+                    </div>
+
+@*                 <div class="row">
+                    @foreach (var coupon in Model)
+                    {
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <img style="width:300px;height:300px;" class="card-img-top" src="~/img/disc50%.png" alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title">折扣碼: @coupon.FCouponCode</h5>
+                                    <p class="card-text"><strong>優惠卷名稱:</strong> @coupon.FCouponName</p>
+                                    <p class="card-text"><strong>說明:</strong> @coupon.FCouponName</p>
+                                    <a href="#" class="btn btn-primary">領取</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div> *@<!--初版優惠卷card-->
+  
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+@functions{
+    public bool isGet(int couponId)
+    {
+        if (Convert.ToInt32(ViewBag.CusID) == 0 || _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role) != "Customer")
+        {
+            return false;
+        }
+        return Model.CusCouQty.Where(x => x.FCustomerId == Convert.ToInt32(ViewBag.CusID)).Any(x => x.FCouponId == couponId);
+    }
+}
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+@*     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="//cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script> *@
+    
+    <script>
+
+        (function () {
+            // 獲取所有 id 為 couponImg 的 div 元素
+            var divs = document.querySelectorAll("div#couponImg");
+
+            // 遍歷每個 div 元素
+            divs.forEach(function (div) {
+                // 獲取 div 的 name 屬性值
+                var divName = div.getAttribute("name");
+
+                // 如果 div 的 name 屬性值等於某個類型
+                if (divName === "租車") {
+                    // 檢查 div 是否已處理過，如果處理過則跳過
+                    if (div.classList.contains("processed")) {
+                        return;
+                    }
+                    // 更改 div 的背景圖片
+                    div.style.backgroundImage = "url('../../img/Discount/couponCar.png')";
+
+                    // 將處理過的 div 添加到已處理列表中
+                    div.classList.add("processed");
+                } else if (divName === "旅遊") {
+                    // 檢查 div 是否已處理過，如果處理過則跳過
+                    if (div.classList.contains("processed")) {
+                        return;
+                    }
+                    // 更改 div 的背景圖片
+                    div.style.backgroundImage = "url('../../img/Discount/couponTravel.png')";
+
+                    // 將處理過的 div 添加到已處理列表中
+                    div.classList.add("processed");
+
+                } else if (divName === "伴手禮") {
+                    // 檢查 div 是否已處理過，如果處理過則跳過
+                    if (div.classList.contains("processed")) {
+                        return;
+                    }
+                    // 更改 div 的背景圖片
+                    div.style.backgroundImage = "url('../../img/Discount/couponProduct.png')";
+
+                    // 將處理過的 div 添加到已處理列表中
+                    div.classList.add("processed");
+
+                } else if (divName === "機票") {
+                    // 檢查 div 是否已處理過，如果處理過則跳過
+                    if (div.classList.contains("processed")) {
+                        return;
+                    }
+                    // 更改 div 的背景圖片
+                    div.style.backgroundImage = "url('../../img/Discount/couponFly.png')";
+
+                    // 將處理過的 div 添加到已處理列表中
+                    div.classList.add("processed");
+
+                } else if (divName === "代辦") {
+                    // 檢查 div 是否已處理過，如果處理過則跳過
+                    if (div.classList.contains("processed")) {
+                        return;
+                    }
+                    // 更改 div 的背景圖片
+                    div.style.backgroundImage = "url('../../img/Discount/couponVisa.png')";
+
+                    // 將處理過的 div 添加到已處理列表中
+                    div.classList.add("processed");
+
+                } else if (divName === "住宿") {
+                    // 檢查 div 是否已處理過，如果處理過則跳過
+                    if (div.classList.contains("processed")) {
+                        return;
+                    }
+                    // 更改 div 的背景圖片
+                    div.style.backgroundImage = "url('../../img/Discount/couponHotels.png')";
+
+                    // 將處理過的 div 添加到已處理列表中
+                    div.classList.add("processed");
+
+                } else {
+                    // 檢查 div 是否已處理過，如果處理過則跳過
+                    if (div.classList.contains("processed")) {
+                        return;
+                    }
+                    // 更改 div 的背景圖片
+                    div.style.backgroundImage = "url('../../img/Discount/noImage03.png')";
+
+                    // 將處理過的 div 添加到已處理列表中
+                    div.classList.add("processed");
+                }
+            });
+        })();
+
+
+
+
+
+        $(document).ready(function () {
+            
+            $('.couponbtn').click(function (e) {
+                e.preventDefault();
+                var couponId = $(this).data('id');
+
+                $.ajax({
+                    type: 'GET',
+                    url: `/api/CusCoupons/getCoupon`,
+                    data: { couponId: couponId },
+                    success: function (response) {
+                        if (response.success) { 
+                         $('.couponCard[id="' + couponId + '"]').hide();
+
+                        Swal.fire({
+                            title: '領取成功!',
+                            text: '優惠卷已添加到您的帳戶。',
+                            icon: 'success',
+                            confirmButtonText: '確定'
+                        });
+                        } else {
+                            // 添加失敗
+                            Swal.fire({
+                                title: '添加失敗',
+                                text: response.errorMessage,
+                                icon: 'error',
+                                confirmButtonText: '確定'
+                            }).then(function () {
+                                // 跳轉到會員登入畫面
+                                window.location.href = "/CustomizedIdentity/Login";
+                            });
+                        }
+                       
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                        Swal.fire({
+                            title: '領取失敗!',
+                            text: '目前伺服器連線異常，請稍後在試。',
+                            icon: 'error',
+                            confirmButtonText: '確定'
+                        });
+                    }
+                });
+            });
+        });
+
+        function copyText(text) {
+           
+
+            // 創建一個臨時 textarea 元素
+            var textarea = document.createElement("textarea");
+            textarea.value = text;
+            document.body.appendChild(textarea);
+
+            // 選取文字並複製到剪貼板
+            textarea.select();
+            document.execCommand("copy");
+
+            // 移除臨時元素
+            document.body.removeChild(textarea);
+
+            // 顯示通知
+            var notification = document.getElementById("notification");
+            notification.style.display = "block";
+
+            // 隱藏通知
+            setTimeout(function () {
+                notification.style.display = "none";
+            }, 3000);
+        
+        }
+
+        // JavaScript代码
+        $(document).ready(function () {
+            $('#checkHotel').change(function () {
+                if (this.checked) {
+                    // 获取 class 为 couponCard 的所有 div 元素
+                    var couponCards = $('.couponCard');
+
+                    // 循环处理每个 couponCard 元素
+                    couponCards.each(function (index, element) {
+                        // 获取当前 couponCard 元素的 name 属性值
+                        var name = $(element).attr('name');
+
+                        // 输出 name 属性值到控制台
+                        console.log('couponCard name:', name);
+                    });
+                } else {
+                    // 复选框被取消选中的处理逻辑
+                    console.log("複選框被取消選中");
+                }
+            });
+        });
+
+
+        let copybtn = document.querySelector(".copybtn");
+
+
+        function copyIt() {
+            let copyInput = document.querySelector('#copyvalue');
+
+            copyInput.select();
+
+            document.execCommand("copy");
+
+            copybtn.textContent = "COPIED";
+        };
+
+
+
+
+    </script>
+
+ }

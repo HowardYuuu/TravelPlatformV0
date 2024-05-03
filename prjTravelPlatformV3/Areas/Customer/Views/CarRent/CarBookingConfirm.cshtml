@@ -1,0 +1,217 @@
+﻿@section Styles
+{
+    <style>
+        .object-fit-contain {
+            object-fit: contain;
+        }
+    </style>
+}
+<!DOCTYPE html>
+<html lang="en" data-x="html" data-x-toggle="html-overflow-hidden">
+<body>
+    <main>
+        <section style="margin-top:100px; width:100%; margin-left:20%;">
+            <div class="container" >
+                <div class="row">
+                    <div class="col-xl-7 col-lg-8">
+
+                        <div class="d-flex flex-column items-center mt-60 lg:md-40 sm:mt-24">
+                            <div class="size-80 flex-center rounded-full bg-dark-3">
+                                <i class="icon-check text-30 text-white"></i>
+                            </div>
+
+                            <div class="text-30 lh-1 fw-600 mt-20">訂單成立</div>
+                        </div>
+
+                        <div class="border-type-1 rounded-8 px-50 py-35 mt-40">
+                            <div class="row">
+
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="text-15 lh-12">訂單編號</div>
+                                    <div class="text-15 lh-12 fw-500 text-blue-1 mt-10" id="orderId"></div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="text-15 lh-12">訂單成立時間</div>
+                                    <div class="text-15 lh-12 fw-500 text-blue-1 mt-10" id="orderDate"></div>
+                                </div>
+
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="text-15 lh-12">訂單總金額</div>
+                                    <div class="text-15 lh-12 fw-500 text-blue-1 mt-10" id="totalPrice"></div>
+                                </div>
+
+                                <div class="col-lg-2 col-md-6">
+                                    <div class="text-15 lh-12">付款方式</div>
+                                    <div class="text-15 lh-12 fw-500 text-blue-1 mt-10" id="payment"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                        
+                        <div class="border-light rounded-8 px-50 py-40 mt-40">
+                            <h4 class="text-20 fw-500 mb-30"><strong>訂購人資訊</strong></h4>
+
+                            <div class="row y-gap-10">
+
+                                <div class="col-12">
+                                    <div class="d-flex justify-between ">
+                                        <div class="text-15 lh-16">姓名</div>
+                                        <div class="text-15 lh-16 fw-500 text-blue-1" id="memberName"></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="d-flex justify-between border-top-light pt-10">
+                                        <div class="text-15 lh-16">電子信箱</div>
+                                        <div class="text-15 lh-16 fw-500 text-blue-1" id="memberEmail"></div>
+                                    </div>
+                                </div>
+                               
+                                <div class="col-12">
+                                    <div class="d-flex justify-between border-top-light pt-10">
+                                        <div class="text-15 lh-16">聯絡電話</div>
+                                        <div class="text-15 lh-16 fw-500 text-blue-1" id="memberPhone"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <h4 class="text-20 fw-500 mb-30 mt-30"><strong>駕駛資訊</strong></h4>
+                            <div class="row y-gap-10">
+
+                                <div class="col-12">
+                                    <div class="d-flex justify-between ">
+                                        <div class="text-15 lh-16">姓名</div>
+                                        <div class="text-15 lh-16 fw-500 text-blue-1" id="driverName"></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="d-flex justify-between border-top-light pt-10">
+                                        <div class="text-15 lh-16">身分證字號</div>
+                                        <div class="text-15 lh-16 fw-500 text-blue-1" id="driverId"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex justify-between border-top-light pt-10">
+                                        <div class="text-15 lh-16">聯絡電話</div>
+                                        <div class="text-15 lh-16 fw-500 text-blue-1" id="phoneNumber"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <hr />
+                            <h4 class="text-20 fw-500 mb-30 mt-30"><strong>商品明細</strong></h4>
+
+                            <div class="row y-gap-10">
+
+                                <div class="col-12">
+                                    <div class="d-flex justify-between ">
+                                        <div class="text-15 lh-16">車型</div>
+                                        <div class="text-15 lh-16 fw-500 text-blue-1" id="carModel"></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="d-flex justify-between border-top-light pt-10">
+                                        <div class="text-15 lh-16">取車地點</div>
+                                        <div class="text-15 lh-16 fw-500 text-blue-1" id="pickupLocation"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex justify-between border-top-light pt-10">
+                                        <div class="text-15 lh-16">取車日期及時間</div>
+                                        <div class="text-15 lh-16 fw-500 text-blue-1" id="pickupDateTime"></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="d-flex justify-between border-top-light pt-10">
+                                        <div class="text-15 lh-16">還車地點</div>
+                                        <div class="text-15 lh-16 fw-500 text-blue-1" id="dropoffLocation"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex justify-between border-top-light pt-10">
+                                        <div class="text-15 lh-16">還車日期及時間</div>
+                                        <div class="text-15 lh-16 fw-500 text-blue-1" id="dropoffDateTime"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+
+
+        <div class="layout-pt-lg"></div>
+
+        
+
+    </main>
+
+</body>
+
+</html>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () 
+        {
+            fetch('/api/RApi/getOrderNDetails', {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Unable to fetch latest order and order detail.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 在這裡處理返回的最新訂單和訂單明細數據
+                    console.log('Latest order and order detail:', data);
+
+                    // 填入訂單編號
+                    document.getElementById('orderId').innerText = data.latestOrder.orderId;
+                    document.getElementById('payment').innerText = data.latestOrder.payment;
+                    document.getElementById('orderDate').innerText = data.latestOrder.orderDate;
+                    document.getElementById('totalPrice').innerText = `NT$${data.latestOrder.totalPrice}`;
+                    document.getElementById('memberName').innerText = data.latestOrder.memberName;
+                    document.getElementById('memberPhone').innerText = data.latestOrder.memberPhone;
+                    document.getElementById('memberEmail').innerText = data.latestOrder.memberEmail;
+
+                    // 填入訂單明細
+                    document.getElementById('driverName').innerText = data.latestOrderDetail.driverName;
+                    document.getElementById('driverId').innerText = data.latestOrderDetail.driverId;
+                    document.getElementById('phoneNumber').innerText = data.latestOrderDetail.phoneNumber;
+                    document.getElementById('carModel').innerText = data.latestOrderDetail.carModel;
+                    document.getElementById('pickupLocation').innerText = data.latestOrderDetail.pickupLocation;
+                    document.getElementById('dropoffLocation').innerText = data.latestOrderDetail.dropoffLocation;
+
+                    var pickupDateTimeParts = data.latestOrderDetail.pickupDateTime.split("T");
+                    var dropoffDateTimeParts = data.latestOrderDetail.dropoffDateTime.split("T");
+
+                    var pickupTime = pickupDateTimeParts[1].substring(0, 5);
+                    var dropoffTime = dropoffDateTimeParts[1].substring(0, 5);
+
+                    var formattedPickupDateTime = pickupDateTimeParts[0] + "  " + pickupTime;
+                    var formattedDropoffDateTime = dropoffDateTimeParts[0] + "  " + dropoffTime;
+
+                    document.getElementById('pickupDateTime').innerText = formattedPickupDateTime;
+                    document.getElementById('dropoffDateTime').innerText = formattedDropoffDateTime;
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+        })
+        
+    </script>
+}

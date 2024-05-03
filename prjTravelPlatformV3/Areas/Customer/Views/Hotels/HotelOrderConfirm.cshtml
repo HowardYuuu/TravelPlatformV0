@@ -1,0 +1,253 @@
+﻿@model prjTravelPlatform_release.Areas.Customer.ViewModel.Hotels.HotelConfirmViewModel
+@{
+    ViewData["Title"] = "確認付款";
+}
+
+<div style="height:100vh">
+    <!--進度條-->
+    <section style="margin-top:90px">
+        <div class="container pt-40 px-90">
+            <div class="row x-gap-40 y-gap-30 items-center">
+                <div class="col-auto">
+                    <div class="d-flex items-center">
+                        <div class="size-40 rounded-full flex-center bg-blue-1-05 text-blue-1 fw-500">1</div>
+                        <div class="text-18 fw-500 ml-10">填寫資訊</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="w-full h-1 bg-border"></div>
+                </div>
+
+                <div class="col-auto">
+                    <div class="d-flex items-center">
+
+                        <div class="size-40 rounded-full flex-center bg-blue-1">
+                            <i class="icon-check text-16 text-white"></i>
+                        </div>
+                        <div class="text-18 fw-500 ml-10">確認付款</div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="w-full h-1 bg-border"></div>
+                </div>
+
+                <div class="col-auto">
+                    <div class="d-flex items-center">
+                        <div class="size-40 rounded-full flex-center bg-blue-1-05 text-blue-1 fw-500">3</div>
+                        <div class="text-18 fw-500 ml-10">付款完成</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--訂單細節-->
+    <section>
+        <div class="container pt-50 px-90">
+            <div class="d-flex items-center justify-between bg-info-1 pl-30 pr-20 py-30 rounded-22">
+                <div class="text-info-2 lh-1 fw-700"><i class="fa-solid fa-circle-exclamation"></i> 交易已授權，確認訂單無誤後請點選確認按鈕以完成交易</div>
+            </div>
+            <div class="row">
+                <div class="col-xl-5 col-lg-4">
+                    <div class="lg:ml-40 md:ml-0 mt-40">
+                        <div class="px-30 py-30 border-light rounded-22">
+                            <div class="text-20 fw-700 mb-30">訂單明細</div>
+                            <div class="row x-gap-15 y-gap-20">
+                                <div class="col-auto">
+                                    <img src="~/img/Hotel/RoomType/@Model.RoomImg" alt="image" class="size-140 rounded-4 object-cover">
+                                </div>
+                                <div class="col">
+                                    <div class="lh-17 fw-700" id="divNameValue">@Model.HotelName - @Model.RoomTypeName</div>
+                                    <div class="text-14 lh-15 mt-5">@Model.BedNum 張 @Model.BedType</div>
+                                </div>
+                            </div>
+                            <div class="border-top-light mt-30 mb-20"></div>
+                            <div class="row y-gap-20 justify-between">
+                                <div class="col-auto">
+                                    <div class="text-15">入住時間</div>
+                                    <div class="fw-500" id="startDateDiv">@Model.StartDate</div>
+                                </div>
+                                <div class="col-auto md:d-none">
+                                    <div class="h-full w-1 bg-border"></div>
+                                </div>
+                                <div class="col-auto text-right md:text-left">
+                                    <div class="text-15">退房時間</div>
+                                    <div class="fw-500" id="endDateDiv">@Model.EndDate</div>
+                                </div>
+                            </div>
+
+                            <div class="border-top-light mt-30 mb-20"></div>
+
+                            <div class="row y-gap-20 justify-between items-center">
+                                <div class="col-auto">
+                                    <div class="fw-700">天數:</div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="text-15 fw-700">@Model.DayCount 晚</div>
+                                </div>
+                            </div>
+
+                            <div class="border-top-light mt-30 mb-20"></div>
+
+                            <div class="row y-gap-20 justify-between items-center">
+                                <div class="col-auto">
+                                    <div class="fw-700">人數及房間數:</div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="text-15 fw-700"> @Model.PersonNum 人, @Model.RoomNum 間房</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-7 col-lg-8">
+                    <div class="border-type-1 rounded-22 px-50 py-35 mt-40">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="text-15 lh-12">訂單編號</div>
+                                <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">@Model.HotelOrderId</div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6">
+                                <div class="text-15 lh-12">訂單日期</div>
+                                <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">@Model.OrderDate</div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6">
+                                <div class="text-15 lh-12">總金額</div>
+                                <div class="text-15 lh-12 fw-500 text-blue-1 mt-10" id="totalPrice">@Model.TotalPrice</div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6">
+                                <div class="text-15 lh-12">付款方式</div>
+                                <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">LINE PAY</div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="border-light rounded-22 px-50 py-40 mt-40">
+                        <h4 class="text-20 fw-500 mb-30">房客資訊</h4>
+                        <div class="row y-gap-10">
+                            <div class="col-12">
+                                <div class="d-flex justify-between ">
+                                    <div class="text-15 lh-16">姓名</div>
+                                    <div class="text-15 lh-16 fw-500 text-blue-1">@Model.Name</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-between border-top-light pt-10">
+                                    <div class="text-15 lh-16">電子郵件</div>
+                                    <div class="text-15 lh-16 fw-500 text-blue-1">@Model.Email</div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="d-flex justify-between border-top-light pt-10">
+                                    <div class="text-15 lh-16">電話</div>
+                                    <div class="text-15 lh-16 fw-500 text-blue-1">@Model.Phone</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-between border-top-light pt-10">
+                                    <div class="text-15 lh-16">地址</div>
+                                    <div class="text-15 lh-16 fw-500 text-blue-1">@Model.Address</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex justify-end pt-10">
+                            <button class="button -md -dark-1 bg-red-1 text-white px-30 py-15 mt-20 rounded-22 mr-10">
+                                取消
+                            </button>
+                            <button id="btnPay" class="button -md -dark-1 bg-blue-1 text-white px-30 py-15 mt-20 rounded-22"
+                                    onclick="confirmPayment()">
+                                確認
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section Scripts {
+    <script>
+        let baseLoginPayUrl = 'https://localhost:7119/api/LinePay/';
+        let transactionId = "";
+        let orderId = "";
+        let totalPrice = document.getElementById('totalPrice').innerText;
+        let totalPriceFormat = Number(totalPrice.replace(/,/g, ''));
+        const btnPay = document.getElementById('btnPay');
+        const getParameter = () => {
+            // 取出 query parameter 中的 transactionId & orderId
+            const params = new Proxy(new URLSearchParams(window.location.search), {
+                get: (searchParams, prop) => searchParams.get(prop),
+            });
+
+            transactionId = params.transactionId;
+            orderId = params.orderId;
+        }
+        getParameter();
+        const confirmPayment = async () => {
+            btnPay.innerHTML += '&ensp; <img src="https://localhost:7119/img/frontstage/tube-spinner_w.svg" style = "width: 20px; height: 20px" />';
+            const payment = {
+                amount: totalPriceFormat,
+                currency: "TWD",
+            }
+            try {
+                const res = await fetch(baseLoginPayUrl + `Confirm?transactionId=${transactionId}&orderId=${orderId}`, {
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    method: "POST",
+                    body: JSON.stringify(payment)
+                });
+                if (!res.ok) {
+                    throw new Error();
+                }
+                const resData = await res.json();
+
+                if (resData.returnMessage == "Success.") {
+                    const now = new Date();
+                    const year = now.getFullYear();      // 年份
+                    const month = now.getMonth() + 1;    // 月份（注意 JavaScript 中月份是從 0 開始的）
+                    const date = now.getDate();
+                    const currentTime = year + '/' + month + '/' + date
+                    const orderPayload = {
+                        orderId: resData.info.orderId,
+                        payDate: currentTime,
+                        payStatus: 2
+                    }
+                    try {
+                        const updateOrder = await fetch("https://localhost:7119/api/HotelApi/UpdateOrder", {
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            method: "PUT",
+                            body: JSON.stringify(orderPayload)
+                        });
+                        if (!updateOrder.ok) {
+                            throw new Error();
+                        };
+                        const updateOrderRes = await updateOrder.json();
+                        setTimeout(() => {
+                            window.location = `https://localhost:7119/Customer/Hotels/HotelOrderCompleted?hotelOrderId=${resData.info.orderId}`;
+                        }, 2000);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    </script>
+}
+
+
+

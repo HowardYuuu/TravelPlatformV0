@@ -1,0 +1,498 @@
+﻿{
+   "CodeGenerationMode": 3,
+   "ContextClassName": "dbTravalPlatformContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "prjTravelPlatformV3",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[tCCompanyInfo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TCollection]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tCustomer]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tCustomerLevel]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tCustomerTravelType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tDcCouponList]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tDcCusCouponQty]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tDcExchangeItems]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tDcExchangeRecords]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tDcProductType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tDcQuestion]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TDestination]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TDestinationDetail]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TDestinationOrder]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TDestinationPhoto]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TDestinationRemark]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TDestionationFollow]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tEmployee]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tEmployeeStaff]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tFAirportInfo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tFClass]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tFFlightSchedule]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tFOrder]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tFOrderDetail]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tFOrderStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tFPayment]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TFreeOrder]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TFreePlan]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TFreePlanDetail]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tFTicketType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tHCollection]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tHComment]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tHFacility]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tHFacilityRelation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tHImage]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tHOrder]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tHOrderDetails]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tHotel]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[THotelDetail]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tHRoom]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tHRoomFacility]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tHRoomType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tHRoomTypeFacilityRelation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tHRoomTypeImage]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tILogistics]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tIOrder]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tIOrderDetails]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tIOrderStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tIPayMethod]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tIProductReview]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tIProducts]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tIProductSpec]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tIShoppingCart]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tISupplierLogistic]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tIType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tMessageInfo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TPlanRemark]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TPriority]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tRCarInfo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tRCarModel]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tRCarModelInfo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tRCarRentOrder]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tRCarRentOrderDetail]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tRDriverInfo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tROrderStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tRPaymentMethod]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tRPaymentStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tRServicePoint]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TTravelArea]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TTravelOrder]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TTravelPlan]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tVCountry]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tVFormPath]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tVLengthOfStay]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tVOrder]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tVOrderStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tVProcessingTime]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tVProduct]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tVProductFormsRequired]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tVTravelerInfo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[tVValidityPeriod]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[FOrdersView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[FScheduleView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[HotelCommentView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[rCarInfoView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[rCarModelInfoView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[rCarRentOrderDetailView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[rCarRentOrderInfoView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[tIOrder_View]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[tIOrderDetail_View]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[tIProductListView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[tIProductReviewsView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[tISupLogisticsView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vDCouponView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vDCusCouponView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vDExchangeView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vHotelOrderDetailView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vHotelOrderView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vHotelView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vRoomTypeView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vVOrderView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[vVProductView]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[GetAvailableRooms]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetAvailableRoomsByHotelId]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetAvailableRoomsByHotelIdTest]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetAvailableRoomsEdit]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[GetAvailableRoomsEditFilterByHotelId]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CalculateDayDiff]",
+         "ObjectType": 2
+      },
+      {
+         "Name": "[dbo].[GetOrderID_F]",
+         "ObjectType": 2
+      },
+      {
+         "Name": "[dbo].[GetOrderID_H]",
+         "ObjectType": 2
+      },
+      {
+         "Name": "[dbo].[GetOrderID_I]",
+         "ObjectType": 2
+      },
+      {
+         "Name": "[dbo].[GetOrderID_V]",
+         "ObjectType": 2
+      },
+      {
+         "Name": "[dbo].[GetOrderID]",
+         "ObjectType": 2
+      }
+   ],
+   "UiHint": "mydbserver777.dbTravelPlatform.dbo",
+   "UncountableWords": null,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": false,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false
+}

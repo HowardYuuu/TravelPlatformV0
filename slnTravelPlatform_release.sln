@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "prjTravelPlatform_release", "prjTravelPlatformV3\prjTravelPlatform_release.csproj", "{4FE7F61D-F986-4A1D-B41A-81BC2BB99036}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4FE7F61D-F986-4A1D-B41A-81BC2BB99036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FE7F61D-F986-4A1D-B41A-81BC2BB99036}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FE7F61D-F986-4A1D-B41A-81BC2BB99036}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FE7F61D-F986-4A1D-B41A-81BC2BB99036}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EA2E0FA5-7FB4-4D5F-825E-C0A8D52E26FA}
+	EndGlobalSection
+EndGlobal

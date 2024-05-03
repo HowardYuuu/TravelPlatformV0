@@ -1,0 +1,544 @@
+﻿
+@{
+    ViewData["Title"] = "購物車";
+}
+@section Styles{
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/css/Itembootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="~/css/Itemstyle.css" rel="stylesheet">
+}
+<!-- Single Page Header start -->
+<div class="masthead__bg" style="position: relative">
+    <img src="~/img/Item/pbanner.jpg" style="filter: brightness(55%); width: 100%; height:300px; object-fit: cover;" />
+    <div class="text-center" style="position: absolute; top:60%; left:50%; transform:translate(-50%, -50%);">
+        <h1 class="text-30 fw-600 text-white">購物車</h1>
+    </div>
+</div>
+<!-- Single Page Header End -->
+<!-- Cart Page Start -->
+<section class="h-100 gradient-custom">
+    <div class="container py-5">
+        <div class="row d-flex justify-content-center my-4">
+            <div id="cartItemContainer" class="col-md-8">
+                <!-- 這裡動態生成的購物車項目會被放置 -->
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header py-3">
+                        <h5 class="mb-0">金額小計</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                                <div>
+                                    <strong>總金額</strong>
+                                    <strong>
+                                        <p class="mb-0">(未含運費及優惠折扣)</p>
+                                    </strong>
+                                </div>
+                                <span id="Total"><strong>NT:0</strong></span>
+                            </li>
+                        </ul>
+                        <form id="checkoutForm" method="POST" action="/checkout">
+                            <!-- 提交按鈕 -->
+                            <button id="checkoutBtn" type="submit" class="btn btn-primary btn-lg btn-block" style="color:floralwhite">去買單</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Cart Page End -->
+@section Scripts{
+    <!-- 包含 SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/easing/easing.min.js"></script>
+    <script src="~/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+    <!-- Template Javascript -->
+    <script src="~/js/Itemmain.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // 獲取傳遞進來的 CustomerId
+            var customerId = @ViewBag.CustomerId;
+            // console.log('customerId', customerId);
+            // 定義查詢商品規格的 callback 函式
+            function queryItemSpecs(cartProIdList, callback) {
+                var itemSpecsData = {};
+                // completedRequests++的目的是追蹤已經完成的請求數量。這個變數在每次成功的AJAX請求之後增加1。這是為了確保在所有請求都完成後，才呼叫callback函式。
+                var completedRequests = 0;
+                // 遍歷 productIds，為每個 fProductId 發送查詢規格的請求
+                cartProIdList.forEach(function (productId, index) {
+                    // 使用 jQuery 的 Ajax 方法向後端發送請求，查詢規格資料
+                    $.ajax({
+                        url: '/api/ProductApi/GetItemSpecList?productId=' + productId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (itemSpecs) {
+                            // // 將查詢到的規格資料保存到  itemSpecsData 中
+                            itemSpecsData[productId] = itemSpecs;
+                            completedRequests++;
+
+                            // 如果是最後一個商品，呼叫 callback 函式並傳入商品規格資料
+                            if (completedRequests === cartProIdList.length) {
+                                callback(itemSpecsData);
+                            }
+                        },
+                        error: function (error) {
+                            console.error('查詢規格資訊時發生錯誤：', error);
+                        }
+                    });
+                });
+            }
+            // 用customerId查購物車清單
+            $.ajax({
+                url: '/api/ProductApi/GetCartList?customerId=' + customerId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (cartData) {
+                    // 成功取得商品詳細資訊後，你可以在這裡處理資料
+                    console.log('cartData', cartData);
+                    // 創建一個陣列來保存所有的 fProductId
+                    var cartProIdList = [];
+                    // 創建一個物件來存放不同的 fCompanyName 對應的資料
+                    var companyData = {};
+                    // var cartShopIdList = {};
+                    var itemSpecsList;
+                    // console.log(itemSpecsList);
+
+                    // 遍歷購物車資料，根據 fCompanyName 將資料分類
+                    cartData.forEach(function (item) {
+                        if (!companyData[item.fCompanyName]) {
+                            companyData[item.fCompanyName] = [];
+                        }
+                        companyData[item.fCompanyName].push(item);
+                        // 將 fProductId 加入 selectedProductIds 陣列
+                        cartProIdList.push(item.fProductId);
+                    });
+
+                    // 使用 callback 函式查詢商品規格
+                    queryItemSpecs(cartProIdList, function (itemSpecs) {
+                        // 在這裡處理商品規格資料
+                        console.log('itemSpecs：', itemSpecs);
+                        // 遍歷 companyData，動態生成 HTML 並插入到相應的位置
+                        for (var companyName in companyData) {
+                            createCartItem(companyName, companyData[companyName], itemSpecs);
+                        }
+                    });
+
+                },
+                error: function (error) {
+                    console.error('取得購物車資訊時發生錯誤：', error);
+                }
+            });
+            // 定義創建購物車項目的函式
+            function createCartItem(companyName, items, itemSpecs) {
+
+                var items;
+                // 創建一個新的 cartItemContainer
+                var cartItemContainer = $('<div class="card mb-4"></div>');
+
+                // 設定 card-header
+                var cardHeader = $('<div class="card-header py-3 d-flex align-items-center"></div>');
+                var checkAllItem = $('<input id="checkAllItem" class="form-check-input" type="checkbox" value="">');
+                cardHeader.append('<div class="form-check"></div>').find('.form-check').append(checkAllItem);
+                cardHeader.append('<div class="ms-4"><h5 id="itemShop" class="mb-0">' + companyName + '</h5></div>');
+                cartItemContainer.append(cardHeader);
+
+                // 設定 card-body
+                var cardBody = $('<div class="card-body"></div>');
+
+                // 遍歷每筆資料
+                items.forEach(function (item, index) {
+                    // Single item
+                    var itemContainer = $('<div id="container_' + item.fShoppingCartId + '" class="d-flex align-items-center justify-content-between"></div>');
+                    // ...（根據你的需要添加相應的 HTML）
+                    // Form Check
+                    var formCheck = $('<div class="col-lg-auto col-md-auto mb-4 mb-md-0"></div>');
+                    var checkItem = $('<input id="checkItem_' + item.fShoppingCartId + '" class="form-check-input" type="checkbox" value="">');
+                    formCheck.append('<div class="form-check"></div>').find('.form-check').append(checkItem);
+                    itemContainer.append(formCheck);
+
+                    // Image
+                    var imageContainer = $('<div class="col-lg-3 col-md-12 mb-4 mb-lg-0"></div>');
+                    imageContainer.append('<div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light"><img id="specImg_' + item.fShoppingCartId + '" src="/img/Item/' + (item.specImg ? item.specImg : item.itemImg) + '" class="w-100 rounded" alt="商品圖片" /></div>');
+                    itemContainer.append(imageContainer);
+
+                    // Data
+                    var dataContainer = $('<div class="me-4"></div>');
+                    dataContainer.append('<p id="itemName"><strong>' + item.fProductName + '</strong></p>');
+                    dataContainer.append('<h6 class="fw-bold mb-3">規格選擇:</h6>');
+
+                    // 創建 select 元素
+                    var specSelect = $('<select id="specSele_' + item.fShoppingCartId + '" class="form-select" aria-label="Default select example" style="width:150px;"><option selected value="' + item.fSpecId + '">' + item.fSpecName + '</option></select>');
+
+                    var currentSpecsList = itemSpecs[item.fProductId];
+                    // console.log(currentSpecsList);
+                    //遍歷 currentSpecsList，將每個規格名稱添加為選項
+                    // 確保 currentSpecsList 已經存在
+                    if (currentSpecsList) {
+                        currentSpecsList.forEach(function (spec) {
+                            // 條件：只添加不等於 item.fSpecName 的選項
+                            if (spec.fSpecName !== item.fSpecName) {
+                                specSelect.append('<option value="' + spec.fSpecId + '">' + spec.fSpecName + '</option>');
+                            }
+                        });
+                    }
+                    // 將 select 元素添加到 dataContainer 中
+                    dataContainer.append(specSelect);
+                    itemContainer.append(dataContainer);
+
+                    // Quantity
+                    var qtyContainer = $('<div class="ms-4"></div>');
+                    qtyContainer.append('<h6 class="fw-bold mb-3">數量:</h6>');
+                    // 建立輸入組
+                    var inputGroup = $('<div class="input-group quantity mb-5" style="width: 100px;"></div>');
+                    // 減號按鈕
+                    var minusButton = $('<button class="btn btn-sm btn-minus rounded-circle bg-light border"><i class="fa fa-minus"></i></button>');
+                    minusButton.click(function () {
+                        // 當單擊減號按鈕時減少數量
+                        var currentValue = parseInt(inputField.val(), 10) || 0;
+                        if (currentValue > 0) {
+                            inputField.val(currentValue - 1);
+                            // 發送更新到後端
+                            updateQtyAndSubtotal(item.fShoppingCartId, currentValue - 1, item.fSpecId);
+                        }
+                    });
+                    // 輸入欄
+                    var inputField = $('<input id="buyQty' + item.fSpecId + '" type="text" class="form-control form-control-sm text-center border-0" value="' + item.fQty + '">');
+                    // 加號按鈕
+                    var plusButton = $('<button class="btn btn-sm btn-plus rounded-circle bg-light border"><i class="fa fa-plus"></i></button>');
+                    plusButton.click(function () {
+                        // 當單擊加號按鈕時增加數量
+                        var currentValue = parseInt(inputField.val(), 10) || 0;
+                        inputField.val(currentValue + 1);
+                        // 發送更新到後端
+                        updateQtyAndSubtotal(item.fShoppingCartId, currentValue + 1, item.fSpecId);
+                    });
+
+                    // 將組件添加到輸入組
+                    inputGroup.append(minusButton);
+                    inputGroup.append(inputField);
+                    inputGroup.append(plusButton);
+                    // 將輸入組添加到容器
+                    qtyContainer.append(inputGroup);
+                    // 將數量容器添加到項目容器
+                    itemContainer.append(qtyContainer);
+
+                    //Price
+                    var PriceContainer = $('<div class="ms-4"></div>');
+                    PriceContainer.append('<p id="specPrice_' + item.fShoppingCartId + '" class="text-start text-md-center"><strong>NT:' + item.subTotal + '</strong></p>');
+                    itemContainer.append(PriceContainer);
+
+                    // Trash button
+                    var trashContainer = $('<div class="ms-4"></div>');
+                    trashContainer.append('<button id="deleBtn_' + item.fShoppingCartId +'" type="button" class="btn-dele btn btn-sm me-1 mb-2" data-mdb-toggle="tooltip" title="刪除品項"><i class="fas fa-trash"></i></button>');
+                    itemContainer.append(trashContainer);
+
+                    // 將每筆商品的 HTML 加到 cardBody 中
+                    cardBody.append(itemContainer);
+
+                    // 除了最後一筆資料外，都加入分隔線
+                    if (index < items.length - 1) {
+                        cardBody.append('<hr class="my-4" />');
+                    }
+
+                    // 監聽 specSelect 的 change 事件
+                    specSelect.change(function () {
+                        // 獲取被選中的規格ID
+                        var seleSpecId = $(this).val();
+                        // 呼叫更新規格後改變金額小計
+                        updateSelectedSpec(item.fShoppingCartId, seleSpecId);
+                        updateSpecDetails(seleSpecId, item.fShoppingCartId);
+                    });
+                    // 使用事件代理，將點擊事件綁定在父元素上，綁定刪除購物車項目按鈕事件
+                    $('#cartItemContainer').on('click', '#deleBtn_' + item.fShoppingCartId, function () {
+                        var CartIdToDelete = item.fShoppingCartId;
+                        console.log('點擊成功，購物車項目ID：', CartIdToDelete);
+
+                        // 使用 SweetAlert2 在刪除購物車項目前彈出提示框
+                        Swal.fire({
+                            title: '確定要將商品從購物車中刪除嗎？',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: '確定',
+                            cancelButtonText: '取消'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // 如果用户点击了确认按钮，则执行删除操作
+                                deleteCartItem(CartIdToDelete);
+                            }
+                        });
+                    });
+                });
+                // 選取header的checkbox，body的也會被選取
+                checkAllItem.on('change', function () {
+                    // 獲取 card-body 中的所有 checkbox
+                    var bodyCheckboxes = cardBody.find('.form-check-input');
+
+                    // 設置它們的選擇狀態與 checkAllItem 一致
+                    bodyCheckboxes.prop('checked', checkAllItem.prop('checked'));
+                });
+                // 將 cardBody 加到 cartItemContainer 中
+                cartItemContainer.append(cardBody);
+
+                // 將 cartItemContainer 加到 #cartItemContainer 中
+                $('#cartItemContainer').append(cartItemContainer);
+            }
+
+            // 處理勾選的商品項，計算總金額
+            $(document).on('change', '.form-check-input', function () {
+                // 取得被選中的 checkbox 的 fshoppingcartId
+                var checkspCartIds = Array.from($('.card-body').find('.form-check-input:checked'), function (checkbox) {
+                    return checkbox.id.split('_')[1]; // 假設 id 的格式為 "checkItem_XXX"
+                });
+                // 在這裡調用 API 並傳遞 selectedIds，計算 total，並更新 UI
+                /* console.log(uncheckedIds); */ // 這裡可以看到被選中的 fshoppingcartId
+
+                // 調用更新總金額的函式，將 selectedIds 作為參數傳入
+                updateTotalAmount(checkspCartIds);
+            });
+
+
+            // 跳轉結帳頁面的按鈕
+            var checkoutBtn = document.getElementById('checkoutBtn');
+            checkoutBtn.addEventListener('click', function (event) {
+                // 获取所有被选中的商品的fShoppingCartId
+                var selectedItems = document.querySelectorAll('.card-body input[type="checkbox"]:checked');
+                var selectedIds = Array.from(selectedItems, function (item) {
+                    return parseInt(item.id.split('_')[1]); // 假设你的复选框的id格式为 "checkbox_XXXX"
+                });
+                event.preventDefault();
+                // 檢查是否有購物車項目被選取
+                if (selectedIds.length == 0) {
+                    // 未選的警告
+                    Swal.fire({
+                        title: '警告',
+                        text: '請至少勾選任一個購物車商品項目',
+                        icon: 'warning'
+                    });
+                } else {
+                    var url = '@Url.Action("BookingInfoConfirm", "Products", new { area = "Customer" })';
+                    var nextPageUrl = url + '?selectedIds=' + selectedIds.join('&');
+
+                    window.location.href = nextPageUrl;
+                }
+            });
+
+            // 定義一個函式來處理更新選擇的規格
+            function updateSelectedSpec(fShoppingCartId, selectedSpecId) {
+                console.log('fShoppingCartId', fShoppingCartId);
+                console.log('selectedSpecId', selectedSpecId);
+                $.ajax({
+                    url: `/api/ProductApi/UpdateCartSeleSpec?fShoppingCartId=${fShoppingCartId}&newSpecId=${selectedSpecId}`,
+                    type: 'PUT',
+                    dataType: 'json',
+                    success: function (response) {
+                        // 處理更新成功後的邏輯
+                        var newSubtotal = response.newSubtotal;
+                        console.log(response);
+                        // 更新前端顯示的價格
+                        $('#specPrice_' + fShoppingCartId).html('<strong>NT:' + newSubtotal + '</strong>');
+                        // 更新購物車項目數量
+                        updateCartItemCount();
+                        // 重新计算总金额
+                        triggerTotalAmountUpdate();
+                    },
+                    error: function (error) {
+                        console.error('更新選擇的規格時發生錯誤：', error);
+                    }
+                });
+            }
+            // 定義更新規格詳細資訊的函式
+            function updateSpecDetails(fSpecId, fShoppingCartId) {
+                // 使用 jQuery 的 Ajax 方法向後端發送請求，獲取規格詳細資訊
+                $.ajax({
+                    url: '/api/ProductApi/GetItemSpecsDetail?specId=' + fSpecId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (specDetails) {
+                        console.log('test', specDetails);
+                        // 在這裡處理API返回的數據
+                        if (specDetails[0] && specDetails[0].fImagePath !== null) {
+                            // 更新圖片
+                            $('#specImg_' + fShoppingCartId).attr('src', '/img/Item/' + specDetails[0].fImagePath);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('獲取規格詳細資訊時發生錯誤：', error);
+                    }
+                });
+            }
+            function triggerTotalAmountUpdate() {
+                var checkedCartIds = Array.from($('.card-body').find('.form-check-input:checked'), function (checkbox) {
+                    return checkbox.id.split('_')[1]; // 假设 id 的格式为 "checkItem_XXX"
+                });
+                // 调用更新总金额的函数
+                updateTotalAmount(checkedCartIds);
+            }
+            // 新增一個函式來處理更新數量和小計
+            function updateQtyAndSubtotal(fShoppingCartId, newQty, fSpecId) {
+                // 在函式開頭加入 console.log 語句
+                // console.log('fShoppingCartId:', fShoppingCartId);
+                // console.log('newQty:', newQty);
+                // console.log('fSpecId:', fSpecId);
+                $.ajax({
+                    url: `/api/ProductApi/UpdateQtyAndSubtotal?fShoppingCartId=${fShoppingCartId}&newQty=${newQty}&fSpecId=${fSpecId}`,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (response) {
+                        // 在這裡處理更新成功後的邏輯
+                        // 更新成功後，取得新小計值
+                        var newSubtotal = response.newSubtotal;
+                        // console.log(response);
+                        // 更新前端顯示的價格
+                        $('#specPrice_' + fShoppingCartId).html('<strong>NT:' + newSubtotal + '</strong>');
+                        // 在這裡處理更新成功後的其他邏輯
+                        // 更新購物車項目數量
+                        updateCartItemCount();
+                        // 重新计算总金额
+                        triggerTotalAmountUpdate();
+                    },
+                    error: function (error) {
+                        console.error('更新數量和小計時發生錯誤：', error);
+                    }
+                });
+            }
+
+
+            // 刪除購物車內容
+            function deleteCartItem(shoppingCartId) {
+                console.log('shoppingCartId', shoppingCartId);
+                $.ajax({
+                    url: `/api/ProductApi/DeleteCartItem?CartId=${shoppingCartId}`,
+                    type: 'DELETE',
+                    dataType: 'json',
+                    success: function (response) {
+                        // 在這裡處理刪除成功後的邏輯
+                        console.log(response);
+                        // 移除對應的 itemContainer
+                        var itemContainer = $('#container_' + shoppingCartId);
+                        var cardBody = itemContainer.closest('.card-body'); // 獲取父元素中最近的.card-body元素
+                        var hasSeparator = itemContainer.next().is('hr');
+
+                        // 檢查前一個兄弟元素是否是分隔線
+                        var hasSeparatorBefore = itemContainer.prev().is('hr');
+                        // 檢查後一個兄弟元素是否是分隔線
+                        var hasSeparatorAfter = itemContainer.next().is('hr');
+
+                        // 判斷應該刪除哪一個分隔線
+                        if (hasSeparatorBefore && hasSeparatorAfter) {
+                            // 如果前後都有分隔線，刪除前一個分隔線
+                            itemContainer.prev().remove();
+                        } else if (hasSeparatorBefore) {
+                            // 如果只有前面有分隔線，刪除前一個分隔線
+                            itemContainer.prev().remove();
+                        } else if (hasSeparatorAfter) {
+                            // 如果只有後面有分隔線，刪除後一個分隔線
+                            itemContainer.next().remove();
+                        }
+                        // 接下來，您可以刪除商品項目自身
+                        itemContainer.remove();
+
+                        // 檢查 cardBody 是否為空
+                        if (cardBody.children().length === 0) {
+                            // 如果 cardBody 為空，則刪除 cardBody 的父元素（即 cardItemContainer）
+                            cardBody.parent().remove();
+                        }
+                        // 更新購物車項目數量
+                        updateCartItemCount();
+                    },
+                    error: function (error) {
+                        console.error('刪除時發生錯誤：', error);
+                    }
+                });
+            }
+            // 計算並更新總金額
+            function updateTotalAmount(selectedIds) {
+                // 如果没有选中的项目，则将总金额设为零并直接更新 UI
+                if (selectedIds.length === 0) {
+                    $('#Total').html('<strong>NT:0</strong>');
+                    return;
+                }
+                // 將selectedIds轉換為逗號分隔的字串
+                var selectedIdsString = selectedIds.join(',');
+                // 使用 AJAX 或 Fetch API 發送 HTTP GET 請求到您的 API 端點
+                $.ajax({
+                    url: '/api/ProductApi/GetTotalAmount',
+                    type: 'GET',
+                    data: { checkspCartIds: selectedIdsString }, // 將整個選中的購物車ID列表作為單個參數傳遞
+                    success: function (response) {
+                        // 在成功收到回應後處理返回的數據
+                        // 假設 API 返回了一個包含總金額的對象
+                        var totalAmount = response.totalAmount;
+
+                        // 將總金額顯示在適當的位置，例如一個總金額的<span>元素
+                        $('#Total').html('<strong>NT:' + totalAmount + '</strong>');
+                    },
+                    error: function (xhr, status, error) {
+                        // 在請求失敗時處理錯誤
+                        console.error('請求失敗：', error);
+                    }
+                });
+            }
+            function updateCartItemCount() {
+                // var customerId = 2; // 假設您的客戶 ID 固定為 2
+                $.ajax({
+                    url: '/api/ProductApi/GetCartList?customerId=' + customerId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (cartData) {
+                        // 清空原有的下拉菜单内容
+                        $('#cartItemList').empty();
+
+                        // 遍历购物车数据，并构建新的下拉菜单内容
+                        cartData.forEach(function (item) {
+                            var html = `<div class="text-14 y-gap-15 js-dropdown-list">
+                                                <div style="display: flex;">
+                                                    <div class="rounded" style="margin-right: 10px;margin-left: 5px;">
+                                                        <img src="/img/Item/${item.specImg ? item.specImg : item.itemImg}" class="rounded" alt="" style="width: 50px; height: 50px;">
+                                                    </div>
+                                                    <div style="display: flex; flex-direction: column;">
+                                                        <h7 class="mb-2">${item.fProductName}</h7>
+                                                        <div style="display: flex; align-items: baseline;">
+                                                            <h7 class="mb-2">${item.fSpecName}</h7>
+                                                            <span style="margin-left: 5px;">x${item.fQty}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>`;
+                            $('#cartItemList').append(html);
+                        });
+                        // 更新購物車項目數量
+                        $('#cartItemNum').text(cartData.length);
+                    },
+                    error: function (error) {
+                        console.error('取得購物車資訊時發生錯誤：', error);
+                    }
+                });
+            }
+        });
+    </script>
+
+
+
+}

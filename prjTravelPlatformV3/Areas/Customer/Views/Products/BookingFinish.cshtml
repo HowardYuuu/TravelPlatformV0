@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewData["Title"] = "BookingFinish";
+}
+@section Styles {
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/css/Itembootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="~/css/Itemstyle.css" rel="stylesheet">
+}
+<!-- Single Page Header start -->
+<div class="masthead__bg" style="position: relative">
+    <img src="~/img/Item/pbanner.jpg" style="filter: brightness(55%); width: 100%; height:80px; object-fit: cover;" />
+    <div class="text-center" style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%);">
+@*         <h1 class="text-30 fw-600 text-white">訂單資訊</h1> *@
+    </div>
+</div>
+<main>
+    <section style="padding-top: 150px;padding-bottom: 250px;">
+        <div class="container">
+            <!-- Single Page Header End -->
+            <div class="d-flex flex-column items-center mt-60 lg:md-40 sm:mt-24">
+                <div class="size-80 flex-center rounded-full bg-dark-3">
+                    <i class="icon-check text-30 text-white"></i>
+                </div>
+
+                <div class="text-30 lh-1 fw-600 mt-20">訂單提交成功，我們會盡快安排出貨!</div>
+                <a href="@Url.Action("Index", "Products", new { area = "Customer" })" class="text-15 text-light-1 mt-10">如無自動跳轉頁面，請點此處</a>
+            </div>
+
+            @* <div class="border-type-1 rounded-8 px-50 py-35 mt-40">
+                <div class="row">
+
+                    <div class="col-lg-2 col-md-7">
+                        <div class="text-15 lh-12">訂單編號</div>
+                        <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">13119</div>
+                        <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">13119</div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-7">
+                        <div class="text-15 lh-12">訂單成立日期</div>
+                        <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">27/07/2021</div>
+                        <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">27/07/2021</div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-7">
+                        <div class="text-15 lh-12">訂單總金額</div>
+                        <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">$40.10</div>
+                        <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">$40.10</div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-7">
+                        <div class="text-15 lh-12">出貨方式</div>
+                        <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">Direct Bank Transfer</div>
+                        <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">Direct Bank Transfer</div>
+                    </div>
+                    <div class="col-lg-2 col-md-7">
+                        <div class="text-15 lh-12">付款方式</div>
+                        <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">Direct Bank Transfer</div>
+                        <div class="text-15 lh-12 fw-500 text-blue-1 mt-10">Direct Bank Transfer</div>
+                    </div>
+                </div>
+            </div> *@
+        </div>
+    </section>
+</main>
+
+@section Scripts {
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/easing/easing.min.js"></script>
+    <script src="~/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="~/js/Itemmain.js"></script>
+    <script>
+        $(document).ready(function () {
+            var customerId = @ViewBag.CustomerId;
+            // 設定跳轉頁面的時間，單位為毫秒，這裡設為3秒
+            var redirectTime = 3000;
+
+            // 要跳轉的目標頁面 URL
+            var redirectUrl = '@Url.Action("Index", "Products", new { area = "Customer" })'; // 更換為您要跳轉的頁面 URL
+
+            // 使用 setTimeout() 函數在一定時間後執行跳轉操作
+            setTimeout(function () {
+                window.location.href = redirectUrl; // 跳轉至指定頁面
+            }, redirectTime);
+        });
+    </script>
+}

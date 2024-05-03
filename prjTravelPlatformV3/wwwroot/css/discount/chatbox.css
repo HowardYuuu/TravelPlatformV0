@@ -1,0 +1,89 @@
+﻿/* 聊天框樣式 */
+.chat-container01 {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px; /* 初始縮小寬度 */
+    height: 50px; /* 初始縮小高度 */
+    /* border-radius: 999em; */
+    background-color: #484891;
+    border: 1px solid #ccc;
+    border-radius:999em;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    overflow: hidden; /* 隱藏溢出內容 */
+    transition: width 0.5s ease, height 0.5s ease; /* 添加過渡效果 */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between; /* 垂直方向上的空間均分 */
+    cursor: move; /* 添加拖動游標 */
+    margin: 0px;
+    padding: 0px;
+}
+
+/* 聊天框頭部樣式 */
+.chat-header01 {
+    background-color: transparent;
+    color: #;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 1px;
+}
+
+/* 聊天框頭部圓形按鈕樣式 */
+.chat-header-button01 {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    /* background-color: #333; */
+    /* color: #fff; */
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+   
+}
+
+/* 聊天框內容樣式 */
+.chat-body01 {
+    display: none; /* 初始隱藏聊天內容 */
+    padding: 10px;
+    width: 100%; /* 宽度100%填满父级 */
+    height: 100%; /* 高度100%填满父级 */
+    /* overflow-y: auto; */
+    flex-grow: 1; /* 讓聊天內容自動填滿剩餘空間 */
+    margin: 0px;
+    /* color: whitesmoke; */
+    border-color: red;
+}
+
+/* 輸入框樣式 */
+/*.chat-input-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.chat-input01 {
+    padding: 10px;
+    width: calc(100% - 42px);*/ /* 考慮到按鈕的寬度 */
+    /*border: none;
+    border-top: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}*/
+
+/* 輸入按鈕樣式 */
+/*.input-button {
+    width: 32px;
+    height: 32px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 50%;*/ /* 圓形按鈕 */
+    /*background-color: #ccc;
+    cursor: pointer;
+}*/

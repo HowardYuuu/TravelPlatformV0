@@ -1,0 +1,591 @@
+﻿@{
+    ViewData["Title"] = "線上客服";
+}
+
+
+
+@section Styles {
+    <link href="~/css/OnlineService.css" asp-append-version="true" rel="stylesheet" />
+}
+
+
+
+
+
+<div class="app" style="border-radius:15px;">
+    <div class="header">
+        <div class="logo">
+            <svg viewBox="0 0 513 513" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M256.025.05C117.67-2.678 3.184 107.038.025 245.383a240.703 240.703 0 0085.333 182.613v73.387c0 5.891 4.776 10.667 10.667 10.667a10.67 10.67 0 005.653-1.621l59.456-37.141a264.142 264.142 0 0094.891 17.429c138.355 2.728 252.841-106.988 256-245.333C508.866 107.038 394.38-2.678 256.025.05z" />
+                <path d="M330.518 131.099l-213.825 130.08c-7.387 4.494-5.74 15.711 2.656 17.97l72.009 19.374a9.88 9.88 0 007.703-1.094l32.882-20.003-10.113 37.136a9.88 9.88 0 001.083 7.704l38.561 63.826c4.488 7.427 15.726 5.936 18.003-2.425l65.764-241.49c2.337-8.582-7.092-15.72-14.723-11.078zM266.44 356.177l-24.415-40.411 15.544-57.074c2.336-8.581-7.093-15.719-14.723-11.078l-50.536 30.744-45.592-12.266L319.616 160.91 266.44 356.177z" fill="#fff" />
+            </svg>
+        </div>
+        
+        <div class="user-settings">
+            <div class="detail-change d-flex align-items-center">
+                更換主題
+                <div class="colors" style="margin-left:10px;">
+                    <div class="color green selected" data-color="green"></div>
+                    <div class="color blue" data-color="blue"></div>
+                    <div class="color purple" data-color="purple"></div>
+                    <div class="color orange" data-color="orange"></div>
+                </div>
+            </div>
+
+            <div class="dark-light">
+                <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div class="conversation-area" id="IDList">
+            @* 上線列表 *@
+            <div class="overlay"></div>
+        </div>
+        <div class="chat-area">
+            <div class="chat-area-header">
+                <div id="CustomerTitle" class="chat-area-title"></div>
+                
+            </div>
+            <div class="chat-area-main" id="Content">
+                @* <div class="chat-msg">
+                    <div class="chat-msg-profile">
+                        <img class="chat-msg-img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%283%29+%281%29.png" alt="" />
+                        <div class="chat-msg-date">Message seen 1.22pm</div>
+                    </div>
+                    <div class="chat-msg-content">
+                        <div class="chat-msg-text">Luctus et ultrices posuere cubilia curae.</div>
+                        <div class="chat-msg-text">
+                            <img src="https://media0.giphy.com/media/yYSSBtDgbbRzq/giphy.gif?cid=ecf05e47344fb5d835f832a976d1007c241548cc4eea4e7e&rid=giphy.gif" />
+                        </div>
+                        <div class="chat-msg-text">Neque gravida in fermentum et sollicitudin ac orci phasellus egestas. Pretium lectus quam id leo.</div>
+                    </div>
+                </div>
+                <div class="chat-msg owner">
+                    <div class="chat-msg-profile">
+                        <img class="chat-msg-img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%281%29.png" alt="" />
+                        <div class="chat-msg-date">Message seen 1.22pm</div>
+                    </div>
+                    <div class="chat-msg-content">
+                        <div class="chat-msg-text">Sit amet risus nullam eget felis eget. Dolor sed viverra ipsum😂😂😂</div>
+                        <div class="chat-msg-text">Cras mollis nec arcu malesuada tincidunt.</div>
+                    </div>
+                </div>
+                <div class="chat-msg">
+                    <div class="chat-msg-profile">
+                        <img class="chat-msg-img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%282%29.png" alt="">
+                        <div class="chat-msg-date">Message seen 2.45pm</div>
+                    </div>
+                    <div class="chat-msg-content">
+                        <div class="chat-msg-text">Aenean tristique maximus tortor non tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae😊</div>
+                        <div class="chat-msg-text">Ut faucibus pulvinar elementum integer enim neque volutpat.</div>
+                    </div>
+                </div>
+                <div class="chat-msg owner">
+                    <div class="chat-msg-profile">
+                        <img class="chat-msg-img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%281%29.png" alt="" />
+                        <div class="chat-msg-date">Message seen 2.50pm</div>
+                    </div>
+                    <div class="chat-msg-content">
+                        <div class="chat-msg-text">posuere eget augue sodales, aliquet posuere eros.</div>
+                        <div class="chat-msg-text">Cras mollis nec arcu malesuada tincidunt.</div>
+                    </div>
+                </div>
+                <div class="chat-msg">
+                    <div class="chat-msg-profile">
+                        <img class="chat-msg-img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%2812%29.png" alt="" />
+                        <div class="chat-msg-date">Message seen 3.16pm</div>
+                    </div>
+                    <div class="chat-msg-content">
+                        <div class="chat-msg-text">Egestas tellus rutrum tellus pellentesque</div>
+                    </div>
+                </div>
+                <div class="chat-msg">
+                    <div class="chat-msg-profile">
+                        <img class="chat-msg-img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%283%29+%281%29.png" alt="" class="account-profile" alt="">
+                        <div class="chat-msg-date">Message seen 3.16pm</div>
+                    </div>
+                    <div class="chat-msg-content">
+                        <div class="chat-msg-text">Consectetur adipiscing elit pellentesque habitant morbi tristique senectus et.</div>
+                    </div>
+                </div>
+                <div class="chat-msg owner">
+                    <div class="chat-msg-profile">
+                        <img class="chat-msg-img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%281%29.png" alt="" />
+                        <div class="chat-msg-date">Message seen 2.50pm</div>
+                    </div>
+                    <div class="chat-msg-content">
+                        <div class="chat-msg-text">Tincidunt arcu non sodales😂</div>
+                    </div>
+                </div>
+                <div class="chat-msg">
+                    <div class="chat-msg-profile">
+                        <img class="chat-msg-img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%282%29.png" alt="">
+                        <div class="chat-msg-date">Message seen 3.16pm</div>
+                    </div>
+                    <div class="chat-msg-content">
+                        <div class="chat-msg-text">Consectetur adipiscing elit pellentesque habitant morbi tristique senectus et🥰</div>
+                    </div>
+                </div> *@
+            </div>
+            <div class="chat-area-footer">
+                <input id="message" type="text" disabled onkeydown="keyEnter(event)" autocomplete="off" placeholder="輸入訊息..." />
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-smile">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01" />
+                </svg>
+            </div>
+        </div>
+        <div class="detail-area">
+
+            <div class="detail-area-header Infoheader">
+                <img id="ProfileAvatar" class="msg-profile" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/qs6F3dgm.png" alt="">
+                <div id="ProfileName" class="detail-title">員工姓名</div>
+                <div class="detail-buttons">
+                    <button class="detail-button">
+
+                        查看/設定
+                    </button>
+                    <button class="detail-button">
+
+                        上/下線
+                    </button>
+                </div>
+            </div>
+
+            <div id="CustomerInfoHead" class="detail-area-header" style="margin-top:30px; display:none;">
+                <img id="clickAvatar" class="msg-profile" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/qs6F3dgm.png" alt="">
+                <div id="clickName" class="detail-title">客戶姓名</div>
+                <div class="detail-buttons">
+                    <button class="detail-button">
+                        查看/管理會員
+                    </button>
+                    <button class="detail-button">
+                        停用會員
+                    </button>
+                </div>
+            </div>
+
+            <button onclick="demo1();" style="margin-top:30px; height:30px;">
+
+                Demo
+            </button>
+        </div>
+    </div>
+
+    <span id="sendToID" style="display:none;"></span>
+    <span id="SelfID" style="display:none;"></span>
+    <span id="sendToMemberID" style="display:none;"></span>
+    <span id="SelfMemberID" style="display:none;"></span>
+
+</div>
+
+
+
+@section Scripts {
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script>
+        const toggleButton = document.querySelector('.dark-light');
+        const colors = document.querySelectorAll('.color');
+
+        colors.forEach(color => {
+            color.addEventListener('click', (e) => {
+                colors.forEach(c => c.classList.remove('selected'));
+                const theme = color.getAttribute('data-color');
+                document.body.setAttribute('data-theme', theme);
+                color.classList.add('selected');
+            });
+        });
+
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+    </script>
+
+    <script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+        //與Server建立連線
+        connection.start().then(function () {
+            console.log("Hub 連線完成");
+            try {
+                connection.invoke("ClientConnection", "Employee");
+            }
+            catch (err) {
+                alert(err)
+            }
+        }).catch(function (err) {
+            alert('連線錯誤: ' + err.toString());
+        });
+
+
+
+        // 更新連線 ID 列表事件
+        var prevActiveIndex = -1; // 未有active的li時先索引先給-1
+        connection.on("UpdList", function (jsonList) {
+            var list = JSON.parse(jsonList);
+            $("#IDList div").remove();
+            prevActiveIndex = -1; //重置索引
+            for (i = 0; i < list.length; i++) {
+
+                if (list[i].MemberId === $('#SelfMemberID').html()) {
+                    continue;
+                }
+                const mid = list[i].MemberId;
+                // 創建 jQuery 物件
+                var $msg = $("<div></div>").addClass("msg online");
+                var $profilePic = $("<img>").addClass("msg-profile").attr("src", `/img/uploads/${mid}.jpg`).attr("alt", "");
+                var $msgDetail = $("<div></div>").addClass("msg-detail").attr("id", list[i].ConnectString).attr("name", list[i].MemberId);
+                var $msgUsername = $("<div></div>").addClass("msg-username").text(list[i].MemberName);
+                var $msgContent = $("<div></div>").addClass("msg-content");
+                var $msgMessage = $("<span></span>").addClass("msg-message").text('');
+                //var $msgDate = $("<span></span>").addClass("msg-date").text("");
+
+                // 將元素組合並附加到 $msg 中
+                $msgContent.append($msgMessage);
+                $msgDetail.append($msgUsername, $msgContent);
+                $msg.append($profilePic, $msgDetail);
+
+                // 將 $msg 添加到 #IDList 元素中
+                $("#IDList").append($msg
+                .click(function () {
+                    $('#message').removeAttr('disabled');
+                    var currentIndex = $(this).index(); // 當前li的索引
+                    $("#IDList div").not(this).removeClass("active");
+                    $(this).toggleClass("active");
+                    var id = $(this).find('.msg-detail').attr("id");
+                    $("#sendToID").text(id);
+                    var mid = $(this).find('.msg-detail').attr("name");
+                    $("#sendToMemberID").text(mid);
+
+                    var MemberID = $(this).find('.msg-detail').attr("name"); // 當前div中的msg-detail的name
+                    var Name = $(this).find('.msg-username').text(); // 當前客戶姓名
+                    var Avatar = $(this).find('.msg-profile').attr("src"); //當前客戶頭貼
+
+                    // 若active的li改變就要刷新app-main(用memberId查詢)
+                    if (currentIndex !== prevActiveIndex) {
+
+                        prevActiveIndex = currentIndex;
+                        
+                        //右邊的客戶資料要抽換(名字+頭貼)
+                        $('#clickName').text(Name);
+                            $('#CustomerTitle').html(Name);
+                        $('#clickAvatar').attr("src", Avatar);
+                        const CustomerInfoHead = document.getElementById('CustomerInfoHead');
+                        CustomerInfoHead.style.display = 'flex';
+
+                        // "要求"查詢並重新載入聊天內容
+                        const selfID = document.getElementById('SelfID').innerText;
+                        connection.invoke("SearchEmployeeHistory", MemberID, selfID)
+                        .then(function () {
+                            var d = document.querySelector('.chat-area');
+                            d.scrollTop = d.scrollHeight;
+                        })
+                        .catch(function (err) {
+                            alert('傳送錯誤: ' + err.toString());
+                        });
+                    }
+
+                    if ($("#IDList div.active").length === 0) {
+                        $('#message').attr('disabled','true');
+                        prevActiveIndex = -1;
+                        $("#Content").html('');
+                        $("#CustomerTitle").text('');
+                        const CustomerInfoHead = document.getElementById('CustomerInfoHead');
+                        CustomerInfoHead.style.display = 'none';
+                    }
+
+                }))
+
+            }
+            //看誰原本在線上有對到active
+            const CustomerTitle = document.getElementById('CustomerTitle').innerText;
+            const IDList = document.getElementById('IDList');
+            const message = document.getElementById('message');
+            const IDs = IDList.querySelectorAll('div'); //last first
+            if (IDs.length === 0) {
+                message.setAttribute('disabled', 'true');
+            }
+            else {
+                for (var ID of IDs) {
+                    if (ID.lastElementChild.firstElementChild.innerText === CustomerTitle) {
+                        ID.classList.add('active');
+                    }
+                }
+            }
+        });
+
+
+        //重新載入聊天歷史內容
+        connection.on("LoadMessageHistoryFromDB", function (MessageHistoryListJson) {
+            var MessageHistoryList = JSON.parse(MessageHistoryListJson);
+            //console.log(MessageHistoryList);
+            $("#Content div").remove(); //先洗掉舊的
+
+            const SelfMID = document.getElementById('SelfMemberID').innerText;
+            for (var m of MessageHistoryList) {
+
+                if (m.SelfMemberId.includes("E")) { // 自己
+                    
+                    var $chatMsg = $("<div>").addClass("chat-msg owner");
+
+                    var $chatMsgProfile = $("<div>").addClass("chat-msg-profile");
+                    var $chatMsgImg = $("<img>").addClass("chat-msg-img").attr("src", `/img/uploads/${m.SelfMemberId}.jpg`).attr("alt", "");
+                    var $chatMsgDate = $("<div>").addClass("chat-msg-date").text(m.TimeStamp.substring(0, 16));
+                    $chatMsgProfile.append($chatMsgImg, $chatMsgDate);
+
+                    var $chatMsgContent = $("<div>").addClass("chat-msg-content");
+                    var $chatMsgText = $("<div>").addClass("chat-msg-text").text(m.Message);
+                    $chatMsgContent.append($chatMsgText);
+
+                    $chatMsg.append($chatMsgProfile, $chatMsgContent);
+
+                    $("#Content").append($chatMsg);
+
+                } else {
+                    
+                    var $chatMsg = $("<div>").addClass("chat-msg");
+
+                    var $chatMsgProfile = $("<div>").addClass("chat-msg-profile");
+                    var $chatMsgImg = $("<img>").addClass("chat-msg-img").attr("src", `/img/uploads/${m.SelfMemberId}.jpg`).attr("alt", "");
+                    var $chatMsgDate = $("<div>").addClass("chat-msg-date").text(m.TimeStamp.substring(0, 16));
+                    $chatMsgProfile.append($chatMsgImg, $chatMsgDate);
+
+                    var $chatMsgContent = $("<div>").addClass("chat-msg-content");
+                    var $chatMsgText = $("<div>").addClass("chat-msg-text").text(m.Message);
+                    $chatMsgContent.append($chatMsgText);
+
+                    $chatMsg.append($chatMsgProfile, $chatMsgContent);
+
+                    $("#Content").append($chatMsg);
+                }
+
+            }
+        })
+
+
+        connection.on("LoadMessageHistoryFromLocal", function (MessageHistoryListJson) {
+            var MessageHistoryList = JSON.parse(MessageHistoryListJson);
+            //console.log(MessageHistoryList);
+
+            const SelfMID = document.getElementById('SelfMemberID').innerText;
+            for (var m of MessageHistoryList) {
+
+                if (m.SelfMemberId.includes("E")) { // 自己
+
+                    var $chatMsg = $("<div>").addClass("chat-msg owner");
+
+                    var $chatMsgProfile = $("<div>").addClass("chat-msg-profile");
+                    var $chatMsgImg = $("<img>").addClass("chat-msg-img").attr("src", `/img/uploads/${m.SelfMemberId}.jpg`).attr("alt", "");
+                    var $chatMsgDate = $("<div>").addClass("chat-msg-date").text(m.TimeStamp.substring(0, 16));
+                    $chatMsgProfile.append($chatMsgImg, $chatMsgDate);
+
+                    var $chatMsgContent = $("<div>").addClass("chat-msg-content");
+                    var $chatMsgText = $("<div>").addClass("chat-msg-text").text(m.Message);
+                    $chatMsgContent.append($chatMsgText);
+
+                    $chatMsg.append($chatMsgProfile, $chatMsgContent);
+
+                    $("#Content").append($chatMsg);
+
+                } else {
+
+                    var $chatMsg = $("<div>").addClass("chat-msg");
+
+                    var $chatMsgProfile = $("<div>").addClass("chat-msg-profile");
+                    var $chatMsgImg = $("<img>").addClass("chat-msg-img").attr("src", `/img/uploads/${m.SelfMemberId}.jpg`).attr("alt", "");
+                    var $chatMsgDate = $("<div>").addClass("chat-msg-date").text(m.TimeStamp.substring(0, 16));
+                    $chatMsgProfile.append($chatMsgImg, $chatMsgDate);
+
+                    var $chatMsgContent = $("<div>").addClass("chat-msg-content");
+                    var $chatMsgText = $("<div>").addClass("chat-msg-text").text(m.Message);
+                    $chatMsgContent.append($chatMsgText);
+
+                    $chatMsg.append($chatMsgProfile, $chatMsgContent);
+
+                    $("#Content").append($chatMsg);
+                }
+
+            }
+        })
+
+        
+
+
+
+
+
+        // 更新用戶個人連線 ID 事件
+        connection.on("UpdSelfID", function (id) {
+            $('#SelfID').html(id);
+        });
+
+        // 更新用戶個人Member ID 事件，順便更新用戶個人頭貼
+        connection.on("UpdSelfMemberID", function (id) {
+            $('#SelfMemberID').html(id);
+            $('#ProfileAvatar').attr("src", `/img/uploads/${id}.jpg`); //改成該用戶頭貼
+        });
+
+        // 更新用戶個人名字
+        connection.on("UpdSelfName", function (name) {
+            $('#ProfileName').html(name);
+            $('#ProfileCharacter').html("客戶");
+        })
+
+
+
+
+        // 更新聊天內容事件
+        connection.on("UpdContent", function (messageJson) {
+            var messageInfo = JSON.parse(messageJson);
+
+            const currentMemberID = document.getElementById('sendToMemberID').innerText; // 我目前開啟誰的小窗的MemberID
+            if (messageInfo.SelfMemberId.includes('E')) { //員工to客戶
+                if (messageInfo.SendToMemberId === currentMemberID) { //小窗對到
+                    var $chatMsg = $("<div>").addClass("chat-msg owner");
+
+                    var $chatMsgProfile = $("<div>").addClass("chat-msg-profile");
+                    var $chatMsgImg = $("<img>").addClass("chat-msg-img").attr("src", `/img/uploads/${messageInfo.SelfMemberId}.jpg`).attr("alt", "");
+                    var $chatMsgDate = $("<div>").addClass("chat-msg-date").text(messageInfo.TimeStamp.substring(0, 16));
+                    $chatMsgProfile.append($chatMsgImg, $chatMsgDate);
+
+                    var $chatMsgContent = $("<div>").addClass("chat-msg-content");
+                    var $chatMsgText = $("<div>").addClass("chat-msg-text").text(messageInfo.Message);
+                    $chatMsgContent.append($chatMsgText);
+
+                    $chatMsg.append($chatMsgProfile, $chatMsgContent);
+
+                    $("#Content").append($chatMsg);
+
+                    var d = document.querySelector('.chat-area');
+                    d.scrollTop = d.scrollHeight;
+                }
+                const IDList = document.getElementById('IDList');
+                const IDs = IDList.querySelectorAll('div');
+                for (var ID of IDs) {
+                    var MID = $(ID).find('.msg-detail').attr("name");
+                    if (MID === messageInfo.SendToMemberId) {
+                        ID.lastElementChild.lastElementChild.firstElementChild.innerText = messageInfo.Message;
+                        ID.lastElementChild.lastElementChild.firstElementChild.setAttribute('style', 'font-weight: normal;');
+                        ID.lastElementChild.lastElementChild.firstElementChild.setAttribute('style', 'font-size: 12px;');
+                    }
+                }
+            }
+            else { //客戶to員工
+                if (messageInfo.SelfMemberId === currentMemberID && !$('#message').prop('disabled')) { //小窗對到
+                    var $chatMsg = $("<div>").addClass("chat-msg");
+
+                    var $chatMsgProfile = $("<div>").addClass("chat-msg-profile");
+                    var $chatMsgImg = $("<img>").addClass("chat-msg-img").attr("src", `/img/uploads/${messageInfo.SelfMemberId}.jpg`).attr("alt", "");
+                    var $chatMsgDate = $("<div>").addClass("chat-msg-date").text(messageInfo.TimeStamp.substring(0, 16));
+                    $chatMsgProfile.append($chatMsgImg, $chatMsgDate);
+
+                    var $chatMsgContent = $("<div>").addClass("chat-msg-content");
+                    var $chatMsgText = $("<div>").addClass("chat-msg-text").text(messageInfo.Message);
+                    $chatMsgContent.append($chatMsgText);
+
+                    $chatMsg.append($chatMsgProfile, $chatMsgContent);
+
+                    $("#Content").append($chatMsg);
+
+                    var d = document.querySelector('.chat-area');
+                    d.scrollTop = d.scrollHeight;
+                }
+                else {
+                    const IDList = document.getElementById('IDList');
+                    const IDs = IDList.querySelectorAll('div');
+                    for (var ID of IDs) {
+                        ID.setAttribute('style', 'order: 1;');
+                        var MID = $(ID).find('.msg-detail').attr("name");
+                        if (MID === messageInfo.SelfMemberId) {
+                            ID.setAttribute('style', 'order: -1;');
+                        }
+                    }
+                }
+                const IDList = document.getElementById('IDList');
+                const IDs = IDList.querySelectorAll('div');
+                for (var ID of IDs) {
+                    var MID = $(ID).find('.msg-detail').attr("name");
+                    if (MID === messageInfo.SelfMemberId) {
+                        ID.lastElementChild.lastElementChild.firstElementChild.innerText = messageInfo.Message;
+                        ID.lastElementChild.lastElementChild.firstElementChild.setAttribute('style', 'font-weight: bold;');
+                        ID.lastElementChild.lastElementChild.firstElementChild.setAttribute('style', 'font-size: 18px;');
+                    }
+                }
+            }
+        });
+
+
+
+        //傳送訊息
+        function send() {
+            const message = document.getElementById('message').value;
+            if (!message) { return; }
+            const selfID = document.getElementById('SelfID').innerText;
+            const SelfMemberID = document.getElementById('SelfMemberID').innerText;
+            const sendToID = document.getElementById('sendToID').innerText;
+            const sendToMemberID = document.getElementById('sendToMemberID').innerText;
+
+            connection.invoke("SendMessage", selfID, message, sendToID, SelfMemberID, sendToMemberID)
+                .then(function () {
+                    var d = document.querySelector('.chat-area');
+                    d.scrollTop = d.scrollHeight;
+                })
+                .catch(function (err) {
+                    alert('傳送錯誤: ' + err.toString());
+                });
+            document.getElementById('message').value = '';
+            document.getElementById('message').focus();
+        }
+
+
+        function keyEnter(e) {
+            if (e.keyCode === 13) {
+                send();
+            }
+        }
+
+        function toggleFullscreen() {
+            var fullscreenDiv = document.querySelector(".app");
+            if (!document.fullscreenElement &&  //進入全螢幕模式
+                !document.mozFullScreenElement &&
+                !document.webkitFullscreenElement &&
+                !document.msFullscreenElement) {  
+                if (fullscreenDiv.requestFullscreen) {
+                    fullscreenDiv.requestFullscreen();
+                } else if (fullscreenDiv.mozRequestFullScreen) { //Firefox
+                    fullscreenDiv.mozRequestFullScreen();
+                } else if (fullscreenDiv.webkitRequestFullscreen) { //Chrome, Safari & Opera
+                    fullscreenDiv.webkitRequestFullscreen();
+                } else if (fullscreenDiv.msRequestFullscreen) { //IE/Edge
+                    fullscreenDiv.msRequestFullscreen();
+                }
+            } else {  //退出全螢幕模式
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) {  //Firefox
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {  //Chrome, Safari and Opera
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {  //IE/Edge
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        document.addEventListener("keydown", function (event) {
+            if ((event.key === "f" || event.key === "F") && document.activeElement.tagName !== "INPUT") {
+                toggleFullscreen();
+            }
+        });
+
+
+
+
+        function demo1() {
+            document.getElementById('message').value = '您好，請至網站導覽點選"旅遊服務"就可簽證代辦服務囉!'
+        }
+    </script>
+}

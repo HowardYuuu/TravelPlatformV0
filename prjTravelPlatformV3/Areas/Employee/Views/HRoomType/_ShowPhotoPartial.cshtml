@@ -1,0 +1,17 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.Hotel.RoomTypeViewModel
+
+@foreach (var i in Model.RoomTypeImages)
+{
+    @* <div class="img-container m-2">
+        <img src="@Url.Content($"~/img/Hotel/{i.FHotelImage}")" class="img-item" data-imgId="@i.FHotelImgId" />
+         <div>
+            <input class="img-check" type="checkbox" onchange="checkBoxSelected(event)" data-id="@i.FHotelImgId" />
+        </div>
+    </div> *@
+
+
+    <img src="@Url.Content($"~/img/Hotel/RoomType/{i.FRoomImage}")" data-imgName="@i.FRoomImage" class="col-4 img-fluid p-1 rounded-3 images" alt="..." onclick="imgSelected(@i.FRoomTypeImgId, event)" />
+}
+
+
+

@@ -1,0 +1,56 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.CarRent.ServicePointViewModel
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">@ViewBag.title</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div id="divModalContent" class="modal-body">
+    <form id="@ViewBag.formId">
+        @Html.AntiForgeryToken()
+
+        <input asp-for="fServicePointId" style="display:none" />
+
+        <div class="mb-3">
+            <label asp-for="fServicePoint" class="form-label">@Html.DisplayNameFor(h => h.fServicePoint)</label>
+            <input asp-for="fServicePoint" class="form-control" readonly />
+            <span asp-validation-for="fServicePoint" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="fAddress" class="form-label">@Html.DisplayNameFor(h => h.fAddress)</label>
+            <input asp-for="fAddress" class="form-control" readonly>
+            <span asp-validation-for="fAddress" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="fPhone" class="form-label">@Html.DisplayNameFor(h => h.fPhone)</label>
+            <input asp-for="fPhone" class="form-control" readonly>
+            <span asp-validation-for="fPhone" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="fServicePointInUse" class="form-label">@Html.DisplayNameFor(h => h.fServicePointInUse)</label>
+            <div>
+                <input type="radio" id="fServicePointInUse_true" name="fServicePointInUse" value="true" disabled @(Model.fServicePointInUse == true ? "checked" : "")>
+                <label for="fServicePointInUse_true" style="font-size:14px;">已啟用</label>
+                <input type="radio" id="fServicePointInUse_false" name="fServicePointInUse" value="false" disabled @(Model.fServicePointInUse == false ? "checked" : "")>
+                <label for="fServicePointInUse_false" style="font-size:14px;">未啟用</label>
+            </div>
+            <span asp-validation-for="fServicePointInUse" class="text-danger" style="font-size:14px;"></span>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            <button type="button" class="btn btn-primary" id="btnDelete" onclick="deleteServicePoint(@Model.fServicePointId)">刪除</button>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+
+
+    </script>
+}

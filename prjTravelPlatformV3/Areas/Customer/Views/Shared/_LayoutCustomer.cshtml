@@ -1,0 +1,401 @@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Http.Extensions
+@inject IHttpContextAccessor _httpContextAccessor
+@{
+
+    var currentUrl = Url.ActionContext.HttpContext.Request.GetDisplayUrl();
+}
+
+@{
+    // 在Razor代碼中將ViewBag.UserImage的值保存到JavaScript變數
+    string userImageUrl = string.IsNullOrEmpty(ViewBag.UserImage) ? "~/img/avatar.png" : "~/" + ViewBag.UserImage;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Trav Vita</title>
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link href="~/css/frontstage/v2/vendors.css" rel="stylesheet" />
+    <link href="~/css/frontstage/V2/main.css" asp-append-version="true" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <link href="~/css/discount/chatbox.css" rel="stylesheet" />
+
+    <link href="~/css/ChatExample.css" asp-append-version="true" rel="stylesheet" />
+    @* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.2.5/tocas.min.css" /> *@
+
+    @await RenderSectionAsync("Styles", required: false)
+
+</head>
+<body>
+    <div class="preloader js-preloader">
+        <div class="preloader__wrap">
+            <img src="~/img/frontstage/tube-spinner.svg" height="100px" ; width="100px" />
+            @* <div class="preloader__icon">
+            <img src="~/img/frontstage/tube-spinner.svg" height="100px"; width="100px"/>
+            </div> *@
+        </div>
+
+        <div class="preloader__title"></div>
+    </div>
+
+    <main>
+        <header data-add-bg="bg-dark-1" class="header bg-green js-header" data-x="header" data-x-toggle="is-menu-opened" style="z-index:2000;">
+            <div data-anim="fade" class="header__container px-30 sm:px-20">
+                <div class="row justify-between items-center">
+
+                    <!--導覽列-->
+                    <div class="col-auto">
+                        <div class="d-flex items-center">
+                            <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="header-logo mr-20" data-x="header-logo" data-x-toggle="is-logo-dark">
+                                <img src="~/img/logof.png" />
+                            </a>
+                            <div class="header-menu " data-x="mobile-menu" data-x-toggle="is-menu-active">
+                                <div class="mobile-overlay"></div>
+
+                                <div class="header-menu__content">
+                                    <div class="mobile-bg js-mobile-bg"></div>
+
+                                    <div class="menu js-navList">
+                                        <ul class="menu__nav text-white -is-active">
+                                            <!--行程-->
+                                            <li>
+                                                <a asp-area="Customer" asp-controller="TravelPlan" asp-action="Free">自由行</a>
+                                            </li>
+                                            <!--景點-->
+                                            <li>
+                                                <a asp-area="Customer" asp-controller="Destionation" asp-action="Index">景點&方案</a>
+                                            </li>
+                                            <!--飯店-->
+                                            <li>
+                                                <a asp-area="Customer" asp-controller="Hotels" asp-action="Index">飯店</a>
+                                            </li>
+
+                                            <!--租車-->
+                                            <li>
+                                                <a asp-area="Customer" asp-controller="CarRent" asp-action="Index">租車</a>
+                                            </li>
+
+                                            <!--機票-->
+                                            <li>
+                                                <a asp-area="Customer" asp-controller="Flight" asp-action="Index">機票</a>
+                                            </li>
+
+                                            <!--旅遊服務-->
+                                            <li>
+                                                <a asp-area="Customer" asp-controller="Visa" asp-action="Index">旅遊服務</a>
+                                            </li>
+
+                                            <!--伴手禮-->
+                                            <li>
+                                                <a href="@Url.Action("Index", "Products", new { area = "Customer" })">伴手禮</a>
+                                            </li>
+                                            <!--優惠卷-->
+                                            <li>
+                                                <a style="color:white" asp-area="Customer" asp-controller="Discounts" asp-action="GetCoupon">優惠專區</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="mobile-footer px-20 py-20 border-top-light js-mobile-footer">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-auto">
+                        <div class="d-flex items-center">
+                            <div class="d-flex items-center ml-20 is-menu-opened-hide md:d-none">
+                                @if (User.Identity != null && User.Identity.IsAuthenticated && _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role) == "Customer")
+                                {
+                                    <input type="hidden" data-userId="@_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)" />
+                                    @* 購物車按鈕 *@
+                                    <div class="dropdown js-dropdown">
+                                        <div class="dropdown__button sm:w-full" data-el-toggle=".cartItem" data-el-toggle-active=".cartItem-active">
+                                            <button style="height:50px" class="button px-30 fw-400 text-14 border-white -outline-white text-white ml-20 mr-20 rounded-100 dropdown__button"><i class="fa-solid fa-cart-shopping"></i></button>
+                                            <span id="cartItemNum" class="badge-pill badge-danger" style="position: absolute; top: -5px; right:8px; color: #fff;
+                                                    background-color: #dc3545;padding-right: 0.5em;padding-left: 0.5em;border-radius: 10rem;">
+                                            </span>
+                                        </div>
+                                        <div class="toggle-element -dropdown  js-click-dropdown cartItem" style="min-width: 225px">
+                                            <div class="text-14 y-gap-15 js-dropdown-list">
+                                                <div id="cartItemList">
+                                                </div>
+                                                <div class="border-top-light p-0"></div>
+                                                <a href="@Url.Action("ItemCart", "Products", new { area = "Customer" })" class="d-block">去結帳</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown js-dropdown user-info">
+                                        <div class="dropdown__button sm:w-full" data-el-toggle=".user-info-item" data-el-toggle-active=".user-info">
+                                            <button class="button  px-24 fw-400 text-14 border-white -outline-white text-white ml-20 mr-20 rounded-100 dropdown__button" style="height:50px">
+                                                <div class="d-flex justify-between items-center text-color">
+                                                    <span class="mr-10">@_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value</span>
+                                                    <img id="UserImage2" src="~/@_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Uri).Value" style="width:30px; height:30px; border-radius:50%" class="dropdown__button" />
+                                                </div>
+                                            </button>
+                                        </div>
+                                        <div class="toggle-element -dropdown  js-click-dropdown user-info-item">
+                                            <div class="text-14 y-gap-15 js-dropdown-list">
+                                                @* <a class="d-block" onclick="showContent('aa1')>訂單</a>
+                                                <a class="d-block" asp-area="Customer" asp-controller="Userprofile" asp-action="Index" >收藏</a>
+                                                <a class="d-block" asp-area="Customer" asp-controller="Userprofile" asp-action="Index" >優惠券</a> *@
+                                                <a class="d-block" asp-area="Customer" asp-controller="Userprofile" asp-action="Index" >個人資料</a>
+                                                <div class="border-top-light p-0 mb-4 mt-4"></div>
+                                                <a id="btnLogout" onclick="logout()" class="d-block">登出</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+
+                                    <div class="dropdown js-dropdown login-active">
+                                        <div class="dropdown__button sm:w-full" data-el-toggle=".login" data-el-toggle-active=".login-active">
+                                            <a class="button px-24 fw-400 text-14 border-white -outline-white h-40 text-white ml-20 mr-20 rounded-100 dropdown__button">登入</a>
+                                        </div>
+                                        <div class="toggle-element -dropdown  js-click-dropdown login">
+                                            <div class="text-14 y-gap-15 js-dropdown-list">
+                                                <a class="d-block" asp-area="CustomizedIdentity" asp-controller="Login" asp-action="Index" asp-route-currentUrl="@currentUrl">會員登入</a>
+                                                <a class="d-block" asp-area="CustomizedIdentity" asp-controller="Login" asp-action="Employee">員工登入</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="d-none xl:d-flex x-gap-20 items-center pl-30 text-white" data-x="header-mobile-icons" data-x-toggle="text-white">
+
+                                <div><button class="d-flex items-center icon-menu text-inherit text-20" data-x-click="html, header, header-logo, header-mobile-icons, mobile-menu"></button></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </header>
+        <div>
+            @RenderBody()
+        </div>
+        <footer class="footer -type-3 text-white bg-dark-1">
+            <div class="container">
+                <div class="pt-60 pb-60">
+                    <div class="row y-gap-40 justify-between xl:justify-start">
+                        <div class="col-xl-2 col-lg-4 col-sm-6">
+                            <h5 class="text-16 fw-500 mb-30">聯繫我們</h5>
+
+                            <div class="mt-30">
+                                <div class="text-14 mt-30">客服專線</div>
+                                <a href="#" class="text-18 fw-500 mt-5">(02) 123 456 7890</a>
+                            </div>
+
+                            <div class="mt-35">
+                                <div class="text-14 mt-30">電子郵件</div>
+                                <a href="#" class="text-18 fw-500 mt-5">carrent@travvita.com.tw</a>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-2 col-lg-4 col-sm-6">
+                            <h5 class="text-16 fw-500 mb-30">Trav Vita</h5>
+                            <div class="d-flex y-gap-10 flex-column">
+                                <a href="#">關於我們</a>
+                                <a href="#">業務職掌</a>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-2 col-lg-4 col-sm-6">
+                            <h5 class="text-16 fw-500 mb-30">服務項目</h5>
+                            <div class="d-flex y-gap-10 flex-column">
+                                <a href="#">租車服務</a>
+                                <a href="#">行程安排</a>
+                                <a href="#">景點介紹</a>
+                                <a href="#">機票代訂</a>
+                                <a href="#">旅遊服務</a>
+                                <a href="#">伴手禮訂購</a>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-lg-4 col-sm-6">
+                            <h5 class="text-16 fw-500 mb-30">獲取最新消息</h5>
+
+                            <div class="single-field relative d-flex justify-end items-center pb-30">
+                                <input class="bg-white rounded-8" type="email" placeholder="電子信箱">
+                                <button class="absolute px-20 h-full text-15 fw-500 underline text-dark-1">訂閱</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--AzureBot聊天框-->
+            <div class="chat-container01" id="chatContainer01">
+                <button class="chat-header01" id="chatHeader01">
+                    <span class="chat-header-button01" id="chatHeaderButton01">
+
+                        <img src="~/img/discount/support.png" />
+                    </span>
+                </button>
+                <div class="chat-body01" id="chatBody01" style="background-color:whitesmoke">
+                    <iframe src='https://webchat.botframework.com/embed/YUBot01-bot?s=-Ce1x4qLywM.qCJANBfcL4STVDQVFicjGI3h74Els0dw_69edOm_-EM' style='min-width: 100%; width: 100%; min-height: 100%;backgroundColor: paleturquoise'></iframe>
+                </div>
+            </div>
+        </footer>
+     
+
+
+
+        @* 聊天窗 *@
+
+        <div id="OutterIcon" class="app-logo" style="cursor: pointer; z-index:1000; position:fixed; bottom:20px; right:80px; display:block;" onclick="outterclick()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <defs />
+                <path class="path-1" fill="#3eb798" d="M448 193.108h-32v80c0 44.176-35.824 80-80 80H192v32c0 35.344 28.656 64 64 64h96l69.76 58.08c6.784 5.648 16.88 4.736 22.528-2.048A16.035 16.035 0 00448 494.868v-45.76c35.344 0 64-28.656 64-64v-128c0-35.344-28.656-64-64-64z" opacity=".4" />
+                <path class="path-2" fill="#3eb798" d="M320 1.108H64c-35.344 0-64 28.656-64 64v192c0 35.344 28.656 64 64 64v61.28c0 8.832 7.168 16 16 16a16 16 0 0010.4-3.84l85.6-73.44h144c35.344 0 64-28.656 64-64v-192c0-35.344-28.656-64-64-64zm-201.44 182.56a22.555 22.555 0 01-4.8 4 35.515 35.515 0 01-5.44 3.04 42.555 42.555 0 01-6.08 1.76 28.204 28.204 0 01-6.24.64c-17.68 0-32-14.32-32-32-.336-17.664 13.712-32.272 31.376-32.608 2.304-.048 4.608.16 6.864.608a42.555 42.555 0 016.08 1.76c1.936.8 3.76 1.808 5.44 3.04a27.78 27.78 0 014.8 3.84 32.028 32.028 0 019.44 23.36 31.935 31.935 0 01-9.44 22.56zm96 0a31.935 31.935 0 01-22.56 9.44c-2.08.24-4.16.24-6.24 0a42.555 42.555 0 01-6.08-1.76 35.515 35.515 0 01-5.44-3.04 29.053 29.053 0 01-4.96-4 32.006 32.006 0 01-9.28-23.2 27.13 27.13 0 010-6.24 42.555 42.555 0 011.76-6.08c.8-1.936 1.808-3.76 3.04-5.44a37.305 37.305 0 013.84-4.96 37.305 37.305 0 014.96-3.84 25.881 25.881 0 015.44-3.04 42.017 42.017 0 016.72-2.4c17.328-3.456 34.176 7.808 37.632 25.136.448 2.256.656 4.56.608 6.864 0 8.448-3.328 16.56-9.28 22.56h-.16zm96 0a22.555 22.555 0 01-4.8 4 35.515 35.515 0 01-5.44 3.04 42.555 42.555 0 01-6.08 1.76 28.204 28.204 0 01-6.24.64c-17.68 0-32-14.32-32-32-.336-17.664 13.712-32.272 31.376-32.608 2.304-.048 4.608.16 6.864.608a42.555 42.555 0 016.08 1.76c1.936.8 3.76 1.808 5.44 3.04a27.78 27.78 0 014.8 3.84 32.028 32.028 0 019.44 23.36 31.935 31.935 0 01-9.44 22.56z" />
+            </svg>
+        </div>
+
+        <div class="app-container" style="display:none;">
+
+            <div class="app-main" style="display:none;">
+                <div class="chat-wrapper" id="Content">
+                </div>
+                <div class="chat-input-wrapper">
+                    <div class="input-wrapper">
+                        <input type="text" class="chat-input" placeholder="Enter your message here" id="message" autocomplete="off" onkeydown="keyEnter(event)">
+                        <button class="emoji-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-smile" viewBox="0 0 24 24">
+                                <defs />
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01" />
+                            </svg>
+                        </button>
+                    </div>
+                    <button type="button" id="sendButton" class="chat-send-btn">Send</button>
+                    <button type="button" id="demo" onclick="demo();">Demo</button>
+                </div>
+            </div>
+
+            <div class="app-left">
+                <div class="app-left-header">
+                    <div class="app-logo" id="InnerIcon" onclick="innerclick();" style="cursor: pointer;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <defs />
+                            <path class="path-1" fill="#3eb798" d="M448 193.108h-32v80c0 44.176-35.824 80-80 80H192v32c0 35.344 28.656 64 64 64h96l69.76 58.08c6.784 5.648 16.88 4.736 22.528-2.048A16.035 16.035 0 00448 494.868v-45.76c35.344 0 64-28.656 64-64v-128c0-35.344-28.656-64-64-64z" opacity=".4" />
+                            <path class="path-2" fill="#3eb798" d="M320 1.108H64c-35.344 0-64 28.656-64 64v192c0 35.344 28.656 64 64 64v61.28c0 8.832 7.168 16 16 16a16 16 0 0010.4-3.84l85.6-73.44h144c35.344 0 64-28.656 64-64v-192c0-35.344-28.656-64-64-64zm-201.44 182.56a22.555 22.555 0 01-4.8 4 35.515 35.515 0 01-5.44 3.04 42.555 42.555 0 01-6.08 1.76 28.204 28.204 0 01-6.24.64c-17.68 0-32-14.32-32-32-.336-17.664 13.712-32.272 31.376-32.608 2.304-.048 4.608.16 6.864.608a42.555 42.555 0 016.08 1.76c1.936.8 3.76 1.808 5.44 3.04a27.78 27.78 0 014.8 3.84 32.028 32.028 0 019.44 23.36 31.935 31.935 0 01-9.44 22.56zm96 0a31.935 31.935 0 01-22.56 9.44c-2.08.24-4.16.24-6.24 0a42.555 42.555 0 01-6.08-1.76 35.515 35.515 0 01-5.44-3.04 29.053 29.053 0 01-4.96-4 32.006 32.006 0 01-9.28-23.2 27.13 27.13 0 010-6.24 42.555 42.555 0 011.76-6.08c.8-1.936 1.808-3.76 3.04-5.44a37.305 37.305 0 013.84-4.96 37.305 37.305 0 014.96-3.84 25.881 25.881 0 015.44-3.04 42.017 42.017 0 016.72-2.4c17.328-3.456 34.176 7.808 37.632 25.136.448 2.256.656 4.56.608 6.864 0 8.448-3.328 16.56-9.28 22.56h-.16zm96 0a22.555 22.555 0 01-4.8 4 35.515 35.515 0 01-5.44 3.04 42.555 42.555 0 01-6.08 1.76 28.204 28.204 0 01-6.24.64c-17.68 0-32-14.32-32-32-.336-17.664 13.712-32.272 31.376-32.608 2.304-.048 4.608.16 6.864.608a42.555 42.555 0 016.08 1.76c1.936.8 3.76 1.808 5.44 3.04a27.78 27.78 0 014.8 3.84 32.028 32.028 0 019.44 23.36 31.935 31.935 0 01-9.44 22.56z" />
+                        </svg>
+                    </div>
+                    <h1>聊天室</h1>
+                </div>
+                <div class="app-profile-box" id="ProfileBox">
+                    <img id="ProfileAvatar" src="/img/avatar.png" alt="profile">
+                    <div id="ProfileName" class="app-profile-box-name">
+                        歡迎登入
+                    </div>
+                    <p id="ProfileCharacter" class="app-profile-box-title">登入並上線開啟聊天室</p>
+                    <div>
+                        <div class="app-theme-selector">
+                            <button class="theme-color indigo" data-color="indigo">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" title="Indigo">
+                                    <defs />
+                                    <path fill="#fff" d="M451.648.356c-25.777 2.712-56.79 19.872-94.811 52.46-68.786 58.958-149.927 160.756-202.185 234-38.158-5.951-78.375 10.368-102.187 40.133C8.758 381.584 45.347 430.34 4.12 473.811c-7.179 7.569-4.618 20.005 4.98 24.114 67.447 28.876 153.664 10.879 194.109-31.768 24.718-26.063 38.167-64.54 31.411-100.762 72.281-55.462 172.147-140.956 228.7-211.885 31.316-39.277 47.208-70.872 48.584-96.59C513.759 22.273 486.87-3.346 451.648.356zM181.443 445.511c-27.362 28.85-87.899 45.654-141.767 31.287 30.12-48.043 4.229-91.124 36.214-131.106 26.246-32.808 79.034-41.993 109.709-11.317 35.839 35.843 19.145 86.566-4.156 111.136zm3.07-148.841c7.354-10.167 18.887-25.865 33.29-44.659l49.22 49.224c-18.125 14.906-33.263 26.86-43.077 34.494-8.842-15.879-22.526-30.108-39.433-39.059zM481.948 55.316c-3.368 63.004-143.842 186.021-191.797 226.621l-53.785-53.79c39.458-49.96 155.261-191.312 218.422-197.954 16.851-1.775 28.03 8.858 27.16 25.123z" />
+                                </svg>
+                            </button>
+                            <button class="theme-color pink active" data-color="pink" title="Pink">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+                                    <defs />
+                                    <path fill="#fff" d="M451.648.356c-25.777 2.712-56.79 19.872-94.811 52.46-68.786 58.958-149.927 160.756-202.185 234-38.158-5.951-78.375 10.368-102.187 40.133C8.758 381.584 45.347 430.34 4.12 473.811c-7.179 7.569-4.618 20.005 4.98 24.114 67.447 28.876 153.664 10.879 194.109-31.768 24.718-26.063 38.167-64.54 31.411-100.762 72.281-55.462 172.147-140.956 228.7-211.885 31.316-39.277 47.208-70.872 48.584-96.59C513.759 22.273 486.87-3.346 451.648.356zM181.443 445.511c-27.362 28.85-87.899 45.654-141.767 31.287 30.12-48.043 4.229-91.124 36.214-131.106 26.246-32.808 79.034-41.993 109.709-11.317 35.839 35.843 19.145 86.566-4.156 111.136zm3.07-148.841c7.354-10.167 18.887-25.865 33.29-44.659l49.22 49.224c-18.125 14.906-33.263 26.86-43.077 34.494-8.842-15.879-22.526-30.108-39.433-39.059zM481.948 55.316c-3.368 63.004-143.842 186.021-191.797 226.621l-53.785-53.79c39.458-49.96 155.261-191.312 218.422-197.954 16.851-1.775 28.03 8.858 27.16 25.123z" />
+                                </svg>
+                            </button>
+                            <button class="theme-color navy-dark" data-color="navy-dark" title="Navy Dark">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+                                    <defs />
+                                    <path fill="#fff" d="M451.648.356c-25.777 2.712-56.79 19.872-94.811 52.46-68.786 58.958-149.927 160.756-202.185 234-38.158-5.951-78.375 10.368-102.187 40.133C8.758 381.584 45.347 430.34 4.12 473.811c-7.179 7.569-4.618 20.005 4.98 24.114 67.447 28.876 153.664 10.879 194.109-31.768 24.718-26.063 38.167-64.54 31.411-100.762 72.281-55.462 172.147-140.956 228.7-211.885 31.316-39.277 47.208-70.872 48.584-96.59C513.759 22.273 486.87-3.346 451.648.356zM181.443 445.511c-27.362 28.85-87.899 45.654-141.767 31.287 30.12-48.043 4.229-91.124 36.214-131.106 26.246-32.808 79.034-41.993 109.709-11.317 35.839 35.843 19.145 86.566-4.156 111.136zm3.07-148.841c7.354-10.167 18.887-25.865 33.29-44.659l49.22 49.224c-18.125 14.906-33.263 26.86-43.077 34.494-8.842-15.879-22.526-30.108-39.433-39.059zM481.948 55.316c-3.368 63.004-143.842 186.021-191.797 226.621l-53.785-53.79c39.458-49.96 155.261-191.312 218.422-197.954 16.851-1.775 28.03 8.858 27.16 25.123z" />
+                                </svg>
+                            </button>
+                            <button class="theme-color dark" data-color="dark" title="Dark">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+                                    <defs />
+                                    <path fill="currentColor" d="M451.648.356c-25.777 2.712-56.79 19.872-94.811 52.46-68.786 58.958-149.927 160.756-202.185 234-38.158-5.951-78.375 10.368-102.187 40.133C8.758 381.584 45.347 430.34 4.12 473.811c-7.179 7.569-4.618 20.005 4.98 24.114 67.447 28.876 153.664 10.879 194.109-31.768 24.718-26.063 38.167-64.54 31.411-100.762 72.281-55.462 172.147-140.956 228.7-211.885 31.316-39.277 47.208-70.872 48.584-96.59C513.759 22.273 486.87-3.346 451.648.356zM181.443 445.511c-27.362 28.85-87.899 45.654-141.767 31.287 30.12-48.043 4.229-91.124 36.214-131.106 26.246-32.808 79.034-41.993 109.709-11.317 35.839 35.843 19.145 86.566-4.156 111.136zm3.07-148.841c7.354-10.167 18.887-25.865 33.29-44.659l49.22 49.224c-18.125 14.906-33.263 26.86-43.077 34.494-8.842-15.879-22.526-30.108-39.433-39.059zM481.948 55.316c-3.368 63.004-143.842 186.021-191.797 226.621l-53.785-53.79c39.458-49.96 155.261-191.312 218.422-197.954 16.851-1.775 28.03 8.858 27.16 25.123z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="switch-status">
+                        <input type="checkbox" name="switchStatus" id="switchStatus" onchange="OnOffLineChange(this.checked);">
+                        <label class="label-toggle" for="switchStatus"></label>
+                        <span class="toggle-text toggle-online">Online</span>
+                        <span class="toggle-text toggle-offline">Offline</span>
+                    </div>
+                </div>
+                <div class="list-group">
+                    <div class="chat-list-wrapper" style="padding-bottom:30px;">
+                        <div class="online-service-header" id="OnlineServiceHead" style="display:none;" onclick="LoadEmployeeMessage(this)">
+                            線上客服
+                        </div>
+                        <div class="chat-list-header" id="ChatListHeader" style="display:none;">
+                            在線列表 <span class="c-number" id="ChatListCount">0</span>
+                            <svg class="list-header-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="feather feather-chevron-up" viewBox="0 0 24 24">
+                                <defs />
+                                <path d="M18 15l-6-6-6 6" />
+                            </svg>
+                        </div>
+                        <ul class="chat-list active" id="ChatList">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <span id="sendToID" style="display:none;"></span>
+            <span id="SelfID" style="display:none;"></span>
+            <span id="sendToMemberID" style="display:none;"></span>
+            <span id="SelfMemberID" style="display:none;"></span>
+        </div>
+
+    </main>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/frontstage/logout.js"></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.GoogleMapsAPIKey"></script>
+    <script src="https://unpkg.com/@@googlemaps/markerclusterer/dist/index.min.js"></script>
+    <script src="~/js/frontstage/v2/vendors.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="~/js/frontstage/v2/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+    <script src="~/js/product/productcart.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+	<script src="~/js/discount/chatbox.js"></script>
+    <script>
+        let IsClaim = false;
+        let claimId = ''
+        let claimName = ''
+        let claimEmail = ''
+        if (Boolean("@User.Identity.IsAuthenticated")) {
+            IsClaim = true;
+            claimId = Number(@_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            claimName = '@Html.Raw(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name))';
+        }
+        else {
+            IsClaim = false;
+        }
+    </script>
+    <script src="~/js/frontstage/LayoutChatBox.js" asp-append-version="true"></script>
+    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.2.5/tocas.min.js"></script> *@
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+﻿@model prjTravelPlatform_release.Areas.Customer.ViewModel.Hotels.HotelCard
+
+<div class="col-12">
+    <div class="border-light p-4 rounded-22">
+        <div class="row x-gap-20 y-gap-20">
+            <div class="col-md-auto">
+                <div class="cardImage ratio ratio-1:1 w-250 md:w-1/1 rounded-4">
+                    <div class="cardImage__content">
+                        @if (Model.HotelsImagies.Count == 0)
+                        {
+                            <img class="rounded-4 col-12" src="~/img/Hotel/noPhoto.jpg" alt="image">
+                        }
+                        else
+                        {
+                            <img class="rounded-4 col-12" src="~/img/Hotel/@Model.HotelsImagies.FirstOrDefault()" alt="image">
+                        }           
+                    </div>
+                    <!--收藏-->
+                    <div class="cardImage__wishlist">
+                        <button class="button -blue-1 bg-white size-30 rounded-full shadow-2">
+                            <i class="icon-heart text-12"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md">
+                <h3 class="text-18 lh-16 fw-500">
+                    @Model.HotelName<br class="lg:d-none">  @Model.HotelEngName
+                    <div class="d-inline-block ml-10">
+                        <i class="icon-star text-10 text-yellow-2"></i>
+                        <i class="icon-star text-10 text-yellow-2"></i>
+                        <i class="icon-star text-10 text-yellow-2"></i>
+                        <i class="icon-star text-10 text-yellow-2"></i>
+                        <i class="icon-star text-10 text-yellow-2"></i>
+                    </div>
+                </h3>
+
+                <div class="row x-gap-10 y-gap-10 items-center pt-10">
+                    <div class="col-auto">
+                        <p class="text-14">@Model.Region @Model.City</p>
+                    </div>
+
+                    <div class="col-auto">
+                        <button data-x-click="mapFilter" class="d-block text-14 text-blue-1 underline">Show on map</button>
+                    </div>
+
+                    <div class="col-auto">
+                        <div class="size-3 rounded-full bg-light-1"></div>
+                    </div>
+
+                    <div class="col-auto">
+                        <p class="text-14">距中心 2 公里</p>
+                    </div>
+                </div>
+
+                <div class="row x-gap-10 y-gap-10 pt-20">
+
+                    @if (Model.HotelsFacilitiesName == null)
+                    {
+                        <div class="col-auto">
+                            <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">fuck~~</div>
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model.HotelsFacilitiesName)
+                        {
+                            <div class="col-auto">
+                                <div class="border-light rounded-100 py-5 px-20 text-14 lh-14">@item</div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-auto text-right md:text-left">
+                <div class="row x-gap-10 y-gap-10 justify-end items-center md:justify-start">
+                    <div class="col-auto">
+                        <div class="text-14 lh-14 fw-500">Exceptional</div>
+                        <div class="text-14 lh-14 text-light-1">777則評論</div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="flex-center text-white fw-600 text-14 size-40 rounded-4 bg-blue-1">5.0</div>
+                    </div>
+                </div>
+
+                <div class="">
+
+                    <div class="text-22 lh-12 fw-600" style="margin-top:112px">NT$ @Model.Price</div>
+                    <a href="#" class="button -md -dark-1 bg-blue-1 text-white mt-24">查看詳情</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

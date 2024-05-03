@@ -1,0 +1,185 @@
+﻿@model IEnumerable<prjTravelPlatformV3.Models.TtravelOrder>
+
+@{
+	ViewData["Title"] = "方案訂單管理";
+}
+
+@section Styles {
+	<link href="~/lib/datatables/css/jquery.datatables.css" rel="stylesheet" />
+	<style>
+		thead {
+			background-color: lightslategrey;
+			color: black;
+		}
+		.hover-highlight {
+			background-color: #f0f0f0 !important;
+		}
+	</style>
+}
+<h3>自由行訂單管理</h3>
+<table class="table" id="tbplanorder">
+	<thead>
+		<tr>
+			<th style="display: none">id</th>
+			<th>用戶名稱</th>
+			<th>電話</th>
+			<th>訂購數量</th>
+			<th>行程日期</th>
+			<th>價格</th>
+			<th style="width:50px">功能</th>
+		</tr>
+	</thead>
+</table>
+
+<!--Modal-->
+<div class="modal fade" id="travelorderPartial" tabindex=" -1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content" id="fordetail">
+			<div id="edit-modal">
+				<!--引入 ModalPartial-->
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+
+	<script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+	<script src="//cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+	<script>
+		//資料生成
+		const loadPlanOrderT = () => {
+			$("#tbplanorder").dataTable({
+				autoWidth: false,
+				ajax: {
+					type: 'GET',
+					url: "/api/TApi/GetAllFreePlanOrder",
+					dataSrc: function (json) { return json; }
+				},
+				columns: [
+					{ "data": "fOrderId", "visible": false },
+					{ "data": "fName" },
+					{ "data": "fPhone" },
+					{ "data": "fQty" },
+					{ "data": "fOrderDate" },
+					{ "data": "fPrice" },
+					{
+						data: null,
+						title: "功能",
+						render: function (data, type, row) {
+							return '<a type="button" data-bs-toggle="modal" data-bs-target="#travelorderPartial" onclick="getDetail(\'' + row.fOrderId + '\')" style="padding-right:1rem;padding-top:0;padding-bottom:0;"><i class="fa-solid fa-pen-to-square" style="font-size:0.8rem"></i> 行程</a>' +
+							'<button id="t1" type="button" class="btn btn-primary btn-sm me-1" data-bs-toggle="modal" data-bs-target="#travelorderPartial" onclick="getEditPartial(\'' + row.fOrderId + '\')"><i class="fa-solid fa-pen-to-square" style="font-size:0.8rem"></i> 編輯</button>' +
+								'<button type="button" class="btn btn-danger btn-sm" onclick="getDel(\'' + row.fOrderId + '\')"><i class="fa-solid fa-trash" style="font-size:0.8rem"></i>取消訂單</button>'
+						}
+					},
+				],
+				fixedHeader: { header: true },
+				language: {
+					url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json'
+				},
+			})
+		}
+
+		//編輯按鈕
+		const getEditPartial = async (id) => {
+			const response = await fetch(`@Url.Content("~/Employee/TOrder/GetPartial")?id=${id}`);
+			const data = await response.text();
+			document.getElementById('edit-modal').innerHTML = data;
+		}
+
+		//行程資料
+		const getDetail = async (id) => {
+			const response = await fetch(`@Url.Content("~/Employee/TOrder/GetDetail")?id=${id}`);
+			const data = await response.text();
+			document.getElementById('fordetail').style.width = '50%';
+			document.getElementById('fordetail').style.left = '25%';
+
+			document.getElementById('edit-modal').innerHTML = data;
+		}
+
+		//根據傳入的action name呼叫對應的api
+		const sendFetchRequest = async (actionName) => {
+			//抓取目前的form id
+			const formId = document.querySelector("form").getAttribute('id');
+			//目前的form id的DOM元素
+			const formIdDOM = document.getElementById(`${formId}`)
+			//新增form data物件
+			const formData = new FormData(formIdDOM);
+			//取得防偽標籤
+			const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+			const btnSave = document.getElementById('btnSave');
+			// 禁用按钮
+			btnSave.disabled = true;
+			try {
+				const res = await fetch(`@Url.Content("~/Employee/TOrder/")` + actionName, {
+					headers: {
+						'RequestVerificationToken': token
+					},
+					body: formData,
+					method: 'POST'
+				});
+				if (!res.ok) {
+					throw new Error(`${res.status}`)
+				}
+				const data = await res.json();
+
+				if (data.success) {
+					//關閉modal
+					var myModal = bootstrap.Modal.getInstance(travelorderPartial);
+					myModal.hide();
+					//顯示訊息
+					Swal.fire({
+						title: "Success",
+						text: data.message,
+						icon: "success"
+					});
+					//刷新datatable
+					$('#tbplanorder').DataTable().ajax.reload();
+				} else {
+					//依自己的form增加需要驗證的欄位(驗證規則在partial view中)
+					const errorState = document.querySelector(`[data-valmsg-for="FState"]`);
+					if (errorAddress) {
+						errorAddress.textContent = data.errors.FAddress[0];
+					}
+				}
+			} catch (error) {
+				Swal.fire({
+					title: "error",
+					text: error.message,
+					icon: "error"
+				});
+			}
+		}
+
+		//退單按鈕
+		const getDel = async (id) => {
+			Swal.fire({
+				title: '確定要取消訂單',
+				text: '',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: 'Yes',
+				cancelButtonText: 'No',
+			}).then(async (result) => {
+				if (result.isConfirmed) {
+					const response = await fetch(`@Url.Content("~/Employee/TOrder/Del")?id=${id}`);
+					$('#tbplanorder').DataTable().ajax.reload();
+				}
+			});
+		}
+
+		$(document).ready(() => {
+			loadPlanOrderT();
+			$('#tbplanorder tbody').on('mouseenter', 'tr', function () {
+				$(this).addClass('hover-highlight');
+			});
+			$('#tbplanorder tbody').on('mouseleave', 'tr', function () {
+				$(this).removeClass('hover-highlight');
+			});
+		});
+	</script>
+}

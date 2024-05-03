@@ -1,0 +1,68 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.TravelPlan.TravelplanEditView
+
+<div class="modal-header">
+	<h5 class="modal-title" id="exampleModalLabel">@ViewBag.title</h5>
+	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div id="divModalContent" class="modal-body">
+	<form id="@ViewBag.formId" asp-action="@ViewBag.model" method="post" name="checkfor">
+		@Html.AntiForgeryToken()
+		<input asp-for="FTravelId" style="display:none" />
+		<div class="row mb-3">
+			<div class="col text-start">
+				<label asp-for="FTravelName" class="form-label">@Html.DisplayNameFor(h => h.FTravelName)</label>
+				<input asp-for="FTravelName" class="form-control">
+				<span asp-validation-for="FTravelName" class="text-danger"></span>
+			</div>
+			<div class="col">
+				<label asp-for="FTypeId" class="form-label">@Html.DisplayNameFor(h => h.FTypeId)</label>
+				<select asp-for="FTypeId" class="form-select">
+					@foreach (Ttype x in ViewBag.type)
+					{
+						<option value="@x.FtypeId">@x.Ftype</option>
+					}
+				</select>
+				<span asp-validation-for="FTypeId" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div class="col">
+				<label asp-for="FPrice" class="form-label">@Html.DisplayNameFor(h => h.FPrice)</label>
+				<input asp-for="FPrice" class="form-control">
+				<span asp-validation-for="FPrice" class="text-danger"></span>
+			</div>
+			<div class="col text-start">
+				<label asp-for="FStock" class="form-label">@Html.DisplayNameFor(h => h.FStock)</label>
+				<input asp-for="FStock" class="form-control">
+				<span asp-validation-for="FStock" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div class="col">
+				<label asp-for="FAreaId" class="form-label">@Html.DisplayNameFor(h => h.FAreaId)</label>
+				<select asp-for="FAreaId" class="form-select">
+					@foreach (TtravelArea x in ViewBag.area)
+					{
+						<option value="@x.FareaId">@x.FareaName</option>
+					}
+				</select>
+				<span asp-validation-for="FAreaId" class="text-danger"></span>
+			</div>
+			<div class="col text-start">
+				<label asp-for="FDay" class="form-label">@Html.DisplayNameFor(h => h.FDay)</label>
+				<input asp-for="FDay" class="form-control">
+				<span asp-validation-for="FDay" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="mb-3">
+			<label asp-for="FTravelContent" class="form-label">@Html.DisplayNameFor(h => h.FTravelContent)</label>
+			<textarea asp-for="FTravelContent" class="form-control" rows="3"></textarea>
+			<span asp-validation-for="FTravelContent" class="text-danger"></span>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+			<button type="button" class="btn btn-primary" id="btnSave" onclick='sendFetchRequest("@ViewBag.formId")'>儲存</button>
+		</div>
+	</form>
+</div>

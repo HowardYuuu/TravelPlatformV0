@@ -1,0 +1,323 @@
+﻿
+
+<style>
+    .form-control {
+        height: 45px;
+        padding: 10px 12px;
+        color: #333;
+        font-family: inherit;
+        font-size: 1rem;
+        line-height: 1.5;
+        letter-spacing: .5px;
+        border-radius: 4px;
+        background-color: #fff;
+        border: 1px solid #e1e1e1;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        opacity: 1;
+    }
+
+    .btn {
+        font-size: 1.4rem;
+        padding: 10px 24px;
+        font-weight: 400;
+        line-height: 1.6;
+        border-radius: 4px;
+        -webkit-font-smoothing: subpixel-antialiased;
+        -webkit-transition: border .25s linear, color .25s linear, background-color .25s linear;
+        transition: border .25s linear, color .25s linear, background-color .25s linear;
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+    }
+
+    .btn-primary {
+        color: #fff;
+        background-color: #3554D1;
+        border: none;
+    }
+
+    .form-group[data-v-4ea28825] {
+        margin-bottom: 16px;
+    }
+
+    .sub-title:before {
+        content: "";
+        display: inline-block;
+        position: static;
+        width: 4px;
+        height: 18px;
+        margin-right: 8px;
+        background-color: #333;
+        vertical-align: top;
+        border-radius: 4px;
+    }
+
+    .sub-title {
+        margin: 20px 0;
+        color: #333;
+        font-size: 1.3rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .member-delete__title[data-v-282b3b74] {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
+    h3 {
+        display: block;
+        font-size: 1.17em;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+    }
+
+
+
+    .layout-flex-row--vertical-align-center {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+
+    .layout-flex-row--no-left {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .layout-flex-row {
+        --layout-flex-row-gap: 0px;
+        display: grid;
+        gap: var(--layout-flex-row-gap);
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        grid-template-rows: minmax(0, 1fr);
+    }
+
+    .layout-flex-row__remain {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+    }
+
+    .member-delete__account[data-v-282b3b74] {
+        display: grid;
+        grid-template-columns: 24px auto;
+        -webkit-column-gap: 12px;
+        -moz-column-gap: 12px;
+        column-gap: 12px;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+
+    .layout-flex-row__remain > * {
+        -webkit-box-flex: 1;
+        -ms-flex: 1 1 0px;
+        flex: 1 1 0;
+        width: auto;
+    }
+
+    .layout-flex-row__right {
+        text-align: right;
+    }
+</style>
+
+
+
+<div class="dashboard__content bg-light-2">
+    <div class="row y-gap-20 justify-between items-end pb-20 lg:pb-40 md:pb-32">
+        <div class="col-auto">
+            <h1 class="text-30 lh-14 fw-600">帳號設定 </h1>
+        </div>
+        <div class="col-auto"></div>
+    </div>
+    <input id="userid" hidden="hidden" />
+    <div class="py-30 px-30 rounded-4 bg-white shadow-3">
+        <div class="tabs -underline-2 js-tabs">
+            <div class="tabs__controls row x-gap-40 y-gap-10 lg:x-gap-20 js-tabs-controls" style="border-bottom: 1px solid #DDDDDD">
+                <div class="col-auto">
+                    <button class="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button is-tab-el-active" data-tab-target=".-tab-item-1">基本資料</button>
+                </div>
+                <div class="col-auto">
+                    <button class="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button" data-tab-target=".-tab-item-2">帳號安全</button>
+                </div>
+            </div>
+            <div class="tabs__content pt-30 js-tabs-content">
+                <div class="tabs__pane -tab-item-1 is-tab-el-active">
+                    <div class="tab-content">
+                        <div data-v-4ea28825="" class="tab-pane fade in active" enable-account-delete="true">
+                            <div data-v-4ea28825="" class="row">
+                                <div data-v-4ea28825="" class="col-md-4">
+                                    <div data-v-4ea28825="" class="form-group must">
+                                        <label data-v-4ea28825="">姓名 <span data-v-4ea28825="" class="text-danger"></span></label>
+                                        <div data-v-4ea28825="" class="form-group">
+                                            <input id="username" data-v-4ea28825="" placeholder="姓名 " name="Name" autocomplete="given-name" type="text" class="form-control" style="border: 1px solid #e1e1e1">
+                                        </div>
+                                    </div>
+                                </div>
+                                @* <div data-v-4ea28825="" class="col-md-4">
+                                <div data-v-4ea28825="" class="form-group must">
+                                <label data-v-4ea28825="">姓<span data-v-4ea28825="" class="text-danger"></span></label>
+                                <div data-v-4ea28825="" class="form-group">
+                                <input data-v-4ea28825="" placeholder="姓" name="lastName" autocomplete="family-name" type="text" class="form-control" style="border: 1px solid #e1e1e1">
+                                </div>
+                                </div>
+                                </div> *@
+                                <div data-v-4ea28825="" class="col-md-4">
+                                    <div data-v-4ea28825="" class="form-group">
+                                        <label data-v-4ea28825="">性別</label>
+                                        <select id="usergender" data-v-4ea28825="" type="text" class="form-control">
+                                            <option data-v-4ea28825="" value="O" selected="selected">-請選擇-</option>
+                                            <option data-v-4ea28825="" value="男">男性</option>
+                                            <option data-v-4ea28825="" value="女">女性</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div data-v-4ea28825="" class="row">
+                                <div data-v-4ea28825="" class="col-md-4">
+                                    <div data-v-4ea28825="" class="form-group">
+                                        <label data-v-4ea28825="">出生日期</label>
+                                        <div data-v-4ea28825="" class="input-group">
+                                            <input id="userbirth" data-v-4ea28825="" placeholder="YYYY-MM-DD" type="date" class="form-control has-datepicker" style="border: 1px solid #e1e1e1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-v-4ea28825="" class="col-md-4">
+                                    <div data-v-4ea28825="" class="form-group">
+                                        <label data-v-4ea28825="">居住縣市</label>
+                                        <select id="useraddress" data-v-4ea28825="" class="form-control select2-item select2-hidden-accessible" placeholder="請選擇國家/地區" data-select2-id="1246" tabindex="-1" aria-hidden="true">
+                                            <option value="" data-select2-id="1248" selected="selected">請選擇居住縣市</option>
+                                            <option value="台北市" data-select2-id="1494">台北市</option>
+                                            <option value="新北市" data-select2-id="1494">新北市</option>
+                                            <option value="桃園市" data-select2-id="1494">桃園市</option>
+                                            <option value="台中市" data-select2-id="1494">台中市</option>
+                                            <option value="台南市" data-select2-id="1494">台南市</option>
+                                            <option value="高雄市" data-select2-id="1494">高雄市</option>
+                                            <option value="基隆市" data-select2-id="1494">基隆市</option>
+                                            <option value="新竹市" data-select2-id="1494">新竹市</option>
+                                            <option value="嘉義市" data-select2-id="1494">嘉義市</option>
+                                            <option value="新竹縣" data-select2-id="1494">新竹縣</option>
+                                            <option value="苗栗縣" data-select2-id="1494">苗栗縣</option>
+                                            <option value="彰化縣" data-select2-id="1494">彰化縣</option>
+                                            <option value="南投縣" data-select2-id="1494">南投縣</option>
+                                            <option value="雲林縣" data-select2-id="1494">雲林縣</option>
+                                            <option value="嘉義縣" data-select2-id="1494">嘉義縣</option>
+                                            <option value="屏東縣" data-select2-id="1494">屏東縣</option>
+                                            <option value="宜蘭縣" data-select2-id="1494">宜蘭縣</option>
+                                            <option value="花蓮縣" data-select2-id="1494">花蓮縣</option>
+                                            <option value="台東縣" data-select2-id="1494">台東縣</option>
+                                            <option value="澎湖縣" data-select2-id="1494">澎湖縣</option>
+                                            <option value="金門縣" data-select2-id="1494">金門縣</option>
+                                            <option value="連江縣" data-select2-id="1494">連江縣</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div data-v-4ea28825="" class="row">
+                                <div data-v-4ea28825="" class="col-md-4">
+                                    <div data-v-4ea28825="" class="form-group must">
+                                        <label data-v-4ea28825="">電話號碼<span data-v-4ea28825="" class="text-danger"></span></label>
+                                        <div data-v-4ea28825="" class="form-group">
+                                            <input id="userphone" data-v-4ea28825="" type="tel" placeholder="" name="tel" class="form-control" style=" border: 1px solid #e1e1e1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-v-4ea28825="" class="col-md-8">
+                                    <div data-v-4ea28825="" class="form-group email-block must">
+                                        <label data-v-4ea28825="">聯絡 E-mail<span data-v-4ea28825="" class="text-danger"></span></label>
+                                        <div data-v-4ea28825="" class="form-group">
+                                            <input id="useremail" data-v-4ea28825="" placeholder="聯絡 E-mail" name="email" autocomplete="email" type="email" class="form-control" style="border: 1px solid #e1e1e1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-v-4ea28825="" class="text-right">
+                                    <a id="datasave" class="btn btn-primary btn-save">儲存</a>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tabs__pane -tab-item-2">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active">
+                            <!----> <!---->
+                            <h3 data-v-282b3b74="" class="sub-title member-delete__title">
+                                修改密碼
+                            </h3>
+                            <div style="margin-top:30px">
+                                <!---->
+                                <div>
+                                    <div class="row" style="margin-top:20px">
+                                        <div class="col-md-8">
+                                            <label>密碼</label>
+                                            <div class="form-group">
+                                                <span id="originalPasswordError" style="color: red; display: none;">請輸入原本密碼</span>
+                                                <input id="userpassword" placeholder="請輸入原本密碼" type="password" class="form-control" style="border: 1px solid #e1e1e1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:20px">
+                                        <div class="col-md-8">
+                                            <label>修改密碼</label>
+                                            <div class="form-group">
+                                                <span id="passwordError" style="color: red; display: none;">密碼需包含至少一個大寫字母、一個小寫字母和一個數字，且不超過16個字符</span>
+                                                <input id="usernewpassword" placeholder="請輸入修改密碼" type="password" class="form-control" style="border: 1px solid #e1e1e1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:20px">
+                                        <div class="col-md-8">
+                                            <label>確認修改密碼</label>
+                                            <div class="form-group">
+                                                <span id="passwordMatchError" style="color: red; display: none;">確認密碼與新密碼不一致</span>
+                                                <input id="usernewpasswordcheck" placeholder="請再次輸入修改密碼" type="password" class="form-control" style="border: 1px solid #e1e1e1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layout-flex-row__right">
+                                    <button onclick="changePassword()" class="btn btn-primary btn-save">
+                                        確認
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+

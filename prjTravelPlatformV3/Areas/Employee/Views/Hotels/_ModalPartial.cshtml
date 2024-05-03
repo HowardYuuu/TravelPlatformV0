@@ -1,0 +1,156 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.Hotel.HotelViewModel
+
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">@ViewBag.title</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div id="divModalContent" class="modal-body">
+
+    <!--頁籤按鈕-->
+    <div class="pageTab">
+        <div class="pageTab_item">
+            <button id="info-tab" class="pageTab_link is-current" onclick="openTab(event, 'info')">基本資料</button>
+        </div>
+        <div class="pageTab_item">
+            <button id="img-tab" class="pageTab_link" onclick="openTab(event, 'image')">圖片</button>
+        </div>
+        <div class="pageTab_item">
+            <button class="pageTab_link" onclick="openTab(event, 'facility')">設施</button>
+        </div>
+    </div>
+
+    <form id="@ViewBag.formId">
+
+        @Html.AntiForgeryToken()
+
+        <input asp-for="HotelId" style="display:none" />
+
+
+        <!--info-->
+        <div class="row tabContent active" id="info">
+            <div class="mb-3">
+                <label asp-for="HotelName" class="form-label">@Html.DisplayNameFor(h=>h.HotelName)</label>
+                <input asp-for="HotelName" class="form-control" />
+                <span asp-validation-for="HotelName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="HotelEngName" class="form-label">@Html.DisplayNameFor(h=>h.HotelEngName)</label>
+                <input asp-for="HotelEngName" class="form-control">
+                <span asp-validation-for="HotelEngName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="HotelAddress" class="form-label">@Html.DisplayNameFor(h=>h.HotelAddress)</label>
+                <input asp-for="HotelAddress" class="form-control">
+                <span asp-validation-for="HotelAddress" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Phone" class="form-label">@Html.DisplayNameFor(h=>h.Phone)</label>
+                <input asp-for="Phone" class="form-control">
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Region" class="form-label">@Html.DisplayNameFor(h=>h.Region)</label>
+                <input asp-for="Region" class="form-control">
+                <span asp-validation-for="Region" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="TexId" class="form-label">@Html.DisplayNameFor(h=>h.TexId)</label>
+                <input asp-for="TexId" class="form-control">
+                <span asp-validation-for="TexId" class="text-danger"></span>
+            </div>
+            @if (@ViewBag.formId == "Create")
+            {
+                <div class="mb-3">
+                    <button type="button" class="btn btn-secondary" onclick="demoClick()">Demo</button>
+                </div>
+            }
+           
+        </div>
+
+        <!--image-->
+        <div class="row tabContent" id="image">
+
+            <!--現有圖片-->
+            <div class="d-flex align-items-center mb-1">
+                <h5 class="m-0">現有圖片</h5> &ensp;
+                <button id="delBtn" type="button" class="m-0 btn btn-danger btn-sm rounded-pill" disabled onclick="deletePhotoClick(@Model.HotelId)">刪除圖片</button>
+            </div>
+            @if (Model.HotelImages == null)
+            {
+                <div class="container">
+                    <div class="row">
+                        <h5 id="noPhoto" class="text-center">尚無圖片</h5>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="container">
+                    <div class="row">
+                        <partial name="_ShowPhotoPartial" model="Model" />
+                    </div>
+                </div>
+            }
+            <hr class="horizontal dark mt-3" />
+            <!--預覽-->
+            <div class="d-flex align-items-center mb-1">
+                <h5 class="m-0">上傳預覽</h5> &ensp;
+                <button type="button" class="m-0 btn btn-primary btn-sm rounded-pill" onclick="uploadPic()">上傳圖片</button>
+                <input type="file" name="file" id="file" multiple accept="image/*" style="display:none" onchange="onPictureChange(event)" />
+            </div>
+            <div class="container">
+                <div id="preview" class="row">
+                    <h5 id="noPhoto" class="text-center">尚無圖片</h5>
+                </div>
+            </div>
+        </div>
+
+        <!--facility-->
+        <div class=" tabContent" id="facility">
+            <div class="row">           
+                <div class="list-group-content col-5">
+                    <label class="form-control-label">未擁有</label>
+                    <div class="list-group" id="notExist">
+                        @if (Model.HotelFacilities != null)
+                        {
+                            @foreach (var i in Model.HotelFacilities)
+                            {
+                                <button type="button" class="p-2 list-group-item list-group-item-action" value="@i.FHotelFacilityId" onclick="selectF(event)" data-prop="A">@i.FHotelFacilityName</button>
+                            }
+                        }
+
+                    </div>
+                </div>
+                <div class="col-2 d-flex flex-column justify-content-center">
+                    <button id="addFClick" class="btn btn-primary rounded-pill" type="button" onclick="addFacility(event)" disabled>新增</button>
+                    <button id="removeFClick" class="btn btn-danger rounded-pill" type="button" onclick="removeFacility(event)" disabled>移除</button>
+                </div>
+                <div class="list-group-content col-5">
+                    <label class="form-control-label">已擁有</label>
+                    <div class="list-group" id="exist">
+                        @if (Model.ExistHotelFacilities != null)
+                        {
+                            @foreach (var i in Model.ExistHotelFacilities)
+                            {
+                                <button type="button" class="p-2 list-group-item list-group-item-action" value="@i.FHotelFacilityId" onclick="selectExistF(event)" data-prop="B">@i.FHotelFacilityName</button>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+
+            <button type="button" class="btn btn-secondary mb-0" data-bs-dismiss="modal">關閉</button>
+            <button type="button" class="btn btn-primary mb-0" id="btnSave" onclick='sendFetchRequest("@ViewBag.formId")'>儲存</button>
+        </div>
+    </form>
+</div>
+
+
+
+

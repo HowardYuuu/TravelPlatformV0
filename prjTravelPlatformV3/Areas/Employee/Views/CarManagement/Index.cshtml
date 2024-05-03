@@ -1,0 +1,285 @@
+﻿@model IEnumerable<prjTravelPlatformV3.Models.RCarInfoView>
+@{
+    ViewData["Title"] = "車輛管理";
+}
+@section Styles {
+    <link href="~/lib/datatables/css/jquery.datatables.css" rel="stylesheet" />
+    <style>
+        thead {
+            background-color: lightslategrey;
+            color: black;
+        }
+    </style>
+}
+<h3>車輛管理</h3>
+<button id="openCarModel" type="button" class="btn btn-primary" style="font-size:14px;"> 車型管理</button>
+<button id="createModel" type="button" class="btn btn-info" style="font-size:14px;" data-bs-toggle="modal" data-bs-target="#carPartial" onclick="getEditPartial(0)"><i class="fa-solid fa-circle-plus" ></i> 新增車輛</button>
+<div id="carModelPageContainer"></div>
+<table class="table" id="tbCarInfo">
+    <thead>
+        <tr>
+            <th>車輛編號</th>
+            <th>車牌號碼</th>
+            <th>車輛型號</th>
+            <th>車輛圖檔</th>
+            <th>車所在地</th>
+            <th>所屬公司</th>
+            <th>出租狀態</th>
+            <th style="width:50px">功能</th>
+        </tr>
+    </thead>
+</table>
+<!--Modal-->
+<div class="modal fade" id="carPartial" tabindex=" -1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="edit-modal">
+                @*引入partial*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal2-->
+<div class="modal fade" id="carPartial2" tabindex=" -1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="delete-modal">
+                @*引入partial*@
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="//cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+        const editModal = document.getElementById("edit-modal");
+        const createModal = document.getElementById("create-modal");
+        const deleteModal = document.getElementById("delete-modal");
+
+        const loadCarData = () => {
+            $(document).ready(function () {
+                $('#tbCarInfo').dataTable({
+                    autoWidth: false,
+                    ajax: {
+                        type: 'GET',
+                        url: "/api/CarRent/GetAllCar",
+                        dataSrc: function (json) { return json; }
+                    },
+                    columns: [
+                        { "data": "fCarId" },
+                        { "data": "fLicensePlateNum" },
+                        { "data": "fModelName" },
+                        {
+                            data: null,
+                            render: function (data, type, row) {
+                                return `<img src="/img/${row.fImagePath}" style="width:240px" />`
+                            }
+                        },
+                        { "data": "fServicePoint" },
+                        { "data": "fCompanyName" },
+                        {
+                            "data": "fRentStatus",
+                            render: function (data, type, row) {
+                                return data ? "出租中" : "未出租";
+                            }
+                        },
+                        {
+                            data: null,
+                            title: "功能",
+                            render: function (data, type, row) {
+                                return `<button id="createModel" type = "button" class="btn btn-primary btn-sm me-1" data-bs-toggle="modal" data-bs-target="#carPartial" onclick="getEditPartial(${row.fCarId})"><i class="fa-solid fa-pen-to-square" style="font-size:0.8rem"></i> 編輯</button> ` +
+                                    `<button  type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#carPartial2" onclick="getDeletePartial(${row.fCarId})" ><i class="fa-solid fa-trash" style="font-size:0.8rem"></i> 刪除</button>`
+                            }
+                        },
+                    ],
+                    fixedHeader: { header: true },
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json'
+                    },
+                })
+            })
+        }
+        $(document).ready(function () {
+            $('#openCarModel').click(function () {
+                window.location.href = '/Employee/CarModelManagement/Index';
+            });
+        });
+
+
+        const getEditPartial = async (id) => {
+            const response = await fetch(`@Url.Content("~/Employee/CarManagement/GetPartial")?id=${id}`);
+            const data = await response.text();
+            editModal.innerHTML = data
+        }
+
+        const getDeletePartial = async (id) => {
+            const response = await fetch(`@Url.Content("~/Employee/CarManagement/GetDeletePartial")?id=${id}`);
+            const data = await response.text();
+            deleteModal.innerHTML = data
+        }
+
+
+        $(document).ready(function () {
+            $(document).on("change", '#fModelId', function () {
+                var selectedModelId = $(this).val();
+                console.log(selectedModelId);
+                $.ajax({
+                    type: "GET",
+                    url: '/Employee/CarManagement/GetCarImage?modelId=' + selectedModelId,
+                    success: function (data) {
+                        // 確保伺服器返回的是包含正確圖片路徑的 JSON 對象
+                        // 這裡假設伺服器返回的 JSON 對象中有一個名為 imagePath 的屬性，代表圖片路徑
+                        $('#carImage').attr('src', '/img/' + data.imagePath);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+
+
+        //根據傳入的action name呼叫對應的api
+        const sendFetchRequest = async (actionName) => {
+            //抓取目前的form id
+            const formId = document.querySelector("form").getAttribute('id');
+            //目前的form id的DOM元素
+            const formIdDOM = document.getElementById(`${formId}`)
+            // //新增form data物件
+            const formData = new FormData(formIdDOM);
+            //取得防偽標籤
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            try {
+                // console.log("actionName = " + actionName);
+                console.log("formId");
+                console.log(formId);
+                console.log("formData");
+                console.log(formData);
+                const res = await fetch(`@Url.Content("~/api/CarRent/")` + actionName, {
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    body: formData,
+                    method: 'POST'
+                });
+                console.log("res");
+                console.log(res);
+                if (!res.ok) {
+                    throw new Error(`${res.status}`)
+                }
+                const data = await res.json();
+                console.log("data");
+                console.log(data);
+                if (data.success) {
+                    console.log(data);
+                    //關閉modal
+                    var myModal = bootstrap.Modal.getInstance(carPartial);
+                    myModal.hide();
+                    //顯示訊息
+                    Swal.fire({
+                        title: "Success",
+                        text: data.message,
+                        icon: "success"
+                    });
+                    //刷新datatable
+                    $('#tbCarInfo').DataTable().ajax.reload();
+                } else {
+                    //依自己的form增加需要驗證的欄位(驗證規則在partial view中)
+                    const errorLicensePlateNum = document.querySelector(`[data-valmsg-for="fLicensePlateNum"]`);
+                    if (errorLicensePlateNum) {
+                        errorLicensePlateNum.textContent = data.errors.fLicensePlateNum[0];
+                    }
+                    const errorCarModel = document.querySelector(`[data-valmsg-for="fModelId"]`);
+                    if (errorCarModel) {
+                        errorCarModel.textContent = data.errors.fModelId[0];
+                    }
+                    const errorRentStatus = document.querySelector(`[data-valmsg-for="fRentStatus"]`);
+                    if (errorRentStatus) {
+                        errorRentStatus.textContent = data.errors.fRentStatus[0];
+                    }
+                    const errorCompanyId = document.querySelector(`[data-valmsg-for="fCompanyId"]`);
+                    if (errorCompanyId) {
+                        errorCompanyId.textContent = data.errors.fCompanyId[0];
+                    }
+                    const errorLocationId = document.querySelector(`[data-valmsg-for="fLocationId"]`);
+                    if (errorLocationId) {
+                        errorLocationId.textContent = data.errors.fLocationId[0];
+                    }
+                }
+            } catch (error) {
+                Swal.fire({
+                    title: "error",
+                    text: error.message,
+                    icon: "error"
+                });
+            }
+
+        }
+
+        const deleteCar = async (id) => {
+            try {
+                const confirmation = await Swal.fire({
+                    title: '確認刪除',
+                    text: '您確定要刪除此車輛嗎？',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: '是的，刪除它！'
+                });
+
+                if (confirmation.isConfirmed) {
+                    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                    const response = await fetch(`/api/CarRent/DeleteCar/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': token
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success) {
+                            // 刪除成功後關閉 modal
+                            var myModal = bootstrap.Modal.getInstance(carPartial2);
+                            myModal.hide();
+
+                            Swal.fire({
+                                title: '刪除成功',
+                                text: data.message,
+                                icon: 'success'
+                            });
+                            $('#tbCarInfo').DataTable().ajax.reload();
+                        } else {
+                            Swal.fire({
+                                title: '刪除失敗',
+                                text: data.message,
+                                icon: 'error'
+                            });
+                        }
+                    } else {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                }
+            } catch (error) {
+                Swal.fire({
+                    title: '錯誤',
+                    text: error.message,
+                    icon: 'error'
+                });
+            }
+        };
+        
+        $(document).ready(() => {
+            loadCarData();
+        })
+
+    </script>
+}

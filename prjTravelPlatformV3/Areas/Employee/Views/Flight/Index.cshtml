@@ -1,0 +1,128 @@
+﻿@{
+    ViewData["Title"] = "航班管理";
+}
+@section Styles {
+    <link href="~/lib/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+    <style>
+        thead {
+            background-color: lightslategrey;
+            color: black;
+        }
+    </style>
+}
+
+<h3>航班管理</h3>
+
+<button id="btn1" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#" onclick="window.location.href='/Employee/Flight/Create';">
+    <i class="fa-solid fa-circle-plus" style="font-size:0.8rem"></i> 新增
+</button>
+@Html.AntiForgeryToken()
+<table class="table" id="tbflight">
+    <thead>
+        <tr>
+            <th style="display: none">FId</th>
+            <th>航班代碼</th>
+            <th>出發地</th>
+            <th>目的地</th>
+            <th>航空公司</th>
+            <th>出發時間</th>
+            <th>抵達時間</th>
+            <th>艙等</th>
+            <th>定價</th>
+            <th>數量</th>
+            <th style="width:50px">功能</th>
+        </tr>
+    </thead>
+</table>
+
+@section Scripts {
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="//cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tbflight').dataTable({
+                autoWidth: false,
+                ajax: {
+                    type: 'GET',
+                    url: "/api/Flight/loadFlightData",
+                    dataSrc: function (json) { return json; }
+                },
+                columns: [
+                    { "data": "fId", "visible": false },
+                    { "data": "航班代碼" },
+                    { "data": "出發地" },
+                    { "data": "目的地" },
+                    { "data": "航空公司" },
+                    { "data": "出發時間" },
+                    { "data": "抵達時間" },
+                    { "data": "艙等" },
+                    { "data": "定價" },
+                    { "data": "數量" },
+                    {
+                        data: null,
+                        title: "功能",
+                        render: function (data, type, row) {
+                            return `<button id="btn1" type = "button" class="btn btn-primary btn-sm me-1" onclick="window.location.href = '/employee/flight/Edit?id=${row.fId}'"><i class="fa-solid fa-pen-to-square" style="font-size:0.8rem"></i> 編輯</button> ` +
+                                `<button type="button" class="btn btn-danger btn-sm" onclick="ConfirmDelete(${row.fId})"><i class="fa-solid fa-trash" style="font-size:0.8rem"></i> 刪除</button>`
+                        }
+                    },
+                ],
+                fixedHeader: { header: true },
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json'
+                },
+            });
+
+        });
+
+
+        //刪除確認視窗
+        async function ConfirmDelete(id) {
+            //使用Swal（Swal.fire）的 JavaScript 函式庫彈出式提示框
+            Swal.fire({
+                title: '確認刪除',
+                text: '確定要刪除嗎？',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '確定',
+                cancelButtonText: '取消'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await DoDelete(id);
+                }
+            });
+        }
+
+        //執行刪除動作
+        async function DoDelete(id) {
+
+            var formdata = new FormData();
+            //[ValidateAntiForgeryToken]防偽標籤
+            formdata.append('__RequestVerificationToken', document.getElementsByName('__RequestVerificationToken')[0].value);
+            //前端抓到的Id
+            formdata.append("Id", id);
+
+            let response = await fetch('/api/Flight/DoDeleteFlight', {
+                method: 'post',
+                body: formdata  //將上面的formData回傳
+            })
+            const data = await response.text();
+
+            //關閉刪除視窗
+            Swal.fire({
+                title: data === '刪除成功!' ? 'Success' : 'Error',
+                text: data,
+                icon: data === '刪除成功!' ? 'success' : 'error'
+            }).then((result) => {
+                // 如果刪除成功，重新載入頁面
+                if (result.isConfirmed && data === '刪除成功!') {
+                    //刷新datatable
+                    $('#tbflight').DataTable().ajax.reload();
+                }
+            });
+
+        }
+    </script>
+}

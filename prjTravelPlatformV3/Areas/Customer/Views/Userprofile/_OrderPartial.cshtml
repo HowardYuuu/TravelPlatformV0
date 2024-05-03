@@ -1,0 +1,216 @@
+﻿
+<div class="dashboard__content bg-light-2">
+    <div class="row y-gap-20 justify-between items-end pb-20 lg:pb-40 md:pb-32">
+        <div class="col-auto">
+            <h1 class="text-30 lh-14 fw-600">我的訂單</h1>
+        </div>
+        <div class="col-auto">
+        </div>
+    </div>
+
+
+    <div class="py-30 px-30 rounded-4 bg-white shadow-3">
+        <div class="tabs -underline-2 js-tabs">
+            <div class="tabs__controls row x-gap-40 y-gap-10 lg:x-gap-20 js-tabs-controls">
+
+                <div class="col-auto">
+                    <button id="destinationbtn" class="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button is-tab-el-active" data-tab-target=".-tab-item-1">景點</button>
+                </div>
+
+                <div class="col-auto">
+                    <button id="freebtn" class="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button" data-tab-target=".-tab-item-2">行程</button>
+                </div>
+
+                <div class="col-auto">
+                    <button id="hotelbtn" class="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button" data-tab-target=".-tab-item-3">住宿</button>
+                </div>
+
+                <div class="col-auto">
+                    <button id="carbtn" class="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button " data-tab-target=".-tab-item-4">租車</button>
+                </div>
+
+                <div class="col-auto">
+                    <button id="flightbtn" class="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button " data-tab-target=".-tab-item-5">機票</button>
+                </div>
+
+                <div class="col-auto">
+                    <button id="visabtn" class="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button " data-tab-target=".-tab-item-6">旅遊服務</button>
+                </div>
+
+                <div class="col-auto">
+                    <button id="productbtn" class="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button " data-tab-target=".-tab-item-7">伴手禮</button>
+                </div>
+            </div>
+
+            <div class="tabs__content pt-30 js-tabs-content">
+
+                <div class="tabs__pane -tab-item-1 is-tab-el-active">
+                    <div class="overflow-scroll scroll-bar-1">
+                        <table class="table-3 -border-bottom col-12">
+                            <thead class="bg-light-2">
+                                <tr>
+                                    <th>訂單日期</th>
+                                    <th>名稱</th>
+                                    <th>數量</th>
+                                    <th>總金額</th>
+                                    <th>評論</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dtableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tabs__pane -tab-item-2">
+                    <div class="overflow-scroll scroll-bar-1">
+                        <table class="table-3 -border-bottom col-12">
+                            <thead class="bg-light-2">
+                                <tr>
+                                    <th>訂單日期</th>
+                                    <th>名稱</th>
+                                    <th>數量</th>
+                                    <th>總金額</th>
+                                    <th>詳細行程</th>
+                                </tr>
+                            </thead>
+                            <tbody id="freetableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tabs__pane -tab-item-3">
+                    <div class="overflow-scroll scroll-bar-1">
+                        <table id="hotelOrders" class="table-3 -border-bottom col-12">
+                            <thead class="bg-light-2">
+                                <tr>
+                                    <th>訂單編號</th>
+                                    <th>訂單日期</th>
+                                    <th>飯店名稱</th>
+                                    <th>訂單狀態</th>
+                                    <th>總金額</th>
+                                    <th>訂單細節</th>
+                                </tr>
+                            </thead>
+                            <tbody id="htableBody">
+                                @* <tr >
+                                <td id="horderNumber" class="lh-16">123456</td>
+                                <td id="hotelName">123</td>
+                                <td id="checkInDate" class="lh-16">123</td>
+                                <td id="roomType">123</td>
+                                <td id="roomCount">123</td>
+                                <td id="totalAmount">123</td>
+
+                                </tr> *@
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tabs__pane -tab-item-4 ">
+                    <div class="overflow-scroll scroll-bar-1">
+                        <table class="table-3 -border-bottom col-12">
+                            <thead class="bg-light-2">
+                                <tr>
+                                    <th>訂單編號</th>
+                                    <th>訂單日期</th>
+                                    <th>訂單狀態</th>
+                                    <th>付款狀態</th>
+                                    <th>總金額</th>
+                                    <th>訂單細節</th>
+                                </tr>
+                            </thead>
+                            <tbody id="carbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tabs__pane -tab-item-5 ">
+                    <div class="overflow-scroll scroll-bar-1">
+                        <table id="flightTable" class="table-3 -border-bottom col-12">
+                            <thead class="bg-light-2">
+                                <tr>
+                                    <th>訂單日期</th>
+                                    <th>訂單編號</th>
+                                    <th>訂單狀態</th>
+                                    <th>付款方式</th>
+                                    <th>付款狀態</th>
+                                    <th>總金額</th>
+                                    <th>評論</th>
+                                    <th>功能</th>
+                                </tr>
+                            </thead>
+                            <tbody id="flighttableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                </td>
+                </tr>
+
+                <div class="tabs__pane -tab-item-6 ">
+                    <div class="overflow-scroll scroll-bar-1">
+                        <table class="table-3 -border-bottom col-12">
+                            <thead class="bg-light-2">
+                                <tr>
+                                    <th>訂單編號</th>
+                                    <th>訂單日期</th>
+                                    <th>名稱</th>
+                                    <th>數量</th>
+                                    <th>總金額</th>
+                                    <th>訂單狀態</th>
+                                </tr>
+                            </thead>
+                            <tbody id="visatablebody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tabs__pane -tab-item-7 ">
+                    <div class="overflow-scroll scroll-bar-1">
+                        <table class="table-3 -border-bottom col-12">
+                            <thead class="bg-light-2">
+                                <tr>
+                                    <th>訂單編號</th>
+                                    <th>商家名稱</th>
+                                    <th>寄送方式</th>
+                                    <th>訂單狀態</th>
+                                    <th>總金額</th>
+                                    <th>訂單細節</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="pt-30" style="">
+            <div class="row justify-between">
+                <div class="col-auto">
+                    <button id="prevPage" class="button -blue-1 size-40 rounded-full border-light">
+                        <i class="icon-chevron-left text-12"></i>
+                    </button>
+                </div>
+
+                <div id="paginationButtons" class="col-auto">
+                    <div class="row x-gap-20 y-gap-20 items-center">
+                        <!-- 分頁按鈕將透過 JavaScript 動態生成 -->
+                    </div>
+                </div>
+
+                <div class="col-auto">
+                    <button id="nextPage" class="button -blue-1 size-40 rounded-full border-light">
+                        <i class="icon-chevron-right text-12"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

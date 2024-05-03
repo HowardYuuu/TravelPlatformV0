@@ -1,0 +1,210 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles {
+    <link href="~/lib/datatables/css/jquery.datatables.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <style>
+        thead {
+            background-color: lightslategrey;
+            color: black;
+        }
+    </style>
+}
+
+<h3>商品管理</h3>
+
+<table class="table" id="tbSupplier">
+    <thead>
+        <tr>
+            <th style="display: none">fId</th>
+            <th style="display: none">語言</th>
+
+
+            <th>公司名稱</th>
+            <th>國家</th>
+            <th>網址</th>
+            <th>窗口姓名</th>
+            <th>審核狀態</th>
+            <th>合作狀態</th>
+            <th style="width:50px">功能</th>
+        </tr>
+    </thead>
+</table>
+
+<!--Modal-->
+<div class="modal fade" id="SupplierPartial" tabindex=" -1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:1000px;">
+        <div class="modal-content" style="width:1000px;">
+            <div id="edit-modal" >
+                @*引入partial*@
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="//cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+        let fid = -1;
+        const editModal = document.getElementById("edit-modal");
+        const createModal = document.getElementById("create-modal");
+        const btnSave = document.getElementById("btnSave");
+
+        //載入datatable資料
+        const loadSupplierData = () => {
+            $("#tbSupplier").dataTable({
+                autoWidth: false,
+                ajax: {
+                    type: 'GET',
+                    url: "/Employee/Supplier/allCompanies",
+                    dataSrc: function (json) { return json; }
+                },
+                columns: [
+                    { "data": "fId", "visible": false },
+                    { "data": "fLanguage", searchable: true, "visible": false },
+
+
+                    { "data": "fCompanyName" },
+                    { "data": "fCountry" },
+                    {
+                        data: "fUrl",
+                        title: "網址",
+                        render: function (data, type, row) {
+                            if (data !== null) {
+                                return `<a href="${data}" target="_blank">${data}</a>`;
+                            }
+                            return '無網址';
+                        }
+                    },
+                    { "data": "fContactName" },
+                    {
+                        data: "fIsChecked",
+                        title: "審核狀態",
+                        render: function (data, type, row) {
+                            if (data === 'true') {
+                                return `<input type="radio" name="${row.fId}" value=true onchange="IsCheckedToggle(${row.fId}, this, this.value)" checked/> <label for=true class="mb-0"> 已審核 </label><br>
+                                        <input type="radio" name="${row.fId}" value=false onchange="IsCheckedToggle(${row.fId}, this, this.value)"/> <label for=false class="mb-0"> 未審核 </label>
+                                        `;
+                            } else {
+                                return `<input type="radio" name="${row.fId}" value=true onchange="IsCheckedToggle(${row.fId}, this, this.value)"/> <label for=true class="mb-0"> 已審核 </label><br>
+                                        <input type="radio" name="${row.fId}" value=false onchange="IsCheckedToggle(${row.fId}, this, this.value)" checked /> <label for=false class="mb-0"> 未審核 </label>
+                                        `;
+                            }
+                        }
+                    },
+                    {
+                        data: "fIsInCooperation",
+                        title: "合作狀態",
+                        render: function (data, type, row) {
+                            if (data === 'true') {
+                                return `<input type="radio" name="${row.fCompanyName}" value=true onchange="IsInCoToggle(${row.fId}, this.value)" checked/> <label for=true class="mb-0"> 已合作 </label><br>
+                                        <input type="radio" name="${row.fCompanyName}" value=false onchange="IsInCoToggle(${row.fId}, this.value)"/> <label for=false class="mb-0"> 未合作 </label>
+                                                `;
+                            } else {
+                                return `<input type="radio" name="${row.fCompanyName}" value=true onchange="IsInCoToggle(${row.fId}, this.value)"/> <label for=true class="mb-0"> 已合作 </label><br>
+                                        <input type="radio" name="${row.fCompanyName}" value=false onchange="IsInCoToggle(${row.fId}, this.value)" checked /> <label for=false class="mb-0"> 未合作 </label>
+                                                `;
+                            }
+                        }
+                    },
+                    {
+                        data: "fContactEmail",
+                        title: "功能",
+                        sortable: false,
+                        render: function (data, type, row) {
+                            return `<button id="t1" type = "button" class="btn btn-primary btn-sm me-1" data-bs-toggle="modal" data-bs-target="#VOrderPartial"><i class="fa-solid fa-pen-to-square" style="font-size:0.8rem"></i> 聯繫</button> ` +
+                                `<button id="t1" type = "button" class="btn btn-primary btn-sm me-1" data-bs-toggle="modal" data-bs-target="#SupplierPartial" onclick="getEditPartial(${row.fId})"> <i class="fa-solid fa-pen-to-square" style="font-size:0.8rem" > </i> 詳細資料</button >`
+                        }
+                    },
+                ],
+                fixedHeader: { header: true },
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json'
+                },
+            })
+        }
+
+
+        //審核radioBtn
+        async function IsCheckedToggle(id, e, value) {
+            if (value === 'false') {
+                const nextToggle = e.parentNode.nextElementSibling.firstChild.nextElementSibling.nextElementSibling.nextElementSibling;
+                nextToggle.checked = true;
+            }
+            try {
+                const response = await fetch(`@Url.Content("~/Employee/Supplier/isChecked")?id=${id}&value=${value}`);
+                if (!response.ok) {
+                    throw new Error(`${response.status}`)
+                }
+                const data = await response.json();
+                if (data.success) {
+                    console.log(data.message);
+                    return;
+                }
+            }
+            catch (error) {
+                Swal.fire({
+                    title: "error",
+                    text: error.message,
+                    icon: "error"
+                });
+            }
+        }
+
+        //合作radioBtn
+        async function IsInCoToggle(id, value) {
+            try {
+                const response = await fetch(`@Url.Content("~/Employee/Supplier/isCoop")?id=${id}&value=${value}`);
+                if (!response.ok) {
+                    throw new Error(`${response.status}`)
+                }
+                const data = await response.json();
+                if (data.success) {
+                    console.log(data.message);
+                    return;
+                }
+            }
+            catch (error) {
+                Swal.fire({
+                    title: "error",
+                    text: error.message,
+                    icon: "error"
+                });
+            }
+        }
+
+
+        //取得partial view，新增跟編輯都呼叫這個function，新增id參數帶0，編輯是選到的那列資料的id
+        const getEditPartial = async (fId) => {
+
+            //紀錄fId到全域變數
+            //fid = fId;
+
+
+            const response = await fetch(`@Url.Content("~/Employee/Supplier/GetPartial")?id=${fId}`);
+            const data = await response.text();
+            editModal.innerHTML = data;
+        }
+
+
+
+
+
+
+
+        $(document).ready(() => {
+            loadSupplierData();
+        })
+    </script>
+}

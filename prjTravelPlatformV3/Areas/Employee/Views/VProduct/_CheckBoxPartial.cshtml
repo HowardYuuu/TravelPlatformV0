@@ -1,0 +1,26 @@
+﻿@foreach (var form in ViewBag.allForms)
+{
+    <div id="@form.FId" class="checkboxItem" onclick="selectedCheckbox(this, event);">
+        @{
+            bool isChecked = false; // 将 isChecked 的定义移动到这里
+            if (Model != null)
+            {
+                if (Model.TVproductFormsRequireds != null)
+                {
+                    foreach (var item in Model.TVproductFormsRequireds)
+                    {
+                        if (item.FFormId == form.FId)
+                        {
+                            isChecked = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        <input type="checkbox" name="formsrequireds" value="@($"{(Model?.FId ?? 0)}, {form.FId}")"
+        @(isChecked ? "checked" : "") />
+        @form.FFormName
+        <br />
+    </div>
+}

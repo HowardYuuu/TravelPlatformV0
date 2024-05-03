@@ -1,0 +1,650 @@
+﻿@section Styles
+{
+    <style>
+        .object-fit-contain {
+            object-fit: contain;
+        }
+
+    </style>
+}
+<!DOCTYPE html>
+<html lang="en" data-x="html" data-x-toggle="html-overflow-hidden">
+<body>
+    <main>
+        <section class="pt-40" style="margin-top:100px">
+            <div class="container">
+                <div class="row x-gap-40 y-gap-30 items-center">
+                    <div class="col-auto">
+                        <div class="d-flex items-center">
+                            <div class="size-40 rounded-full flex-center bg-blue-1">
+                                <i class="icon-check text-16 text-white"></i>
+                            </div>
+                            <div class="text-18 fw-500 ml-10">選擇車輛</div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="w-full h-1 bg-border"></div>
+                    </div>
+
+                    <div class="col-auto">
+                        <div class="d-flex items-center">
+                            <div class="size-40 rounded-full flex-center bg-blue-1">
+                                <i class="icon-check text-16 text-white"></i>
+                            </div>
+                            <div class="text-18 fw-500 ml-10">填寫租賃及付款資訊</div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="w-full h-1 bg-border"></div>
+                    </div>
+
+                    <div class="col-auto">
+                        <div class="d-flex items-center">
+                            <div class="size-40 rounded-full flex-center bg-blue-1-05 text-blue-1 fw-500">3</div>
+                            <div class="text-18 fw-500 ml-10">前往付款</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="pt-40 layout-pb-md">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-8">
+                        <button id="fillData" class="button h-40 px-24 -dark-1 bg-blue-1 text-white">Demo</button>
+                        <h2 class="text-22 fw-500 mt-40 md:mt-24">駕駛資訊</h2>
+                        <div class="row x-gap-20 y-gap-20 pt-20" id="driverInfo">
+                            <div class="col-md-6">
+                                <div class="form-input ">
+                                    <input id="firstName" type="text" required>
+                                    <label class="lh-1 text-16 text-light-1">名字（需與旅遊證件一致）</label>
+                                </div>
+                                <div class="error-message" style="display: none; color:red;"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-input ">
+                                    <input id="lastName" type="text" required>
+                                    <label class="lh-1 text-16 text-light-1">姓氏（需與旅遊證件一致）</label>
+                                </div>
+                                <div class="error-message" style="display: none; color:red;"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-input ">
+                                    <input id="driverId" type="text" required>
+                                    <label class="lh-1 text-16 text-light-1">證件號碼（護照/身分證）</label>
+                                </div>
+                                <div class="error-message" style="display: none; color:red;"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-input ">
+                                    <input id="driverAge" type="number" required>
+                                    <label class="lh-1 text-16 text-light-1">駕駛年齡</label>
+                                </div>
+                                <div class="error-message" style="display: none; color:red;"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-input ">
+                                    <input id="phoneNumber" type="text" required>
+                                    <label class="lh-1 text-16 text-light-1">聯絡電話（請填寫手機號碼）</label>
+                                </div>
+                                <div class="error-message" style="display: none; color:red;"></div>
+                            </div>
+                        </div>
+                        <div class="mt-40">
+                            <h3 class="text-22 fw-500 mb-20">付款方式</h3>
+
+                            <div class="row y-gap-20 x-gap-20">
+                                <div class="col-auto">
+                                    <button class="btn-credit-card -dark-1 bg-blue-1 text-white h-40 px-24">信用卡</button>
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn-cash -blue-1 bg-light-2 h-40 px-24">現金付款</button>
+                                </div>
+                            </div>
+
+                            <div class="row x-gap-20 y-gap-20 pt-20">
+                                <div class="col-md-6">
+
+                                    <div class="cardHolder-field form-input">
+                                        <input id="cardHolder" type="text" required>
+                                        <label class="lh-1 text-16 text-light-1">*持卡人姓名</label>
+                                        <div class="error-message" style="display: none; color:red;"></div>
+                                    </div>
+
+
+                                    <div class="cardNumber-field form-input mt-20">
+                                        <input id="cardNumber" type="text" required>
+                                        <label class="lh-1 text-16 text-light-1">*信用卡卡號</label>
+                                        <div class="error-message" style="display: none; color:red;"></div>
+                                    </div>
+                                    <div class="verify-field row x-gap-20 y-gap-20 pt-20">
+                                        <div class="col-md-6">
+
+                                            <div class="deadLine-field form-input">
+                                                <input id="deadLine" type="text" required>
+                                                <label class="lh-1 text-16 text-light-1">*截止日</label>
+                                                <div class="error-message" style="display: none; color:red;"></div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <div class="verifyCode-field form-input ">
+                                                <input id="verifyCode" type="text" required>
+                                                <label class="lh-1 text-16 text-light-1">*CVC/CVV</label>
+                                                <div class="error-message" style="display: none; color:red;"></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form method="post"  style="display:none;" action="https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5">
+                            <input type="text" name="MerchantID" />
+                            <input type="text" name="MerchantTradeNo" />
+                            <input type="text" name="MerchantTradeDate" />
+                            <input type="text" name="PaymentType" />
+                            <input type="number" name="TotalAmount" />
+                            <input type="text" name="TradeDesc" />
+                            <input type="text" name="ItemName" />
+                            <input type="text" name="ReturnURL" />
+                            <input type="text" name="OrderResultURL" />
+                            <input type="text" name="ChoosePayment" />
+                            <input type="text" name="EncryptType" />
+                            <input type="text" name="CheckMacValue" />
+                        </form>
+
+                        <div class="w-full h-1 bg-border mt-40 mb-40"></div>
+
+                        <div class="row y-gap-20 items-center justify-between">
+                            <div class="col-auto">
+                                <div class="d-flex items-center">
+                                    <div class="form-checkbox ">
+                                        <input type="checkbox" name="name">
+                                        <div class="form-checkbox__mark">
+                                            <div class="form-checkbox__icon icon-check"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-14 lh-10 text-light-1 ml-10">訂閱我們，接受會員專屬優惠</div>
+                                </div>
+                            </div>
+
+                            <div class="col-auto">
+                                <button type="submit" id="bookingCarConfirm" class="button h-60 px-24 -dark-1 bg-blue-1 text-white">
+                                    前往付款 <div class="icon-arrow-top-right ml-15"></div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-5 col-lg-4">
+                        <div class="ml-80 lg:ml-40 md:ml-0">
+                            <div class="px-20 py-20 border-light rounded-4">
+                                <div class="text-20 fw-500 mb-10">訂單詳情</div>
+                                <div class="row x-gap-15 y-gap-20 ">
+                                    <div class="col-auto" id="carImage">
+                                        <img src="" alt="image" class="size-150 rounded-4 object-fit-contain">
+                                        <!--車輛圖片-->
+                                    </div>
+                                    <div class="col" style="display:flex; align-items:center;">
+                                        <div class="lh-17 fw-500" id="selectedCarModel"><!--車輛型號--></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="lh-17 fw-500 text-right" id="rentalFee"><!--單天租賃價格--></div>
+                                    </div>
+                                </div>
+
+                                <div class="border-top-light mt-10 mb-10"></div>
+                                <div class="row y-gap-20 justify-between">
+                                    <div class="col-auto">
+                                        <div class="fw-500" id="servicePoint"><!--取車據點--></div>
+                                        <div class="text-15 text-light-1" id="pickupDate"><!--取車日期--></div>
+                                        <div class="text-15 text-light-1" id="pickupTime"><!--取車時間--></div>
+                                    </div>
+
+                                    <div class="col-auto md:d-none">
+                                        <div class="h-full w-1 bg-border"></div>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <div class="fw-500" id="dropoffLocation"><!--還車據點--></div>
+                                        <div class="text-15 text-light-1" id="dropoffDate"><!--還車日期--></div>
+                                        <div class="text-15 text-light-1" id="dropoffTime"><!--還車時間--></div>
+                                    </div>
+                                </div>
+
+                                <div class="border-top-light mt-10 mb-10"></div>
+
+                                <div>
+                                    <div class="text-15 text-right" id="totalDay"><!--租賃總天數--></div>
+                                </div>
+                            </div>
+
+                            <div class="px-20 py-20 border-light rounded-4 mt-20">
+                                <div class="text-20 fw-500 mb-10" >付款金額</div>
+                                <div class="row y-gap-5 justify-between">
+                                    <div class="col-auto">
+                                        <div class="text-16 lh-13 fw-500" id="timeTotal"><!--租賃天數總計--></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="text-16 lh-13 fw-500" id="rentPrice"><!--租賃金額--></div>
+                                    </div>
+                                </div>
+                                <div class="border-top-light mt-10 mb-10"></div>
+                                <div class="form-input mt-20 mb-10" style="width:auto;">
+                                    <input class="mr-5" type="text" required>
+                                    <label class="lh-1 text-16 text-light-1">*輸入優惠折扣碼</label>
+                                    <button class="button -dark-1 bg-blue-1 text-white ml-5" style="width:20%;">使用</button>
+                                </div>
+                                <div class="px-20 py-20 bg-blue-2 rounded-4 mt-5">
+                                    <div class="row y-gap-5 justify-between">
+                                        <div class="col-auto">
+                                            <div class="text-18 lh-13 fw-500">金額總計</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="text-18 lh-13 fw-500" id="totalPrice"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="layout-pt-md layout-pb-lg">
+            <div class="container">
+                <div class="row justify-center text-center">
+                    <div class="col-auto">
+                        <div class="sectionTitle -md">
+                            <h2 class="sectionTitle__title">為什麼選擇我們</h2>
+                            <p class=" sectionTitle__text mt-5 sm:mt-0">這些是我們能提供的服務!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row y-gap-40 justify-between pt-50">
+
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="featureIcon -type-1 ">
+                            <div class="d-flex justify-center">
+                                <img src="/img/frontstage/v2/featureIcons/1/1.svg" alt="image" class="js-lazy">
+                            </div>
+
+                            <div class="text-center mt-30">
+                                <h4 class="text-18 fw-500">最優惠的價格</h4>
+                                <p class="text-15 mt-10">我們和許多平台合作，您可以在眾多車型當中選擇到最優惠的價格。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-sm-6">
+
+                        <div class="featureIcon -type-1 ">
+                            <div class="d-flex justify-center">
+                                <img src="/img/frontstage/v2/featureIcons/1/2.svg" alt="image" class="js-lazy">
+                            </div>
+
+                            <div class="text-center mt-30">
+                                <h4 class="text-18 fw-500">便捷的租車流程</h4>
+                                <p class="text-15 mt-10">我們提供簡單且快速的服務，加快整體租車的流程。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-sm-6">
+
+                        <div class="featureIcon -type-1 ">
+                            <div class="d-flex justify-center">
+                                <img src="/img/frontstage/v2/featureIcons/1/3.svg" alt="image" class="js-lazy">
+                            </div>
+
+                            <div class="text-center mt-30">
+                                <h4 class="text-18 fw-500">完整的客服系統</h4>
+                                <p class="text-15 mt-10">24小時全天候，可以透過電話聯繫及電子郵件聯繫到我們的客服人員。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+</body>
+
+</html>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            // 解析 URL 查詢參數，獲取車輛ID
+            var urlParams = new URLSearchParams(window.location.search);
+            var carId = urlParams.get('carId');
+            var pickupLocation = urlParams.get('pickup');
+            var dropoffLocation = urlParams.get('dropoff');
+            var pickupDate = urlParams.get('pickupDate');
+            var dropoffDate = urlParams.get('dropoffDate');
+            var pickupTime = urlParams.get('pickupTime');
+            var dropoffTime = urlParams.get('dropoffTime');
+            var fromDateTime = new Date(pickupDate + ' ' + pickupTime).toISOString();
+            var rentDateTime = new Date(dropoffDate + ' ' + dropoffTime).toISOString();
+            var dropoffLocationId;
+            var driverName;
+            var driverAge;
+            var driverId;
+            var phoneNumber;
+            var totalFee;
+            var customerId = @ViewBag.CustomerId;
+
+            var fillDataBtn = document.querySelector('#fillData');
+            fillDataBtn.addEventListener("click", fillFormData);
+
+            var creditCardButton = document.querySelector(".btn-credit-card");
+            var cashButton = document.querySelector(".btn-cash");
+
+            creditCardButton.addEventListener("click", function () {
+                showCreditCardFields();
+            });
+            cashButton.addEventListener("click", function () {
+                hideCreditCardFields();
+            });
+
+            function fillFormData() {
+                var formData = {
+                    firstName: '露露',
+                    lastName: '趙',
+                    driverId: 'F221744952',
+                    driverAge: '25',
+                    phoneNumber: '0912345678',
+                    cardHolder: '趙露露',
+                    cardNumber: '4311-9522-2222-2222',
+                    deadLine: '08/29',
+                    verifyCode: '222',
+                };
+
+                // 將資料填入對應的 input 元素
+                Object.keys(formData).forEach(function (key) {
+                    document.getElementById(key).value = formData[key];
+                });
+
+                // 獲取填入的資料
+                var firstName = formData.firstName;
+                var lastName = formData.lastName;
+                var cardHolder = formData.cardHolder;
+                var cardNumber = formData.cardNumber;
+                var deadLine = formData.deadLine;
+                var verifyCode = formData.verifyCode
+
+                driverName = lastName + firstName;
+                driverId = formData.driverId;
+                driverAge = formData.driverAge;
+                phoneNumber = formData.phoneNumber;
+            }
+            function showCreditCardFields() {
+                document.querySelector(".cardHolder-field").parentNode.style.display = "block";
+                document.querySelector(".cardNumber-field").parentNode.style.display = "block";
+                document.querySelector(".verify-field").parentNode.style.display = "block";
+            }
+            function hideCreditCardFields() {
+                document.querySelector(".cardHolder-field").parentNode.style.display = "none";
+                document.querySelector(".cardNumber-field").parentNode.style.display = "none";
+                document.querySelector(".verify-field").parentNode.style.display = "none";
+            }
+
+
+            // 發送 GET 請求到 API 以獲取還車地點的 ID
+            fetch(`/api/RApi/getLocationId?locationName=${dropoffLocation}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`無法獲取還車地點的ID: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(locationId => {
+                    // 獲取到還車地點的 ID 後，執行相應的操作
+                    console.log(`還車地點的 ID 是：${locationId}`);
+                    dropoffLocationId = locationId;
+                })
+                .catch(error => {
+                    console.error('發生錯誤:', error);
+                });
+
+            // 使用車輛ID發送 AJAX 請求到服務器端獲取車輛資訊
+            $.ajax({
+                url: '/api/RApi/GetCarDetails', // 修改成後端 API 的路徑
+                type: 'GET',
+                data: { carId: carId }, // 傳遞選擇的車輛ID
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    // 將返回的車輛資訊填充到 HTML 中
+                    $('#selectedCarModel').html(response.fModelName);
+                    $('#carImage img').attr('src', '/img/carRent/' + response.fImagePath); // 填充圖片
+                    $('#rentalFee').html(`NT$${response.fRentalFee}/天`);
+                    $('#servicePoint').html(`取車：${response.fServicePoint}`);
+                    $('#dropoffLocation').html(`還車：${dropoffLocation}`);
+                    $('#pickupDate').html(`日期 ${pickupDate}`);
+                    $('#dropoffDate').html(`日期 ${dropoffDate}`);
+                    $('#pickupTime').html(`時間 ${pickupTime}`);
+                    $('#dropoffTime').html(`時間 ${dropoffTime}`);
+                    // 將取車日期時間和還車日期時間轉換為 JavaScript 的 Date 對象
+                    var pickupDateTime = new Date(`${pickupDate}T${pickupTime}`);
+                    var dropoffDateTime = new Date(`${dropoffDate}T${dropoffTime}`);
+
+                    // 計算還車日期時間減去取車日期時間得到的毫秒數差值
+                    var timeDiff = dropoffDateTime.getTime() - pickupDateTime.getTime();
+
+                    // 計算相差的天數（如果超過12小時才算一天）
+                    var totalDays = Math.floor(timeDiff / (1000 * 3600 * 24)); // 取整數天數
+                    var remainingHours = (timeDiff % (1000 * 3600 * 24)) / (1000 * 3600); // 剩餘的小時數
+
+                    if (remainingHours >= 12) {
+                        totalDays++; // 如果剩餘的小時數大於等於12，加上1天
+                    } else if (remainingHours > 0) {
+                        totalDays += 0.5; // 如果剩餘的小時數大於0但小於12，加上0.5天
+                    }
+                    // 將天數填充到 HTML 中
+                    $('#totalDay').html(`合計${totalDays}天`);
+                    $('#timeTotal').html(`* ${totalDays} 天總計`);
+                    totalFee = response.fRentalFee * totalDays;
+                    $('#totalPrice').html(`NT$${totalFee}`);
+                    $('#rentPrice').html(`NT$${totalFee}`);
+                    
+                },
+                error: function (error) {
+                    console.error('獲取車輛詳細資訊時發生錯誤:', error);
+                }
+            });
+
+            //將資料傳到後端並存回資料庫
+            function sendDataToBackend() {
+                var requestData = {
+                    customerId: customerId,
+                    carId: carId,
+                    dropoffLocationId: dropoffLocationId,
+                    fromDateTime: fromDateTime,
+                    rentDateTime: rentDateTime,
+                    driverName: document.getElementById('lastName').value + 
+                                document.getElementById('firstName').value,
+                    driverId: document.getElementById('driverId').value,
+                    driverAge: document.getElementById('driverAge').value,
+                    phoneNumber: document.getElementById('phoneNumber').value,
+                    totalFee: totalFee,
+                };
+
+                // 將資料轉換成 JSON 格式
+                var jsonData = JSON.stringify(requestData);
+                console.log(jsonData);
+
+                //使用 Fetch API 發送 POST 請求到後端 API
+                fetch('/api/RApi/getFrontData', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: jsonData
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('發生錯誤！');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // 處理後端返回的回應
+                        console.log('後端傳回的資料:', data);
+                        var form = document.querySelector('form[method="post"]');
+                        form.querySelector('input[name="MerchantID"]').value = data.merchantID;
+                        form.querySelector('input[name="MerchantTradeNo"]').value = data.merchantTradeNo;
+                        form.querySelector('input[name="MerchantTradeDate"]').value = data.merchantTradeDate;
+                        form.querySelector('input[name="PaymentType"]').value = data.paymentType;
+                        form.querySelector('input[name="TotalAmount"]').value = data.totalAmount;
+                        form.querySelector('input[name="TradeDesc"]').value = data.tradeDesc;
+                        form.querySelector('input[name="ItemName"]').value = data.itemName;
+                        form.querySelector('input[name="ReturnURL"]').value = data.returnURL;
+                        form.querySelector('input[name="OrderResultURL"]').value = data.orderResultURL;
+                        form.querySelector('input[name="ChoosePayment"]').value = data.choosePayment;
+                        form.querySelector('input[name="EncryptType"]').value = data.encryptType;
+                        form.querySelector('input[name="CheckMacValue"]').value = data.checkMacValue;
+                        // 提交表單
+                        //form.submit();
+                    })
+                    .catch(error => {
+                        console.error('錯誤:', error);
+                    });
+            };
+
+
+            document.getElementById('bookingCarConfirm').addEventListener('click', function () {
+                // 首先進行表單驗證
+                if (validateForm()) {
+                    sendDataToBackend();
+                    // 表單驗證通過，執行跳轉操作
+                    Swal.fire({
+                        title: '是否前往付款頁面?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: '確定',
+                        cancelButtonText: '取消'
+                    }).then((result) => {
+                        // 如果用戶確定，執行頁面跳轉
+                        if (result.isConfirmed) {
+                            var form = document.querySelector('form[method="post"]');
+                            form.submit();
+                        }
+                    });
+                } else {
+                    // 表單驗證未通過，給出錯誤提示
+                    Swal.fire({
+                        icon: 'error',
+                        title: '請檢查表單',
+                        text: '請填寫所有必填欄位並確保格式正確',
+                    });
+                }
+            });
+
+            // 表單驗證函數
+            function validateForm() {
+                var isValid = true; // 設置標誌位，用於判斷表單是否驗證通過
+
+                // 獲取表單輸入框的值
+                var firstName = document.getElementById('firstName').value;
+                var lastName = document.getElementById('lastName').value;
+                var driverId = document.getElementById('driverId').value;
+                var driverAge = document.getElementById('driverAge').value;
+                var phoneNumber = document.getElementById('phoneNumber').value;
+
+                // 此處可以根據需求添加其他輸入框的驗證
+
+                // 檢查名字是否填寫
+                if (firstName.trim() === '') {
+                    showErrorMessage('firstName', '*請填寫名字');
+                    isValid = false;
+                } else {
+                    hideErrorMessage('firstName');
+                }
+
+                // 檢查姓氏是否填寫
+                if (lastName.trim() === '') {
+                    showErrorMessage('lastName', '*請填寫姓氏');
+                    isValid = false;
+                } else {
+                    hideErrorMessage('lastName');
+                }
+
+                // 檢查證件號碼是否填寫
+                if (driverId.trim() === '') {
+                    showErrorMessage('driverId', '*請填寫身分證字號');
+                    isValid = false;
+                } else {
+                    hideErrorMessage('driverId');
+                }
+
+                // 檢查駕駛年齡是否填寫
+                if (driverAge.trim() === '') {
+                    showErrorMessage('driverAge', '*請填寫駕駛年齡');
+                    isValid = false;
+                } else {
+                    hideErrorMessage('driverAge');
+                }
+
+                // 檢查聯絡電話是否填寫
+                if (phoneNumber.trim() === '') {
+                    showErrorMessage('phoneNumber', '*請填寫聯絡電話');
+                    isValid = false;
+                } else {
+                    hideErrorMessage('phoneNumber');
+                }
+
+                // 對手機號碼進行驗證
+                if (!isValidPhoneNumber(phoneNumber)) {
+                    showErrorMessage('phoneNumber', '*手機號碼為10位數字');
+                    isValid = false;
+                } else {
+                    hideErrorMessage('phoneNumber');
+                }
+
+                if (!isValidTWID(driverId)) {
+                    showErrorMessage('driverId', '*身分證字號首字為大寫英文字母加上9碼數字');
+                    isValid = false;
+                } else {
+                    hideErrorMessage('driverId');
+                }
+                return isValid; // 返回表單驗證結果
+            }
+            // 驗證的函數
+            function isValidPhoneNumber(phoneNumber) {
+                return /^\d{10}$/.test(phoneNumber);
+            }
+            function isValidTWID(driverId) {
+                // 校驗規則：身分證字號共有十碼，第一碼為英文字母，第二到九碼為數字
+                return /^[A-Z][0-9]{9}$/.test(driverId);
+            }
+            // 顯示錯誤訊息
+            function showErrorMessage(inputId, message) {
+                var input = document.getElementById(inputId);
+                var errorMessage = input.closest('.col-md-6').querySelector('.error-message');
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+            // 隱藏錯誤訊息
+            function hideErrorMessage(inputId) {
+                var input = document.getElementById(inputId);
+                var errorMessage = input.closest('.col-md-6').querySelector('.error-message');
+                errorMessage.textContent = ''; // 清空錯誤訊息
+                errorMessage.style.display = 'none'; // 隱藏錯誤訊息
+            }
+
+
+        });
+    </script>
+}

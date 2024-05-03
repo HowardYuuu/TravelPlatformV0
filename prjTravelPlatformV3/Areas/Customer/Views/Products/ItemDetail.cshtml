@@ -1,0 +1,669 @@
+﻿
+@{
+    ViewData["Title"] = "商品內容";
+}
+@section Styles{
+    <meta charset="utf-8">
+    <title>Fruitables - Vegetable Website Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/css/Itembootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="~/css/Itemstyle.css" rel="stylesheet">
+    <!-- 包含 SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+
+    </style>
+}
+<!-- Spinner Start 先刪 -->
+<!-- Spinner End -->
+<!-- Navbar start 先刪 -->
+<!-- Navbar End -->
+<!-- Modal Search Start 刪 -->
+<!-- Modal Search End -->
+<div class="masthead__bg" style="position: relative">
+    <img src="~/img/Item/pbanner.jpg" style="filter: brightness(55%); width: 100%; height:300px; object-fit: cover;" />
+    <div class="text-center" style="position: absolute; top:60%; left:50%; transform:translate(-50%, -50%);">
+        <h1 class="text-30 fw-600 text-white">商品明細</h1>
+    </div>
+</div>
+<!-- Single Page Header End -->
+<!-- Single Product Start -->
+<div class="container-fluid py-5 mt-5">
+    <div class="container py-5">
+        <div class="row g-4 mb-5">
+            <div class="col-lg-8 col-xl-9">
+                <div class="row g-4">
+                    @* 商品圖片填入位置 *@
+                    <div class="col-lg-6">
+                        <div class="border rounded">
+                            <img id="itemImg" src="" class="img-itemmid rounded" alt="Image">
+                        </div>
+                    </div>
+                    @* 商品名稱、類別、價格填入位置 *@
+                    <div class="col-lg-6">
+                        <h4 id="itemName" class="fw-bold mb-3"></h4>
+                        <p id="itemType" class="mb-3"></p>
+                        <h5 id="itemPrice" class="fw-bold mb-3"></h5>
+                        <div class="d-flex mb-4">
+                            <div id="itemRate"></div>
+                            <p id="commentNum" style="margin-left: 5px"></p>
+                        </div>
+@*                         <p class="mb-4">軟嫩Q彈軟糖搭配脆口核桃，冷凍後無需解凍即可食用、口感更ㄉㄨㄞ</p>
+                        <p class="mb-4">沙皇御用點心，人氣銷售第一的俄羅斯軟糖<br>純手工製作，不含防腐劑
+                        </p> *@
+                        @* 規格選項填充處 *@
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="fw-bold mb-3">規格選擇:</h6>
+                                <select id="itemSpecs" class="form-select" aria-label="Default select example" style="width:150px;">
+                                </select>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-3">數量:</h6>
+                                <div class="input-group quantity mb-5" style="width: 100px;">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input id="qtyInput" type="text" class="form-control form-control-sm text-center border-0" value="1">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <span id="maxQuantityWarning" style="color: red; font-size:10px"></span>@* *超過可購買數量上限 *@
+                                </div>
+                            </div>
+                            <button id="addToCartBtn" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary align-self-end">
+                                <i class="fa fa-shopping-bag me-2 text-primary"></i>加入購物車
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <nav>
+                            <div class="nav nav-tabs mb-3">
+                                <button class="nav-link active border-white border-bottom-0" type="button" role="tab"
+                                        id="nav-about-tab" data-bs-toggle="tab" data-bs-target="#nav-about"
+                                        aria-controls="nav-about" aria-selected="true">
+                                    商品描述
+                                </button>
+                                <button class="nav-link border-white border-bottom-0" type="button" role="tab"
+                                        id="nav-mission-tab" data-bs-toggle="tab" data-bs-target="#nav-mission"
+                                        aria-controls="nav-mission" aria-selected="false">
+                                    商品評論
+                                </button>
+                            </div>
+                        </nav>
+                        <div class="tab-content mb-5">
+                            <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+                                @* 商品描述資料填入位置 *@
+                                <p id="itemDescription"></p>
+                                <div class="px-2">
+                                    <div class="row g-4">
+                                        <div class="col-6">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
+                                @* <div class="d-flex" style="flex-shrink: 0;"> *@ @* 防止圖片被縮小  *@
+                                    @* 顧客評論填充處 *@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-xl-3">
+                <div class="row g-4 fruite">
+                    <div class="col-lg-12">
+                        <div class="input-group w-100 mx-auto d-flex mb-4">
+                            <input type="search" class="form-control p-3" placeholder="請輸入商品名稱、店家" aria-describedby="search-icon-1" style="height: 50px; border: 0.5px solid #95c4a8;">
+                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                        </div>
+                        <div class="mb-4">
+                            <h4>所有商品類別</h4>
+                            <ul class="list-unstyled fruite-categorie">
+                                <li>
+                                    <div class="d-flex justify-content-between fruite-name">
+                                        <a href="#"><i class="fa-solid fa-bag-shopping me-2"></i> 美容與個人護理</a>
+                                        <span></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex justify-content-between fruite-name">
+                                        <a href="#"><i class="fa-solid fa-cheese me-2"></i>  食品與飲料</a>
+                                        <span></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex justify-content-between fruite-name">
+                                        <a href="#"><i class="fa-solid fa-shirt me-2"></i>  衣物與時尚</a>
+                                        <span></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex justify-content-between fruite-name">
+                                        <a href="#"><i class="fa-solid fa-couch me-2"></i>  家居用品</a>
+                                        <span></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex justify-content-between fruite-name">
+                                        <a href="#"><i class="fa-solid fa-mountain-sun me-2"></i>  旅遊用品</a>
+                                        <span></span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="position-relative">
+                            <img src="~/img/Item/brownieAD.jpg" class="w-100 rounded" alt="">
+                            <div class="position-absolute" style="top: 25%; right: 15px; transform: translateY(-50%);">
+                                <h3 class="text-secondary fw-bold">SALES<br>輸入折扣碼<br>GIFT50</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h1 class="fw-bold mb-0">逛逛商家其他好物</h1>
+        <div id="shopItemList" class="vesitable"> 
+        </div>
+        <h1 class="fw-bold mb-0">相同類型好物</h1>
+        <div id="typeItemList" class="vesitable">
+        </div>
+    </div>
+</div>
+<!-- Single Product End -->
+<!-- Footer Start 刪 -->
+<!-- Footer End -->
+<!-- Copyright Start -->
+<!-- Copyright End -->
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
+
+@section Scripts{
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/easing/easing.min.js"></script>
+    <script src="~/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+    <!-- Template Javascript -->
+    <script src="~/js/Itemmain.js"></script>
+    <!-- 包含 SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script>
+        // 獲取傳遞進來的 ProductId
+        var productId = '@ViewData["ProductId"]';
+        // 定義全域變數來存儲商品規格數據
+        var itemSpecData;
+
+        var customerId = @ViewBag.CustomerId;
+        // console.log('customerId', customerId);
+        // var shopItemList;
+        // 使用 jQuery 的 Ajax 方法向後端發送請求
+ 
+        // 輔助函數，根據評分數量生成星星的 HTML
+        function getStarRatingHtml(score) {
+            var starsHtml = '';
+            for (var i = 0; i < 5; i++) {
+                starsHtml += `<i class="fa fa-star${i < score ? ' text-secondary' : ''}"></i>`;
+            }
+            return starsHtml;
+        }
+        // 根據選擇的商品規格更新價格與圖片
+        function updateItemContent(selectedSpecId) {
+            // 使用已經抓到的 itemSpecData
+            var selectedItem = itemSpecData.find(its => its.fSpecId == selectedSpecId);
+            // console.log('updateItemContent called with selectedSpecId:', selectedItem);
+            // 更新圖片和價格
+            if (selectedItem) {
+                // 檢查圖片路徑是否存在
+                if (selectedItem.fImagePath) {
+                    $('#itemImg').attr('src', '/img/Item/' + selectedItem.fImagePath);
+                }
+
+                $('#itemPrice').html('NT. ' + selectedItem.fPrice);
+            }
+        }
+        // 加入購物車點擊事件
+        $(document).ready(function () {
+            // 取得商品細節資訊
+            $.ajax({
+                url: '/api/ProductApi/GetItemDetail?productId=' + productId,  // 請替換為你的後端 API 路由
+                type: 'GET',
+                dataType: 'json',
+                success: function (proDetailData) {
+                    // 成功取得商品詳細資訊後，你可以在這裡處理資料
+                    console.log('proDetailData', proDetailData);
+
+                    // 確保返回的資料不為空
+                    if (proDetailData.length > 0) {
+                        var item = proDetailData[0];
+
+                        // 將返回的資料填入對應的 HTML 元素中
+                        $('#itemImg').attr('src', '/img/Item/' + (item.fImagePath || '')); // 使用預設圖片路徑
+                        $('#itemName').html(item.fProductName);
+                        $('#itemType').html('商品類型: ' + item.fType);
+                        $('#itemPrice').html('NT. ' + item.fPrice);
+                        // 商品描述
+                        $('#itemDescription').html(item.fDescription);
+                        // 替換 <oembed> 標籤為實際的嵌入內容
+                        // replaceOembedTagsInDescription(item.fDescription);
+                        // 調用函式以根據商品店家查詢商品清單
+                        getItemListByShop(item.fCompanyName);
+                        getItemListByType(item.fType);
+                    }
+                },
+                error: function (error) {
+                    console.error('取得商品詳細資訊時發生錯誤：', error);
+                }
+            });
+            // 取得規格清單
+            $.ajax({
+                url: '/api/ProductApi/GetItemSpecList?productId=' + productId,  // 請替換為你的後端 API 路由
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // 成功取得商品詳細資訊後，你可以在這裡處理資料
+                    console.log('SpecList', data);
+                    // 成功取得商品規格數據後，儲存到全域變數中
+                    itemSpecData = data;
+                    // 將商品規格填入對應的 HTML 元素中
+                    var itemSpecsDropdown = $('#itemSpecs');
+                    itemSpecsDropdown.empty(); // 清空原先的選項
+                    itemSpecsDropdown.append('<option value="0" selected>請選取規格</option>'); // 預設選項
+
+
+                    // 遍歷資料，動態添加選項
+                    itemSpecData.forEach(function (itemSpec) {
+                        var optionText = itemSpec.fSpecName; // 這裡僅是一個示例，你可以根據需要調整顯示方式
+                        var optionValue = itemSpec.fSpecId;
+
+                        // 創建選項並添加到下拉選單中
+                        var option = $('<option></option>');
+                        option.val(optionValue).text(optionText);
+                        itemSpecsDropdown.append(option);
+                    });
+
+                    // 監聽下拉選單的選擇事件
+                    itemSpecsDropdown.change(function () {
+                        // 當選擇改變時，取得所選的 option 的值
+                        var selectedSpecId = $(this).val();
+                        // 使用所選的 specId 來更新相應的內容
+                        updateItemContent(selectedSpecId);
+                        console.log(selectedSpecId);
+                    });
+                },
+                error: function (error) {
+                    console.error('取得商品詳細資訊時發生錯誤：', error);
+                }
+            });
+            $.ajax({
+                url: '/api/ProductApi/GetItemReviewCountById?productId=' + productId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (reviewData) {
+                    // 成功取得商品評論資料後，你可以在這裡處理資料
+                    console.log('reviewData', reviewData);
+
+                    // 確保返回的資料不為空
+                    if (reviewData) {
+                        // 填入平均分數
+                        $('#itemRate').html(getStarRatingHtml(reviewData.averageScore.toFixed(0)));
+                        // $('#itemRate').html('評分：' + reviewData.averageScore.toFixed(1) + ' / 5');
+                        $('#commentNum').html(`(${reviewData.totalReviews}則評論)`)
+                    } else {
+                        $('#itemRate').html(getStarRatingHtml(0));
+                        $('#commentNum').html('(0則評論)');
+                    }
+                },
+                error: function (error) {
+                    console.error('取得商品評論資訊時發生錯誤：', error);
+                }
+            });
+            // 取得商品評論
+            $.ajax({
+                url: '/api/ProductApi/GetItemReview?productId=' + productId,  // 請替換為你的後端 API 路由
+                type: 'GET',
+                dataType: 'json',
+                success: function (itemRevData) {
+                    // 成功取得商品詳細資訊後，你可以在這裡處理資料
+                    console.log('itemRevData', itemRevData);
+
+                    // 清空評論區域
+                    $('#nav-mission').empty();
+
+                    // 檢查是否有評論資料
+                    if (itemRevData && itemRevData.length > 0) {
+                        // 有評論資料，遍歷評論資料
+                        itemRevData.forEach(function (review) {
+                            // 格式化日期
+                            var formattedDate = review.fReviewDate.substring(0, 4) + '/' + review.fReviewDate.substring(4, 6) + '/' + review.fReviewDate.substring(6);
+                            // 創建評論區域的 HTML 元素
+                            var reviewHtml = `
+                            <div class="d-flex" style="flex-shrink: 0;">
+                              <img src="/${review.profilepic || '/img/Item/avatar.jpg'}" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
+                                <div class="">
+                                    <p class="mb-2" style="font-size: 14px;">${formattedDate}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                      <h5 style="margin-right:10px; margin-bottom:0px">${review.fName}</h5>
+                                        <div style="margin-right: auto;">
+                                            ${getStarRatingHtml(review.fProductScore)}
+                                        </div>
+                                    </div>
+                                    <p class="text-dark">${review.fProductReview}</p>
+                                </div>
+                            </div>
+                        `;
+                            // 將評論區域添加到容器中
+                            $('#nav-mission').append(reviewHtml);
+                        });
+                        var moreBtn = `
+                                    <div class="text-center">
+                                         <button class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primar">更多評論
+                                         </button>
+                                    </div>`;
+                        $('#nav-mission').append(moreBtn);
+                    } else {
+                        // 沒有評論資料，顯示暫無評論
+                        $('#nav-mission').append('<p class="text-muted">暫無評論</p>');
+                    }
+                },
+                error: function (error) {
+                    console.error('取得商品評論時發生錯誤：', error);
+                }
+            });
+            // 監聽數量輸入框的輸入事件
+            $('#qtyInput').on('input', function () {
+                // 獲取選取的規格對應的最大購買數量
+                var selectedSpecId = $('#itemSpecs').val();
+                var maxBuyLimited = itemSpecData.find(spec => spec.fSpecId == selectedSpecId).fBuyLimited;
+
+                // 獲取當前購買數量
+                var quantity = parseInt($(this).val());
+
+                // 如果超過最大購買數量，顯示警示訊息
+                if (quantity > maxBuyLimited) {
+                    $('#maxQuantityWarning').text('*超過可購買數量上限');
+                    $('#addToCartBtn').prop('disabled', true); // 禁用加入購物車按鈕
+                } else {
+                    $('#maxQuantityWarning').text(''); // 清空警示訊息
+                    $('#addToCartBtn').prop('disabled', false); // 啟用加入購物車按鈕
+                }
+            });
+
+            // 點擊 "加入購物車" 按鈕時執行 addToCart 函數
+            $('#addToCartBtn').on('click', function () {
+                // 檢查選取的規格是否為預設值
+                var selectedSpecId = $('#itemSpecs').val();
+                if (selectedSpecId === "0") {
+                    // 如果選取的規格為預設值，顯示警告並返回
+                    Swal.fire({
+                        title: '警告',
+                        text: '請先選擇規格',
+                        icon: 'warning'
+                    });
+                    return;
+                }
+                // 執行加入購物車函數
+                addToCart();
+            });
+        });
+
+        // 在選擇規格及數量後呼叫此函數，加入購物車
+        function addToCart() {
+            // 獲取選擇的商品規格及數量
+            var selectedSpecId = $('#itemSpecs').val();
+            var quantity = parseInt($('#qtyInput').val()); // 假設你的數量輸入框有一個 id 為 quantityInput
+            // 確認選擇的規格及數量有效
+            if (selectedSpecId && !isNaN(quantity) && quantity > 0) {
+                // 使用Array.find查找對應的物件
+                var selectedSpec = itemSpecData.find(spec => spec.fSpecId == selectedSpecId);
+                var selectedSpecPrice = selectedSpec.fPrice ? selectedSpec.fPrice : 0;
+                // 計算小計
+                var subtotal = quantity * selectedSpecPrice; // 假設你有一個變數 selectedSpecPrice 來存儲選擇規格的價格
+
+                // 構建要發送到 API 的購物車項目對象
+                var cartItem = {
+                    FCustomerId: customerId,
+                    FSpecId: parseInt(selectedSpecId),
+                    FQty: quantity,
+                    FSubtotal: subtotal
+                };
+                // console.log(cartItem);
+
+            // 發送 POST 請求到新增到購物車的 API
+                $.ajax({
+                    url: '/api/ProductApi/AddToCart',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(cartItem),
+                    success: function (response) {
+                        if (response.success) {
+                            // 使用 SweetAlert2 顯示成功通知
+                            Swal.fire({
+                                title: '成功',
+                                text: '商品已加入購物車',
+                                icon: 'success'
+                            });
+                            // 更新購物車項目數量
+                            updateCartItemCount();
+                            // 重置選擇的規格為初始值
+                            $('#itemSpecs').val('0'); // 将规格选择框的值重置为默认值
+                            $('#qtyInput').val('1'); // 将数量输入框的值重置为默认值
+                            // 資料儲存成功，可能需要更新頁面或提供用戶相應的提示
+                            console.log(response.message);
+                        } else {
+                            // 資料儲存失敗，可能需要提供用戶相應的錯誤提示
+                            console.error(response.message);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('發生錯誤：', error);
+                    }
+                });
+            } else {
+                // 使用 SweetAlert2 顯示提示
+                Swal.fire({
+                    title: '警告',
+                    text: '請選擇商品規格並輸入有效數量',
+                    icon: 'warning'
+                });
+            }
+        }
+        function updateCartItemCount() {
+            // var customerId = 2; // 假設您的客戶 ID 固定為 2
+            $.ajax({
+                url: '/api/ProductApi/GetCartList?customerId=' + customerId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (cartData) {
+                    // 清空原有的下拉菜单内容
+                    $('#cartItemList').empty();
+
+                    // 遍历购物车数据，并构建新的下拉菜单内容
+                    cartData.forEach(function (item) {
+                        var html = `<div class="text-14 y-gap-15 js-dropdown-list">
+                                        <div style="display: flex;">
+                                            <div class="rounded" style="margin-right: 10px;margin-left: 5px;">
+                                                <img src="/img/Item/${item.specImg ? item.specImg : item.itemImg}" class="rounded" alt="" style="width: 50px; height: 50px;">
+                                            </div>
+                                            <div style="display: flex; flex-direction: column;">
+                                                <h7 class="mb-2">${item.fProductName}</h7>
+                                                <div style="display: flex; align-items: baseline;">
+                                                    <h7 class="mb-2">${item.fSpecName}</h7>
+                                                    <span style="margin-left: 5px;">x${item.fQty}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                        $('#cartItemList').append(html);
+                    });
+                    // 更新購物車項目數量
+                    $('#cartItemNum').text(cartData.length);
+                },
+                error: function (error) {
+                    console.error('取得購物車資訊時發生錯誤：', error);
+                }
+            });
+        }
+        // 篩選樣式並截取HTML
+        function filterAndTruncateHtml(html, maxLength) {
+            // 检查html是否为空或未定义
+            if (!html) {
+                return '';
+            }
+            // 移除HTML標籤和樣式
+            var plainText = html.replace(/<[^>]+>/g, '');
+            // 截取文本的前maxLength个字符
+            var truncatedText = plainText.length <= maxLength ? plainText : plainText.substring(0, maxLength) + '...';
+            return truncatedText;
+        }
+        // 相同商家推薦商品
+        function getItemListByShop(companyName) {
+            $.ajax({
+                url: '/api/ProductApi/GetItemListByShop?companyName=' + companyName,
+                type: 'GET',
+                dataType: 'json',
+                success: function (shopItemList) {
+                    console.log('shopItemList', shopItemList);
+                    if (shopItemList.length > 0) {
+                        var carouseContainer = $('<div class="owl-carousel"></div>');
+                        shopItemList.forEach(function (item) {
+                            // 處理商品描述樣式和截取
+                            var truncatedDescription = filterAndTruncateHtml(item.fDescription, 20);
+                            // 创建轮播项目的HTML内容
+                            var carouselItem = `
+                             <a href="#" class="product-link text-decoration-none" data-productid="${item.fProductId}">
+                              <div class="border border-primary rounded position-relative vesitable-item" style="max-width: 300px;">
+                                    <div class="vesitable-img">
+                                        <img src="/img/Item/${item.fImagePath}" class="img-fluid w-100 rounded-top" alt="">
+                                    </div>
+                                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">${item.fCompanyName}</div>
+                                    <div class="p-4 pb-0 rounded-bottom">
+                                        <h5>${item.fProductName}</h5>
+                                        <p>${truncatedDescription}</p>
+                                        <div class="d-flex justify-content-between flex-lg-wrap">
+                                            <p class="text-dark fs-5 fw-bold">NT. ${item.fPrice}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                             </a>
+                            `;
+                            carouseContainer.append(carouselItem);
+                        });
+                        $("#shopItemList").append(carouseContainer);
+                        $('.owl-carousel').owlCarousel({
+                            loop: true,
+                            margin: 10,
+                            nav: true,
+                            responsive: {
+                                0: {
+                                    items: 1
+                                },
+                                600: {
+                                    items: 3
+                                },
+                                1000: {
+                                    items: 5
+                                }
+                            }
+                        })
+                    }
+                },
+                error: function (error) {
+                    console.error('根據店家名稱取得商品清單時發生錯誤：', error);
+                }
+            });
+        }
+        // 推薦相同類型產品
+        function getItemListByType(itemtype) {
+            $.ajax({
+                url: '/api/ProductApi/GetItemListByType?itemType=' + itemtype,
+                type: 'GET',
+                dataType: 'json',
+                success: function (typeItemList) {
+                    console.log('shopItemList', typeItemList);
+                    if (typeItemList.length > 0) {
+                        var carouseContainer = $('<div class="owl-carousel"></div>');
+                        typeItemList.forEach(function (item) {
+                            // 處理商品描述樣式和截取
+                            var truncatedDescription = filterAndTruncateHtml(item.fDescription, 20);
+                            // 创建轮播项目的HTML内容
+                            var carouselItem = `
+                                     <a href="#" class="product-link text-decoration-none" data-productid="${item.fProductId}">
+                                      <div class="border border-primary rounded position-relative vesitable-item" style="max-width: 300px;">
+                                            <div class="vesitable-img">
+                                                <img src="/img/Item/${item.fImagePath}" class="img-fluid w-100 rounded-top" alt="">
+                                            </div>
+                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">${item.fCompanyName}</div>
+                                            <div class="p-4 pb-0 rounded-bottom">
+                                                <h5>${item.fProductName}</h5>
+                                                <p>${truncatedDescription}</p>
+                                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                                    <p class="text-dark fs-5 fw-bold">NT. ${item.fPrice}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </a>
+                                    `;
+                            carouseContainer.append(carouselItem);
+                        });
+                        $("#typeItemList").append(carouseContainer);
+                        $('.owl-carousel').owlCarousel({
+                            loop: true,
+                            margin: 10,
+                            nav: true,
+                            responsive: {
+                                0: {
+                                    items: 1
+                                },
+                                600: {
+                                    items: 3
+                                },
+                                1000: {
+                                    items: 5
+                                }
+                            }
+                        })
+                    }
+                },
+                error: function (error) {
+                    console.error('根據店家名稱取得商品清單時發生錯誤：', error);
+                }
+            });
+        }
+        // 推薦欄點擊事件
+        $(document).on('click', '.product-link', function (e) {
+            e.preventDefault(); // 阻止默認的連結行為
+
+            // 獲取商品ID
+            var productId = $(this).data('productid');
+            // 使用 Razor 語法獲取商品詳細頁面的 URL
+            var url = '@Url.Action("ItemDetail", "Products", new { area = "Customer" })' + '?productId=' + productId;
+
+            // 將用戶導向到商品詳細頁面
+            window.location.href = url;
+        }); 
+    </script>
+}

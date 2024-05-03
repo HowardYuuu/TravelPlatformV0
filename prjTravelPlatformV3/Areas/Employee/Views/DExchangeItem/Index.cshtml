@@ -1,0 +1,293 @@
+﻿@model string
+@{
+    ViewData["Title"] = "廣告管理";
+}
+
+@section Styles {
+    <link href="~/lib/datatables/css/jquery.datatables.css" rel="stylesheet" />
+    <head>
+
+    </head>
+    <style>
+        thead {
+            background-color: lightslategrey;
+            color: black;
+        }
+
+        #preview {
+            max-width: 500px;
+            max-height: 500px; /* 添加這行以限制最大高度 */
+            margin-top: 20px;
+        }
+
+            #preview img {
+                max-width: 100%;
+                max-height: 100%; /* 添加這行以確保圖片不會超出容器 */
+            }
+    </style>
+}
+<h3>廣告管理</h3>
+
+<input type="file"  id="upload" accept="image/*">
+<div id="preview"></div>
+<button id="saveBtn" type="button" class="btn btn-info" style="font-size:1.2rem"><i class="fa-solid fa-circle-plus" style="font-size:1.2rem"></i> 更新圖片</button>
+<button id="sendBtn" type="button" class="btn btn-info" style="font-size:1.2rem"><i class="fa-solid fa-circle-check" style="font-size:1.2rem"></i> 推播廣告</button>
+
+
+<h3 >AI圖生成工具</h3>
+<!-- Image info -->
+<input type="text" class="form-control" id="txt" style="width:400px; display:inline;" placeholder="輸入圖片描述" />
+<!-- Image Size -->
+<select id="size"  style="display:inline;">
+    @* <option selected>128x128</option> *@
+    <option selected>256x256</option>
+    <option>512x512</option>
+    <option>1024x1024</option>
+    <option>1792x1024</option>
+    <option>1024x1792</option>
+</select>
+<!-- Images Required -->
+<input type="number" value="1" placeholder="Images Required" id="quantity" style="display:inline;" />
+<!-- Generate button -->
+<button class="btn btn-info" id="generate" style="font-size:1.0rem;display:inline;">
+   圖像生成
+</button>
+<!--Display image here-->
+<div id="popupContainer" title="Generated Images" style="display: none;">
+    <div id="popupContent"></div>
+</div>
+
+<table class="table" id="tbCoupon">
+    <thead>
+        <tr>
+            <th style="display: none">id</th>
+            <th>圖片</th>
+            <th>檔名</th>
+            <th>廣告名稱</th>
+            <th style="width:150px">功能</th>
+        </tr>
+    </thead>
+    <tbody id="couponBody">
+        <!-- 这里将动态添加数据行 -->
+    </tbody>
+</table>
+
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="//cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+
+        //datatable
+        // 假設你有一個包含資料的JavaScript物件數組
+        var coupons = [
+            { id: 1, image: '/img/discount/ad/hotel01.png', filename: 'hotel01.png', adName: '飯店' },
+            { id: 2, image: '/img/discount/ad/Car01.png', filename: 'Car01.png', adName: '租車' },
+            { id: 2, image: '/img/discount/ad/Fly.png', filename: 'Fly.png', adName: '航班' },
+            { id: 2, image: '/img/discount/ad/Product.png', filename: 'Product.png', adName: '伴手禮' },
+            {
+                id: 2, image: '/img/discount/ad/Travel.png', filename: 'Travel.png', adName: '旅遊方案'
+            },
+            { id: 2, image: '/img/discount/ad/Visa.png', filename: 'Visa.png', adName: '代辦' },
+            // 增加更多數據...
+        ];
+
+        // 當頁面載入完成時執行
+        $(document).ready(function () {
+            var tbody = $('#couponBody');
+
+            //遍歷資料並插入到表格中
+            $.each(coupons, function (index, coupon) {
+                var row = '<tr>';
+                row += '<td style="display: none">' + coupon.id + '</td>';
+                row += '<td><img src="' + coupon.image + '" alt="Coupon Image" style="max-width: 250px; max-height: 250px;"></td>';
+                row += '<td>' + coupon.filename + '</td>';
+                row += '<td>' + coupon.adName + '</td>';
+                row += '<td><button type="button" class="btn btn-primary btn-sm me-1 editBtn" ><i class="fa-solid fa-pen-to-square" style="font -size:0.8rem"></i> 編輯</button> <button type="button" class="btn btn-danger btn-sm deleteBtn" ><i class="fa-solid fa-trash" style= "font-size:0.8rem"></i> 刪除</button></td>';
+                row += '</tr>';
+                tbody.append(row);
+            });
+
+            // 編輯按鈕點擊事件處理程序
+            tbody.on('click', '.editBtn', function () {
+                var row = $(this).closest('tr');
+                var id = row.find('td:first').text();
+                // 進行編輯操作...
+                Swal.fire({
+                    title: '編',
+                    text: '編輯 ID 為 ' + id + ' 的項目',
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: '確認',
+                    cancelButtonText: '取消'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // 使用者點選了確認按鈕，執行編輯操作
+                        console.log('Edit button clicked for ID:', id);
+                    }
+                });
+            });
+
+            // 刪除按鈕點擊事件處理程序
+            tbody.on('click', '.deleteBtn', function () {
+                var row = $(this).closest('tr');
+                var id = row.find('td:first').text();
+                // 進行刪除操作...
+                Swal.fire({
+                    title: '確認刪除',
+                    text: '您確定要刪除 ID 為 ' + id + ' 的項目嗎？ ',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: '確認',
+                    cancelButtonText: '取消',
+                    dangerMode: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // 使用者點擊了確認按鈕，執行刪除操作
+                        row.remove();
+                        console.log('Deleted ID:', id);
+                    }
+                });
+            });
+        });
+
+        //
+
+        
+
+
+        //
+
+
+        document.getElementById('upload').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var img = new Image();
+                img.src = e.target.result;
+                img.onload = function () {
+                    var preview = document.getElementById('preview');
+                    preview.innerHTML = '';
+                    preview.appendChild(img);
+                };
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+
+        document.getElementById('saveBtn').addEventListener('click', function () {
+            var previewImg = document.querySelector('#preview img');
+            if (previewImg) {
+                var canvas = document.createElement('canvas');
+                canvas.width = previewImg.width;
+                canvas.height = previewImg.height;
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(previewImg, 0, 0);
+                var dataURL = canvas.toDataURL('image/jpeg');
+
+                // 将图像数据发送到后端保存
+                saveImageToServer(dataURL);
+            }
+        });
+
+        // 将图像数据发送到后端保存
+        function saveImageToServer(dataURL) {
+            // 构建发送到后端的数据对象
+            var data = {
+                Base64Data: dataURL
+            };
+
+            fetch('/Employee/DExchangeItem/SaveImage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    console.log('Image saved successfully');
+                    // 显示 SweetAlert
+                    swal("Success!", "Image saved successfully!", "success");
+                })
+                .catch(error => console.error('There was a problem saving the image:', error));
+        }
+        //
+
+
+
+
+        //SignalR的程式碼部分
+        var connection = new signalR.HubConnectionBuilder().withUrl("/adHub").build();
+
+        //與Server建立連線
+        connection.start().then(function () {
+            console.log("Hub 連線完成");
+        }).catch(function (err) {
+            alert('連線錯誤: ' + err.toString());
+        });
+
+        $('#sendBtn').on('click', function () {
+            connection.invoke("TriggerClientButtonClick").catch(function (err) {
+                alert('傳送錯誤: ' + err.toString());
+            });
+        });
+        //
+
+
+
+
+        //AI繪圖
+        $(document).ready(() => {
+            // 初始化弹出式 div
+            $('#popupContainer').dialog({
+                autoOpen: false,
+                modal: true,
+                width: 'auto',
+                height: 'auto',
+                resizable: false
+            });
+
+            $('#generate').click(function () {
+                // 清除原有的图像
+                $('#popupContent').empty();
+
+                var info = {};
+                info.n = parseInt($('#quantity').val());
+                info.prompt = $('#txt').val();
+                info.size = $('#size').find(":selected").val();
+                $.ajax({
+                    url: '/Employee/DExchangeItem/GenerateImage',
+                    method: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify(info)
+                }).done(function (data) {
+                    $.each(data.data, function () {
+                        // 将生成的图像添加到弹出式 div 中
+                        $('#popupContent').append('<div class="col-md-5" style="padding:0;display:inline;">' +
+                            '<img class="p-1" style="width:500px; display:inline;" src="' + this.url + '"/>' +
+                            '</div>');
+                    });
+
+                    // 打开弹出式 div
+                    $('#popupContainer').dialog('open');
+                });
+            });
+        });
+            //
+
+
+    </script>
+}

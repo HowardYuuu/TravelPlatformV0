@@ -1,0 +1,172 @@
+﻿@model IEnumerable<prjTravelPlatformV3.Models.VDexchangeView>
+
+@{
+    ViewData["Title"] = "優惠管理";
+}
+
+@section Styles {
+    <link href="~/lib/datatables/css/jquery.datatables.css" rel="stylesheet" />
+    <style>
+        thead {
+            background-color: lightslategrey;
+            color: black;
+        }
+    </style>
+}
+<h3>兌換商品管理</h3>
+
+<button id="t1" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exchangePartial" onclick="getEditPartial(0)"><i class="fa-solid fa-circle-plus" style="font-size:0.8rem"></i> 新增</button>
+
+<table class="table" id="tbExchange">
+    <thead>
+        <tr>
+            <th style="display: none">id</th>    
+            @* <th>商品編號</th> *@
+            <th>商品名稱</th>
+            <th>點數</th>
+			<th>金額</th>
+			<th>商品類型</th>
+			<th>庫存</th>
+            <th>圖片</th>
+            @* <th>備註</th> *@
+            <th style="width:50px">功能</th>
+        </tr>
+    </thead>
+</table>
+
+<!--Modal-->
+<div class="modal fade" id="exchangePartial" tabindex=" -1" aria-labelledby="example1ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="edit-modal">
+                @*引入partial*@
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="//cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+
+        const editModal = document.getElementById("edit-modal");
+        const createModal = document.getElementById("create-modal");
+
+        const btnSave = document.getElementById("btnSave");
+
+
+        const loadExcangeData = () => {
+            $("#tbExchange").dataTable({
+                autoWidth: false,
+                ajax: {
+                    type: 'GET',
+                    url: "/api/Exchange/GetData",
+                    dataSrc: function (json) { return json; }
+                },
+                columns: [
+                    { "data": "fProduct_id", "visible": false },
+                    { "data": "fName" },
+                    { "data": "fPoints_Required" },
+                    { "data": "fMoney_Required" },
+                    { "data": "fQuantity" },
+                    { "data": "fProduct_type" },
+                    { "data": "fImage_path" },
+                    // { "data": "fNote" },
+                    {
+                        data: null,
+                        title: "功能",
+                        render: function (data, type, row) {
+                            return `<button id="t1" type = "button" class="btn btn-primary btn-sm me-1" data-bs-toggle="modal" data-bs-target="#exchangePartial" onclick="getEditPartial(${row.fProduct_id})"><i class="fa-solid fa-pen-to-square" style="font-size:0.8rem"></i> 編輯</button> ` +
+                                '<button type="button" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash" style="font-size:0.8rem"></i> 刪除</button>'
+                        }
+                    },
+                ],
+                fixedHeader: { header: true },
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json'
+                },
+
+
+            })
+        }
+
+
+        //取得partial view，新增跟編輯都呼叫這個function，新增id參數帶0，編輯是選到的那列資料的id
+        const getEditPartial = async (id) => {
+            const response = await fetch(`@Url.Content("~/Employee/DExchangeItem/GetPartial")?id=${id}`);
+            const data = await response.text();
+            editModal.innerHTML = data
+        }
+        //根據傳入的action name呼叫對應的api
+        const sendFetchRequest = async (actionName) => {
+            //抓取目前的form id
+            const formId = document.querySelector("form").getAttribute('id');
+            //目前的form id的DOM元素
+            const formIdDOM = document.getElementById(`${formId}`)
+            //新增form data物件
+            const formData = new FormData(formIdDOM);
+            //取得防偽標籤
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            try {
+                const res = await fetch(`@Url.Content("~/api/Discounts/")` + actionName, {
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    body: formData,
+                    method: 'POST'
+                });
+                if (!res.ok) {
+                    throw new Error(`${res.status}`)
+                }
+                const data = await res.json();
+
+                if (data.success) {
+                    console.log(data);
+                    //關閉modal
+                    var myModal = bootstrap.Modal.getInstance(couponPartial);
+                    myModal.hide();
+                    //顯示訊息
+                    Swal.fire({
+                        title: "Success",
+                        text: data.message,
+                        icon: "success"
+                    });
+                    //刷新datatable
+                    $('#tbExchange').DataTable().ajax.reload();
+                } else {
+                    //依自己的form增加需要驗證的欄位(驗證規則在partial view中)
+                    const errorPoints = document.querySelector(`[data-valmsg-for="fPoint"]`);
+                    const errorMoney = document.querySelector(`[data-valmsg-for="fMoney"]`);
+                    if (errorCouponCode) {
+                        errorCouponCode.textContent = data.errors.fPoint[0];
+                    }
+                    if (errorDiscount) {
+                        errorDiscount.textContent = data.errors.fMoney[0];
+                    }
+                }
+            } catch (error) {
+                Swal.fire({
+                    title: "error",
+                    text: error.message,
+                    icon: "error"
+                });
+            }
+
+
+        }
+
+        $(document).ready(() => {
+            loadExcangeData();
+        })
+
+    </script>
+ }
+

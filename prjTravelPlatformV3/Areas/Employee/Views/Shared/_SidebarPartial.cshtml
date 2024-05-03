@@ -1,0 +1,252 @@
+﻿@{
+    ViewData["ControllerName"] = @ViewContext.RouteData.Values["controller"]?.ToString();
+}
+
+
+<li class="nav-item mt-3">
+    <h6 class="ps-3  text-uppercase text-xs font-weight-bolder opacity-6"><strong>功能管理</strong></h6>
+</li>
+
+
+
+
+<!--人員管理-->
+<li class="nav-item cursor-pointer">
+    <a class="nav-link ">
+        <i class="fa-solid fa-user" style="font-size:20px"></i>
+        <div class="nav-link-text ms-1 mb-0">
+            人員管理
+            <i class="fa-solid fa-caret-up drop @if(ViewBag.ControllerName == "Employee"
+            || ViewBag.ControllerName == "Customer")
+            @("rotate")"></i>
+        </div>
+    </a>
+    <div id="member" class="nav-sub-item" @if(ViewBag.ControllerName == "Employee" 
+                                           || ViewBag.ControllerName == "Customer") @("style=display:block;")>
+        <a id="h1" class="test my-1 @if(ViewBag.ControllerName == "Employee") @("active")" asp-area="Employee" asp-controller="Employee" asp-action="Index">員工管理</a>
+        <a id="h2" class="test my-1 @if(ViewBag.ControllerName == "Customer") @("active")" asp-area="Employee" asp-controller="Customer" asp-action="Index">會員管理</a>
+    </div>
+</li>
+<!--End 人員管理-->
+
+
+<!--廠商管理-->
+<li class="nav-item cursor-pointer">
+    <a class="nav-link ">
+        <i class="fa-solid fa-briefcase" style="font-size:20px"></i>
+        <div class="nav-link-text ms-1 mb-0">
+            廠商管理
+            <i class="fa-solid fa-caret-up drop @if(ViewBag.ControllerName == "Supplier") @("rotate")"></i>
+        </div>
+    </a>
+    <div id="company" class="nav-sub-item" @if(ViewBag.ControllerName == "Supplier") @("style=display:block;")>
+        <a id="h1" class="test my-1 @if(ViewBag.ControllerName == "Supplier") @("active")" asp-area="Employee" asp-controller="Supplier" asp-action="Index">廠商管理</a>
+        
+    </div>
+</li>
+<!--End 廠商管理-->
+
+
+<!--行程管理-->
+<li class="nav-item cursor-pointer">
+    <a class="nav-link">
+        <i class="fa-solid fa-map-location-dot" style="font-size:20px"></i>
+        <div class="nav-link-text ms-1 mb-0">
+            旅遊方案管理
+            <i class="fa-solid fa-caret-up drop @if(ViewBag.ControllerName == "TravelPlan" 
+            ||ViewBag.ControllerName == "TDestination" 
+            ||ViewBag.ControllerName == "TSchedule"
+            ||ViewBag.ControllerName == "TOrder"
+            ||ViewBag.ControllerName == "TDestionationOrder")
+            @("rotate")"></i>
+        </div>
+    </a>
+    <div id="airline" class="nav-sub-item" @if(ViewBag.ControllerName == "TravelPlan"
+         ||ViewBag.ControllerName == "TDestination"
+         ||ViewBag.ControllerName == "TSchedule"
+         ||ViewBag.ControllerName == "TOrder"
+         ||ViewBag.ControllerName == "TDestionationOrder")
+         @("style=display:block;")>
+           
+        @* <a id="h1" class="test my-1 @if(ViewBag.ControllerName == "TSchedule") @("active")" asp-area="Employee" asp-controller="TSchedule" asp-action="Index">行程安排</a> *@
+        <a id="h1" class="test my-1 @if(ViewBag.ControllerName == "TravelPlan") @("active")" asp-area="Employee" asp-controller="TravelPlan" asp-action="Index">行程總覽</a>
+        <a id="h1" class="test my-1 @if(ViewBag.ControllerName == "TDestination") @("active")" asp-area="Employee" asp-controller="TDestination" asp-action="Index">景點管理</a>
+        <a id="h1" class="test my-1 @if(ViewBag.ControllerName == "TOrder") @("active")" asp-area="Employee" asp-controller="TOrder" asp-action="Index">方案訂單管理</a>
+        <a id="h1" class="test my-1 @if(ViewBag.ControllerName == "TDestionationOrder") @("active") "asp-area="Employee" asp-controller="TDestionationOrder" asp-action="Index">景點訂單管理</a>
+    </div>
+</li>
+<!--END 行程管理-->
+
+
+<!--租車管理-->
+<li class="nav-item cursor-pointer">
+    <a class="nav-link">
+        <i class="fa-solid fa-car" style="font-size:20px"></i>
+        <div class="nav-link-text ms-1 mb-0">
+            租車管理
+            <i class="fa-solid fa-caret-up drop @if(ViewBag.ControllerName == "CarDriverManagement"
+               || ViewBag.ControllerName =="CarManagement"
+               || ViewBag.ControllerName =="CServicePoint"
+               || ViewBag.ControllerName =="COrder" )
+            @("rotate") "></i>
+        </div>
+    </a>
+    <div id="airline" class="nav-sub-item" @if(ViewBag.ControllerName == "CarDriverManagement"
+         || ViewBag.ControllerName =="CarManagement"
+         || ViewBag.ControllerName =="CServicePoint"
+         || ViewBag.ControllerName =="COrder" )
+          @("style=display:block;")>
+
+        <a id="h1" class="test my-1 @if(ViewBag.ControllerName == "CarManagement") @("active")" asp-area="Employee" asp-controller="CarManagement" asp-action="Index">車輛管理</a>
+        <a id="h2" class="test my-1 @if(ViewBag.ControllerName == "COrder") @("active")" asp-area="Employee" asp-controller="COrder" asp-action="Index">訂單管理</a>
+        <a id="h2" class="test my-1 @if(ViewBag.ControllerName == "CarDriverManagement") @("active")" asp-area="Employee" asp-controller="CarDriverManagement" asp-action="Index">駕駛資料管理</a>
+        <a id="h2" class="test my-1 @if(ViewBag.ControllerName == "CServicePoint") @("active")" asp-area="Employee" asp-controller="CServicePoint" asp-action="Index">據點管理</a>
+    </div>
+</li>
+<!--END 租車管理-->
+
+
+<!--航班管理-->
+<li class="nav-item cursor-pointer">
+    <a class="nav-link">
+        <i class="fa-solid fa-plane-departure" style="font-size:20px"></i>
+        <div class="nav-link-text ms-1 mb-0">
+            航班及票券管理
+            <i class="fa-solid fa-caret-up drop @if(ViewBag.ControllerName == "Flight"
+             || ViewBag.ControllerName == "FOrder")
+             @("rotate")"></i>
+        </div>
+    </a>
+    <div id="airline" class="nav-sub-item" @if(ViewBag.ControllerName == "Flight"
+             || ViewBag.ControllerName == "FOrder")
+            @("style=display:block;")>      
+        <a id="h1" class="test my-1 @if(ViewBag.ControllerName == "Flight") @("active")" asp-area="Employee" asp-controller="Flight" asp-action="Index">航班管理</a>
+        <a id="h2" class="test my-1 @if(ViewBag.ControllerName == "FOrder") @("active")" asp-area="Employee" asp-controller="FOrder" asp-action="Index">訂單管理</a>
+    </div>
+</li>
+<!--END 航班管理-->
+
+
+<!--住宿管理-->
+<li class="nav-item cursor-pointer">
+    <a class="nav-link ">
+        <i class="fa-solid fa-hotel" style="font-size:20px"></i>
+        <div class="nav-link-text ms-1 mb-0">
+            住宿管理
+            <i class="fa-solid fa-caret-up drop @if(ViewBag.ControllerName == "Hotels"
+             || ViewBag.ControllerName == "HRoomType"
+             || ViewBag.ControllerName == "HRoom"
+             || ViewBag.ControllerName == "HOrder")
+            @("rotate")"></i>
+        </div>
+    </a>
+    <div id="hotel" class="nav-sub-item"
+    @if (ViewBag.ControllerName == "Hotels"
+         || ViewBag.ControllerName == "HRoomType"
+         || ViewBag.ControllerName == "HRoom"
+         || ViewBag.ControllerName == "HOrder")
+        @("style=display:block;")
+>
+        <a id="h1" class="test my-1 @if(ViewBag.ControllerName == "Hotels") @("active")" asp-area="Employee" asp-controller="Hotels" asp-action="Index">飯店管理</a>
+        <a id="h2" class="test my-1 @if(ViewBag.ControllerName == "HRoomType") @("active")" asp-area="Employee" asp-controller="HRoomType" asp-action="Index">房型管理</a>
+        <a id="h3" class="test my-1 @if(ViewBag.ControllerName == "HRoom") @("active")" asp-area="Employee" asp-controller="HRoom" asp-action="Index">房間管理</a>
+        <a id="h4" class="test my-1 @if(ViewBag.ControllerName == "HOrder") @("active")" asp-area="Employee" asp-controller="HOrder" asp-action="Index">訂單管理</a>
+    </div>
+</li>
+<!--End 住宿管理-->
+
+
+<!--優惠管理-->
+<li class="nav-item cursor-pointer">
+    <a class="nav-link">
+        
+        <i class="fa-solid fa-coins" style="font-size:20px"></i>
+        <div class="nav-link-text ms-1 mb-0">
+            優惠管理
+            <i class="fa-solid fa-caret-up drop @if(ViewBag.ControllerName == "DCoupon"
+             || ViewBag.ControllerName == "DExchangeItem")
+            @("rotate") "></i>
+        </div>
+    </a>
+    <div id="airline" class="nav-sub-item" @if(ViewBag.ControllerName == "DCoupon"
+             || ViewBag.ControllerName == "DExchangeItem")
+             @("style=display:block;")>
+        <a id="a2" class="my-1 @if(ViewBag.ControllerName == "DCoupon") @("active")" asp-area="Employee" asp-controller="DCoupon" asp-action="Index">優惠券管理</a>
+        <a id="a3" class="my-1 @if(ViewBag.ControllerName == "DExchangeItem") @("active")" asp-area="Employee" asp-controller="DExchangeItem" asp-action="Index">廣告管理</a>
+    </div>
+</li>
+<!--END 優惠管理-->
+
+
+<!--旅遊代辦-->
+<li class="nav-item cursor-pointer">
+    <a class="nav-link">
+        <i class="fa-solid fa-passport" style="font-size:20px"></i>
+        <div class="nav-link-text ms-1 mb-0">
+            旅遊代辦管理
+            <i class="fa-solid fa-caret-up drop  @if(ViewBag.ControllerName == "VOrder"
+             || ViewBag.ControllerName == "VProduct")
+            @("rotate")"></i>
+        </div>
+    </a>
+    <div id="airline" class="nav-sub-item" @if(ViewBag.ControllerName == "VOrder"
+             || ViewBag.ControllerName == "VProduct")
+            @("style=display:block;")>
+        <a id="a2" class="my-1 @if(ViewBag.ControllerName == "VOrder") @("active")" asp-area="Employee" asp-controller="VOrder" asp-action="Index">訂單管理</a>
+        <a id="a3" class="my-1 @if(ViewBag.ControllerName == "VProduct") @("active")" asp-area="Employee" asp-controller="VProduct" asp-action="Index">商品管理</a>
+    </div>
+</li>
+<!--END旅遊代辦-->
+
+
+<!--實體商品-->
+<li class="nav-item cursor-pointer">
+    <a class="nav-link">
+        <i class="fa-solid fa-cart-shopping" style="font-size:20px"></i>
+        <div class="nav-link-text ms-1 mb-0">
+            實體商品管理
+            <i class="fa-solid fa-caret-up drop @if(ViewBag.ControllerName == "IOrder"
+             || ViewBag.ControllerName == "ILogisticsManagement"
+             || ViewBag.ControllerName == "IProductManagement"
+             || ViewBag.ControllerName == "IProductType")
+            @("rotate")"></i>
+        </div>
+    </a>
+    <div id="airline" class="nav-sub-item" @if(ViewBag.ControllerName == "IOrder"
+             || ViewBag.ControllerName == "ILogisticsManagement"
+             || ViewBag.ControllerName == "IProductManagement"
+             || ViewBag.ControllerName == "IProductType")
+            @("style=display:block;")>
+        <a id="a2" class="my-1 @if(ViewBag.ControllerName == "IOrder") @("active")" asp-area="Employee" asp-controller="IOrder" asp-action="Index">訂單管理</a>
+        <a id="a3" class="my-1 @if(ViewBag.ControllerName == "IProductManagement") @("active")" asp-area="Employee" asp-controller="IProductManagement" asp-action="Index">產品管理</a>
+        <a id="a3" class="my-1 @if(ViewBag.ControllerName == "IProductType") @("active")" asp-area="Employee" asp-controller="IProductType" asp-action="Index">產品類別管理</a>
+        <a id="a3" class="my-1 @if(ViewBag.ControllerName == "ILogisticsManagement") @("active")" asp-area="Employee" asp-controller="ILogisticsManagement" asp-action="Index">廠商物流管理</a>
+    </div>
+</li>
+<!--END 實體商品-->
+
+
+<!--問題管理-->
+<li class="nav-item cursor-pointer ">
+    <a class="nav-link">
+        <i class="fa-solid fa-circle-question" style="font-size:20px"></i>
+        <div class="nav-link-text ms-1 mb-0">
+            問題管理
+            <i class="fa-solid fa-caret-up drop @if(ViewBag.ControllerName == "Question"
+            || ViewBag.ControllerName == "OnlineService")
+            @("rotate")"></i>
+        </div>
+    </a>
+    <div id="airline" class="nav-sub-item" @if(ViewBag.ControllerName == "Question"
+         || ViewBag.ControllerName == "OnlineService")
+        @("style=display:block;")>
+        <a id="a2" class="my-1 @if (ViewBag.ControllerName == "Question") @("active")" asp-area="Employee" asp-controller="Question" asp-action="Index">問題及回覆管理</a>
+        <a id="a3" class="my-1 @if (ViewBag.ControllerName == "OnlineService") @("active")" asp-area="Employee" asp-controller="OnlineService" asp-action="Index">線上客服</a>
+    </div>
+</li>
+<!--問題管理-->
+
+
+@* <li class="nav-item mt-3">
+    <h6 class="ps-3 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">帳戶管理</h6>
+</li> *@

@@ -1,0 +1,519 @@
+﻿@using prjTravelPlatform_release.Areas.Customer.ViewModel.TravelPlan
+@model IEnumerable<prjTravelPlatform_release.Areas.Customer.ViewModel.TravelPlan.DestionationList>
+@{
+	ViewData["Title"] = "方案&景點";
+}
+@section Styles {
+	<link href="~/allen/destionationsearch/lib/owlcarousel/assets/owl.carousel.css" rel="stylesheet" />
+	<link href="~/allen/destionationsearch/css/style.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+	<link href="~/allen/destionationsearch/css/bootstrap.css" rel="stylesheet" />
+
+	<style>
+		#typeform {
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height 0.3s ease-out;
+		}
+
+			#typeform.collapsed {
+				max-height: 400px; /* 設定表單最大高度 */
+			}
+
+		#areaform {
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height 0.3s ease-out;
+		}
+
+			#areaform.collapsed {
+				max-height: 1000px; /* 設定表單最大高度 */
+			}
+	</style>
+}
+
+
+<!-- 推薦景點 -->
+<div class="listfordetail-fluid packages" style="padding-top: 3rem ;padding-bottom: 3rem;background-image: url('@Url.Content("~/allen/destionationsearch/img/des/350.jfif")'); background-size: cover; background-position: center;">
+	<div class="listfordetail Forrecommend">
+		<div class="mx-auto text-center mb-5" style="max-width: 100%;margin-top: 10rem ;">
+			<h1 class="sectionguided-title" style="padding: 1rem;">推薦景點 </h1>
+		</div>
+		<div class="packages-carousel owl-carousel" style="margin-top: 5rem ;" id="bestdestionation">
+			@foreach (TDestinationPhotoView item in ViewBag.recommend)
+			{
+				<div>
+					<div>
+						<button type="button"
+								style="border: none; padding: 0; background: none; display: flex; justify-content: center; align-items: center;">
+							<a asp-area="Customer" asp-controller="Destionation" asp-action="Detail" asp-route-id="@item.FdestinationId">
+								<img src="data:image/jpeg;base64,@Convert.ToBase64String(item.FphotoPath)" alt="Image" style="
+                                width: 250px;
+                                height: 170px;
+                                border-radius: 10px;">
+								<h3>@item.FdestinationName</h3>
+							</a>
+						</button>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+</div>
+<!-- 推薦景點 End -->
+<!-- Shop Start -->
+<div class="container-fluid pt-5">
+	<div class="row px-xl-5">
+		<!-- 篩選條件 -->
+		<div style="flex: 0 0 25%; max-width: 15%; margin-right:5%;box-shadow:5px 5px 10px;border-radius:20px">
+			<!-- Type Start -->
+			<div class="border-bottom mb-2 mt-3">
+				<h5 class="font-weight-semi-bold mb-4" id="category-title" data-arrow="down">主題分類 &#9660;</h5>
+				<form id="typeform" class="">
+					<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+						<input type="checkbox" class="custom-control-input" id="type-all" checked>
+						<label class="custom-control-label" for="type-all">All</label>
+					</div>
+				</form>
+			</div>
+			<!-- Type End -->
+			<!-- Area Start -->
+			<div class="mb-5">
+				<h5 class="font-weight-semi-bold mb-2" id="category-area" data-arrow="down">區域分類 &#9660;</h5>
+				<form id="areaform" class="">
+					<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+						<input type="checkbox" class="custom-control-input" checked id="area-all">
+						<label class="custom-control-label" for="area-all">All</label>
+					</div>
+				</form>
+			</div>
+			<!-- Area End -->
+		</div>
+		<!-- 篩選條件 End -->
+		<!-- 商品列表 -->
+		<div style="flex: 0 0 100%;max-width: 75%;">
+			<div style="padding-bottom: 1rem;display: flex;flex-wrap: wrap;margin-right: -15px;margin-left: -15px; border:2px solid lightgray;border-radius:25px;box-shadow:5px 5px 10px">
+				<div class="border-bottom" style="padding-bottom: 0.25rem;flex: 0 0 100%;max-width: 101%; background-color:none;border-top-left-radius:20px;border-top-right-radius:20px;">
+					<div class="d-flex align-items-center justify-content-between mb-4">
+						<!-- 搜尋 -->
+						<div style="margin-top:2%;margin-left:2%">
+							<div class="input-group ">
+								<button id="starButton" style="border: 0;background-color: none;margin-right:2%">
+									<img id="starImage" src="~/allen/icons/star.ico" style="max-width: 100%;">
+								</button>
+								@if (string.IsNullOrEmpty(ViewBag.search))
+								{
+									<input type="text" class="form-control" style="background-color:white;border:1px solid;border-radius:20px;" placeholder="Search by name" id="keyword">
+								}
+								else
+								{
+									<input type="text" class="form-control" style="background-color:white;border:1px solid;border-radius:20px;" value="@ViewBag.search" id="keyword">
+								}
+								<button id="search" style="border: 0;background-color: none;margin-left:2%"><img src="~/allen/icons/search.ico" style="max-width: 100%;"></button>
+								<button id="Eraser" style="border: 0;background-color: none;margin-left:2%"><img src="~/allen/icons/Eraser.ico" style="max-width: 100%;"></button>
+							</div>
+						</div>
+						<!-- 排序 -->
+						<div class="dropdown ml-4" style="margin-right:2%;margin-top:2%;">
+							<button class="btn border dropdown-toggle" type="button" id="triggerId"
+									data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:150px; background-color:rgb(244,170,109)">
+								<i style="color:black">排序</i>
+							</button>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
+								<a class="dropdown-item" onclick="getSort('follow')">最多追蹤</a>
+								<a class="dropdown-item" onclick="getSort('az')">價位高低</a>
+								<a class="dropdown-item" onclick="getSort('za')">價位低高</a>
+								<a class="dropdown-item" onclick="getSort('latest')">近期新增</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 內容 -->
+				<div id="shoplist" class="border-bottom"
+					 style="padding-bottom: 0.25rem;flex: 0 0 100%;max-width: 101%; background-color:none;border-top-left-radius:20px;border-top-right-radius:20px;">
+				</div>
+				<!-- 內容 -->
+				<!-- 頁籤 -->
+				<div class="col-12 pb-1" style="padding-top: 20px;">
+					<nav aria-label="Page navigation">
+						<ul class="pagination justify-content-center mb-3" id="num4page">
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+		<!-- 商品列表 End -->
+	</div>
+</div>
+<!-- Shop End -->
+@section Scripts {
+
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script src="~/allen/destionationsearch/lib/owlcarousel/owl.carousel.js"></script>
+	<script src="~/allen/destionationsearch/js/main.js"></script>
+
+	<script>
+		typeRange()
+		areaRange()
+
+		const categoryTitle = document.getElementById('category-title');
+		const categoryArea = document.getElementById('category-area');
+		const typeForm = document.getElementById('typeform');
+		const areaForm = document.getElementById('areaform');
+
+		//下拉式選單
+		categoryTitle.addEventListener('click', function () {
+			typeForm.classList.toggle('collapsed');
+			const arrow = categoryTitle.getAttribute('data-arrow');
+
+			// 根據箭頭方向切換箭頭
+			if (arrow === 'down') {
+				categoryTitle.innerHTML = '主題分類 &#9650;';
+				categoryTitle.setAttribute('data-arrow', 'up');
+			} else {
+				categoryTitle.innerHTML = '主題分類 &#9660;';
+				categoryTitle.setAttribute('data-arrow', 'down');
+			}
+		});
+		categoryArea.addEventListener('click', function () {
+			areaForm.classList.toggle('collapsed');
+			const arrow = categoryArea.getAttribute('data-arrow');
+
+			// 根據箭頭方向切換箭頭
+			if (arrow === 'down') {
+				categoryArea.innerHTML = '區域分類 &#9650;';
+				categoryArea.setAttribute('data-arrow', 'up');
+			} else {
+				categoryArea.innerHTML = '區域分類 &#9660;';
+				categoryArea.setAttribute('data-arrow', 'down');
+			}
+		});
+		
+		//幫搜尋欄加上Enter搜尋功能
+		const inputkeyword = document.getElementById('keyword');
+		if (inputkeyword.placeholder != "Search by name")
+			inputkeyword.addEventListener('keyup', function (event) {
+				if (event.keyCode === 13) {
+					search.click();
+				}
+			});
+		let keyword = '@ViewBag.search';
+
+		//搜尋功能
+		const search = document.getElementById('search');
+		search.addEventListener('click', function () {
+			keyword = inputkeyword.value;
+			getData(1, searchTypefactor, searchAreaFactor, sortfactor, follow, keyword)
+		})
+
+		//清除關鍵字
+		const eraser = document.getElementById('Eraser');
+		eraser.addEventListener('click', function () {
+			inputkeyword.value = '';
+			keyword = inputkeyword.value;
+			getData(1, searchTypefactor, searchAreaFactor, sortfactor, follow, keyword)
+			inputkeyword.focus();
+		});
+
+		//追蹤篩選功能
+		const starButton = document.getElementById('starButton');
+		var follow = false;
+		starButton.addEventListener('click', function () {
+			$.ajax({
+				url: '@Url.Content("~/Customer/Destionation/IsNullLogin")',
+				type: 'POST',
+				data: '',
+				success: function (response) {
+					if (response) {
+						const starImage = document.getElementById('starImage');
+						const originalSrc = starImage.getAttribute('src');
+						follow = !follow;
+						// 如果原始來源為 star.ico，則切換為 lightstar.ico；否則切換為 star.ico
+						if (follow) {
+							starImage.src = "/allen/icons/lightstar.ico";
+						} else {
+							starImage.src = "/allen/icons/star.ico";
+						}
+						getData(1, searchTypefactor, searchAreaFactor, sortfactor, follow, keyword)
+					}
+					else {
+						Swal.fire({
+							title: '尚未登入',
+							text: '',
+							icon: 'warning'
+						});
+					}
+				},
+				error: function (xhr, status, error) {
+					
+				}
+			});
+		});
+
+		//主題篩選功能
+		var searchTypefactor = [];
+		const TypeAll = document.getElementById('type-all');
+		const typeform = document.querySelector('#typeform');
+		TypeAll.addEventListener('change', function () {
+			this.checked = true;
+			const isChecked = this.checked;
+			searchTypefactor.forEach(function (id) {
+				const checkbox = document.getElementById('type' + id);
+				checkbox.checked = !isChecked;
+			});
+			if (isChecked) {
+				searchTypefactor.length = 0;
+			}
+			getData(1, searchTypefactor, searchAreaFactor, sortfactor, follow, keyword)
+		});
+		async function typeRange() {
+			const type = `@Url.Content("~/Customer/Destionation/Type")`;
+			await fetch(type)
+				.then(response => response.json())
+				.then(data => {
+					const typelist = document.querySelector('typeform')
+					data.forEach(theme => {
+						const checkboxDiv = document.createElement('div');
+
+						checkboxDiv.classList.add('custom-control', 'custom-checkbox', 'd-flex', 'align-items-center', 'justify-content-between', 'mb-3');
+
+						const checkbox = document.createElement('input');
+						checkbox.setAttribute('type', 'checkbox');
+						checkbox.classList.add('custom-control-input');
+						checkbox.id = 'type' + theme.ftypeId;
+						checkboxDiv.appendChild(checkbox);
+
+						const label = document.createElement('label');
+						label.classList.add('custom-control-label');
+						label.setAttribute('for', 'type' + theme.ftypeId);
+						label.textContent = theme.ftype;
+						checkboxDiv.appendChild(label);
+
+						typeform.appendChild(checkboxDiv);
+
+						checkbox.onchange = function () {
+							if (checkbox.checked) {
+								TypeAll.checked = false;
+								searchTypefactor.push(checkbox.id.replace('type', ''));
+							} else {
+								const index = searchTypefactor.indexOf(checkbox.id.replace('type', ''));
+								if (index !== -1) {
+									searchTypefactor.splice(index, 1);
+									if (searchTypefactor.length == 0) {
+										TypeAll.checked = true;
+									}
+								}
+							}
+							getData(1, searchTypefactor, searchAreaFactor, sortfactor, follow, keyword)
+						};
+					})
+				})
+		}
+
+		//地區篩選功能
+		var searchAreaFactor = [];
+		const AreaAll = document.getElementById('area-all');
+		const areaform = document.querySelector('#areaform');
+		AreaAll.addEventListener('change', function () {
+			this.checked = true;
+			const isChecked = this.checked;
+			searchAreaFactor.forEach(function (id) {
+				const checkbox = document.getElementById('area' + id);
+				checkbox.checked = !isChecked;
+			});
+			if (isChecked) {
+				searchAreaFactor.length = 0;
+			}
+			getData(1, searchTypefactor, searchAreaFactor, sortfactor, follow, keyword)
+		});
+		async function areaRange() {
+			const area = `@Url.Content("~/Customer/Destionation/Area")`;
+			await fetch(area)
+				.then(response => response.json())
+				.then(data => {
+					const arealist = document.querySelector('areaform')
+					data.forEach(theme => {
+						const checkboxDiv = document.createElement('div');
+						checkboxDiv.classList.add('custom-control', 'custom-checkbox', 'd-flex', 'align-items-center', 'justify-content-between', 'mb-3');
+						const checkbox = document.createElement('input');
+						checkbox.setAttribute('type', 'checkbox');
+						checkbox.classList.add('custom-control-input');
+						checkbox.id = 'area' + (theme.fareaId);
+						checkboxDiv.appendChild(checkbox);
+
+						const label = document.createElement('label');
+						label.classList.add('custom-control-label');
+						label.setAttribute('for', 'area' + (theme.fareaId));
+						label.textContent = theme.fareaName;
+						checkboxDiv.appendChild(label);
+
+						areaform.appendChild(checkboxDiv);
+
+						checkbox.onchange = function () {
+							if (checkbox.checked) {
+								AreaAll.checked = false;
+								searchAreaFactor.push(checkbox.id.replace('area', ''));
+							} else {
+								const index = searchAreaFactor.indexOf(checkbox.id.replace('area', ''));
+								if (index !== -1) {
+									searchAreaFactor.splice(index, 1);
+									if (searchAreaFactor.length == 0) {
+										AreaAll.checked = true;
+									}
+								}
+							}
+							getData(1, searchTypefactor, searchAreaFactor, sortfactor, follow, keyword)
+						};
+					})
+				})
+		}
+
+		//排序功能
+		var sortfactor = '';
+		function getSort(sort) {
+			sortfactor = '';
+			sortfactor = sort;
+			getData(1, searchTypefactor, searchAreaFactor, sortfactor, follow, keyword);
+		}
+
+		//頁碼功能
+		function PageRange(page, type, place, sort = '', follow) {
+			const totalpageUrl = '@Url.Content("~/Customer/Destionation/Page")';
+			$.ajax({
+				url: totalpageUrl,
+				type: 'GET',
+				data: { page: page, type: JSON.stringify(type), place: JSON.stringify(place), sort: sort, follow: follow },
+				success: function (data) {
+					const pages = $('#num4page');
+					pages.empty();
+					for (let i = 1; i <= data; i++) {
+						const li = $('<li>').addClass('page-item');
+						if (i == page) {
+							li.addClass('active');
+						}
+						const a = $('<a>').addClass('page-link').text(i.toString());
+						li.append(a);
+						pages.append(li);
+					}
+				},
+				error: function (xhr, status, error) {
+					console.error('Error:', error);
+				}
+			});
+		}
+
+		//追蹤功能
+		function addfollow(destinationId) {
+			$.ajax({
+				url: '@Url.Content("~/Customer/Destionation/Follow")',
+				type: 'POST',
+				data: { id: destinationId },
+				success: function (response) {
+					getData(page, searchTypefactor, searchAreaFactor, sortfactor, follow, keyword)
+				},
+				error: function (xhr, status, error) {
+					Swal.fire({
+						title: '尚未登入',
+						text: '',
+						icon: 'warning'
+					});
+				}
+			});
+		}
+
+		//商品成列功能
+		function getData(page, type, place, sort = '', follow, keyword = '') {
+			$.ajax({
+				url: '@Url.Content("~/Customer/Destionation/List")',
+				type: 'GET',
+				data: { page: page, type: JSON.stringify(type), place: JSON.stringify(place), sort: sort, follow: follow, keyword: keyword },
+				success: function (response) {
+					if (response.length === 0 && page > 1) {
+						getData(page - 1, type, place, sort, follow, keyword);
+					} else {
+						$('#shoplist').empty();
+						var cardCount = 0;
+						var indexcount = 0;
+						$.each(response, function (index, item) {
+							if (cardCount % 3 === 0) {
+								$('#shoplist').append('<div class="d-flex flex-wrap "></div>');
+							}
+							var html = '<div style="padding-left: 1rem;padding-right: 1rem;padding-top: 1rem;flex: 0 0 32%;max-width: 32%;">';
+							html += '<div>';
+							html += '<div>';
+							html += '<button type="button" style="border: none; padding: 0; background: none; display: flex; justify-content: center; align-items: center;">';
+							html += `<a href="/Customer/Destionation/Detail/${item.fDestinationId}">`;
+							html += '<img src="data:image/jpeg;base64,' + item.fphotoPath + '" alt="Image" style="height: 250px;border-top-left-radius: 10px;border-top-right-radius: 10px;">';
+							html += '</a>';
+							html += '</button>';
+							html += '</div>';
+							html += '<div style="background-color: #f2f2f2;border-bottom-right-radius:10px ;border-bottom-left-radius:10px ; ">';
+							html += '<div style="padding-bottom: 0;margin-bottom: 0;">';
+							html += '<div style="height: 100px;padding: 1.5rem;">';
+							html += '<h5 style="margin-bottom: 0;">' + item.fDestinationName + '</h5>';
+							html += '<div style="display:none;">' + item.fDestinationId + '</div>';
+							html += '</div>';
+							html += '<div style="display: flex;align-items:end;justify-content: space-between;padding: 1.5rem; padding-bottom: 0.5rem;">';
+							html += '<div>'
+							html += '<h6>瀏覽 : ' + item.fCount + ' 次</h6>';
+							html += '<h6>追蹤中 : ' + item.fTotalFollow + ' 人</h6>';
+							html += '</div>'
+							html += "<button type='button' style='width: 60px;height:60px;margin-left: auto;margin-top: 0px;border: 0;' onclick=\"addfollow('" + item.fDestinationId + "')\">";
+							if (item.fFollow) {
+								html += `<img src='/allen/icons/lightstar.ico' style='max-width: 100%;' >`;
+							}
+							else {
+								html += `<img src='/allen/icons/star.ico' style='max-width: 100%;' >`;
+							}
+							html += '</button>';
+							html += '</div>';
+							html += '</div>';
+							html += '<div style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px ;color: var(--bs-white);transition: 0.5s;display: flex;width: 100%; bottom: 0; left: 0; z-index: 5; background-color: #13357b; border-right: 0;border-left: 0;border: 1px solid #dee2e6;">';
+							html += '<small style="flex: 1 1 auto; text-align: center; padding-top: .5rem; padding-bottom: .5rem; border-right: 1px solid #dee2e6;">';
+							html += '<i style="color:white;font-size: 1rem;">' + item.ftype + '</i>';
+							html += '</small>';
+							html += '<small style="flex: 1 1 auto; text-align: center; padding-top: .5rem; padding-bottom: .5rem; border-right: 1px solid #dee2e6;">';
+							html += '<i style="color:white;font-size: 1rem;">$' + item.fPrice + '</i>';
+							html += '</small>';
+							html += '<small style="flex: 1 1 auto; text-align: center; padding-top: .5rem; padding-bottom: .5rem;">';
+							html += '<i style="color:white;font-size: 1rem;">' + item.fAreaName + '</i>';
+							html += '</small>';
+							html += '</div>';
+							html += '</div>';
+							html += '</div>';
+							$('#shoplist > .d-flex:last-child').append(html);
+							cardCount++;
+							indexcount++;
+						});
+						PageRange(page, searchTypefactor, searchAreaFactor, sortfactor, follow)
+					}
+				},
+				error: function (xhr, status, error) {
+					console.error(xhr.responseText);
+				}
+			});
+		}
+
+		var page;
+
+		//初始呼叫商品成列與頁籤功能實現
+		$(document).ready(function () {
+			var currentPage = 1;
+			$('.pagination').on('click', 'a', function (e) {
+				e.preventDefault();
+				page = $(this).text();
+				$('.page-item.active').removeClass('active');
+				getData(page, searchTypefactor, searchAreaFactor, sortfactor, follow, keyword)
+			});
+			if (inputkeyword.value != null) {
+				search.click();
+			} 
+			var url = '/Customer/Destionation';
+			window.history.replaceState({}, '', url);
+		});
+	</script>
+
+}

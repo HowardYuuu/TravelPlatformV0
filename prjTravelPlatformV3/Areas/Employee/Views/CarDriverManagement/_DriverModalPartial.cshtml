@@ -1,0 +1,63 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.CarRent.DriverInfoViewModel
+
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">@ViewBag.title</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div id="divModalContent" class="modal-body">
+    <form id="@ViewBag.formId">
+        @Html.AntiForgeryToken()
+
+        <input asp-for="fDriverId" style="display:none" />
+
+        <div class="mb-3">
+            <label asp-for="fId" class="form-label">@Html.DisplayNameFor(h => h.fId)</label>
+            <input asp-for="fId" class="form-control" />
+            <span asp-validation-for="fId" class="text-danger" style="font-size:14px;"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="fName" class="form-label">@Html.DisplayNameFor(h => h.fName)</label>
+            <input asp-for="fName" class="form-control">
+            <span asp-validation-for="fName" class="text-danger" style="font-size:14px;"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="fPhone" class="form-label">@Html.DisplayNameFor(h => h.fPhone)</label>
+            <input asp-for="fPhone" class="form-control">
+            <span asp-validation-for="fPhone" class="text-danger" style="font-size:14px;"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="fLicenseImagePath" class="form-label">@Html.DisplayNameFor(h => h.fLicenseImagePath)</label>
+            <!-- 如果有現有的圖片，則顯示現有圖片 -->
+            @if (!string.IsNullOrEmpty(Model.fLicenseImagePath))
+            {
+                <img id="imagePreview" src="@Url.Content("~/img/" + Model.fLicenseImagePath)" class="img-thumbnail" alt="Image" style="max-width: 200px; max-height: 200px;" />
+            }
+            else
+            {
+                <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 200px; max-height: 200px; display: none;" />
+            }
+            <!-- 文件選擇框 -->
+            <input type="file" asp-for="ImageFile" class="form-control" onchange="previewImage(this)" accept="image/*">
+            <span asp-validation-for="ImageFile" class="text-danger"></span>
+            <!-- 將原始圖片路徑放入隱藏的 input 中以便在表單提交時使用 -->
+            <input type="hidden" asp-for="fLicenseImagePath" />
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            <button type="button" class="btn btn-primary" id="btnSave" onclick='sendFetchRequest("@ViewBag.formId")'>儲存</button>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+
+
+    </script>
+}

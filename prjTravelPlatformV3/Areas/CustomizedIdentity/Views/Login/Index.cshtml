@@ -1,0 +1,413 @@
+﻿@model prjTravelPlatform_release.Areas.CustomizedIdentity.DTO.Req.LoginReqDTO
+
+@{
+    ViewData["Title"] = "會員登入";
+}
+@section Styles {
+    <link href="~/css/frontstage/loginpage/popupwindow.css" rel="stylesheet" />
+    <style>
+        .my-m-overlay {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            z-index: 7100;
+            background-color: transparent;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            filter: brightness(50%);
+        }
+
+        .my-loading {
+            z-index: 7700;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        .demoBtn {
+            position: absolute;
+            top: 88vh;
+            left: 50px;
+            color: #f6f5f7;
+            cursor:pointer;
+        }
+            .demoBtn:hover {
+                color: #000
+            }
+
+        .demoBtn1 {
+            position: absolute;
+            top: 90vh;
+            left: 50px;
+            color: #f6f5f7;
+            cursor: pointer;
+        }
+
+            .demoBtn1:hover {
+                color: #000
+            }
+    </style>
+} 
+<div class="demoBtn" onclick="btnInner7()">demo1</div>
+<div class="demoBtn1" onclick="btnInner77()">demo2</div>
+
+<div class="container" id="container">
+    <div class="form-container sign-up-container">
+        <form id="signUpForm">
+            <div class="w-100 d-flex align-items-center justify-content-center">
+                <a href="/">
+                    <img src="~/img/logof.png" style="width: 300px; height:50px" class="mb-3 me-2" />
+                </a>
+            </div>
+
+            @*  <div class="social-container">
+            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+            </div> *@
+
+            <!--註冊-->
+            <input asp-for="@Model.CusSignUpReq.Name" type="text" placeholder="姓名" />
+            <span asp-validation-for="@Model.CusSignUpReq.Name" class="ps-2 w-100 text-danger text-start"></span>
+
+            <input asp-for="@Model.CusSignUpReq.Email" type="email" placeholder="Email" />
+            <span asp-validation-for="@Model.CusSignUpReq.Email" class="ps-2 w-100 text-danger text-start"></span>
+
+            <input asp-for="@Model.CusSignUpReq.Password" type="password" placeholder="密碼" />
+            <span asp-validation-for="@Model.CusSignUpReq.Password" class="ps-2 w-100 text-danger text-start"></span>
+
+            <div class="d-flex justify-content-center col-12 mt-2">
+                <button class="col-5 px-2 m-1" type="button" onclick="btnInnerDemo()">Demo</button>
+                <button id="btnSignUp" class=" col-5 px-2 m-1" type="button" onclick="btnSignClick()">註冊</button>
+            </div>
+        </form>
+    </div>
+    <div class="form-container sign-in-container">
+        <form id="loginForm">
+            <div class="w-100 d-flex align-items-center justify-content-center">
+                <a href="/">
+                    <img src="~/img/logof.png" style="width: 300px; height:50px" class="mb-3 me-2" />
+                </a>
+            </div>
+
+            <div class="social-container">
+                @* <a href="#" class="social"><i class="fab fa-facebook-f"></i></a> *@
+                <a href="#" class="social"><i class="g_id_signin" data-type="icon"></i></a>
+                @* <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a> *@
+            </div>
+            <div id="g_id_onload"
+                 data-client_id="166932772257-gt4gq8jb65nae81v2mcnqojfiv9rkjq2.apps.googleusercontent.com"
+                 data-login_uri="https://localhost:7119/CustomizedIdentity/Login/ValidGoogleLogin"
+                 data-auto_prompt="false">
+            </div>
+            @*   <div class="g_id_signin"
+            data-type="standard"
+            data-size="large"
+            data-theme="outline"
+            data-text="sign_in_with"
+            data-shape="rectangular"
+            data-logo_alignment="left">
+            </div> *@
+
+            <!--登入-->
+            <input type="email" placeholder="Email" asp-for="@Model.CusReq.Account" />
+            <span asp-validation-for="@Model.CusReq.Account" class="ps-2 w-100 text-danger text-start"></span>
+
+            <input type="password" placeholder="密碼" asp-for="@Model.CusReq.Password" />
+            <span asp-validation-for="@Model.CusReq.Password" class="ps-2 w-100 text-start text-danger"></span>
+            <div class="p-2 text-end w-100">
+                <a asp-area="CustomizedIdentity" asp-controller="Login" asp-action="ForgetPwd">忘記密碼?</a>
+            </div>
+            <div class="d-flex justify-center">
+                <button class="mr-10 text-12" type="button" style="padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 20px; margin-right: 5px" onclick="btnInner1()">虞欣欣</button>
+                <button class="mr-10 text-12" type="button" style="padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 20px;  margin-right: 5px" onclick="btnInner2()">趙露露</button>
+                <button class="text-12" id="btnLogin" type="button" style="padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 20px" onclick="btnLoginClick()">登入</button>
+                @if (ViewBag.ReturnUrl != null)
+                {
+                    <input id="returnUrl" type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+                }
+                @if (ViewBag.CurrentUrl != null)
+                {
+                    <input id="currentUrl" type="hidden" name="returnUrl" value="@ViewBag.CurrentUrl" />
+                }
+            </div>
+        </form>
+    </div>
+    <div class="m-overlay-container">
+        <div class="m-overlay">
+            <div class="m-overlay-panel m-overlay-left">
+                <h1>歡迎回來</h1>
+                <p>登入以探索更多內容</p>
+                <button class="ghost" id="signIn">登入</button>
+            </div>
+            <div class="m-overlay-panel m-overlay-right">
+                <p>註冊 Trav Vita 帳戶，享會員專屬優惠價！</p>
+                <button class="ghost" id="signUp">註冊</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="my-m-overlay"></div>
+<div class="my-loading" id="loader">
+    <img src="~/img/frontstage/tube-spinner.svg" style="width: 50px; height:50px" />
+</div>
+
+@section Scripts {
+    @*  @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    } *@
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const container = document.getElementById('container');
+
+        const btnLogin = document.getElementById('btnLogin');
+        const btnSignUp = document.getElementById('btnSignUp');
+
+        const errAccount = document.getElementById('Account');
+        const errPassword = document.getElementById('Password');
+
+        const returnUrl = document.getElementById('returnUrl');
+        const currentUrl = document.getElementById('currentUrl');
+
+        const account = document.getElementById('CusReq_Account');
+        const password = document.getElementById('CusReq_Password');
+
+        const rAccount = document.getElementById('CusSignUpReq_Name');
+        const rEmail = document.getElementById('CusSignUpReq_Email');
+        const rPassword = document.getElementById('CusSignUpReq_Password');
+
+        const btnInnerDemo = () => {
+            rAccount.value = "黃家恩";
+            rEmail.value = "traveldemo0329@gmail.com";
+            rPassword.value = "molsci@1234"
+        }
+        
+        //登入回傳物件
+        let CusReq = {};
+
+        //註冊回傳物件
+        let CusSignUpReq = {};
+
+        //登入註冊切換
+        signUpButton.addEventListener('click', () => {
+            container.classList.add("right-panel-active");
+        });
+        signInButton.addEventListener('click', () => {
+            container.classList.remove("right-panel-active");
+        });
+
+
+        //登入按鈕
+        const btnLoginClick = async (event) => {
+
+            showLoadingSvg(btnLogin);
+
+            const formData = new FormData(loginForm);
+
+            const response = await fetch("@Url.Content("~/api/apilogin")", {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: formDataToJson(CusReq, formData),
+                method: 'POST'
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+
+                hideLoadingSvg();
+
+                if (data.redirectUrl) {
+                    setTimeout(() => {
+                        window.location.href = data.redirectUrl;
+                    }, 1000);
+                    return;
+                } else if (data.currentUrl) {
+                    setTimeout(() => {
+                        window.location.href = data.currentUrl;
+                    }, 1000);
+                    return;
+                }
+                else {
+                    setTimeout(() => {
+                        window.location.href = "/"
+                    }, 1000)
+                }
+            } else {
+                if (data.success === false) {
+                    btnLogin.innerText = "登入";
+                    Swal.fire({
+                        text: data.errors[0],
+                        imageUrl: "https://localhost:7119/img/Hotel/RoomType/delete-button_1.png",
+                        heightAuto: false,
+                        imageHeight: 80
+                    });
+                    return;
+                }
+                btnLogin.innerText = "登入";
+                const errAccount = document.querySelector('[data-valmsg-for="CusReq.Account"]');
+                const errPassword = document.querySelector('[data-valmsg-for="CusReq.Password"]');
+
+                if (data.errors.Account) {
+                    errAccount.textContent = data.errors.Account[0];
+                } else {
+                    errAccount.textContent = "";
+                }
+
+                if (data.errors.Password) {
+                    errPassword.textContent = data.errors.Password[0];
+                } else {
+                    errPassword.textContent = "";
+                }
+            }
+        }
+
+        //註冊點擊事件按鈕
+        const btnSignClick = async () => {
+
+            showLoadingSvg(btnSignUp);
+
+            const formDataSignUp = new FormData(signUpForm);
+
+
+            const res = await fetch("@Url.Content("~/api/apilogin/SignUp")", {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: formDataToJson(CusSignUpReq, formDataSignUp),
+                method: 'POST'
+            });
+            const resData = await res.json();
+            if (resData.success) {
+                setTimeout(() => {
+                    Swal.fire({
+                        title: "註冊成功",
+                        text: "請移至登入畫面登入",
+                        heightAuto: false,
+                        imageUrl: "https://localhost:7119/img/Hotel/RoomType/icons8-success.gif",
+                        imageHeight: 100,
+                    });
+                }, 2000);
+                setTimeout(() => {
+                    window.location = "/CustomizedIdentity/Login";
+                }, 3000)
+            } else {
+                btnSignUp.textContent = "註冊";
+                if (resData.success === false) {
+                    Swal.fire({
+                        text: resData.message,
+                        imageUrl: "https://localhost:7119/img/Hotel/RoomType/delete-button.png",
+                        heightAuto: false,
+                        imageHeight: 100
+                    });
+                }
+                const errName = document.querySelector('[data-valmsg-for="CusSignUpReq.Name"]');
+                const errEmail1 = document.querySelector('[data-valmsg-for="CusSignUpReq.Email"]');
+                const errPassword2 = document.querySelector('[data-valmsg-for="CusSignUpReq.Password"]');
+
+                if (resData.errors.Name) {
+                    errName.textContent = resData.errors.Name[0];
+                } else {
+                    errName.textContent = "";
+                }
+
+                if (resData.errors.Email) {
+                    errEmail1.textContent = resData.errors.Email[0];
+                } else {
+                    errEmail1.textContent = "";
+                }
+
+                if (resData.errors.Password) {
+                    errPassword2.textContent = resData.errors.Password[0];
+                } else {
+                    errPassword2.textContent = "";
+                }
+
+            }
+        }
+
+        //formData to json
+        const formDataToJson = (sendObj, formData) => {
+            for (let [key, value] of formData.entries()) {
+                const keyFormat = key.split('.')[1];
+                sendObj[keyFormat] = value
+            }
+            if (this.returnUrl) {
+                sendObj.returnUrl = this.returnUrl.value;
+            }
+            if (this.currentUrl) {
+                sendObj.currentUrl = this.currentUrl.value;
+            }
+            return JSON.stringify(sendObj);
+        }
+
+
+        const showLoadingSvg = (domEle) => {
+            domEle.innerHTML = `<div class="d-flex align-items-center justify-content-center"><img src="https://localhost:7119/img/frontstage/tube-spinner_w.svg" style = "width: 20px; height: 20px" />&ensp;${domEle.innerHTML}</div>`;
+        }
+        const hideLoadingSvg = () => {
+            setTimeout(() => {
+                btnLogin.innerText = "登入成功";
+            }, 2000);
+        }
+
+        const test = () => {
+            // document.body.style.overflow = 'hidden';
+            // Swal.fire({
+            //     position: 'center',
+            //     title: "Good job!",
+            //     text: "You clicked the button!",
+            //     icon: "success",
+            //     heightAuto: false
+            // });
+            // document.body.style.overflow = '';
+            // const formData = new FormData(loginForm);
+
+            // for (let [key, value] of formData.entries()) {
+            //     const keyFormat = key.split('.')[1];
+            //     CusReq[keyFormat] = value
+            // }
+            // console.log(CusReq)
+            Swal.fire({
+                position: "top-end",
+                imageUrl: "https://localhost:7119/img/Hotel/RoomType/icons8-success.gif",
+                imageHeight: 100,
+                title: "Your work has been saved",
+                showConfirmButton: false,
+                heightAuto: false
+            });
+        }
+
+        const btnInner1 = () => {
+            account.value = "yichiiing@gmail.com";
+            password.value = "Asdzxc123"
+        }
+        const btnInner2 = () => {
+            account.value = "chixiangliao1019@gmail.com";
+            password.value = "molsci!4321"
+        }
+
+        const btnInner7 = () => {
+            account.value = "traveldemo0329@gmail.com";
+            password.value = "molsci@1234"
+        }
+
+        const btnInner77 = () => {
+            account.value = "traveldemo0329@gmail.com";
+            password.value = "molsci!4321"
+        }
+       
+        
+    </script>
+}
+

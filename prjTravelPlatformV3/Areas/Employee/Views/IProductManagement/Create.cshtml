@@ -1,0 +1,266 @@
+﻿@model prjTravelPlatformV3.Areas.Employee.ViewModels.Product.ProductViewModel
+@{
+    ViewData["Title"] = "實體商品管理";
+}
+
+@section Styles {
+    <style>
+        .input-group-append {
+            cursor: pointer;
+        }
+    </style>
+}
+
+<h2>新增商品</h2>
+@* 商品來源 *@
+<div class="row">
+    <div class="col-sm-2 d-flex align-items-center justify-content-center">
+        <label class="text-center">商品來源</label>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="radioProSource" id="radioProSource1" value="true">
+            <label class="form-check-label" for="flexRadioDefault1">伴手禮代購</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="radioProSource" id="radioProSource0" value="false">
+            <label class="form-check-label" for="flexRadioDefault2">平台周邊商品</label>
+        </div>
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+@* 廠商名稱 *@
+<div class="row">
+    <div class="col-sm-2 d-flex align-items-center justify-content-center">
+        <label class="text-center">廠商名稱</label>
+    </div>
+    <div class="col-sm-6">
+        <select class="form-select" aria-label="Default select example" id="sleSupplier">
+            <option>請選擇</option>
+        </select>
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+@* 商品名稱 *@
+<div class="row">
+    <div class="col-sm-2 d-flex align-items-center justify-content-center">
+        <label class="text-center">商品名稱</label>
+    </div>
+    <div class="col-sm-6">
+        <input type="text" class="form-control" name="fProductName"
+               placeholder="設定商品名稱(最多50個字元)" maxlength="50" autocomplete="off" onchange="" />
+        <div><span class="text-red">※ </span>請勿使用&()=;'"<>\等特殊符號</div>
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+@* 商品圖片 *@
+<div class="row">
+    <div class="col-sm-2 d-flex align-items-center justify-content-center">
+        <label class="text-center">商品圖片</label>
+    </div>
+    <div class="col-sm-6">
+        <div class="input-group mb-3">
+            <input type="file" class="form-control" id="inputProPic" onchange="previewImage(this)"/>
+        </div>
+        <div id="productImg"></div> <!-- 用於顯示圖片的容器 -->
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+@* 商品類型 *@
+<div class="row">
+    <div class="col-sm-2 d-flex align-items-center justify-content-center">
+        <label class="text-center">商品類型</label>
+    </div>
+    <div class="col-sm-6">
+        <select class="form-select" aria-label="Default select example" id="sleProType">
+            <option selected>請選擇</option>
+        </select>
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+@* 商品發售日期 *@
+<div class="row">
+    <div class="col-sm-2 d-flex align-items-center justify-content-center">
+        <label class="text-center">商品發售日期</label>
+    </div>
+    <div class="col-sm-6">
+        <div class="col-5">
+            <div class="input-group date" id="datepicker">
+                <input type="text" class="form-control" id="date" />
+                <span class="input-group-append">
+                    <span class="input-group-text bg-light d-block" id="calendar">
+                        <i class="fa fa-calendar"></i>
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+@* 商品狀態 *@
+<div class="row">
+    <div class="col-sm-2 d-flex align-items-center justify-content-center">
+        <label class="text-center">商品狀態</label>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="rdproStatus" id="rdproStatus1" value="true">
+            <label class="form-check-label" for="flexRadioDefault1">上架</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="rdproStatus" id="rdproStatus0" value="false">
+            <label class="form-check-label" for="flexRadioDefault2">未上架</label>
+        </div>
+    </div>
+</div>
+<div class="my-4"></div> <!-- 加入間距 -->
+<div class="row">
+    <div class="col-sm-8 offset-sm-2">
+        <button type="button" class="btn btn-secondary" id="cancelButton">取消</button>
+        <button type="button" class="btn btn-primary" id="saveButton">儲存</button>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.zh-TW.min.js"></script>
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="//cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#productImg').html('<img src="' + e.target.result + '" alt="Product Image" width="100px">');
+                }
+                reader.readAsDataURL(input.files[0]);
+                // 設置文件名
+                $('#imgFileName').text(input.files[0].name);
+            }
+        };
+        $(document).ready(function () {
+            //日期選取器載入設定
+            $('#datepicker input').datepicker({
+                autoclose: true,
+                format: 'yyyymmdd',
+                todayBtn: true,
+                clearBtn: true
+            });
+            // 點擊日期後自動關閉日期選擇器
+            $('#datepicker input').on('changeDate', function () {
+                $('#datepicker input').datepicker('hide');
+            });
+            // 儲存按鈕的點擊事件
+            $(document).ready(function () {
+                $(document).on("click", '#saveButton', function () {
+
+                    console.log("imageBase64");
+
+                    // 檢查是否已經抓取到要儲存的資料
+                    // var ProductId = productId;
+                    var productName = $('input[name="fProductName"]').val();
+                    var supplierId = $('#sleSupplier').val();
+                    var proType = $('#sleProType').val();
+                    var productStatus = $('input[name="rdproStatus"]:checked').val() === "true";
+                    var proSource = $('input[name="radioProSource"]:checked').val() === "true";
+                    var release = $('#datepicker input').val(); // 獲取日期選擇器中的值
+                    var imageFile = $('#inputProPic')[0].files[0]; // 獲取上傳的圖片文件
+
+                    // 檢查是否有任何一個欄位為空
+                    if ((productName.trim() == "") || (supplierId <= 0) || (proType <= 0) || (release.trim() == "")) {
+                        //console.log(imageFile);
+                        console.log('請確保所有欄位都已填寫！');
+                        return; // 如果有欄位為空，則停止執行後續操作
+                    }
+
+                    var data = {
+                        // "ProductId": parseInt(ProductId),
+                        "ProductName": productName,
+                        "ProSource": proSource,
+                        "SupplierId": parseInt(supplierId),
+                        "TypeId": parseInt(proType),
+                        "Release": release,
+                        "ProStatus": productStatus
+                    };
+
+                    // 如果有選擇圖片，則讀取圖片並發送 AJAX 請求
+                    if (imageFile) {
+                        var reader = new FileReader();
+                        reader.readAsDataURL(imageFile);
+                        reader.onload = function () {
+
+                            data["ImagePath"] = reader.result;
+
+                            sendDataToServer(data); // 發送 AJAX 請求
+                        };
+                        reader.onerror = function (error) {
+                            console.log('Error: ', error);
+                        };
+                    } else {
+                        // 如果未選擇圖片，則檢查資料庫中是否有圖片檔名
+                        sendDataToServer(data);
+                    }
+                });
+                // 函式：發送資料到伺服器
+                function sendDataToServer(data) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/Product/Create', // 替換成您的API端點
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        success: function (response) {
+                            alert('商品資料已成功儲存！');
+                            window.location.href = '/Employee/IProductManagement/Index'; // 跳轉到index頁面
+                            console.log('Data sent to API:', data);
+                            console.log('Response:', response);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                            alert('儲存失敗，請稍後再試！');
+                        }
+                    });
+                };
+                // 取消按鈕的點擊事件
+                $('#cancelButton').click(function () {
+                    history.back(); // 返回前一個頁面
+                });
+            });
+            // 載入廠商的選單
+            $.ajax({
+                url: "/api/Product/GetSupplierInfoByType",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    //console.log(data); // 在控制台輸出返回的資料
+                    // 遍歷返回的數據
+                    $.each(data, function (key, value) {
+                        // 將每個選項添加到下拉式選單中
+                        $("#sleSupplier").append('<option value="' + value.fId + '">' + value.fCompanyName + '</option>');
+                    });
+                },
+                error: function (xhr, status, error) {
+                    // 處理錯誤
+                    console.error(xhr.responseText);
+                }
+            });
+            //載入類型選單
+            $.ajax({
+                url: "/api/Product/GetProTypeByTypeId",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    //console.log(data); // 在控制台輸出返回的資料
+                    // 遍歷返回的數據
+                    $.each(data, function (key, value) {
+                        // 將每個選項添加到下拉式選單中
+                        $("#sleProType").append('<option value="' + value.fTypeId + '">' + value.fType + '</option>');
+                    });
+                },
+                error: function (xhr, status, error) {
+                    // 處理錯誤
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    </script>
+}

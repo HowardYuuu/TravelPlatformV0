@@ -1,0 +1,416 @@
+﻿
+@{
+    ViewData["Title"] = "代辦商品管理";
+}
+
+@section Styles {
+    <link href="~/lib/datatables/css/jquery.datatables.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <style>
+        thead {
+            background-color: lightslategrey;
+            color: black;
+        }
+        .selected {
+            background-color: lightgray;
+        }
+    </style>
+}
+
+<h3>商品管理</h3>
+
+<button id="t1" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#VProductPartial" onclick="getEditPartial(0)"><i class="fa-solid fa-circle-plus" style="font-size:0.8rem"></i> 新增</button>
+
+<table class="table" id="tbVProduct">
+    <thead>
+        <tr>
+            <th style="display: none">商品編號</th>
+            <th style="display: none">地區</th>
+            <th style="display: none">廠商</th>
+            <th style="display: none">可留天數</th>
+
+            <th>商品名稱</th>
+            <th>國家</th>
+            <th>實體/電子簽</th>
+            <th>辦理耗時</th>
+            <th>效期</th>
+            <th>價格</th>
+            <th>啟用狀態</th>
+            <th style="width:50px">功能</th>
+        </tr>
+    </thead>
+</table>
+
+<!--Modal-->
+<div class="modal fade" id="VProductPartial" tabindex=" -1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="edit-modal">
+                @*引入partial*@
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <!--傳partialview後綁定驗證-->
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+    <script src="//cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+        let fid = -1;
+        const editModal = document.getElementById("edit-modal");
+        const createModal = document.getElementById("create-modal");
+        const btnSave = document.getElementById("btnSave");
+
+        //載入datatable資料
+        const loadVProductData = () => {
+            $("#tbVProduct").dataTable({
+                autoWidth: false,
+                ajax: {
+                    type: 'GET',
+                    url: "/Employee/VProduct/allVProducts",
+                    dataSrc: function (json) { return json; }
+                },
+                columns: [
+                    { "data": "商品編號", "visible": false },
+                    { "data": "地區", searchable: true, "visible": false },
+                    { "data": "廠商", searchable: true, "visible": false },
+                    { "data": "可留天數", sortable: false, searchable: true, "visible": false },
+
+                    { "data": "商品名稱" },
+                    { "data": "國家" },
+                    {
+                        data: "實體or電子簽",
+                        title: "實體/電子簽",
+                        render: function (data, type, row) {
+                            if (data === true) {
+                                return "實體簽";
+                            } else {
+                                return "電子簽";
+                            }
+                        }
+                    },
+                    {
+                        data: "辦理耗時天數",
+                        render: function (data, type, row) {
+                            return data + "天";
+                        }
+                    },
+                    { "data": "效期", sortable: false },
+                    { "data": "價格" },
+                    {
+                        data: "啟用狀態",
+                        title: "啟用狀態",
+                        render: function (data, type, row) {
+                            if (data === true) {
+                                return `<input type="radio" name="${row.商品編號}" value=true onchange="enabledToggle(${row.商品編號}, this.value)" checked/> <label for=true class="mb-0"> 已啟用 </label><br>
+                                        <input type="radio" name="${row.商品編號}" value=false onchange="enabledToggle(${row.商品編號}, this.value)"/> <label for=false class="mb-0"> 未啟用 </label>
+                                `;
+                            } else {
+                                return `<input type="radio" name="${row.商品編號}" value=true onchange="enabledToggle(${row.商品編號}, this.value)"/> <label for=true class="mb-0"> 已啟用 </label><br>
+                                        <input type="radio" name="${row.商品編號}" value=false onchange="enabledToggle(${row.商品編號}, this.value)" checked /> <label for=false class="mb-0"> 未啟用 </label>
+                                `;
+                            }
+                        }
+                    },
+                    
+                    {
+                        data: null,
+                        title: "功能",
+                        sortable: false,
+                        render: function (data, type, row) {
+                            return `<button id="t1" type = "button" class="btn btn-primary btn-sm me-1" data-bs-toggle="modal" data-bs-target="#VProductPartial" onclick="getEditPartial(${row.商品編號})"><i class="fa-solid fa-pen-to-square" style="font-size:0.8rem"></i> 編輯</button> `
+                        }
+                    },
+                ],
+                fixedHeader: { header: true },
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/zh-HANT.json'
+                },
+            })
+        }
+
+
+        //啟用未啟用
+        async function enabledToggle(id, value) {
+            try {
+                const response = await fetch(`@Url.Content("~/Employee/VProduct/Enabled")?id=${id}&enabled=${value}`)
+                if (!response.ok) {
+                    throw new Error(`${response.status}`)
+                }
+                const data = await response.json();
+                if (data.success) {
+                    console.log(data);
+                }
+            }
+            catch (error) {
+                Swal.fire({
+                    title: "error",
+                    text: error.message,
+                    icon: "error"
+                });
+            }
+        }
+
+
+
+        //取得partial view，新增跟編輯都呼叫這個function，新增id參數帶0，編輯是選到的那列資料的id
+        const getEditPartial = async (id) => {
+            //紀錄fId到全域變數
+            fid = id;
+            const response = await fetch(`@Url.Content("~/Employee/VProduct/GetPartial")?id=${id}`);
+            const data = await response.text();
+            editModal.innerHTML = data
+        }
+
+
+
+        //根據傳入的action name呼叫對應的api
+        const sendFetchRequest = async (actionName) => {
+
+            //抓取目前的form id
+            const formId = document.querySelector("form").getAttribute('id');
+            //目前的form id的DOM元素
+            const formIdDOM = document.getElementById(`${formId}`)
+            //新增form data物件
+            const formData = new FormData(formIdDOM);
+
+            //formData內容監看
+            var formDataEntries = formData.entries();
+            for (var pair of formDataEntries) {
+                console.log(pair[0] + ', ' + pair[1]); 
+            }
+
+            //取得防偽標籤
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            try {
+                const res = await fetch(`@Url.Content("~/Employee/VProduct/")` + actionName, {
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    body: formData,
+                    method: 'POST'
+                });
+                if (!res.ok) {
+                    throw new Error(`${res.status}`)
+                }
+                const data = await res.json();
+
+                if (data.success) {
+                    //console.log(data);
+
+                    //關閉modal
+                    var myModal = bootstrap.Modal.getInstance(VProductPartial);
+                    myModal.hide();
+                    //顯示訊息
+                    Swal.fire({
+                        title: "Success",
+                        text: data.message,
+                        icon: "success"
+                    });
+                    //刷新datatable
+                    $('#tbVProduct').DataTable().ajax.reload();
+
+                } else {
+                    //依自己的form增加需要驗證的欄位(驗證規則在partial view中)
+                    const errorFCountryId = document.querySelector(`[data-valmsg-for="FCountryId"]`);
+                    const errorFSupplierId = document.querySelector(`[data-valmsg-for="FSupplierId"]`);
+                    const errorFName = document.querySelector(`[data-valmsg-for="FName"]`);
+                    const errorFNewOrLost = document.querySelector(`[data-valmsg-for="FNewOrLost"]`);
+                    const errorFInterviewRequirement = document.querySelector(`[data-valmsg-for="FInterviewRequirement"]`);
+                    const errorFEntityOrElectronic = document.querySelector(`[data-valmsg-for="FEntityOrElectronic"]`);
+                    const errorFProcessingTimeId = document.querySelector(`[data-valmsg-for="FProcessingTimeId"]`);
+                    const errorFValidityPeriodId = document.querySelector(`[data-valmsg-for="FValidityPeriodId"]`);
+                    const errorFLengthOfStayId = document.querySelector(`[data-valmsg-for="FLengthOfStayId"]`);
+                    const errorFPrice = document.querySelector(`[data-valmsg-for="FPrice"]`);
+                    const errorFEnabled = document.querySelector(`[data-valmsg-for="FEnabled"]`);
+                    
+                    if (errorFCountryId) {
+                        errorFCountryId.textContent = data.errors.FCountryId[0];
+                    }
+                    if (errorFSupplierId) {
+                        errorFSupplierId.textContent = data.errors.FSupplierId[0];
+                    }
+                    if (errorFName) {
+                        errorFName.textContent = data.errors.FName[0];
+                    }
+                    if (errorFNewOrLost) {
+                        errorFNewOrLost.textContent = data.errors.FNewOrLost[0];
+                    }
+                    if (errorFInterviewRequirement) {
+                        errorFInterviewRequirement.textContent = data.errors.FInterviewRequirement[0];
+                    }
+                    if (errorFEntityOrElectronic) {
+                        errorFEntityOrElectronic.textContent = data.errors.FEntityOrElectronic[0];
+                    }
+                    if (errorFProcessingTimeId) {
+                        errorFProcessingTimeId.textContent = data.errors.FProcessingTimeId[0];
+                    }
+                    if (errorFValidityPeriodId) {
+                        errorFValidityPeriodId.textContent = data.errors.FValidityPeriodId[0];
+                    }
+                    if (errorFLengthOfStayId) {
+                        errorFLengthOfStayId.textContent = data.errors.FLengthOfStayId[0];
+                    }
+                    if (errorFPrice) {
+                        errorFPrice.textContent = data.errors.FPrice[0];
+                    }
+                    if (errorFEnabled) {
+                        errorFEnabled.textContent = data.errors.FEnabled[0];
+                    }
+                }
+            } catch (error) {
+                Swal.fire({
+                    title: "error",
+                    text: error.message,
+                    icon: "error"
+                });
+            }
+        }
+
+        //更換洲別顯示國家
+        async function changeRegion(e) {
+            const FCountryId = document.getElementById('FCountryId');
+            const response = await fetch(`@Url.Content("~/Employee/VProduct/countriesByRegion")?region=${e}`);
+            const data = await response.json();
+            //console.log(data)
+            let countriesSelectorHTML = ``;
+            if (data != null) {
+                for (var country of data) {
+                    countriesSelectorHTML += `<option value = ${country.fId}>${country.fCountry}</option>`;
+                }
+                FCountryId.innerHTML = countriesSelectorHTML;
+            }
+        }
+
+        //取消按Enter的預設功能
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+            }
+        });
+
+        //資料上傳
+        function clickFile(e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('fileInput');
+            // 點擊input來開啟file dialog
+            fileInput.click();
+        }
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            let formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const res = await fetch('@Url.Content("~/Employee/VProduct/UploadForm")', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (!res.ok) {
+                    throw new Error(`${res.status}`)
+                }
+                const data = await res.json();
+                if (data.success) {
+
+                    //顯示訊息
+                    Swal.fire({
+                        title: "Success",
+                        text: data.message,
+                        icon: "success"
+                    });
+
+                    //刷新checkBox
+                    refreshPartial(fid);
+                }
+            }
+            catch (error) {
+                Swal.fire({
+                    title: "error",
+                    text: error.message,
+                    icon: "error"
+                });
+            }
+        }
+
+        //checkbox Selected
+        function selectedCheckbox(t,e) {
+            if (e.target.type === 'checkbox') {
+                return;
+            }
+            if (t.classList.contains('selected')) {
+                t.classList.remove('selected');
+            }
+            else {
+                t.classList.add('selected');
+            }
+        }
+
+        //資料刪除
+        async function deleteFile(e) {
+            e.preventDefault();
+            //找ckeckbox中select的項目的Id
+            var selectedItemsId = [];
+            const items = document.querySelectorAll(".checkboxItem.selected")
+            items.forEach(item => {
+                selectedItemsId.push(item.getAttribute("id"));
+            });
+            try {
+                const response = await fetch(`@Url.Content("~/Employee/VProduct/DeleteForms")`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(selectedItemsId)
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                if (data.success) {
+                    //顯示訊息
+                    Swal.fire({
+                        title: "Success",
+                        text: data.message,
+                        icon: "success"
+                    });
+
+                    //刷新checkBox
+                    refreshPartial(fid);
+                }
+            }
+            catch (error) {
+                Swal.fire({
+                    title: "error",
+                    text: error.message,
+                    icon: "error"
+                });
+            }
+        }
+
+        //局部刷新checkBox
+        const refreshPartial = async (fid) => {
+            try {
+                const response = await fetch(`@Url.Content("~/Employee/VProduct/RefreshAllForms")?id=${fid}`);
+                const data = await response.text();
+                document.getElementById('partialContainer').innerHTML = data;
+            } catch (error) {
+                console.error('Error refreshing partial view:', error);
+            }
+        };
+
+
+
+
+        $(document).ready(() => {
+            loadVProductData();
+        })
+
+    </script>
+}

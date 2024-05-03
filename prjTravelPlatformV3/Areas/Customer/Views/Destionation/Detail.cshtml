@@ -1,0 +1,282 @@
+﻿@using prjTravelPlatform_release.Areas.Customer.ViewModel.TravelPlan
+@model prjTravelPlatform_release.Areas.Customer.ViewModel.TravelPlan.DestionationList
+@{
+	ViewData["Title"] = Model.FDestinationName;
+}
+@section Styles {
+	<link href="~/allen/destionationdetail/vendors/bootstrap/bootstraps.min.css" rel="stylesheet" />
+	<link href="~/allen/destionationdetail/vendors/owl-carousel/owl.carousel.min.css" rel="stylesheet" />
+	<link href="~/allen/destionationdetail/css/style.css" rel="stylesheet" />
+}
+
+<div class="product_image_area">
+	<div class="container" style="max-width: 100%;">
+		<div class="row s_product_inner">
+			<div class="col-lg-6" style="margin-top:5%">
+				<div class="owl-carousel owl-theme s_Product_carousel">
+					@foreach (TdestinationPhoto tp in ViewBag.Photo)
+					{
+						<div class="single-prd-item" style="padding-left:10px">
+							<img class="img-fluid" style="border-radius:20px"
+								 src="data:image/jpeg;base64,@Convert.ToBase64String(tp.FphotoPath)" alt="">
+						</div>
+					}
+				</div>
+			</div>
+			<div class="col-lg-5 offset-lg-1" style="margin-left: 5%;">
+				<div class="s_product_text">
+					<h3>@Html.DisplayFor(x => x.FDestinationName)</h3>
+					<div class="card_area d-flex align-items-start">
+						<div style="width:50%">
+							<button id="starButton" onclick="ChangeFollow('@Html.DisplayFor(x => x.FDestinationId)')" style="background-color: white;border: 0; margin-bottom: 20px;margin-left:10px">
+								@if (ViewBag.Follow)
+								{
+									<img id="starImage" src="~/allen/icons/lightstar.ico" style="max-width: 100%;">
+								}
+								else
+								{
+									<img id="starImage" src="~/allen/icons/star.ico" style="max-width: 100%;">
+								}
+							</button>
+							<div class="underline-text">加入收藏</div>
+							<h2>$ @Html.DisplayFor(x => x.FPrice)</h2>
+							<ul class="list">
+								<li><a class="active"># @Html.DisplayFor(x => x.Ftype)</a></li>
+								<li><img src="~/allen/icons/landmark.ico" style="max-width: 100%;"><a>@Html.DisplayFor(x => x.FAddress)</a></li>
+							</ul>
+						</div>
+						<div>
+							<iframe width="300"
+									height="300"
+									frameborder="0"
+									style="border:0"
+									src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCkdoxG9B0K7e4ies97y9xvPKJ6-jNmg_8&q= '@Html.DisplayFor(x=>x.FDestinationName) '&zoom=10"
+									allowfullscreen>
+							</iframe>
+						</div>
+					</div>
+					<p>@Html.DisplayFor(x => x.FDestinationContent)</p>
+					<div style="display: flex; align-items: center; margin-top: 5%;">
+						<label for="qty" style="margin-right: 3%; max-width: 20%;margin-top:2%">購買數量:</label>
+						<button onclick="var result = document.getElementById('sst'); var sst = result.value; if (!isNaN(sst) && sst > 1) result.value--; return false;"
+								type="button"
+								style="margin-right: 3%; margin-top: 0; background-color: #EEEEEE; border: 1px solid black; width: 5%;border-radius:10px;">
+							-
+						</button>
+						<input type="number" name="qty" id="sst" size="2" maxlength="12" value="1" title="Quantity:"
+							   class="form-control" style="margin-right: 3%; max-width: 20%; background-color: white;border:2px solid black" min="0" max="1000">
+						<button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+								type="button"
+								style="margin-right: 3%; margin-top: 0; background-color: #EEEEEE; border: 1px solid black; width: 5%;border-radius:10px;">
+							+
+						</button>
+						<a id="buyLink" class="button button--active" style="max-width: 60%;">
+							立即購買
+						</a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<section class="product_description_area">
+	<div class="container" style="max-width: 100%;">
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<li style="padding-right: 20%;">
+				<a>行前提醒</a>
+			</li>
+			<li style="padding-left: 40%;">
+				<a>評論</a>
+			</li>
+		</ul>
+		<div style="display:flex">
+			<div class="table-responsive" style="max-width: 70%;margin-left: 5%; margin-top: 5%;">
+				<table class="table">
+					<tbody>
+						<tr>
+							<td style="width: 30%;">
+								<h4>文件準備：</h4>
+							</td>
+							<td>
+								<ol>
+									<li>確保你的護照仍然有效，並且沒有過期。</li>
+									<li>如果需要，辦理相應的簽證或其他入境文件。</li>
+									<li>備份所有重要文件，如護照、機票、預訂確認等，並將其存放在安全的地方，例如雲端存儲或電子郵件中。</li>
+								</ol>
+
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h4>健康與安全：</h4>
+							</td>
+							<td>
+								<ol>
+									<li>確保你的旅遊保險是有效的，並且能夠涵蓋你計劃中的目的地和活動。</li>
+									<li>如果你有任何慢性疾病或需要特別的藥物，確保攜帶足夠的供應量，並且了解目的地的醫療服務和藥物供應情況。</li>
+									<li>查看目的地的安全情況，包括政治局勢、天氣狀況和犯罪率等。</li>
+								</ol>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h4>財務準備：</h4>
+							</td>
+							<td>
+								<ol>
+									<li>確保你的信用卡能在目的地使用，並且知道你可能會面臨的匯率和貨幣情況。</li>
+									<li>攜帶一些當地貨幣，以應付你抵達時的基本開支，例如交通、食宿和小買。</li>
+								</ol>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h4>行李準備：</h4>
+							</td>
+							<td>
+								<ol>
+									<li>根據你的目的地和計劃，合理選擇行李和裝備。確保你的行李符合航空公司的規定，並且能夠方便搬運。</li>
+									<li>確保你攜帶了必要的旅行用品，例如適合當地天氣的衣物、日常用品、旅行文件和個人護理用品等。</li>
+								</ol>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h4>通訊準備：</h4>
+							</td>
+							<td>
+								<ol>
+									<li>如果你計劃在目的地使用移動數據或通話服務，確保你的手機計劃能夠支持這些需求，或者考慮在抵達時購買當地的SIM卡或通訊服務。</li>
+									<li>確保你有家人或朋友的聯繫方式，並且能夠在需要時與他們保持聯繫。</li>
+								</ol>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h4>目的地研究：</h4>
+							</td>
+							<td>
+								<ol>
+									<li>事先研究目的地的文化、風俗和法律規定，以避免不必要的尷尬或麻煩。</li>
+									<li>查找有關當地的景點、餐廳、交通和活動的信息，並且制定一個大致的行程計劃，以充分利用你的旅行時間。</li>
+								</ol>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+			<div class="row" style="max-width: 30%;margin-right: 5%; margin-left:5%;margin-top: 5%;flex-direction: column;">
+				<div style="width: 100%;">
+					<div style="max-width: 100%; margin-bottom: 20%;margin-left: 0;padding-left: 0;">
+						<div class="box_total">
+							@if(ViewBag.Star !=0)
+							{
+								<h3>評價 : @ViewBag.Star</h3>
+								<div class="review_box">
+									<ul class="list">
+										@for (int i = 0; i < ViewBag.Star; i++)
+										{
+											<li><a href="#"><i class="fa fa-star"></i></a></li>
+										}
+									</ul>
+								</div>
+							}
+							else
+							{
+								<h3>尚無評價</h3>
+							}
+						</div>
+					</div>
+				</div>
+				<div>
+					<div class="review_list">
+						@foreach (TdestinationRemarkView tr in ViewBag.Remark)
+						{
+							<div class="review_item">
+								<div class="media">
+									<div class="d-flex">
+										@if (tr.FCustomerPhoto == null || tr.FCustomerPhoto == "")
+										{
+											<img src="~/img/uploads/avatar.png" alt="" style="width:100px">
+										}
+										else
+										{
+											<img src="~/@tr.FCustomerPhoto" alt="" style="width:100px">
+										}
+									</div>
+									<div class="media-body">
+										<h4>@tr.FCustomer</h4>
+										@for (int i = 1; i <= tr.Fstar; i++)
+										{
+											<i class="fa fa-star"></i>
+										}
+									</div>
+								</div>
+								<p>
+									@tr.Fremark
+								</p>
+							</div>
+						}
+						@if (ViewBag.Star >=3)
+						{
+							<button onclick="MoreRemark('@Html.DisplayFor(x => x.FDestinationId)')" class="button button--active button-review">查看更多</button>
+						}
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+@section Scripts {
+	<script src="~/allen/destionationdetail/vendors/jquery/jquery-3.2.1.min.js"></script>
+	<script src="~/allen/destionationdetail/vendors/bootstrap/bootstrap.bundle.min.js"></script>
+	<script src="~/allen/destionationdetail/vendors/skrollr.min.js"></script>
+	<script src="~/allen/destionationdetail/vendors/owl-carousel/owl.carousel.min.js"></script>
+	<script src="~/allen/destionationdetail/vendors/nice-select/jquery.nice-select.min.js"></script>
+	<script src="~/allen/destionationdetail/js/main.js"></script>
+
+	<script>
+		const starButton = document.getElementById('starButton');
+
+		//評論
+		function MoreRemark(id) {
+			window.open('https://lively-sea-0210e9700.5.azurestaticapps.net/?id=' + id, '_blank');
+		}
+
+		//追蹤
+		function ChangeFollow(id) {
+			const starImage = document.getElementById('starImage');
+			$.ajax({
+				url: '@Url.Content("~/Customer/Destionation/Follow")',
+				type: 'POST',
+				data: { id: id },
+				success: function (response) {
+					if (response) {
+						starImage.src = "/allen/icons/lightstar.ico";
+					} else {
+						starImage.src = "/allen/icons/star.ico";
+					}
+				},
+				error: function (xhr, status, error) {
+				
+					console.error('Error:', error);
+				}
+			});
+		}
+		var qty = document.getElementById('sst').value;
+
+		//購買
+		document.getElementById('buyLink').addEventListener('click', function () {
+			var destinationId = '@Html.DisplayFor(x => x.FDestinationId)';
+			var quantity = document.getElementById('sst').value;
+			var baseUrl = '/Customer/Destionation/Deal/';
+			var url = baseUrl + destinationId + '?qty=' + quantity;
+			window.location.href = url;
+		});
+	</script>
+}
